@@ -1,0 +1,153 @@
+
+
+  .hero1 {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/LinkWich.jpg') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+        .service-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .service-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .service-card img {
+    width: 100%; /* La imagen ocupará todo el ancho del contenedor */
+    height: 250px; /* Define una altura fija */
+    object-fit: cover; /* Asegura que las imágenes se ajusten sin deformarse */
+    border-radius: 8px; /* (Opcional) Bordes redondeados */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* (Opcional) Sombra elegante */
+}
+
+/* Contenedor fijo y flotante */
+.floating-icons {
+    position: fixed; /* Se queda fijo en pantalla */
+    bottom: 20px; /* Ajusta la distancia desde abajo */
+    right: 20px; /* Ajusta la distancia desde la derecha */
+    display: flex;
+    flex-direction: column; /* Coloca las imágenes una encima de la otra */
+    gap: 10px; /* Espacio entre las imágenes */
+    z-index: 999; /* Asegura que se muestre encima de otros elementos */
+}
+
+/* Estilo para los íconos */
+.floating-icons .icon {
+    width: 50px; /* Tamaño base del ícono */
+    height: 50px; /* Asegura que sea cuadrado */
+    border-radius: 50%; /* Hace los íconos circulares */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra para un efecto elegante */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animación al interactuar */
+}
+
+/* Efecto hover */
+.floating-icons .icon:hover {
+    transform: scale(1.1); /* Aumenta el tamaño al pasar el mouse */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Incrementa la sombra */
+}
+
+/* Responsivo */
+@media screen and (max-width: 768px) {
+    .floating-icons .icon {
+        width: 40px; /* Reduce el tamaño en pantallas pequeñas */
+        height: 40px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .floating-icons {
+        bottom: 10px; /* Ajusta el margen para móviles */
+        right: 10px;
+    }
+}
+
+
+#socios-tecnologicos {
+    background-color: #1a1a1a; /* Color de fondo oscuro */
+}
+
+#socios-tecnologicos h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+#socios-tecnologicos img {
+    max-height: 80px; /* Ajusta el tamaño máximo de los logotipos */
+    filter: brightness(0) invert(1); /* Hace que los logotipos sean blancos en fondo oscuro */
+    transition: transform 0.3s ease; /* Agrega un efecto al pasar el mouse */
+}
+
+#socios-tecnologicos img:hover {
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño en hover */
+    filter: brightness(1) invert(0); /* Vuelve a los colores originales */
+}
+
+
+.cert-logo {
+        width: 150px; /* Ancho uniforme */
+        height: 100px; /* Alto uniforme */
+        object-fit: contain; /* Ajustar la imagen sin distorsionar */
+        display: block;
+        margin: auto;
+    }
+
+
+
+    .footer-logo {
+
+    width: 80px; /* Ajusta el tamaño deseado */
+    height: auto; /* Mantén las proporciones de la imagen */
+    vertical-align: middle; /* Alinea la imagen con el texto */
+    margin: 0 5px; /* Agrega espacio horizontal para separar la imagen del texto */
+    display: inline-block; /* Asegura que la imagen se comporte como un elemento en línea */
+}
+
+
+.link-no-underline {
+    text-decoration: none;
+    color: inherit; /* Opcional: mantiene el color del texto */
+}
+
+.link-no-underline:hover {
+    text-decoration: underline; /* Opcional: subraya solo al pasar el cursor */
+}
+
+
+.number-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+}
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+.card-text {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Si deseas personalizar la apariencia de la lista DE SERVICIOS con íconos o estilos adicionales, puedes agregar CSS: */
+
+.card-text ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    padding-left: 0;
+}
+
+.card-text ul li {
+    margin-bottom: 10px;
+}
+
+.card-text ul li::marker {
+    color: #007bff; /* Cambia el color del marcador */
+    font-size: 16px; /* Ajusta el tamaño del marcador */
+}
+
+.certificaciones {
+    color: white; /* Cambia el color del texto a blanco */
+}
