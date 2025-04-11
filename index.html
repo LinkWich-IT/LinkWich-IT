@@ -1,5 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+  .btn-custom {
+  background-color: #007bff; /* Color azul Bootstrap */
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+  transform: translateY(-2px);
+}
+
+  .btn-elegante {
+  display: inline-block;
+  background-color: #1a1a2e; /* Fondo oscuro elegante */
+  color: #ffffff;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  border: 2px solid transparent;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-elegante:hover {
+  background-color: transparent;
+  color: #1a1a2e;
+  border: 2px solid #1a1a2e;
+  transform: translateY(-2px);
+}
+
+
+  </style>
 
 <head>
   <meta charset="utf-8">
@@ -13,6 +54,8 @@
   <link href="assets/img/logo-linkwich.png" rel="apple-touch-icon">
 
   <!-- Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -320,7 +363,12 @@ Ya sea que necesites diseñar, implementar o mejorar tus redes y sistemas, estam
 </div>
 
 <div class="text-center mt-4">
-  <a href="LinkWich-Monitor/index.html" class="btn btn-primary">Conocer más sobre LinkWich-Monitor</a>
+  <!--<a href="LinkWich-Monitor/index.html" class="btn btn-primary">Conocer más sobre LinkWich-Monitor</a>-->
+ <a href="LinkWich-Monitor/index.html" class="btn-elegante">
+  <i class="fas fa-arrow-right me-2"></i> Conocer más sobre LinkWich-Monitor
+</a>
+
+
 </div><!-- End Skills Item -->
 
 
@@ -637,11 +685,12 @@ Ya sea que necesites diseñar, implementar o mejorar tus redes y sistemas, estam
                 </div>
 
                 <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
+                  <!--<div class="loading">Loading</div>
                   <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div> -->
 
-                  <button type="submit">Enviar Mensaje</button>
+                 <button type="submit" class="btn-custom">Enviar Mensaje</button>
+
                 </div>
 
               </div>
