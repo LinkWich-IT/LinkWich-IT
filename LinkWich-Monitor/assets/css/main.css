@@ -44,8 +44,9 @@
   --surface-color: #ffffff;
 }
 
+
 .dark-background {
-  --background-color: #08005e;
+  --background-color: #f4f5fe; /* #08005e azul oscuro */
   --default-color: #ffffff;
   --heading-color: #ffffff;
   --surface-color: #0c0091;
