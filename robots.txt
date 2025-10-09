@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://linkwich-it.github.io/LinkWich-IT/sitemap.xml
