@@ -74,6 +74,14 @@
       <i class="bi bi-tag-fill me-1"></i>Precios
     </a>
   </li>
+
+  <!-- ✅ NUEVO -->
+  <li>
+    <a href="#requirements">
+      <i class="bi bi-pc-display-horizontal me-1"></i>Requerimientos
+    </a>
+  </li>
+
   <li>
     <a href="#contact-cta">
       <i class="bi bi-telephone-fill me-1"></i>Contacto
@@ -90,6 +98,7 @@
     </a>
   </li>
 </ul>
+
 
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -820,6 +829,9 @@
 
     </section><!-- /Gallery Section -->
 
+
+    
+
     <!-- Testimonials Section -->
     <!--<section id="testimonials" class="testimonials section dark-background">
 
@@ -1341,6 +1353,274 @@
     </div>
   </div>
 </section><!-- /Pricing Section -->
+
+
+    <!-- =========================  Requerimientos Técnicos  ========================= -->
+<section id="requirements" class="section bg-light">
+  <style>
+    /* Estilos SOLO para esta sección (no rompe tu CSS global) */
+    #requirements .req-card{
+      border: 0;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      overflow: hidden;
+      background: #fff;
+    }
+    #requirements .req-card .card-header{
+      background: linear-gradient(135deg, rgba(13,110,253,.10), rgba(13,110,253,.03));
+      border-bottom: 1px solid rgba(13,110,253,.12);
+    }
+    #requirements .req-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.45rem .75rem;
+      border-radius: 999px;
+      background: rgba(13,110,253,.10);
+      border: 1px solid rgba(13,110,253,.18);
+      font-size: .85rem;
+      font-weight: 600;
+      color: #0b5ed7;
+    }
+    #requirements .req-list li{
+      display:flex;
+      gap:.65rem;
+      align-items:flex-start;
+      padding:.45rem 0;
+    }
+    #requirements .req-list i{
+      font-size: 1.05rem;
+      margin-top: .15rem;
+    }
+    #requirements .req-note{
+      border-radius: 14px;
+      background: rgba(25,135,84,.08);
+      border: 1px solid rgba(25,135,84,.16);
+      padding: 12px 14px;
+    }
+    #requirements .table thead th{
+      background: #f8fafc;
+      white-space: nowrap;
+    }
+    #requirements .table td, #requirements .table th{
+      vertical-align: middle;
+    }
+  </style>
+
+  <div class="container" data-aos="fade-up">
+    <div class="section-title text-center">
+      <h2><i class="bi bi-pc-display-horizontal text-primary me-2"></i>Requerimientos Técnicos</h2>
+      <div>
+        <span>Requisitos para la</span>
+        <span class="description-title">implementación por parte del cliente</span>
+      </div>
+      <p class="mt-3 text-muted small">
+        Para asegurar rendimiento estable y monitoreo en tiempo real, recomendamos dimensionar recursos según
+        <strong>número de nodos</strong> y <strong>retención de historial</strong>.
+      </p>
+    </div>
+
+    <div class="row g-4 align-items-stretch">
+
+      <!-- Requerimientos base -->
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="card req-card h-100">
+          <div class="card-header py-3 px-3 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+              <span class="req-badge"><i class="bi bi-check2-circle"></i> Requisitos recomendados</span>
+            </div>
+            <i class="bi bi-gear-wide-connected text-primary fs-4"></i>
+          </div>
+
+          <div class="card-body p-4">
+            <ul class="list-unstyled req-list mb-3">
+
+              <li>
+                <i class="bi bi-windows text-primary"></i>
+                <div>
+                  <div class="fw-bold">Sistema Operativo (Host)</div>
+                  <div class="text-muted small">
+                    <strong>Windows 10 Pro</strong>, <strong>Windows 11 Pro</strong> o <strong>Windows Server 2019 en adelante</strong>.
+                    Recomendado <strong>Windows Server</strong> cuando se requiere mayor estabilidad, múltiples NICs o segmentación por redes.
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <i class="bi bi-cpu-fill text-primary"></i>
+                <div>
+                  <div class="fw-bold">CPU / Procesamiento</div>
+                  <div class="text-muted small">
+                    Para paquetes <strong>Básico / Estándar / Empresarial</strong>: <strong>Intel i5 / i7</strong> (o equivalente) con
+                    <strong>4–6+ núcleos</strong>. <br>
+                    Para <strong>Corporativo</strong>: <strong>Intel i9 / Xeon</strong> (o equivalente) con énfasis en <strong>multihilo</strong>
+                    (ideal: 6–12+ núcleos).
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <i class="bi bi-memory text-primary"></i>
+                <div>
+                  <div class="fw-bold">Memoria RAM</div>
+                  <div class="text-muted small">
+                    <strong>8–16 GB</strong> para Básico / Estándar / Empresarial. <br>
+                    <strong>24–32 GB</strong> recomendado para Corporativo (topologías grandes + más retención histórica).
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <i class="bi bi-device-ssd text-primary"></i>
+                <div>
+                  <div class="fw-bold">Almacenamiento</div>
+                  <div class="text-muted small">
+                    Instalación aproximada de la aplicación: <strong>~1 GB</strong> (sin contar historial). <br>
+                    Recomendación: <strong>SSD</strong> con <strong>500 GB a 1 TB</strong> (dependiendo del paquete y retención de datos).
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <i class="bi bi-router-fill text-primary"></i>
+                <div>
+                  <div class="fw-bold">Conectividad de red</div>
+                  <div class="text-muted small">
+                    Acceso estable hacia la red a monitorear (ideal: misma LAN o rutas controladas). Si hay múltiples redes/VLANs,
+                    usar NICs adicionales o rutas para alcanzar subredes remotas.
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <i class="bi bi-globe2 text-primary"></i>
+                <div>
+                  <div class="fw-bold">Salida a Internet (sin bloqueos)</div>
+                  <div class="text-muted small">
+                    Requerida para envío de alertas en tiempo real (correo/servicios externos) y para operar integraciones.
+                    En entornos con firewall estricto, se recomienda <strong>whitelist</strong> de destinos necesarios.
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <i class="bi bi-hdd-network-fill text-primary"></i>
+                <div>
+                  <div class="fw-bold">Servidor dedicado (recomendado)</div>
+                  <div class="text-muted small">
+                    Soporta instalación en <strong>físico</strong> o <strong>virtualizado</strong>, pero se recomienda un <strong>servidor dedicado</strong>
+                    para garantizar rendimiento continuo y evitar interferencia con otras cargas.
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+
+            <div class="req-note">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-info-circle-fill text-success mt-1"></i>
+                <div class="small">
+                  <div class="fw-bold">Nota de dimensionamiento</div>
+                  Los recursos reales pueden variar según: número de nodos, frecuencia de sondeo, cantidad de interfaces,
+                  logs (syslog), y el periodo de retención de históricos y reportes.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla por paquetes -->
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="card req-card h-100">
+          <div class="card-header py-3 px-3 d-flex align-items-center justify-content-between">
+            <span class="req-badge"><i class="bi bi-clipboard-data"></i> Recomendación por paquete</span>
+            <i class="bi bi-bar-chart-steps text-primary fs-4"></i>
+          </div>
+
+          <div class="card-body p-4">
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm align-middle mb-3">
+                <thead>
+                  <tr class="text-center">
+                    <th class="text-start">Paquete</th>
+                    <th>RAM</th>
+                    <th>CPU</th>
+                    <th>Almacenamiento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th class="text-start">Básico</th>
+                    <td class="text-center">8–16 GB</td>
+                    <td class="text-center">Intel i5 / equivalente</td>
+                    <td class="text-center">500 GB SSD</td>
+                  </tr>
+                  <tr>
+                    <th class="text-start">Estándar</th>
+                    <td class="text-center">8–16 GB</td>
+                    <td class="text-center">Intel i5/i7 / equivalente</td>
+                    <td class="text-center">500 GB – 1 TB SSD</td>
+                  </tr>
+                  <tr>
+                    <th class="text-start">Empresarial</th>
+                    <td class="text-center">16 GB</td>
+                    <td class="text-center">Intel i7 / equivalente</td>
+                    <td class="text-center">1 TB SSD</td>
+                  </tr>
+                  <tr>
+                    <th class="text-start">Corporativo</th>
+                    <td class="text-center">24–32 GB</td>
+                    <td class="text-center">Intel i9 / Xeon (6–12+ cores)</td>
+                    <td class="text-center">1 TB SSD (o más)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mb-3">
+              <div class="fw-bold mb-2"><i class="bi bi-shield-lock-fill text-primary me-2"></i>Accesos y consideraciones</div>
+              <ul class="small text-muted mb-0">
+                <li>Acceso administrativo temporal para instalación/actualizaciones y creación de servicios.</li>
+                <li>Sincronización de hora (NTP) recomendada para reportes y trazabilidad de eventos.</li>
+                <li>Si existe antivirus/EDR estricto, considerar exclusión del directorio de instalación y logs (según políticas internas).</li>
+              </ul>
+            </div>
+
+            <div class="mb-3">
+              <div class="fw-bold mb-2"><i class="bi bi-plug-fill text-primary me-2"></i>Puertos típicos (según módulos)</div>
+              <div class="small text-muted">
+                <ul class="mb-0">
+                  <li><strong>SNMP:</strong> UDP 161 (consulta) / UDP 162 (traps, opcional)</li>
+                  <li><strong>Syslog:</strong> UDP/TCP 514 (según configuración)</li>
+                  <li><strong>Acceso remoto/automatización:</strong> TCP 22 (SSH, opcional)</li>
+                  <li><strong>Acceso web a plataforma:</strong> HTTPS (puerto según despliegue)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="btn btn-primary">
+                <i class="bi bi-send-fill me-2"></i>Solicitar dimensionamiento
+              </a>
+              <a href="#demo-request" class="btn btn-outline-primary">
+                <i class="bi bi-play-circle me-2"></i>Ver demo
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /row -->
+  </div><!-- /container -->
+</section>
+<!-- =======================  /Requerimientos Técnicos  ======================== -->
+
+
+
+    
 
 <!-- Contact CTA Section -->
 <section id="contact-cta" class="contact-cta section bg-light">
