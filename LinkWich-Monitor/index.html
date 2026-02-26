@@ -317,6 +317,58 @@
   }
 </style>
 
+  <style>
+  /* ============================
+     INSTAGRAM MODAL (Bootstrap)
+     ============================ */
+  #igModal .modal-dialog{
+    max-width: 980px;
+  }
+
+  #igModal .modal-content{
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 18px 60px rgba(0,0,0,.35);
+  }
+
+  #igModal .modal-header{
+    border-bottom: 1px solid rgba(0,0,0,.08);
+    background: linear-gradient(135deg, rgba(13,110,253,.12), rgba(13,110,253,.03));
+  }
+  [data-bs-theme="dark"] #igModal .modal-header{
+    border-bottom-color: rgba(255,255,255,.12);
+    background: linear-gradient(135deg, rgba(13,110,253,.18), rgba(255,255,255,.03));
+  }
+
+  #igModal .btn-close{
+    filter: none;
+  }
+  [data-bs-theme="dark"] #igModal .btn-close{
+    filter: invert(1) grayscale(1);
+  }
+
+  /* Área del video responsive */
+  .ig-modal-frame{
+    width: 100%;
+    aspect-ratio: 9 / 16;   /* Reel vertical */
+    background: #000;
+  }
+  .ig-modal-frame iframe{
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* En pantallas grandes, no lo hagas enorme */
+  @media (min-width: 992px){
+    .ig-modal-frame{
+      aspect-ratio: 16 / 9; /* se ve más cómodo en desktop */
+      min-height: 520px;
+    }
+  }
+</style>
+
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
@@ -858,41 +910,83 @@
 
 
     <!-- ✅ Instagram Reel (CORREGIDO: centrado + card + no full screen) -->
-    <section id="instagram-reel" class="section">
-      <div class="container section-title text-center" data-aos="fade-up">
-        <h2><i class="bi bi-instagram me-2"></i>Reel en Instagram</h2>
-        <div>
-          <span>Mira el sistema</span> <span class="description-title">en acción</span>
-        </div>
-        <p class="mt-3 mb-0 small text-muted">
-          Contenido real: dashboards, topología y funcionalidades de LinkWich-Monitor.
-        </p>
-      </div>
+   <!-- ✅ Instagram Reel (Preview + Modal) -->
+<section id="instagram-reel" class="section">
+  <div class="container section-title text-center" data-aos="fade-up">
+    <h2><i class="bi bi-instagram me-2"></i>Reel en Instagram</h2>
+    <div>
+      <span>Mira el sistema</span> <span class="description-title">en acción</span>
+    </div>
+    <p class="mt-3 mb-0 small text-muted">
+      Reels y demostraciones reales de LinkWich-Monitor.
+    </p>
+  </div>
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="ig-wrap">
-          <div class="ig-card">
-            <div class="ig-head">
-              <div>
-                <p class="ig-title mb-0">Último Reel</p>
-                <p class="ig-sub mb-0">Síguenos en Instagram: <strong>@linkwich.it</strong></p>
-              </div>
-              <a class="ig-btn" href="https://www.instagram.com/linkwich.it/" target="_blank" rel="noopener">
-                <i class="bi bi-person-plus-fill"></i> Seguir
-              </a>
-            </div>
-
-            <!-- Embed -->
-       <div class="ig-embed">
-  <blockquote class="instagram-media"
-    data-instgrm-permalink="https://www.instagram.com/reel/DVAKWJIAANR/"
-    data-instgrm-version="14">
-  </blockquote>
-</div>
-
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="ig-wrap">
+      <div class="ig-card">
+        <div class="ig-head">
+          <div>
+            <p class="ig-title mb-0">Último Reel</p>
+            <p class="ig-sub mb-0">Síguenos en Instagram: <strong>@linkwich.it</strong></p>
           </div>
+
+          <!-- ✅ Botón que abre el modal -->
+          <button type="button"
+                  class="ig-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#igModal"
+                  data-ig-url="https://www.instagram.com/reel/DVAKWJIAANR/">
+            <i class="bi bi-play-circle-fill"></i> Ver aquí
+          </button>
+        </div>
+
+        <!-- Preview (Instagram Embed oficial) -->
+        <div class="ig-embed">
+          <blockquote class="instagram-media"
+            data-instgrm-permalink="https://www.instagram.com/reel/DVAKWJIAANR/"
+            data-instgrm-version="14"></blockquote>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ Modal (Bootstrap) -->
+<div class="modal fade" id="igModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-instagram fs-5"></i>
+          <strong>Reel · LinkWich-Monitor</strong>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body p-0">
+        <!-- Aquí inyectamos el iframe -->
+        <div class="ig-modal-frame">
+          <iframe id="igModalFrame"
+                  src=""
+                  allowfullscreen
+                  loading="lazy"
+                  referrerpolicy="no-referrer"></iframe>
         </div>
       </div>
+
+      <div class="modal-footer">
+        <a id="igOpenInsta" class="btn btn-outline-primary" href="#" target="_blank" rel="noopener">
+          <i class="bi bi-box-arrow-up-right me-2"></i>Abrir en Instagram
+        </a>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
     </section>
     <!-- /Instagram Reel -->
 
