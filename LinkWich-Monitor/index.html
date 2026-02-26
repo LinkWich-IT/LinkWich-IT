@@ -24,6 +24,104 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+  <style>
+
+    <style>
+/* ====== PRICING PROMO (solo #pricing) ====== */
+#pricing .pricing-item{
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ribbon descuento (diagonal) */
+#pricing .deal-ribbon{
+  position:absolute;
+  top: 18px;
+  right: -58px;
+  transform: rotate(45deg);
+  padding: 8px 70px;
+  font-weight: 800;
+  font-size: .82rem;
+  letter-spacing: .4px;
+  color: #fff;
+  background: #dc3545; /* rojo promo */
+  box-shadow: 0 10px 22px rgba(220,53,69,.35);
+  z-index: 2;
+}
+
+/* En featured, que se vea más premium */
+#pricing .pricing-item.featured .deal-ribbon{
+  background: #fd7e14; /* naranja */
+  box-shadow: 0 10px 22px rgba(253,126,20,.35);
+}
+
+/* Bloque de precio */
+#pricing .price-stack{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 6px;
+  margin: 14px 0 10px;
+}
+
+#pricing .price-old{
+  font-size: .98rem;
+  opacity: .75;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+#pricing .price-old small{
+  opacity: .85;
+  margin-right: 6px;
+  font-weight: 600;
+}
+
+#pricing .price-new{
+  font-size: 2.1rem;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+#pricing .price-new sup{
+  font-size: 1.05rem;
+  top: -0.6em;
+  position: relative;
+}
+
+#pricing .price-new span{
+  font-size: .95rem;
+  font-weight: 500;
+  opacity: .85;
+}
+
+/* Pastilla "Ahorro" */
+#pricing .save-pill{
+  display:inline-flex;
+  align-items:center;
+  gap: .45rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: .85rem;
+  font-weight: 700;
+  color: #198754;
+  background: rgba(25,135,84,.10);
+  border: 1px solid rgba(25,135,84,.25);
+}
+
+/* Nota promo */
+#pricing .promo-note{
+  font-size: .86rem;
+  font-weight: 600;
+  color: rgba(33,37,41,.75);
+}
+
+/* Dark mode friendly (si usas data-bs-theme="dark") */
+[data-bs-theme="dark"] #pricing .promo-note{ color: rgba(255,255,255,.75); }
+[data-bs-theme="dark"] #pricing .price-old{ color: rgba(255,255,255,.75); }
+</style>
+  </style>
+
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
@@ -1157,9 +1255,9 @@
 <!-- ======================  /Diferenciadores LinkWich-Monitor  ======================= -->
 
    <!-- Pricing Section -->
-<!-- Sección de Precios -->
+<!-- Pricing Section -->
 <section id="pricing" class="pricing section">
-  <!-- Título de Sección -->
+
   <div class="container section-title" data-aos="fade-up">
     <h2>Precios</h2>
     <div>
@@ -1171,7 +1269,6 @@
       Entre más nodos contrates, menor es el costo por nodo &nbsp;|&nbsp; Contrato mínimo de 6 meses &nbsp;|&nbsp; Los precios de lista no incluyen IVA.
     </p>
   </div>
-  <!-- Fin del título -->
 
   <div class="container">
     <div class="row gy-4">
@@ -1179,84 +1276,127 @@
       <!-- Paquete Básico -->
       <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="100">
         <div class="pricing-item">
+          <div class="deal-ribbon">-23% OFF</div>
+
           <h3>Paquete Básico</h3>
           <p class="description">30 nodos &nbsp;|&nbsp; Redes pequeñas</p>
-          <h4><sup>$</sup>260<span> / nodo&nbsp;mensual</span></h4>
+
+          <div class="price-stack">
+            <div class="price-old"><small>Antes</small>$260 / nodo</div>
+            <div class="price-new"><sup>$</sup>200<span> / nodo&nbsp;mensual</span></div>
+            <div class="save-pill"><i class="bi bi-lightning-charge-fill"></i> Precio promocional</div>
+          </div>
+
           <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
-          <p class="text-center small">$93,600 MXN/año (30 nodos)</p>
+
+          <p class="text-center small mb-1">$72,000 MXN/año (30 nodos)</p>
+          <p class="text-center small promo-note mb-1">Ahorro aprox.: $21,600 MXN/año</p>
           <p class="text-center small">Licencia mínima de 6 meses</p>
+
           <ul>
             <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
             <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
           </ul>
         </div>
       </div>
-      <!-- Fin Básico -->
 
       <!-- Paquete Estándar -->
       <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="150">
         <div class="pricing-item">
+          <div class="deal-ribbon">-22% OFF</div>
+
           <h3>Paquete Estándar</h3>
           <p class="description">50 nodos &nbsp;|&nbsp; Redes en crecimiento</p>
-          <h4><sup>$</sup>230<span> / nodo&nbsp;mensual</span></h4>
+
+          <div class="price-stack">
+            <div class="price-old"><small>Antes</small>$230 / nodo</div>
+            <div class="price-new"><sup>$</sup>180<span> / nodo&nbsp;mensual</span></div>
+            <div class="save-pill"><i class="bi bi-piggy-bank-fill"></i> Ahorro inteligente</div>
+          </div>
+
           <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
-          <p class="text-center small">$138,000 MXN/año (50 nodos)</p>
-          <p class="text-center small">Ahorro del 12%</p>
+
+          <p class="text-center small mb-1">$108,000 MXN/año (50 nodos)</p>
+          <p class="text-center small promo-note mb-1">Ahorro aprox.: $30,000 MXN/año</p>
           <p class="text-center small">Licencia mínima de 6 meses</p>
+
           <ul>
             <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
             <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
           </ul>
         </div>
       </div>
-      <!-- Fin Estándar -->
 
       <!-- Paquete Empresarial -->
       <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="200">
         <div class="pricing-item featured">
           <p class="popular">Más popular</p>
+          <div class="deal-ribbon">-25% OFF</div>
+
           <h3>Paquete Empresarial</h3>
           <p class="description">100 nodos &nbsp;|&nbsp; Redes medianas-grandes</p>
-          <h4><sup>$</sup>200<span> / nodo&nbsp;mensual</span></h4>
+
+          <div class="price-stack">
+            <div class="price-old"><small>Antes</small>$200 / nodo</div>
+            <div class="price-new"><sup>$</sup>150<span> / nodo&nbsp;mensual</span></div>
+            <div class="save-pill"><i class="bi bi-award-fill"></i> Mejor relación costo/valor</div>
+          </div>
+
           <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
-          <p class="text-center small">$240,000 MXN/año (100 nodos)</p>
-          <p class="text-center small">Ahorro del 23%</p>
+
+          <p class="text-center small mb-1">$180,000 MXN/año (100 nodos)</p>
+          <p class="text-center small promo-note mb-1">Ahorro aprox.: $60,000 MXN/año</p>
           <p class="text-center small">Licencia mínima de 1 año</p>
+
           <ul>
             <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
             <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
           </ul>
         </div>
       </div>
-      <!-- Fin Empresarial -->
 
       <!-- Paquete Corporativo -->
       <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="250">
         <div class="pricing-item">
+          <div class="deal-ribbon">-13% OFF</div>
+
           <h3>Paquete Corporativo</h3>
           <p class="description">Más de 150 nodos &nbsp;|&nbsp; Grandes corporativos</p>
-          <h4><sup>$</sup>160<span> / nodo&nbsp;mensual</span></h4>
+
+          <div class="price-stack">
+            <div class="price-old"><small>Antes</small>$160 / nodo</div>
+            <div class="price-new"><sup>$</sup>140<span> / nodo&nbsp;mensual</span></div>
+            <div class="save-pill"><i class="bi bi-building-fill-check"></i> Ideal multi-sitio</div>
+          </div>
+
           <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Contáctanos</a>
-          <p class="text-center small">$288,000 MXN/año (150 nodos&nbsp;estimados)</p>
-          <p class="text-center small">Ahorro del 38%</p>
+
+          <p class="text-center small mb-1">$252,000 MXN/año (150 nodos estimados)</p>
+          <p class="text-center small promo-note mb-1">Ahorro aprox.: $36,000 MXN/año</p>
           <p class="text-center small">Licencia mínima de 1 año</p>
+
           <ul>
             <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
             <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
           </ul>
         </div>
       </div>
-      <!-- Fin Corporativo -->
 
       <!-- Paquete Personalizado -->
       <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="300">
         <div class="pricing-item">
           <h3>Paquete Personalizado</h3>
           <p class="description">Solución a la medida con módulos y automatizaciones personalizadas.</p>
-          <h4><span>Precio bajo cotización</span></h4>
+
+          <div class="price-stack">
+            <div class="price-new" style="font-size:1.35rem;"><span>Precio bajo cotización</span></div>
+          </div>
+
           <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Diseña tu paquete</a>
+
           <p class="text-center small">Se cotiza según alcance y diseño</p>
           <p class="text-center small">Contrato mínimo de 6 meses</p>
+
           <ul>
             <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
             <li><i class="bi bi-check"></i> Módulos adicionales a la carta</li>
@@ -1266,13 +1406,11 @@
           </ul>
         </div>
       </div>
-      <!-- Fin Personalizado -->
 
     </div>
   </div>
 </section>
-<!-- Fin de sección de precios -->
-
+<!-- /Pricing Section -->
 
 
 <!-- Servicios Adicionales -->
