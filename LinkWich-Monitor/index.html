@@ -26,7 +26,6 @@
 
   <style>
 
-    <style>
 /* ====== PRICING PROMO (solo #pricing) ====== */
 #pricing .pricing-item{
   position: relative;
@@ -119,8 +118,49 @@
 /* Dark mode friendly (si usas data-bs-theme="dark") */
 [data-bs-theme="dark"] #pricing .promo-note{ color: rgba(255,255,255,.75); }
 [data-bs-theme="dark"] #pricing .price-old{ color: rgba(255,255,255,.75); }
+
+
+    
 </style>
-  </style>
+
+
+  <style>
+/* ===== Fix: "Más popular" NO se tapa con el ribbon ===== */
+#pricing .pricing-item.featured .popular{
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: auto;            /* por si tu template lo pone a la derecha */
+  z-index: 4;             /* arriba del contenido */
+  margin: 0;
+
+  /* estilo badge */
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: #fff;
+  background: #198754;    /* verde */
+  box-shadow: 0 10px 22px rgba(25,135,84,.25);
+}
+
+/* opcional: ícono dentro del badge */
+#pricing .pricing-item.featured .popular::before{
+  content: "★";
+  font-size: .85rem;
+  line-height: 1;
+}
+
+/* Si aún se llega a encimar, sube un poquito el ribbon SOLO en featured */
+#pricing .pricing-item.featured .deal-ribbon{
+  top: 10px;              /* antes 18px */
+}
+</style>
+
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
