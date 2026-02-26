@@ -320,9 +320,13 @@
   <style>
   /* ============================
      INSTAGRAM MODAL (Bootstrap)
+     Usa embed oficial (blockquote)
      ============================ */
+
+  /* Fuerza tamaño tipo “móvil” para que IG no renderice 2 columnas */
   #igModal .modal-dialog{
-    max-width: 980px;
+    max-width: 440px;   /* ajusta 380–520 si quieres */
+    margin: 1.5rem auto;
   }
 
   #igModal .modal-content{
@@ -341,31 +345,31 @@
     background: linear-gradient(135deg, rgba(13,110,253,.18), rgba(255,255,255,.03));
   }
 
-  #igModal .btn-close{
-    filter: none;
-  }
   [data-bs-theme="dark"] #igModal .btn-close{
     filter: invert(1) grayscale(1);
   }
 
-  /* Área del video responsive */
-  .ig-modal-frame{
-    width: 100%;
-    aspect-ratio: 9 / 16;   /* Reel vertical */
-    background: #000;
-  }
-  .ig-modal-frame iframe{
-    width: 100%;
-    height: 100%;
-    border: 0;
+  /* Contenedor del embed */
+  #igModal .ig-modal-embed{
+    padding: 0;
+    background: #000; /* mientras carga, no se ve feo */
   }
 
-  /* En pantallas grandes, no lo hagas enorme */
-  @media (min-width: 992px){
-    .ig-modal-frame{
-      aspect-ratio: 16 / 9; /* se ve más cómodo en desktop */
-      min-height: 520px;
-    }
+  /* IMPORTANTÍSIMO: que el embed respete el ancho del modal */
+  #igModal blockquote.instagram-media{
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  /* El iframe que IG inserta internamente */
+  #igModal .instagram-media iframe,
+  #igModal .instagram-media-rendered iframe{
+    width: 100% !important;
+    min-width: 0 !important;
   }
 </style>
 
@@ -955,7 +959,7 @@
 
 <!-- ✅ Modal (Bootstrap) -->
 <div class="modal fade" id="igModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <div class="d-flex align-items-center gap-2">
@@ -966,14 +970,8 @@
       </div>
 
       <div class="modal-body p-0">
-        <!-- Aquí inyectamos el iframe -->
-        <div class="ig-modal-frame">
-          <iframe id="igModalFrame"
-                  src=""
-                  allowfullscreen
-                  loading="lazy"
-                  referrerpolicy="no-referrer"></iframe>
-        </div>
+        <!-- Aquí se inyecta el blockquote dinámicamente -->
+        <div id="igModalEmbed" class="ig-modal-embed"></div>
       </div>
 
       <div class="modal-footer">
@@ -2061,6 +2059,48 @@
       }
     })();
   </script>
+
+  <script>
+  (function(){
+    const modalEl = document.getElementById('igModal');
+    const embedEl = document.getElementById('igModalEmbed');
+    const openBtn = document.getElementById('igOpenInsta');
+
+    function renderEmbed(url){
+      // limpia
+      embedEl.innerHTML = "";
+
+      // inyecta embed oficial (este sí es permitido)
+      embedEl.innerHTML = `
+        <blockquote class="instagram-media"
+          data-instgrm-permalink="${url}"
+          data-instgrm-version="14"></blockquote>
+      `;
+
+      // procesa embed
+      if (window.instgrm && window.instgrm.Embeds) {
+        window.instgrm.Embeds.process();
+      } else {
+        // por si el script aún no terminó de cargar
+        setTimeout(() => window.instgrm?.Embeds?.process(), 350);
+      }
+    }
+
+    modalEl.addEventListener('show.bs.modal', function(e){
+      const trigger = e.relatedTarget;
+      const reelUrl = trigger?.getAttribute('data-ig-url') || "https://www.instagram.com/reel/DVAKWJIAANR/";
+      openBtn.href = reelUrl;
+      renderEmbed(reelUrl);
+    });
+
+    modalEl.addEventListener('hidden.bs.modal', function(){
+      embedEl.innerHTML = "";
+    });
+  })();
+</script>
+
+<!-- Script oficial (SOLO 1 VEZ en toda la página) -->
+<script async src="https://www.instagram.com/embed.js"></script>
 
 </body>
 </html>
