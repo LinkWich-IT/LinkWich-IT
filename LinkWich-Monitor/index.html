@@ -191,109 +191,131 @@
   </style>
 
   <!-- ✅ NUEVO: Estilos SOLO para Instagram (evita full-screen feo) -->
-  <style>
-    /* ==========================================
-       INSTAGRAM REEL (RESPONSIVE + CARD)
-       ========================================== */
-    #instagram-reel{
-      padding: 60px 0;
-      background: #f8fafc;
-    }
-    [data-bs-theme="dark"] #instagram-reel{
-      background: rgba(255,255,255,.03);
-    }
+ <style>
+  /* ==========================================
+     INSTAGRAM REEL (RESPONSIVE + CARD)
+     - Fuerza layout móvil del embed (evita 2 columnas)
+     - Centra y mantiene proporción bonita tipo "celular"
+     ========================================== */
 
-    #instagram-reel .ig-wrap{
-      max-width: 520px;
-      margin: 0 auto;
-    }
+  #instagram-reel{
+    padding: 60px 0;
+    background: #f8fafc;
+  }
+  [data-bs-theme="dark"] #instagram-reel{
+    background: rgba(255,255,255,.03);
+  }
 
-    #instagram-reel .ig-card{
-      border-radius: 18px;
-      overflow: hidden;
-      background: #fff;
-      box-shadow: 0 14px 40px rgba(0,0,0,.12);
-      border: 1px solid rgba(0,0,0,.06);
-    }
-    [data-bs-theme="dark"] #instagram-reel .ig-card{
-      background: rgba(255,255,255,.04);
-      border-color: rgba(255,255,255,.10);
-      box-shadow: 0 14px 40px rgba(0,0,0,.35);
-    }
+  /* 🔥 CLAVE: limitar ancho para que Instagram NO use layout desktop (2 columnas) */
+  #instagram-reel .ig-wrap{
+    max-width: 390px;     /* recomendado: 360–420 */
+    margin: 0 auto;
+  }
 
-    #instagram-reel .ig-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      padding: 14px 16px;
-      background: linear-gradient(135deg, rgba(13,110,253,.12), rgba(13,110,253,.03));
-      border-bottom: 1px solid rgba(13,110,253,.12);
-    }
-    [data-bs-theme="dark"] #instagram-reel .ig-head{
-      background: linear-gradient(135deg, rgba(13,110,253,.18), rgba(255,255,255,.03));
-      border-bottom-color: rgba(255,255,255,.10);
-    }
+  #instagram-reel .ig-card{
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 14px 40px rgba(0,0,0,.12);
+    border: 1px solid rgba(0,0,0,.06);
+  }
+  [data-bs-theme="dark"] #instagram-reel .ig-card{
+    background: rgba(255,255,255,.04);
+    border-color: rgba(255,255,255,.10);
+    box-shadow: 0 14px 40px rgba(0,0,0,.35);
+  }
 
-    #instagram-reel .ig-title{
-      margin: 0;
-      font-weight: 800;
-      letter-spacing: .2px;
-      font-size: 1rem;
-    }
+  #instagram-reel .ig-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(13,110,253,.12), rgba(13,110,253,.03));
+    border-bottom: 1px solid rgba(13,110,253,.12);
+  }
+  [data-bs-theme="dark"] #instagram-reel .ig-head{
+    background: linear-gradient(135deg, rgba(13,110,253,.18), rgba(255,255,255,.03));
+    border-bottom-color: rgba(255,255,255,.10);
+  }
 
-    #instagram-reel .ig-sub{
-      margin: 2px 0 0;
-      font-size: .82rem;
-      opacity: .75;
-    }
+  #instagram-reel .ig-title{
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: .2px;
+    font-size: 1rem;
+  }
 
-    #instagram-reel .ig-btn{
-      display:inline-flex;
-      align-items:center;
-      gap:.5rem;
-      padding: 8px 12px;
-      border-radius: 999px;
-      text-decoration:none;
-      font-weight: 700;
-      font-size: .88rem;
-      border: 1px solid rgba(13,110,253,.25);
-      background: rgba(13,110,253,.08);
-      color: #0b5ed7;
-      white-space: nowrap;
-    }
-    #instagram-reel .ig-btn:hover{
-      background: rgba(13,110,253,.12);
-      border-color: rgba(13,110,253,.35);
-    }
-    [data-bs-theme="dark"] #instagram-reel .ig-btn{
-      color: #cfe2ff;
-      background: rgba(13,110,253,.15);
-      border-color: rgba(13,110,253,.35);
-    }
+  #instagram-reel .ig-sub{
+    margin: 2px 0 0;
+    font-size: .82rem;
+    opacity: .75;
+  }
 
-    /* IMPORTANTÍSIMO: forzar embed a respetar el contenedor */
-    #instagram-reel blockquote.instagram-media{
-      margin: 0 !important;
-      max-width: 100% !important;
-      width: 100% !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-      background: transparent !important;
-    }
+  #instagram-reel .ig-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    padding: 8px 12px;
+    border-radius: 999px;
+    text-decoration:none;
+    font-weight: 700;
+    font-size: .88rem;
+    border: 1px solid rgba(13,110,253,.25);
+    background: rgba(13,110,253,.08);
+    color: #0b5ed7;
+    white-space: nowrap;
+  }
+  #instagram-reel .ig-btn:hover{
+    background: rgba(13,110,253,.12);
+    border-color: rgba(13,110,253,.35);
+  }
+  [data-bs-theme="dark"] #instagram-reel .ig-btn{
+    color: #cfe2ff;
+    background: rgba(13,110,253,.15);
+    border-color: rgba(13,110,253,.35);
+  }
 
-    /* El iframe que mete Instagram */
-    #instagram-reel .instagram-media iframe,
-    #instagram-reel .instagram-media-rendered iframe{
-      width: 100% !important;
-      min-width: 0 !important;
-    }
+  /* ✅ Nuevo: contenedor para centrar embed */
+  #instagram-reel .ig-embed{
+    display:flex;
+    justify-content:center;
+  }
 
-    /* En pantallas MUY grandes, evita que crezca demasiado */
-    @media (min-width: 1200px){
-      #instagram-reel .ig-wrap{ max-width: 560px; }
-    }
-  </style>
+  /* ✅ IMPORTANTE: forzar al blockquote a respetar ancho real (evita columna blanca) */
+  #instagram-reel .ig-embed blockquote.instagram-media{
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 390px !important;   /* debe igualar ig-wrap */
+    min-width: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  /* ✅ Bloquea cualquier “ancho fijo” que meta Instagram internamente */
+  #instagram-reel .instagram-media,
+  #instagram-reel .instagram-media-rendered{
+    width: 100% !important;
+    max-width: 390px !important;
+  }
+
+  /* ✅ El iframe que mete Instagram */
+  #instagram-reel .instagram-media iframe,
+  #instagram-reel .instagram-media-rendered iframe{
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* ✅ En móvil, ocupa 100% del ancho disponible sin romper el “modo móvil” */
+  @media (max-width: 420px){
+    #instagram-reel .ig-wrap{ max-width: 100%; padding: 0 14px; }
+    #instagram-reel .ig-embed blockquote.instagram-media{ max-width: 100% !important; }
+    #instagram-reel .instagram-media,
+    #instagram-reel .instagram-media-rendered{ max-width: 100% !important; }
+  }
+</style>
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
@@ -861,10 +883,12 @@
             </div>
 
             <!-- Embed -->
-            <blockquote class="instagram-media"
-              data-instgrm-permalink="https://www.instagram.com/reel/DVAKWJIAANR/"
-              data-instgrm-version="14">
-            </blockquote>
+       <div class="ig-embed">
+  <blockquote class="instagram-media"
+    data-instgrm-permalink="https://www.instagram.com/reel/DVAKWJIAANR/"
+    data-instgrm-version="14">
+  </blockquote>
+</div>
 
           </div>
         </div>
