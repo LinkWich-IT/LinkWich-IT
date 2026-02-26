@@ -162,6 +162,41 @@
 </style>
 
 
+  <style>
+/* ===== Espacio para que NO se amontone (solo en featured) ===== */
+#pricing .pricing-item.featured{
+  padding-top: 18px;              /* empuja todo un poco hacia abajo */
+}
+
+/* Reserva espacio superior real para badge + ribbon */
+#pricing .pricing-item.featured::before{
+  content:"";
+  display:block;
+  height: 46px;                   /* zona superior libre */
+}
+
+/* Badge "Más popular" en su zona */
+#pricing .pricing-item.featured .popular{
+  top: 14px;
+  left: 14px;
+  z-index: 5;
+}
+
+/* Baja el título un poquito para que respire */
+#pricing .pricing-item.featured h3{
+  margin-top: 6px;
+}
+
+/* Ribbon: un poco más arriba y sin invadir tanto */
+#pricing .pricing-item.featured .deal-ribbon{
+  top: 6px;
+  right: -62px;                   /* un pelín más afuera */
+  padding: 7px 72px;
+  font-size: .80rem;
+}
+</style>
+
+
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
