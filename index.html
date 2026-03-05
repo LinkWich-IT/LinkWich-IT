@@ -48,98 +48,6 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
-<style>
-/* ===== Fix: evitar choques con el template ===== */
-  /* ===========================
-   LinkWich-Monitor Intro Card (Dark Friendly)
-   =========================== */
-.lw-cta, .lw-cta *{
-  box-sizing: border-box;
-}
-
-/* Contenedor más pro y no tan enorme */
-.lw-cta{
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 18px;
-  border-radius: 18px;
-
-  /* En lugar de forzar blanco, usa colores “neutros” del template */
-  color: rgba(255,255,255,.92);
-  border: 1px solid rgba(255,255,255,.10);
-  background: radial-gradient(1200px 500px at 20% 0%,
-              rgba(59,130,246,.18), transparent 55%),
-              linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
-}
-
-/* Header */
-.lw-head{ gap: 12px; }
-.lw-title{
-  font-size: 1.25rem;
-  line-height: 1.15;
-}
-.lw-subtitle{
-  margin-top: 6px;
-  line-height: 1.35;
-  max-width: 720px;
-}
-
-/* Chips compactas */
-.lw-pill{
-  padding: .42rem .65rem;
-  font-size: .82rem;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.06);
-}
-
-/* Beneficios: menos “bloque” */
-.lw-benefit{
-  padding: 12px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(2,6,23,.28);
-}
-.lw-benefit p{ line-height: 1.35; }
-
-/* Features: más compactos */
-.lw-feature{
-  padding: 10px 12px;
-  border: 1px solid rgba(255,255,255,.07);
-  background: rgba(255,255,255,.02);
-}
-
-/* Strip */
-.lw-strip{
-  border: 1px dashed rgba(255,255,255,.18);
-  background: rgba(255,255,255,.02);
-}
-
-/* Footer note */
-.lw-footnote{
-  line-height: 1.35;
-}
-
-/* ===== Mobile: aquí está lo importante ===== */
-@media (max-width: 767px){
-  .lw-cta{ padding: 14px; }
-
-  /* Header en columna, alineado a la izquierda */
-  .lw-head{ flex-direction: column; align-items: flex-start; }
-  .lw-chips{ justify-content: flex-start; }
-
-  .lw-logo{ width:52px; height:52px; border-radius: 14px; padding: 8px; }
-  .lw-title{ font-size: 1.12rem; }
-  .lw-subtitle{ font-size: .93rem; }
-
-  /* Botones full width bonitos */
-  .lw-actions{
-    width: 100%;
-  }
-  .lw-actions .btn{
-    width: 100%;
-    justify-content: center;
-  }
-}
-</style>
 
 
 
@@ -1136,171 +1044,81 @@
 
 
 </br>
-<div class="lw-cta" data-aos="fade-up" data-aos-delay="300">
 
-  <!-- HEADER -->
-  <div class="lw-head">
-    <div class="lw-brand">
-      <div class="lw-logo">
-        <img src="./assets/img/misc/LOGO-SIN-CIRCULO.png" alt="LinkWich-Monitor">
+<div class="row mt-4">
+  <div class="col-lg-8 offset-lg-2">
+    <div class="join-team-cta" data-aos="fade-up" data-aos-delay="300">
+      <div class="cta-icon">
+        <img src="./assets/img/misc/LOGO-SIN-CIRCULO.png" alt="LinkWich-Monitor" style="width:60px; height:auto;">
       </div>
 
-      <div>
-        <h4 class="lw-title">LinkWich-Monitor</h4>
-        <p class="lw-subtitle">
-          Plataforma de monitoreo proactivo para <strong>detectar fallas a tiempo</strong>, reducir caídas y
-          acelerar la respuesta del equipo de TI.
+      <div class="cta-content">
+        <h4>Monitorea, Automatiza y Protege tu Red con LinkWich-Monitor</h4>
+        <p>
+          LinkWich-Monitor es la plataforma integral para la gestión de tu infraestructura TI. 
+          Diseñada para empresas que necesitan <strong>control total</strong>, ofrece:
         </p>
-      </div>
-    </div>
+        <ul class="list-unstyled">
+          <li><i class="bi bi-wifi me-2 text-primary"></i> <strong>Monitoreo en tiempo real</strong> de dispositivos y servicios.</li>
+          <li><i class="bi bi-bell-fill me-2 text-danger"></i> <strong>Alertas inteligentes</strong> vía correo y WhatsApp.</li>
+          <li><i class="bi bi-cpu-fill me-2 text-success"></i> <strong>Automatización en red</strong> con tareas programadas.</li>
+          <li><i class="bi bi-hdd-network-fill me-2 text-info"></i> <strong>Respaldos automáticos</strong> de configuración de switches y routers.</li>
+          <li><i class="bi bi-diagram-3-fill me-2 text-warning"></i> <strong>Descubrimiento automático de mapas LLDP</strong> de tu red.</li>
+          <li><i class="bi bi-graph-up-arrow me-2 text-primary"></i> <strong>Métricas y reportes</strong> de disponibilidad y rendimiento.</li>
+        </ul>
+        <p>
+          Con LinkWich-Monitor, tendrás visibilidad completa, mayor seguridad y eficiencia en la gestión de tu red.
+        </p>
 
-    <!-- CHIPS (sin “Continuidad operativa”) -->
-    <div class="lw-chips">
-      <span class="lw-pill"><i class="bi bi-lightning-charge-fill"></i> Alertas en tiempo real</span>
-      <span class="lw-pill"><i class="bi bi-graph-up-arrow"></i> Visibilidad ejecutiva</span>
-      <span class="lw-pill"><i class="bi bi-shield-check"></i> Control & seguridad</span>
-    </div>
-  </div>
+        <!-- Nueva sección de requerimientos -->
+        <div class="mt-4 p-3 border rounded ">
+          <h5 class="mb-3"><i class="bi bi-gear-fill text-primary me-2"></i> Requerimientos para instalación On-Premise</h5>
 
-  <!-- 3 BENEFICIOS (COMERCIALES) -->
-  <div class="row g-3 mt-3">
-    <div class="col-lg-4">
-      <div class="lw-benefit">
-        <div class="ico"><i class="bi bi-alarm-fill"></i></div>
-        <div>
-          <h6>Evita interrupciones</h6>
-          <p>Detecta incidentes antes de que afecten operación, huéspedes, usuarios o áreas críticas.</p>
-        </div>
-      </div>
-    </div>
+          <div class="table-responsive">
+            <table class="table table-hover  align-middle table-responsive">
+              <tbody>
+                <tr>
+                  <td width="40"><i class="bi bi-windows text-primary fs-4"></i></td>
+                  <td><strong>Sistemas operativos compatibles:</strong><br>Windows 10, 11 Pro y Windows Server 2016 – 2022.</td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-memory text-success fs-4"></i></td>
+                  <td><strong>Memoria RAM mínima:</strong> 8 GB<br><strong>Recomendada:</strong> 16 a 32 GB (según paquete de nodos).</td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-gpu-card text-info fs-4"></i></td>
+                  <td><strong>Procesamiento IA (opcional):</strong> Tarjeta de video Nvidia Quadro o equivalente con al menos 1 GB de VRAM.</td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-hdd text-warning fs-4"></i></td>
+                  <td><strong>Espacio en disco:</strong> 50 GB mínimo (100 GB recomendado) para históricos y respaldos.</td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-diagram-3 fs-4 text-secondary"></i></td>
+                  <td><strong>Capacidad de monitoreo:</strong> desde 30 nodos (básico) hasta más de 150 (corporativo).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-    <div class="col-lg-4">
-      <div class="lw-benefit">
-        <div class="ico"><i class="bi bi-stopwatch-fill"></i></div>
-        <div>
-          <h6>Respuesta más rápida</h6>
-          <p>Alertas claras y trazables para reducir tiempos de diagnóstico y resolución.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-4">
-      <div class="lw-benefit">
-        <div class="ico"><i class="bi bi-cash-coin"></i></div>
-        <div>
-          <h6>Reduce costos</h6>
-          <p>Menos incidencias repetitivas, menos visitas correctivas, más control del día a día.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- QUÉ INCLUYE -->
-  <div class="mt-4">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-      <h6 class="lw-section-title"><i class="bi bi-grid-1x2-fill me-2"></i>¿Qué hace LinkWich-Monitor?</h6>
-      <small class="text-white-50">*Módulos según paquete/licenciamiento</small>
-    </div>
-
-    <div class="row g-2">
-      <div class="col-md-6">
-        <div class="lw-feature">
-          <i class="bi bi-broadcast-pin"></i>
-          <div>
-            <div class="t">Monitoreo 24/7</div>
-            <div class="d">Estado de red, equipos y servicios desde un panel central.</div>
+          <div class="alert alert-info d-flex align-items-center mt-3" role="alert">
+            <i class="bi bi-cloud-arrow-down-fill me-2 fs-5"></i>
+            <div>
+              ¿No cuentas con infraestructura local? <strong>Solicita tu servidor dedicado con nosotros</strong> y te entregamos la solución completamente implementada.
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="col-md-6">
-        <div class="lw-feature">
-          <i class="bi bi-bell-fill"></i>
-          <div>
-            <div class="t">Alertas por WhatsApp & correo</div>
-            <div class="d">Notificaciones inmediatas para actuar antes de que escale el problema.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="lw-feature">
-          <i class="bi bi-hdd-network-fill"></i>
-          <div>
-            <div class="t">Respaldos automáticos</div>
-            <div class="d">Backups programados de configuración (según compatibilidad de marca).</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="lw-feature">
-          <i class="bi bi-diagram-3-fill"></i>
-          <div>
-            <div class="t">Mapa de red (topología)</div>
-            <div class="d">Visualiza conexiones y ubica fallas más rápido.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="lw-feature">
-          <i class="bi bi-cpu-fill"></i>
-          <div>
-            <div class="t">Automatización operativa</div>
-            <div class="d">Tareas programadas para agilizar operación y control.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="lw-feature">
-          <i class="bi bi-bar-chart-fill"></i>
-          <div>
-            <div class="t">Reportes & métricas</div>
-            <div class="d">Disponibilidad, rendimiento y evidencia para decisiones.</div>
-          </div>
+        <div class="cta-actions mt-4">
+          <a href="https://linkwich-it.github.io/LinkWich-IT/LinkWich-Monitor/index.html" target="_blank" class="btn btn-primary bi bi-rocket-takeoff">
+            Conoce LinkWich-Monitor
+          </a>
+         
+          <a href="https://linkwich-it.github.io/LinkWich-Tutorial" target="_blank"  class="btn btn-outline bi bi-journal-code"> Ver Tutorial Completo</a>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- IDEAL PARA -->
-  <div class="mt-4 lw-strip">
-    <div class="d-flex align-items-start gap-3">
-      <div class="ico"><i class="bi bi-buildings-fill"></i></div>
-      <div>
-        <div class="k">Ideal para</div>
-        <div class="v">Hoteles y resorts • Aeropuertos • Corporativos • Hospitales • Desarrollos residenciales</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="lw-actions mt-4 d-flex flex-wrap gap-2">
-    <a href="https://linkwich-it.github.io/LinkWich-IT/LinkWich-Monitor/index.html"
-       target="_blank"
-       class="btn btn-primary">
-      <i class="bi bi-arrow-up-right-circle me-1"></i> Ver más información
-    </a>
-
-    <button type="button"
-            class="btn btn-outline-info"
-            data-bs-toggle="modal"
-            data-bs-target="#lwReqModal">
-      <i class="bi bi-pc-display-horizontal me-1"></i> Requerimientos
-    </button>
-
-    <a href="#contact" class="btn btn-outline-light">
-      <i class="bi bi-chat-dots me-1"></i> Solicitar propuesta
-    </a>
-  </div>
-
-  <p class="lw-footnote mt-3 mb-0">
-    <i class="bi bi-info-circle me-1"></i>
-    ¿No cuentas con servidor? Podemos incluir <strong>servidor dedicado</strong> y entregarte la solución lista para operar.
-  </p>
-
 </div>
 
   </div>
@@ -1438,78 +1256,6 @@
     </div>
   </div>
 </section><!-- /Contact Section -->
-
-
-
-    <!-- Requerimientos On-Premise Modal (LinkWich-Monitor) -->
-<div class="modal fade lw-modal" id="lwReqModal" tabindex="-1" aria-labelledby="lwReqModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="lwReqModalLabel">
-          <i class="bi bi-pc-display-horizontal me-2"></i> Requerimientos mínimos (On-Premise)
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body">
-        <div class="lw-req">
-          <div class="lw-req-row">
-            <i class="bi bi-windows"></i>
-            <div>
-              <strong>Sistema operativo</strong>
-              <div class="small">Windows 10/11 Pro • Windows Server 2016–2022</div>
-            </div>
-          </div>
-
-          <div class="lw-req-row">
-            <i class="bi bi-memory"></i>
-            <div>
-              <strong>Memoria RAM</strong>
-              <div class="small">Mínimo 8 GB • Recomendado 16–32 GB (según nodos y módulos)</div>
-            </div>
-          </div>
-
-          <div class="lw-req-row">
-            <i class="bi bi-hdd"></i>
-            <div>
-              <strong>Almacenamiento</strong>
-              <div class="small">Mínimo 50 GB • Recomendado 100 GB (históricos + respaldos)</div>
-            </div>
-          </div>
-
-          <div class="lw-req-row">
-            <i class="bi bi-diagram-3"></i>
-            <div>
-              <strong>Capacidad de monitoreo</strong>
-              <div class="small">Escalable por paquetes de nodos (según licenciamiento)</div>
-            </div>
-          </div>
-
-          <div class="lw-req-row">
-            <i class="bi bi-gpu-card"></i>
-            <div>
-              <strong>IA (opcional)</strong>
-              <div class="small">Nvidia Quadro o equivalente (VRAM 1 GB+), solo si se habilitan módulos IA</div>
-            </div>
-          </div>
-
-          <div class="alert alert-info mb-0 mt-2">
-            <i class="bi bi-cloud-arrow-down-fill me-2"></i>
-            ¿No cuentas con infraestructura local? Solicita tu <strong>servidor dedicado</strong> y te entregamos la solución implementada.
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <a href="#contact" class="btn btn-primary">
-          <i class="bi bi-chat-dots-fill me-1"></i> Solicitar propuesta
-        </a>
-        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Scroll Top -->
 <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
