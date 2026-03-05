@@ -1526,6 +1526,380 @@
             </div>
           </div>
 
+          <!-- =========================
+     LINKWICH - COTIZADOR (HTML+JS)
+     Pega esto donde quieras (incluye estilos)
+========================= -->
+<section class="lwq-wrap">
+  <div class="lwq-card">
+    <div class="lwq-head">
+      <div>
+        <h3 class="lwq-title">Cotizador rápido — LinkWich-Monitor</h3>
+        <p class="lwq-sub">Calcula mensualidad, anualidad, descuento, IVA y ahorro en segundos.</p>
+      </div>
+      <span class="lwq-badge">Marzo–Abril</span>
+    </div>
+
+    <div class="lwq-grid">
+      <!-- CONFIG -->
+      <div class="lwq-panel">
+        <h5 class="lwq-h5">Configuración</h5>
+
+        <label class="lwq-label">Paquete</label>
+        <select id="lwq_package" class="lwq-input">
+          <option value="custom">Personalizado (yo elijo nodos)</option>
+          <option value="basico">Básico (30 nodos)</option>
+          <option value="estandar">Estándar (50 nodos)</option>
+          <option value="empresarial">Empresarial (100 nodos)</option>
+          <option value="corporativo">Corporativo (150 nodos)</option>
+        </select>
+
+        <div class="lwq-row">
+          <div>
+            <label class="lwq-label">Nodos</label>
+            <input id="lwq_nodes" type="number" min="1" step="1" class="lwq-input" value="100">
+            <small class="lwq-help">Si eliges paquete, se ajusta solo.</small>
+          </div>
+
+          <div>
+            <label class="lwq-label">Meses</label>
+            <select id="lwq_months" class="lwq-input">
+              <option value="6">6 meses</option>
+              <option value="12" selected>12 meses</option>
+              <option value="24">24 meses</option>
+              <option value="36">36 meses</option>
+            </select>
+            <small class="lwq-help">Licencia mínima según paquete.</small>
+          </div>
+        </div>
+
+        <div class="lwq-row">
+          <div>
+            <label class="lwq-label">Precio base por nodo (sin promo)</label>
+            <input id="lwq_base_price" type="number" min="0" step="1" class="lwq-input" value="200">
+            <small class="lwq-help">Para calcular “Ahorro vs precio base”.</small>
+          </div>
+
+          <div>
+            <label class="lwq-label">Precio promo por nodo</label>
+            <input id="lwq_promo_price" type="number" min="0" step="1" class="lwq-input" value="160">
+            <small class="lwq-help">Se llena solo con el paquete.</small>
+          </div>
+        </div>
+
+        <div class="lwq-row">
+          <div>
+            <label class="lwq-label">Descuento extra (%)</label>
+            <input id="lwq_extra_discount" type="number" min="0" max="100" step="0.01" class="lwq-input" value="0">
+            <small class="lwq-help">Opcional (además del precio promo).</small>
+          </div>
+
+          <div>
+            <label class="lwq-label">IVA</label>
+            <div class="lwq-toggle">
+              <label class="lwq-check">
+                <input id="lwq_include_iva" type="checkbox" checked>
+                <span>Incluir IVA (16%)</span>
+              </label>
+              <small class="lwq-help">Puedes desactivarlo para ver sin IVA.</small>
+            </div>
+          </div>
+        </div>
+
+        <button id="lwq_copy" class="lwq-btn">
+          <span>Copiar resumen para WhatsApp/Correo</span>
+        </button>
+        <div id="lwq_toast" class="lwq-toast" aria-live="polite"></div>
+      </div>
+
+      <!-- RESULTADOS -->
+      <div class="lwq-panel">
+        <h5 class="lwq-h5">Resultado</h5>
+
+        <div class="lwq-kpis">
+          <div class="lwq-kpi">
+            <div class="lwq-k">Mensual</div>
+            <div class="lwq-v" id="kpi_monthly">$0</div>
+          </div>
+          <div class="lwq-kpi">
+            <div class="lwq-k">Anual</div>
+            <div class="lwq-v" id="kpi_yearly">$0</div>
+          </div>
+          <div class="lwq-kpi">
+            <div class="lwq-k">Total (meses)</div>
+            <div class="lwq-v" id="kpi_total">$0</div>
+          </div>
+        </div>
+
+        <div class="lwq-divider"></div>
+
+        <div class="lwq-list">
+          <div class="lwq-item">
+            <span>Precio final por nodo</span>
+            <strong id="out_final_node">$0</strong>
+          </div>
+          <div class="lwq-item">
+            <span>Descuento total aplicado</span>
+            <strong id="out_discount">0%</strong>
+          </div>
+          <div class="lwq-item">
+            <span>Ahorro anual vs precio base</span>
+            <strong id="out_saving_year">$0</strong>
+          </div>
+          <div class="lwq-item">
+            <span>Ahorro total vs precio base</span>
+            <strong id="out_saving_total">$0</strong>
+          </div>
+          <div class="lwq-item">
+            <span>IVA</span>
+            <strong id="out_iva">$0</strong>
+          </div>
+        </div>
+
+        <div class="lwq-note" id="out_note">
+          *Los módulos pueden variar por paquete/licenciamiento.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ===== Dark friendly minimal ===== */
+  .lwq-wrap{ padding:22px 0; }
+  .lwq-card{
+    border-radius:18px;
+    padding:18px;
+    border:1px solid rgba(255,255,255,.10);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    box-shadow: 0 18px 45px rgba(0,0,0,.20);
+  }
+  .lwq-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  .lwq-title{ margin:0; font-weight:900; color: rgba(255,255,255,.95); letter-spacing:.2px; }
+  .lwq-sub{ margin:6px 0 0 0; color: rgba(255,255,255,.70); }
+  .lwq-badge{
+    padding:.4rem .7rem; border-radius:999px;
+    background: rgba(16,185,129,.12);
+    border: 1px solid rgba(16,185,129,.25);
+    color: rgba(255,255,255,.92);
+    font-weight:700; font-size:.85rem;
+  }
+  .lwq-grid{ display:grid; grid-template-columns: 1.15fr .85fr; gap:14px; margin-top:14px; }
+  .lwq-panel{
+    border-radius:16px;
+    padding:14px;
+    border:1px solid rgba(255,255,255,.08);
+    background: rgba(2,6,23,.25);
+  }
+  .lwq-h5{ margin:0 0 10px 0; color: rgba(255,255,255,.92); font-weight:900; }
+  .lwq-label{ display:block; font-weight:800; color: rgba(255,255,255,.82); margin: 10px 0 6px; }
+  .lwq-input{
+    width:100%;
+    border-radius:12px;
+    padding:.65rem .75rem;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.04);
+    color: rgba(255,255,255,.92);
+    outline:none;
+  }
+  .lwq-input:focus{ border-color: rgba(59,130,246,.55); box-shadow: 0 0 0 3px rgba(59,130,246,.18); }
+  .lwq-row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+  .lwq-help{ display:block; margin-top:6px; color: rgba(255,255,255,.55); }
+  .lwq-toggle{ padding:.55rem .7rem; border-radius:12px; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.03); }
+  .lwq-check{ display:flex; align-items:center; gap:.55rem; color: rgba(255,255,255,.85); margin:0; }
+  .lwq-check input{ width:18px; height:18px; }
+  .lwq-btn{
+    width:100%; margin-top:12px;
+    border:0; border-radius:12px;
+    padding:.72rem .9rem;
+    font-weight:900;
+    background: rgba(59,130,246,.95);
+    color: #fff;
+    cursor:pointer;
+  }
+  .lwq-btn:hover{ filter: brightness(1.05); }
+  .lwq-toast{ margin-top:10px; color: rgba(255,255,255,.75); min-height:18px; }
+  .lwq-kpis{ display:grid; grid-template-columns: 1fr; gap:10px; }
+  .lwq-kpi{
+    border-radius:14px; padding:12px;
+    border:1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.03);
+  }
+  .lwq-k{ color: rgba(255,255,255,.70); font-weight:800; }
+  .lwq-v{ color: rgba(255,255,255,.95); font-weight:950; font-size: 1.35rem; margin-top:3px; }
+  .lwq-divider{ height:1px; background: rgba(255,255,255,.08); margin:12px 0; }
+  .lwq-list{ display:grid; gap:10px; }
+  .lwq-item{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    color: rgba(255,255,255,.78);
+    border:1px solid rgba(255,255,255,.06);
+    background: rgba(255,255,255,.02);
+    border-radius:12px; padding:10px 12px;
+  }
+  .lwq-item strong{ color: rgba(255,255,255,.95); }
+  .lwq-note{ margin-top:10px; color: rgba(255,255,255,.60); font-size:.92rem; }
+  @media (max-width: 991px){
+    .lwq-grid{ grid-template-columns: 1fr; }
+    .lwq-row{ grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+/* =========================
+   CONFIG DE PRECIOS
+   Ajusta aquí tus paquetes
+========================= */
+const PRICING = {
+  basico:      { nodes: 30,  promo: 200, minMonths: 6 },
+  estandar:    { nodes: 50,  promo: 180, minMonths: 6 },
+  empresarial: { nodes: 100, promo: 160, minMonths: 12 },
+  corporativo: { nodes: 150, promo: 140, minMonths: 12 }
+};
+
+const IVA_RATE = 0.16;
+
+// Helpers
+const $ = (id) => document.getElementById(id);
+const money = (n) => {
+  n = Number(n || 0);
+  return n.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 });
+};
+const pct = (n) => (Number(n || 0)).toFixed(2) + "%";
+
+function clampNum(v, min=0, max=1e12){
+  v = Number(v);
+  if (Number.isNaN(v)) v = 0;
+  return Math.min(Math.max(v, min), max);
+}
+
+function recompute(){
+  const pkg = $("lwq_package").value;
+
+  // Inputs
+  let nodes = clampNum($("lwq_nodes").value, 1, 1000000);
+  let months = clampNum($("lwq_months").value, 1, 120);
+  let basePrice = clampNum($("lwq_base_price").value, 0, 1000000);
+  let promoPrice = clampNum($("lwq_promo_price").value, 0, 1000000);
+  let extraDisc = clampNum($("lwq_extra_discount").value, 0, 100);
+  const includeIVA = $("lwq_include_iva").checked;
+
+  // Si eligen paquete, forzamos nodos + promo + mínimos
+  let note = "*Los módulos pueden variar por paquete/licenciamiento.";
+  if (pkg !== "custom" && PRICING[pkg]){
+    nodes = PRICING[pkg].nodes;
+    promoPrice = PRICING[pkg].promo;
+    const minM = PRICING[pkg].minMonths;
+    if (months < minM) months = minM;
+    note = `*Licencia mínima de ${minM} meses para este paquete.`;
+    $("lwq_nodes").value = nodes;
+    $("lwq_promo_price").value = promoPrice;
+    $("lwq_months").value = months;
+  }
+
+  // Precio final por nodo (promo + descuento extra opcional)
+  const finalNode = promoPrice * (1 - (extraDisc / 100));
+
+  // Totales sin IVA
+  const monthly = finalNode * nodes;
+  const total = monthly * months;
+  const yearly = monthly * 12;
+
+  // Comparativo vs base
+  const baseMonthly = basePrice * nodes;
+  const savingMonthly = baseMonthly - monthly;
+  const savingYear = savingMonthly * 12;
+  const savingTotal = savingMonthly * months;
+
+  // Descuento “total” vs base (incluye promo + extra)
+  let totalDiscountPct = 0;
+  if (basePrice > 0){
+    totalDiscountPct = (1 - (finalNode / basePrice)) * 100;
+  }
+
+  // IVA
+  const iva = includeIVA ? (total * IVA_RATE) : 0;
+  const totalWithIVA = total + iva;
+
+  // Render KPIs (si IVA está activo, mostramos totales con IVA en total)
+  $("kpi_monthly").textContent = money(includeIVA ? (monthly * (1+IVA_RATE)) : monthly);
+  $("kpi_yearly").textContent  = money(includeIVA ? (yearly * (1+IVA_RATE))  : yearly);
+  $("kpi_total").textContent   = money(includeIVA ? totalWithIVA : total);
+
+  $("out_final_node").textContent   = money(finalNode) + " / nodo";
+  $("out_discount").textContent     = pct(totalDiscountPct);
+  $("out_saving_year").textContent  = money(savingYear);
+  $("out_saving_total").textContent = money(savingTotal);
+  $("out_iva").textContent          = includeIVA ? money(iva) : money(0);
+  $("out_note").textContent         = note;
+
+  // Guardamos un resumen para copiar
+  window.__LWQ_SUMMARY__ = {
+    pkg, nodes, months, basePrice, promoPrice, extraDisc,
+    finalNode, monthly, yearly, total, iva, totalWithIVA,
+    totalDiscountPct, savingYear, savingTotal,
+    includeIVA
+  };
+}
+
+function buildSummaryText(){
+  const s = window.__LWQ_SUMMARY__;
+  const pkgName = (s.pkg === "custom") ? "Personalizado" : (s.pkg.charAt(0).toUpperCase() + s.pkg.slice(1));
+  const totalShow = s.includeIVA ? s.totalWithIVA : s.total;
+  const monthlyShow = s.includeIVA ? s.monthly * (1+IVA_RATE) : s.monthly;
+
+  return (
+`LinkWich-Monitor — Cotización rápida
+Paquete: ${pkgName}
+Nodos: ${s.nodes}
+Meses: ${s.months}
+
+Precio base: ${money(s.basePrice)} / nodo
+Precio promo: ${money(s.promoPrice)} / nodo
+Descuento total vs base: ${pct(s.totalDiscountPct)}
+Descuento extra: ${pct(s.extraDisc)}
+
+Precio final: ${money(s.finalNode)} / nodo
+Mensual: ${money(monthlyShow)}
+Total (${s.months} meses): ${money(totalShow)}
+Ahorro anual vs base: ${money(s.savingYear)}
+
+*IVA ${s.includeIVA ? "incluido (16%)" : "NO incluido"}`
+  );
+}
+
+function toast(msg){
+  const el = $("lwq_toast");
+  el.textContent = msg;
+  clearTimeout(window.__lwq_to);
+  window.__lwq_to = setTimeout(()=> el.textContent = "", 2200);
+}
+
+// Listeners
+["lwq_package","lwq_nodes","lwq_months","lwq_base_price","lwq_promo_price","lwq_extra_discount","lwq_include_iva"]
+  .forEach(id => $(id).addEventListener("input", recompute));
+
+$("lwq_copy").addEventListener("click", async ()=>{
+  recompute();
+  const text = buildSummaryText();
+  try{
+    await navigator.clipboard.writeText(text);
+    toast("✅ Resumen copiado. Pégalo en WhatsApp o correo.");
+  }catch(e){
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    toast("✅ Resumen copiado (modo compatibilidad).");
+  }
+});
+
+// Init
+recompute();
+</script>
+
         </div>
       </div>
     </section>
