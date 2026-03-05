@@ -47,198 +47,100 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+
 <style>
-/* ===========================
+/* ===== Fix: evitar choques con el template ===== */
+  /* ===========================
    LinkWich-Monitor Intro Card (Dark Friendly)
    =========================== */
+.lw-cta, .lw-cta *{
+  box-sizing: border-box;
+}
+
+/* Contenedor más pro y no tan enorme */
 .lw-cta{
-  border: 1px solid rgba(255,255,255,.08);
-  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
-  border-radius: 18px;
+  max-width: 1100px;
+  margin: 0 auto;
   padding: 18px;
+  border-radius: 18px;
+
+  /* En lugar de forzar blanco, usa colores “neutros” del template */
+  color: rgba(255,255,255,.92);
+  border: 1px solid rgba(255,255,255,.10);
+  background: radial-gradient(1200px 500px at 20% 0%,
+              rgba(59,130,246,.18), transparent 55%),
+              linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
 }
 
-.lw-head{
-  display:flex;
-  gap: 14px;
-  align-items:flex-start;
-  justify-content:space-between;
-  flex-wrap:wrap;
-}
-
-.lw-brand{
-  display:flex;
-  gap: 12px;
-  align-items:center;
-}
-
-.lw-logo{
-  width:64px;
-  height:64px;
-  border-radius: 16px;
-  padding: 10px;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.08);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex: 0 0 auto;
-}
-
-.lw-logo img{
-  width: 100%;
-  height: auto;
-  display:block;
-}
-
+/* Header */
+.lw-head{ gap: 12px; }
 .lw-title{
-  margin: 0;
-  font-weight: 800;
-  color: rgba(255,255,255,.96);
-  letter-spacing: .2px;
-}
-
-.lw-subtitle{
-  margin: 0;
-  color: rgba(255,255,255,.74);
-  max-width: 760px;
-  font-size: .95rem;
-}
-
-.lw-chips{
-  display:flex;
-  gap: 8px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-
-.lw-pill{
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
-  color: rgba(255,255,255,.9);
-  padding: .45rem .7rem;
-  border-radius: 999px;
-  font-size: .85rem;
-  display:inline-flex;
-  align-items:center;
-  gap: .4rem;
-}
-
-/* 3 beneficios */
-.lw-benefit{
-  display:flex;
-  gap: 12px;
-  align-items:flex-start;
-  padding: 12px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.07);
-  background: rgba(2,6,23,.35);
-  height: 100%;
-}
-
-.lw-benefit .ico{
-  width: 42px; height: 42px;
-  border-radius: 14px;
-  display:flex; align-items:center; justify-content:center;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
-  color: rgba(255,255,255,.92);
-  flex: 0 0 auto;
-  font-size: 18px;
-}
-
-.lw-benefit h6{
-  margin: 0 0 4px 0;
-  font-weight: 800;
-  color: rgba(255,255,255,.95);
-}
-
-.lw-benefit p{
-  margin: 0;
-  color: rgba(255,255,255,.72);
-  font-size: .92rem;
-}
-
-/* Módulos (qué incluye) */
-.lw-section-title{
-  color: rgba(255,255,255,.92);
-  font-weight: 800;
-  margin: 0;
-}
-
-.lw-feature{
-  display:flex;
-  gap: 10px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.06);
-  background: rgba(255,255,255,.02);
-  height: 100%;
-}
-
-.lw-feature i{
-  font-size: 18px;
-  color: rgba(255,255,255,.9);
-  margin-top: 2px;
-  width: 22px;
-  flex: 0 0 auto;
-}
-
-.lw-feature .t{
-  font-weight: 800;
-  color: rgba(255,255,255,.95);
+  font-size: 1.25rem;
   line-height: 1.15;
 }
-
-.lw-feature .d{
-  color: rgba(255,255,255,.70);
-  font-size: .92rem;
-  margin-top: 2px;
+.lw-subtitle{
+  margin-top: 6px;
+  line-height: 1.35;
+  max-width: 720px;
 }
 
-/* Ideal para */
-.lw-strip{
-  border-radius: 16px;
-  padding: 12px 14px;
-  border: 1px dashed rgba(255,255,255,.16);
+/* Chips compactas */
+.lw-pill{
+  padding: .42rem .65rem;
+  font-size: .82rem;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+}
+
+/* Beneficios: menos “bloque” */
+.lw-benefit{
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(2,6,23,.28);
+}
+.lw-benefit p{ line-height: 1.35; }
+
+/* Features: más compactos */
+.lw-feature{
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.07);
   background: rgba(255,255,255,.02);
 }
 
-.lw-strip .ico{
-  width: 42px; height: 42px;
-  border-radius: 14px;
-  display:flex; align-items:center; justify-content:center;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.08);
-  color: rgba(255,255,255,.9);
+/* Strip */
+.lw-strip{
+  border: 1px dashed rgba(255,255,255,.18);
+  background: rgba(255,255,255,.02);
 }
 
-.lw-strip .k{
-  font-weight: 900;
-  color: rgba(255,255,255,.95);
-}
-.lw-strip .v{
-  color: rgba(255,255,255,.75);
-}
-
-/* Footer */
+/* Footer note */
 .lw-footnote{
-  color: rgba(255,255,255,.66);
-  font-size: .92rem;
+  line-height: 1.35;
 }
 
-/* Botones en dark */
-.lw-actions .btn{
-  border-radius: 12px;
-  padding: .55rem .85rem;
-}
+/* ===== Mobile: aquí está lo importante ===== */
+@media (max-width: 767px){
+  .lw-cta{ padding: 14px; }
 
-/* Responsive micro-ajustes */
-@media (max-width: 575px){
-  .lw-logo{ width:56px; height:56px; border-radius:14px; }
-  .lw-title{ font-size: 1.1rem; }
+  /* Header en columna, alineado a la izquierda */
+  .lw-head{ flex-direction: column; align-items: flex-start; }
+  .lw-chips{ justify-content: flex-start; }
+
+  .lw-logo{ width:52px; height:52px; border-radius: 14px; padding: 8px; }
+  .lw-title{ font-size: 1.12rem; }
+  .lw-subtitle{ font-size: .93rem; }
+
+  /* Botones full width bonitos */
+  .lw-actions{
+    width: 100%;
+  }
+  .lw-actions .btn{
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>
+
 
 
   <script type="application/ld+json">
@@ -1234,7 +1136,7 @@
 
 
 </br>
-<div class="join-team-cta lw-cta" data-aos="fade-up" data-aos-delay="300">
+<div class="lw-cta" data-aos="fade-up" data-aos-delay="300">
 
   <!-- HEADER -->
   <div class="lw-head">
