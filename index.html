@@ -47,74 +47,133 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-
-
-  <style>
-    /* ===========================
-   LinkWich-Monitor CTA (Dark Friendly)
+<style>
+/* ===========================
+   LinkWich-Monitor Intro Card (Dark Friendly)
    =========================== */
 .lw-cta{
-  border: 1px solid rgba(255,255,255,.06);
-  background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+  border-radius: 18px;
   padding: 18px;
 }
 
+.lw-head{
+  display:flex;
+  gap: 14px;
+  align-items:flex-start;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+
+.lw-brand{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+}
+
+.lw-logo{
+  width:64px;
+  height:64px;
+  border-radius: 16px;
+  padding: 10px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex: 0 0 auto;
+}
+
+.lw-logo img{
+  width: 100%;
+  height: auto;
+  display:block;
+}
+
+.lw-title{
+  margin: 0;
+  font-weight: 800;
+  color: rgba(255,255,255,.96);
+  letter-spacing: .2px;
+}
+
 .lw-subtitle{
-  color: rgba(255,255,255,.75);
-  max-width: 780px;
+  margin: 0;
+  color: rgba(255,255,255,.74);
+  max-width: 760px;
+  font-size: .95rem;
+}
+
+.lw-chips{
+  display:flex;
+  gap: 8px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
 }
 
 .lw-pill{
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.08);
   color: rgba(255,255,255,.9);
+  padding: .45rem .7rem;
+  border-radius: 999px;
+  font-size: .85rem;
+  display:inline-flex;
+  align-items:center;
+  gap: .4rem;
 }
 
-.lw-card{
+/* 3 beneficios */
+.lw-benefit{
   display:flex;
   gap: 12px;
   align-items:flex-start;
   padding: 12px 12px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.07);
   background: rgba(2,6,23,.35);
+  height: 100%;
 }
 
-.lw-card-icon{
-  width: 40px; height: 40px;
-  border-radius: 12px;
+.lw-benefit .ico{
+  width: 42px; height: 42px;
+  border-radius: 14px;
   display:flex; align-items:center; justify-content:center;
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.08);
-  color: rgba(255,255,255,.9);
+  color: rgba(255,255,255,.92);
   flex: 0 0 auto;
   font-size: 18px;
 }
 
-.lw-card-title{
-  margin: 0 0 2px 0;
-  font-weight: 700;
+.lw-benefit h6{
+  margin: 0 0 4px 0;
+  font-weight: 800;
   color: rgba(255,255,255,.95);
 }
 
-.lw-card-text{
+.lw-benefit p{
+  margin: 0;
   color: rgba(255,255,255,.72);
-  font-size: 0.92rem;
+  font-size: .92rem;
 }
 
+/* Módulos (qué incluye) */
 .lw-section-title{
   color: rgba(255,255,255,.92);
-  font-weight: 700;
+  font-weight: 800;
+  margin: 0;
 }
 
 .lw-feature{
   display:flex;
-  gap: 12px;
+  gap: 10px;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1px solid rgba(255,255,255,.06);
   background: rgba(255,255,255,.02);
+  height: 100%;
 }
 
 .lw-feature i{
@@ -122,87 +181,62 @@
   color: rgba(255,255,255,.9);
   margin-top: 2px;
   width: 22px;
+  flex: 0 0 auto;
 }
 
-.lw-feature-title{
+.lw-feature .t{
+  font-weight: 800;
   color: rgba(255,255,255,.95);
-  font-weight: 700;
   line-height: 1.15;
 }
 
-.lw-feature-text{
+.lw-feature .d{
   color: rgba(255,255,255,.70);
-  font-size: 0.92rem;
+  font-size: .92rem;
+  margin-top: 2px;
 }
 
+/* Ideal para */
 .lw-strip{
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 12px 14px;
-  border: 1px dashed rgba(255,255,255,.14);
+  border: 1px dashed rgba(255,255,255,.16);
   background: rgba(255,255,255,.02);
 }
 
-.lw-strip-icon{
-  width: 40px; height: 40px;
-  border-radius: 12px;
+.lw-strip .ico{
+  width: 42px; height: 42px;
+  border-radius: 14px;
   display:flex; align-items:center; justify-content:center;
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.08);
   color: rgba(255,255,255,.9);
 }
 
-.lw-strip-title{
+.lw-strip .k{
+  font-weight: 900;
   color: rgba(255,255,255,.95);
-  font-weight: 800;
 }
-
-.lw-strip-text{
+.lw-strip .v{
   color: rgba(255,255,255,.75);
 }
 
+/* Footer */
 .lw-footnote{
-  color: rgba(255,255,255,.68);
-  font-size: 0.92rem;
+  color: rgba(255,255,255,.66);
+  font-size: .92rem;
 }
 
-/* Modal dark */
-.lw-modal .modal-content{
-  background: #0b1220;
-  color: rgba(255,255,255,.92);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 16px;
-}
-.lw-modal .modal-header{
-  border-bottom: 1px solid rgba(255,255,255,.08);
-}
-.lw-modal .modal-footer{
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-.lw-req{
+/* Botones en dark */
+.lw-actions .btn{
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.03);
-  padding: 12px;
+  padding: .55rem .85rem;
 }
-.lw-req-row{
-  display:flex;
-  gap: 12px;
-  padding: 10px 10px;
-  border-radius: 12px;
-  background: rgba(255,255,255,.02);
-  border: 1px solid rgba(255,255,255,.06);
-  margin-bottom: 10px;
-}
-.lw-req-row i{
-  font-size: 20px;
-  width: 26px;
-  color: rgba(255,255,255,.9);
-}
-.lw-req-row strong{
-  color: rgba(255,255,255,.95);
-}
-.lw-req-row .small{
-  color: rgba(255,255,255,.72);
+
+/* Responsive micro-ajustes */
+@media (max-width: 575px){
+  .lw-logo{ width:56px; height:56px; border-radius:14px; }
+  .lw-title{ font-size: 1.1rem; }
 }
 </style>
 
@@ -1200,166 +1234,171 @@
 
 
 </br>
-
 <div class="join-team-cta lw-cta" data-aos="fade-up" data-aos-delay="300">
-  <div class="cta-icon">
-    <img src="./assets/img/misc/LOGO-SIN-CIRCULO.png" alt="LinkWich-Monitor" style="width:64px; height:auto;">
-  </div>
 
-  <div class="cta-content">
-    <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+  <!-- HEADER -->
+  <div class="lw-head">
+    <div class="lw-brand">
+      <div class="lw-logo">
+        <img src="./assets/img/misc/LOGO-SIN-CIRCULO.png" alt="LinkWich-Monitor">
+      </div>
+
       <div>
-        <h4 class="mb-1">LinkWich-Monitor</h4>
-        <p class="lw-subtitle mb-0">Monitoreo proactivo para reducir caídas, acelerar la respuesta y proteger tu operación.</p>
-      </div>
-
-      <div class="lw-badges d-flex gap-2 flex-wrap">
-        <span class="badge rounded-pill lw-pill"><i class="bi bi-lightning-charge-fill me-1"></i>Alertas en tiempo real</span>
-        <span class="badge rounded-pill lw-pill"><i class="bi bi-shield-check me-1"></i>Continuidad operativa</span>
-        <span class="badge rounded-pill lw-pill"><i class="bi bi-graph-up-arrow me-1"></i>Visibilidad ejecutiva</span>
+        <h4 class="lw-title">LinkWich-Monitor</h4>
+        <p class="lw-subtitle">
+          Plataforma de monitoreo proactivo para <strong>detectar fallas a tiempo</strong>, reducir caídas y
+          acelerar la respuesta del equipo de TI.
+        </p>
       </div>
     </div>
 
-    <!-- BENEFICIOS (comercial) -->
-    <div class="row g-3 mt-3">
-      <div class="col-lg-4">
-        <div class="lw-card">
-          <div class="lw-card-icon"><i class="bi bi-alarm-fill"></i></div>
-          <div>
-            <h6 class="lw-card-title">Evita interrupciones</h6>
-            <p class="lw-card-text mb-0">Detecta fallas antes de que afecten a huéspedes, usuarios o áreas críticas.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4">
-        <div class="lw-card">
-          <div class="lw-card-icon"><i class="bi bi-stopwatch-fill"></i></div>
-          <div>
-            <h6 class="lw-card-title">Responde más rápido</h6>
-            <p class="lw-card-text mb-0">Alertas claras y accionables para reducir tiempos de diagnóstico y solución.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4">
-        <div class="lw-card">
-          <div class="lw-card-icon"><i class="bi bi-cash-coin"></i></div>
-          <div>
-            <h6 class="lw-card-title">Ahorra costo operativo</h6>
-            <p class="lw-card-text mb-0">Menos incidencias repetitivas, menos visitas correctivas, más control.</p>
-          </div>
-        </div>
-      </div>
+    <!-- CHIPS (sin “Continuidad operativa”) -->
+    <div class="lw-chips">
+      <span class="lw-pill"><i class="bi bi-lightning-charge-fill"></i> Alertas en tiempo real</span>
+      <span class="lw-pill"><i class="bi bi-graph-up-arrow"></i> Visibilidad ejecutiva</span>
+      <span class="lw-pill"><i class="bi bi-shield-check"></i> Control & seguridad</span>
     </div>
-
-    <!-- QUÉ INCLUYE (funcionalidades, sin sonar “técnico pesado”) -->
-    <div class="mt-4">
-      <h6 class="lw-section-title mb-2"><i class="bi bi-grid-1x2-fill me-2"></i>¿Qué incluye la plataforma?</h6>
-
-      <div class="row g-2">
-        <div class="col-md-6">
-          <div class="lw-feature">
-            <i class="bi bi-broadcast-pin"></i>
-            <div>
-              <div class="lw-feature-title">Monitoreo 24/7</div>
-              <div class="lw-feature-text">Dispositivos, servicios y estado general en un solo panel.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="lw-feature">
-            <i class="bi bi-bell-fill"></i>
-            <div>
-              <div class="lw-feature-title">Alertas instantáneas</div>
-              <div class="lw-feature-text">Notificaciones por correo y WhatsApp para actuar a tiempo.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="lw-feature">
-            <i class="bi bi-hdd-network-fill"></i>
-            <div>
-              <div class="lw-feature-title">Respaldos automáticos</div>
-              <div class="lw-feature-text">Backups programados para switches/routers (según marca/compatibilidad).</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="lw-feature">
-            <i class="bi bi-diagram-3-fill"></i>
-            <div>
-              <div class="lw-feature-title">Mapa de red automático</div>
-              <div class="lw-feature-text">Visualización tipo topología para ubicar fallas más rápido.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="lw-feature">
-            <i class="bi bi-cpu-fill"></i>
-            <div>
-              <div class="lw-feature-title">Automatización operativa</div>
-              <div class="lw-feature-text">Tareas programadas para operación y control (según módulos).</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6">
-          <div class="lw-feature">
-            <i class="bi bi-bar-chart-fill"></i>
-            <div>
-              <div class="lw-feature-title">Reportes y métricas</div>
-              <div class="lw-feature-text">Disponibilidad, rendimiento y evidencia para decisiones.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PARA QUIÉN (muy comercial) -->
-    <div class="mt-4 lw-strip">
-      <div class="d-flex align-items-start gap-3">
-        <div class="lw-strip-icon"><i class="bi bi-buildings-fill"></i></div>
-        <div>
-          <div class="lw-strip-title">Ideal para</div>
-          <div class="lw-strip-text">
-            Hoteles y resorts • Aeropuertos • Corporativos • Hospitales • Desarrollos residenciales
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA + Requerimientos en MODAL -->
-    <div class="cta-actions mt-4 d-flex flex-wrap gap-2">
-      <a href="https://linkwich-it.github.io/LinkWich-IT/LinkWich-Monitor/index.html"
-         target="_blank"
-         class="btn btn-primary">
-        <i class="bi bi-rocket-takeoff me-1"></i> Ver Demo
-      </a>
-
-      <a href="https://linkwich-it.github.io/LinkWich-Tutorial"
-         target="_blank"
-         class="btn btn-outline-light">
-        <i class="bi bi-journal-code me-1"></i> Tutorial
-      </a>
-
-      <button type="button"
-              class="btn btn-outline-info"
-              data-bs-toggle="modal"
-              data-bs-target="#lwReqModal">
-        <i class="bi bi-pc-display-horizontal me-1"></i> Requerimientos On-Premise
-      </button>
-    </div>
-
-    <p class="lw-footnote mt-3 mb-0">
-      <i class="bi bi-info-circle me-1"></i>
-      ¿No cuentas con servidor? Podemos incluir <strong>servidor dedicado</strong> y dejar la solución lista para operar.
-    </p>
   </div>
+
+  <!-- 3 BENEFICIOS (COMERCIALES) -->
+  <div class="row g-3 mt-3">
+    <div class="col-lg-4">
+      <div class="lw-benefit">
+        <div class="ico"><i class="bi bi-alarm-fill"></i></div>
+        <div>
+          <h6>Evita interrupciones</h6>
+          <p>Detecta incidentes antes de que afecten operación, huéspedes, usuarios o áreas críticas.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="lw-benefit">
+        <div class="ico"><i class="bi bi-stopwatch-fill"></i></div>
+        <div>
+          <h6>Respuesta más rápida</h6>
+          <p>Alertas claras y trazables para reducir tiempos de diagnóstico y resolución.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="lw-benefit">
+        <div class="ico"><i class="bi bi-cash-coin"></i></div>
+        <div>
+          <h6>Reduce costos</h6>
+          <p>Menos incidencias repetitivas, menos visitas correctivas, más control del día a día.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUÉ INCLUYE -->
+  <div class="mt-4">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+      <h6 class="lw-section-title"><i class="bi bi-grid-1x2-fill me-2"></i>¿Qué hace LinkWich-Monitor?</h6>
+      <small class="text-white-50">*Módulos según paquete/licenciamiento</small>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-md-6">
+        <div class="lw-feature">
+          <i class="bi bi-broadcast-pin"></i>
+          <div>
+            <div class="t">Monitoreo 24/7</div>
+            <div class="d">Estado de red, equipos y servicios desde un panel central.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="lw-feature">
+          <i class="bi bi-bell-fill"></i>
+          <div>
+            <div class="t">Alertas por WhatsApp & correo</div>
+            <div class="d">Notificaciones inmediatas para actuar antes de que escale el problema.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="lw-feature">
+          <i class="bi bi-hdd-network-fill"></i>
+          <div>
+            <div class="t">Respaldos automáticos</div>
+            <div class="d">Backups programados de configuración (según compatibilidad de marca).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="lw-feature">
+          <i class="bi bi-diagram-3-fill"></i>
+          <div>
+            <div class="t">Mapa de red (topología)</div>
+            <div class="d">Visualiza conexiones y ubica fallas más rápido.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="lw-feature">
+          <i class="bi bi-cpu-fill"></i>
+          <div>
+            <div class="t">Automatización operativa</div>
+            <div class="d">Tareas programadas para agilizar operación y control.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="lw-feature">
+          <i class="bi bi-bar-chart-fill"></i>
+          <div>
+            <div class="t">Reportes & métricas</div>
+            <div class="d">Disponibilidad, rendimiento y evidencia para decisiones.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IDEAL PARA -->
+  <div class="mt-4 lw-strip">
+    <div class="d-flex align-items-start gap-3">
+      <div class="ico"><i class="bi bi-buildings-fill"></i></div>
+      <div>
+        <div class="k">Ideal para</div>
+        <div class="v">Hoteles y resorts • Aeropuertos • Corporativos • Hospitales • Desarrollos residenciales</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="lw-actions mt-4 d-flex flex-wrap gap-2">
+    <a href="https://linkwich-it.github.io/LinkWich-IT/LinkWich-Monitor/index.html"
+       target="_blank"
+       class="btn btn-primary">
+      <i class="bi bi-arrow-up-right-circle me-1"></i> Ver más información
+    </a>
+
+    <button type="button"
+            class="btn btn-outline-info"
+            data-bs-toggle="modal"
+            data-bs-target="#lwReqModal">
+      <i class="bi bi-pc-display-horizontal me-1"></i> Requerimientos
+    </button>
+
+    <a href="#contact" class="btn btn-outline-light">
+      <i class="bi bi-chat-dots me-1"></i> Solicitar propuesta
+    </a>
+  </div>
+
+  <p class="lw-footnote mt-3 mb-0">
+    <i class="bi bi-info-circle me-1"></i>
+    ¿No cuentas con servidor? Podemos incluir <strong>servidor dedicado</strong> y entregarte la solución lista para operar.
+  </p>
+
 </div>
 
   </div>
