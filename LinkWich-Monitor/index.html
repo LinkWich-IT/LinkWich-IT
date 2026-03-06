@@ -2508,7 +2508,7 @@
   </div>
 </div>
 
-        <script>
+<script>
 /* ====== CONFIG TUS PRECIOS (Marzo–Abril) ====== */
 const PRICING = {
   basico:      { nodes: 30,  promo: 200, minMonths: 6,  list: 260 },
@@ -2552,6 +2552,7 @@ function recompute(){
 
   const finalNode = promoPrice * (1 - extra/100);
 
+  // Totales SIN IVA
   const monthly = finalNode * nodes;
   const yearly = monthly * 12;
   const total = monthly * months;
@@ -2564,11 +2565,18 @@ function recompute(){
   let totalDiscountPct = 0;
   if(basePrice > 0) totalDiscountPct = (1 - (finalNode/basePrice)) * 100;
 
+  // IVA calculado sobre el total del periodo seleccionado
   const iva = includeIVA ? total * IVA_RATE : 0;
   const totalWithIVA = total + iva;
 
-  $("kpi_monthly").textContent = money(includeIVA ? monthly*(1+IVA_RATE) : monthly);
-  $("kpi_yearly").textContent  = money(includeIVA ? yearly*(1+IVA_RATE) : yearly);
+  // =========================
+  // KPIs
+  // Mensual = con IVA si está activado
+  // Anual   = SIEMPRE sin IVA
+  // Total   = con IVA si está activado
+  // =========================
+  $("kpi_monthly").textContent = money(includeIVA ? monthly * (1 + IVA_RATE) : monthly);
+  $("kpi_yearly").textContent  = money(yearly);
   $("kpi_total").textContent   = money(includeIVA ? totalWithIVA : total);
 
   $("out_final_node").textContent   = money(finalNode) + " / nodo";
@@ -2576,7 +2584,12 @@ function recompute(){
   $("out_saving_year").textContent  = money(savingYear);
   $("out_saving_total").textContent = money(savingTotal);
   $("out_iva").textContent          = money(iva);
-  $("out_note").textContent         = note;
+
+  // Si usas disclaimer dentro de out_note, esto evita borrarlo completo
+  const outNote = $("out_note");
+  if (outNote && outNote.childNodes.length > 0) {
+    outNote.childNodes[0].nodeValue = note + " ";
+  }
 
   // Texto para compartir
   const txt =
@@ -2590,11 +2603,13 @@ Precio promo: ${money(promoPrice)} / nodo
 Descuento extra: ${pct(extra)}
 Precio final: ${money(finalNode)} / nodo
 
-Mensual: ${money(includeIVA ? monthly*(1+IVA_RATE) : monthly)}
+Mensual: ${money(includeIVA ? monthly * (1 + IVA_RATE) : monthly)}
+Anual (sin IVA): ${money(yearly)}
 Total: ${money(includeIVA ? totalWithIVA : total)}
 Ahorro anual vs lista: ${money(savingYear)}
+IVA: ${money(iva)}
 
-*IVA ${includeIVA ? "incluido (16%)" : "NO incluido"}`;
+*IVA ${includeIVA ? "incluido en el total" : "no incluido"}`;
 
   window.__LWQ_TEXT__ = txt;
 
