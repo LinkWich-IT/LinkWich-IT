@@ -290,7 +290,6 @@ async function exportarPDF() {
 
     const primaryBlue = [18, 70, 140];
     const accentBlue = [35, 95, 170];
-    const logoPanelBlue = [29, 92, 170]; // azul para fondo del logo
     const softGray = [245, 247, 250];
     const borderGray = [220, 226, 234];
     const textGray = [95, 105, 120];
@@ -309,18 +308,11 @@ async function exportarPDF() {
     doc.setFillColor(...primaryBlue);
     doc.roundedRect(headerX, headerY, headerW, headerH, 4, 4, "F");
 
-    // Caja del logo
-    const logoBoxX = headerX + 4;
-    const logoBoxY = headerY + 4;
-    const logoBoxW = 34;
-    const logoBoxH = 30;
-
-    // Fondo azul para logo blanco
-    doc.setFillColor(...logoPanelBlue);
-    doc.roundedRect(logoBoxX, logoBoxY, logoBoxW, logoBoxH, 3, 3, "F");
-    doc.setDrawColor(255, 255, 255);
-    doc.setLineWidth(0.35);
-    doc.roundedRect(logoBoxX, logoBoxY, logoBoxW, logoBoxH, 3, 3, "S");
+    // Área del logo integrada al header
+    const logoBoxX = headerX + 6;
+    const logoBoxY = headerY + 5;
+    const logoBoxW = 30;
+    const logoBoxH = 28;
 
     // Caja cotización
     const quoteBoxW = 50;
@@ -331,12 +323,12 @@ async function exportarPDF() {
     doc.setFillColor(255, 255, 255);
     doc.roundedRect(quoteBoxX, quoteBoxY, quoteBoxW, quoteBoxH, 3, 3, "F");
 
-    // Logo ajustado proporcionalmente
+    // Logo directo sobre header azul, sin recuadro blanco
     try {
-      const logo = await loadImageAsDataURL("assets/logo-pdf.png");
+      const logo = await loadImageAsDataURL(`assets/logo-pdf.png?v=${Date.now()}`);
 
-      const maxW = logoBoxW - 5;
-      const maxH = logoBoxH - 5;
+      const maxW = logoBoxW;
+      const maxH = logoBoxH;
 
       const ratio = Math.min(maxW / logo.width, maxH / logo.height);
       const drawW = logo.width * ratio;
@@ -351,13 +343,12 @@ async function exportarPDF() {
     }
 
     // Área central para texto empresa
-    const infoX = logoBoxX + logoBoxW + 6;
+    const infoX = headerX + 44;
     const infoY = headerY + 8;
     const infoW = quoteBoxX - infoX - 6;
 
     doc.setTextColor(255, 255, 255);
 
-    // Nombre empresa con ajuste automático
     let empresaFontSize = 15;
     doc.setFont("helvetica", "bold");
 
@@ -410,7 +401,6 @@ async function exportarPDF() {
     doc.setFillColor(...softGray);
     doc.roundedRect(margin, y, contentWidth, 32, 3, 3, "F");
     doc.setDrawColor(...borderGray);
-    doc.setRoundedRect = doc.roundedRect;
     doc.roundedRect(margin, y, contentWidth, 32, 3, 3, "S");
 
     doc.setTextColor(...accentBlue);
@@ -615,7 +605,6 @@ async function exportarPDF() {
     alert("Ocurrió un error al generar el PDF. Revisa que exista assets/logo-pdf.png");
   }
 }
-
 
 function exportarExcel() {
   const data = obtenerDatosFormulario();
