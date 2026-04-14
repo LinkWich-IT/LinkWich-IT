@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkWich-IT | Cotizador Profesional</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- AutoTable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <!-- SheetJS -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Logo LinkWich-IT" class="brand-logo" />
+        <div>
+          <h1>LinkWich-IT</h1>
+          <p>System & Networking Solution</p>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h2>Acciones</h2>
+        <button id="btnNuevo" class="btn btn-secondary">Nuevo</button>
+        <button id="btnAgregarFila" class="btn btn-primary">Agregar concepto</button>
+        <button id="btnPDF" class="btn btn-success">Generar PDF</button>
+        <button id="btnExcel" class="btn btn-info">Exportar Excel</button>
+        <button id="btnGuardar" class="btn btn-warning">Guardar borrador</button>
+        <button id="btnCargar" class="btn btn-dark">Cargar borrador</button>
+      </div>
+
+      <div class="sidebar-card">
+        <h2>Resumen</h2>
+        <div class="mini-summary">
+          <div><span>Conceptos</span><strong id="resConceptos">0</strong></div>
+          <div><span>Subtotal</span><strong id="resSubtotal">$0.00</strong></div>
+          <div><span>IVA</span><strong id="resIVA">$0.00</strong></div>
+          <div><span>Total</span><strong id="resTotal">$0.00</strong></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h2>Cotizador Profesional</h2>
+          <p>Genera cotizaciones ejecutivas para tus clientes</p>
+        </div>
+        <div class="badge">Versión Web</div>
+      </header>
+
+      <section class="card">
+        <div class="card-header">
+          <h3>Datos de la empresa</h3>
+        </div>
+        <div class="grid grid-3">
+          <div class="field">
+            <label>Empresa</label>
+            <input type="text" id="empresa" value="LinkWich-IT System & Networking Solution" />
+          </div>
+          <div class="field">
+            <label>Correo</label>
+            <input type="email" id="correoEmpresa" value="contacto@linkwich-it.com" />
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="text" id="telefonoEmpresa" value="+52 624 000 0000" />
+          </div>
+          <div class="field">
+            <label>Sitio web</label>
+            <input type="text" id="sitioEmpresa" value="https://linkwich-it.github.io/LinkWich-IT/" />
+          </div>
+          <div class="field">
+            <label>Ciudad</label>
+            <input type="text" id="ciudadEmpresa" value="San José del Cabo, B.C.S." />
+          </div>
+          <div class="field">
+            <label>Moneda</label>
+            <select id="moneda">
+              <option value="MXN" selected>MXN</option>
+              <option value="USD">USD</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h3>Datos de la cotización</h3>
+        </div>
+        <div class="grid grid-4">
+          <div class="field">
+            <label>Folio</label>
+            <input type="text" id="folio" placeholder="COT-2026-001" />
+          </div>
+          <div class="field">
+            <label>Fecha</label>
+            <input type="date" id="fecha" />
+          </div>
+          <div class="field">
+            <label>Vigencia (días)</label>
+            <input type="number" id="vigencia" value="15" min="1" />
+          </div>
+          <div class="field">
+            <label>Tipo de servicio</label>
+            <select id="tipoServicio">
+              <option>Monitoreo de red</option>
+              <option>Videovigilancia</option>
+              <option>Networking</option>
+              <option>Implementación</option>
+              <option>Soporte técnico</option>
+              <option>Consultoría</option>
+              <option>Otro</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h3>Datos del cliente</h3>
+        </div>
+        <div class="grid grid-4">
+          <div class="field">
+            <label>Cliente / Empresa</label>
+            <input type="text" id="cliente" placeholder="Nombre del cliente o empresa" />
+          </div>
+          <div class="field">
+            <label>Contacto</label>
+            <input type="text" id="contacto" placeholder="Nombre del contacto" />
+          </div>
+          <div class="field">
+            <label>Correo</label>
+            <input type="email" id="correoCliente" placeholder="correo@cliente.com" />
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="text" id="telefonoCliente" placeholder="+52 ..." />
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="field">
+            <label>Proyecto / Asunto</label>
+            <input type="text" id="proyecto" placeholder="Ej. Implementación de videovigilancia" />
+          </div>
+          <div class="field">
+            <label>Ubicación del proyecto</label>
+            <input type="text" id="ubicacionProyecto" placeholder="Ej. Los Cabos, B.C.S." />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header between">
+          <h3>Conceptos</h3>
+          <button id="btnAgregarFilaTop" class="btn btn-primary">Agregar concepto</button>
+        </div>
+
+        <div class="table-wrap">
+          <table id="tablaConceptos">
+            <thead>
+              <tr>
+                <th style="width: 70px;">#</th>
+                <th>Concepto</th>
+                <th style="width: 120px;">Cantidad</th>
+                <th style="width: 160px;">Precio Unitario</th>
+                <th style="width: 120px;">Desc. %</th>
+                <th style="width: 170px;">Importe</th>
+                <th style="width: 90px;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="conceptosBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h3>Condiciones comerciales</h3>
+        </div>
+
+        <div class="grid grid-3">
+          <div class="field">
+            <label>IVA (%)</label>
+            <input type="number" id="iva" value="16" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label>Descuento general (%)</label>
+            <input type="number" id="descuentoGeneral" value="0" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label>Anticipo sugerido (%)</label>
+            <input type="number" id="anticipo" value="50" min="0" max="100" step="0.01" />
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="field">
+            <label>Notas</label>
+            <textarea id="notas" rows="5" placeholder="Escribe observaciones, alcances, restricciones o notas importantes."></textarea>
+          </div>
+          <div class="field">
+            <label>Términos y condiciones</label>
+            <textarea id="terminos" rows="5">Precios expresados en moneda nacional. La presente cotización tiene vigencia conforme al periodo indicado. Los tiempos de entrega pueden variar según disponibilidad. No incluye trabajos adicionales no especificados.</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="card totals-card">
+        <div class="totals-box">
+          <div class="total-row">
+            <span>Subtotal</span>
+            <strong id="subtotal">$0.00</strong>
+          </div>
+          <div class="total-row">
+            <span>Descuento general</span>
+            <strong id="descuentoMonto">$0.00</strong>
+          </div>
+          <div class="total-row">
+            <span>IVA</span>
+            <strong id="ivaMonto">$0.00</strong>
+          </div>
+          <div class="total-row grand-total">
+            <span>Total</span>
+            <strong id="total">$0.00</strong>
+          </div>
+          <div class="total-row anticipo-row">
+            <span>Anticipo sugerido</span>
+            <strong id="anticipoMonto">$0.00</strong>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
