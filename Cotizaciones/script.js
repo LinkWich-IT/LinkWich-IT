@@ -35,6 +35,30 @@ function formatMoney(value) {
   }).format(Number(value) || 0);
 }
 
+function getCurrentYear() {
+  return new Date().getFullYear();
+}
+
+function getNextFolioNumber(year) {
+  const key = `linkwich_folio_counter_${year}`;
+  const current = parseInt(localStorage.getItem(key) || "1014", 10);
+  const next = current + 1;
+  localStorage.setItem(key, String(next));
+  return next;
+}
+
+function buildFolio(year, sequence) {
+  return `COT-${year}.${sequence}`;
+}
+
+function generarNuevoFolio() {
+  const year = getCurrentYear();
+  const nextNumber = getNextFolioNumber(year);
+  const folio = buildFolio(year, nextNumber);
+  document.getElementById("folio").value = folio;
+  return folio;
+}
+
 function crearFila(data = {}) {
   const tr = document.createElement("tr");
 
@@ -180,7 +204,7 @@ function obtenerDatosFormulario() {
 
 function limpiarFormulario() {
   const ids = [
-    "folio", "cliente", "contacto", "correoCliente", "telefonoCliente",
+    "cliente", "contacto", "correoCliente", "telefonoCliente",
     "proyecto", "ubicacionProyecto", "notas"
   ];
 
@@ -194,6 +218,8 @@ function limpiarFormulario() {
   document.getElementById("descuentoGeneral").value = 0;
   document.getElementById("anticipo").value = 50;
   document.getElementById("fecha").valueAsDate = new Date();
+
+  generarNuevoFolio();
 
   conceptosBody.innerHTML = "";
   crearFila();
@@ -297,9 +323,6 @@ async function exportarPDF() {
 
     const contentWidth = pageWidth - (margin * 2);
 
-    // =========================
-    // HEADER
-    // =========================
     const headerX = margin;
     const headerY = 10;
     const headerW = contentWidth;
@@ -308,13 +331,11 @@ async function exportarPDF() {
     doc.setFillColor(...primaryBlue);
     doc.roundedRect(headerX, headerY, headerW, headerH, 4, 4, "F");
 
-    // Área del logo integrada al header
     const logoBoxX = headerX + 6;
     const logoBoxY = headerY + 5;
     const logoBoxW = 30;
     const logoBoxH = 28;
 
-    // Caja cotización
     const quoteBoxW = 50;
     const quoteBoxH = 28;
     const quoteBoxX = headerX + headerW - quoteBoxW - 4;
@@ -323,7 +344,6 @@ async function exportarPDF() {
     doc.setFillColor(255, 255, 255);
     doc.roundedRect(quoteBoxX, quoteBoxY, quoteBoxW, quoteBoxH, 3, 3, "F");
 
-    // Logo directo sobre header azul, sin recuadro blanco
     try {
       const logo = await loadImageAsDataURL(`assets/logo-pdf.png?v=${Date.now()}`);
 
@@ -342,7 +362,6 @@ async function exportarPDF() {
       console.warn(e.message);
     }
 
-    // Área central para texto empresa
     const infoX = headerX + 44;
     const infoY = headerY + 8;
     const infoW = quoteBoxX - infoX - 6;
@@ -381,7 +400,6 @@ async function exportarPDF() {
       lineY += wrapped.length * 4.2;
     });
 
-    // Bloque cotización
     doc.setTextColor(...primaryBlue);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
@@ -395,9 +413,6 @@ async function exportarPDF() {
 
     let y = headerY + headerH + 8;
 
-    // =========================
-    // DATOS DEL CLIENTE
-    // =========================
     doc.setFillColor(...softGray);
     doc.roundedRect(margin, y, contentWidth, 32, 3, 3, "F");
     doc.setDrawColor(...borderGray);
@@ -425,9 +440,6 @@ async function exportarPDF() {
 
     y += 38;
 
-    // =========================
-    // TIPO DE SERVICIO
-    // =========================
     doc.setFillColor(250, 251, 253);
     doc.roundedRect(margin, y, contentWidth, 12, 2, 2, "F");
     doc.setDrawColor(...borderGray);
@@ -444,9 +456,6 @@ async function exportarPDF() {
 
     y += 18;
 
-    // =========================
-    // TABLA
-    // =========================
     const tableData = data.conceptos.map(item => [
       item.no,
       item.concepto || "-",
@@ -489,9 +498,6 @@ async function exportarPDF() {
 
     let finalY = doc.lastAutoTable.finalY + 8;
 
-    // =========================
-    // RESUMEN
-    // =========================
     doc.setFillColor(...softGray);
     doc.roundedRect(118, finalY, 74, 38, 3, 3, "F");
     doc.setDrawColor(...borderGray);
@@ -522,7 +528,6 @@ async function exportarPDF() {
     doc.setTextColor(...primaryBlue);
     doc.text(formatMoney(data.total), 188, finalY + 34, { align: "right" });
 
-    // Anticipo
     doc.setFillColor(236, 244, 255);
     doc.roundedRect(margin, finalY, 92, 17, 3, 3, "F");
     doc.setDrawColor(205, 223, 245);
@@ -539,9 +544,6 @@ async function exportarPDF() {
 
     finalY += 46;
 
-    // =========================
-    // NOTAS
-    // =========================
     if (data.notas && data.notas.trim()) {
       const notasText = doc.splitTextToSize(data.notas, contentWidth);
 
@@ -560,9 +562,6 @@ async function exportarPDF() {
       finalY += (notasText.length * 4.5) + 6;
     }
 
-    // =========================
-    // TERMINOS
-    // =========================
     if (data.terminos && data.terminos.trim()) {
       const terminosText = doc.splitTextToSize(data.terminos, contentWidth);
 
@@ -584,9 +583,6 @@ async function exportarPDF() {
       doc.text(terminosText, margin, finalY);
     }
 
-    // =========================
-    // FOOTER
-    // =========================
     const footerY = pageHeight - 10;
     doc.setDrawColor(...borderGray);
     doc.line(margin, footerY - 4, pageWidth - margin, footerY - 4);
@@ -675,6 +671,10 @@ btnCargar.addEventListener("click", cargarBorrador);
   el.addEventListener("input", recalcularTodo);
   el.addEventListener("change", recalcularTodo);
 });
+
+if (!document.getElementById("folio").value.trim()) {
+  generarNuevoFolio();
+}
 
 crearFila({
   concepto: "Servicio profesional",
