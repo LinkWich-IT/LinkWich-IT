@@ -250,120 +250,270 @@ function cargarBorrador() {
   alert("Borrador cargado correctamente.");
 }
 
-function exportarPDF() {
-  const data = obtenerDatosFormulario();
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF("p", "mm", "a4");
+function loadImageAsDataURL(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
 
-  let y = 15;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.text(data.empresa || "Cotización", 14, y);
-
-  y += 7;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text(`Correo: ${data.correoEmpresa || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Teléfono: ${data.telefonoEmpresa || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Sitio: ${data.sitioEmpresa || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Ciudad: ${data.ciudadEmpresa || "-"}`, 14, y);
-
-  y = 20;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.text("COTIZACIÓN", 150, y);
-
-  y += 8;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text(`Folio: ${data.folio || "-"}`, 150, y);
-  y += 5;
-  doc.text(`Fecha: ${data.fecha || "-"}`, 150, y);
-  y += 5;
-  doc.text(`Vigencia: ${data.vigencia || "-"} días`, 150, y);
-
-  y = 48;
-  doc.setDrawColor(200, 200, 200);
-  doc.line(14, y, 196, y);
-
-  y += 8;
-  doc.setFont("helvetica", "bold");
-  doc.text("Datos del cliente", 14, y);
-  y += 6;
-  doc.setFont("helvetica", "normal");
-  doc.text(`Cliente: ${data.cliente || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Contacto: ${data.contacto || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Correo: ${data.correoCliente || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Teléfono: ${data.telefonoCliente || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Proyecto: ${data.proyecto || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Ubicación: ${data.ubicacionProyecto || "-"}`, 14, y);
-  y += 5;
-  doc.text(`Tipo de servicio: ${data.tipoServicio || "-"}`, 14, y);
-
-  const tableData = data.conceptos.map(item => [
-    item.no,
-    item.concepto || "-",
-    item.cantidad,
-    formatMoney(item.precio),
-    `${item.descuento}%`,
-    formatMoney(item.importe)
-  ]);
-
-  doc.autoTable({
-    startY: y + 8,
-    head: [["#", "Concepto", "Cantidad", "P. Unitario", "Desc.", "Importe"]],
-    body: tableData,
-    theme: "grid",
-    styles: {
-      fontSize: 9
-    },
-    headStyles: {
-      fillColor: [28, 95, 208]
-    }
+      resolve(canvas.toDataURL("image/png"));
+    };
+    img.onerror = function () {
+      reject(new Error("No se pudo cargar la imagen del logo: " + src));
+    };
+    img.src = src;
   });
+}
 
-  let finalY = doc.lastAutoTable.finalY + 10;
+async function exportarPDF() {
+  try {
+    const data = obtenerDatosFormulario();
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF("p", "mm", "a4");
 
-  doc.setFont("helvetica", "bold");
-  doc.text("Resumen financiero", 14, finalY);
-  finalY += 6;
-  doc.setFont("helvetica", "normal");
-  doc.text(`Subtotal: ${formatMoney(data.subtotal)}`, 14, finalY);
-  finalY += 5;
-  doc.text(`Descuento general: ${formatMoney(data.descuentoMonto)}`, 14, finalY);
-  finalY += 5;
-  doc.text(`IVA: ${formatMoney(data.ivaMonto)}`, 14, finalY);
-  finalY += 5;
-  doc.setFont("helvetica", "bold");
-  doc.text(`Total: ${formatMoney(data.total)}`, 14, finalY);
-  finalY += 5;
-  doc.text(`Anticipo sugerido: ${formatMoney(data.anticipoMonto)}`, 14, finalY);
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 14;
 
-  finalY += 10;
-  doc.setFont("helvetica", "bold");
-  doc.text("Notas", 14, finalY);
-  finalY += 5;
-  doc.setFont("helvetica", "normal");
-  doc.text(doc.splitTextToSize(data.notas || "-", 180), 14, finalY);
+    const primaryBlue = [16, 64, 120];
+    const accentBlue = [33, 99, 180];
+    const lightGray = [245, 247, 250];
+    const lineGray = [220, 226, 234];
+    const textGray = [90, 98, 110];
 
-  finalY += 16;
-  doc.setFont("helvetica", "bold");
-  doc.text("Términos y condiciones", 14, finalY);
-  finalY += 5;
-  doc.setFont("helvetica", "normal");
-  doc.text(doc.splitTextToSize(data.terminos || "-", 180), 14, finalY);
+    // Fondo encabezado
+    doc.setFillColor(...primaryBlue);
+    doc.roundedRect(margin, 10, pageWidth - (margin * 2), 32, 3, 3, "F");
 
-  const nombreArchivo = `Cotizacion_${(data.folio || "sin_folio").replace(/\s+/g, "_")}.pdf`;
-  doc.save(nombreArchivo);
+    // Logo
+    try {
+      const logoData = await loadImageAsDataURL("assets/logo-pdf.png");
+      doc.addImage(logoData, "PNG", 18, 14, 28, 24);
+    } catch (e) {
+      console.warn(e.message);
+    }
+
+    // Datos empresa en header
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(17);
+    doc.text(data.empresa || "LinkWich-IT", 52, 20);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9.5);
+    doc.text(data.correoEmpresa || "-", 52, 26);
+    doc.text(data.telefonoEmpresa || "-", 52, 31);
+    doc.text(data.sitioEmpresa || "-", 52, 36);
+
+    // Bloque cotización
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(148, 14, 44, 23, 2, 2, "F");
+
+    doc.setTextColor(...primaryBlue);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
+    doc.text("COTIZACIÓN", 170, 21, { align: "center" });
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8.8);
+    doc.text(`Folio: ${data.folio || "-"}`, 152, 27);
+    doc.text(`Fecha: ${data.fecha || "-"}`, 152, 31.5);
+    doc.text(`Vigencia: ${data.vigencia || "-"} días`, 152, 36);
+
+    let y = 50;
+
+    // Cliente
+    doc.setFillColor(...lightGray);
+    doc.roundedRect(margin, y, pageWidth - (margin * 2), 30, 2, 2, "F");
+    doc.setDrawColor(...lineGray);
+    doc.roundedRect(margin, y, pageWidth - (margin * 2), 30, 2, 2, "S");
+
+    doc.setTextColor(...accentBlue);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("DATOS DEL CLIENTE", margin + 4, y + 6);
+
+    doc.setTextColor(20, 20, 20);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9.2);
+
+    doc.text(`Cliente: ${data.cliente || "-"}`, margin + 4, y + 12);
+    doc.text(`Contacto: ${data.contacto || "-"}`, margin + 4, y + 17);
+    doc.text(`Correo: ${data.correoCliente || "-"}`, margin + 4, y + 22);
+    doc.text(`Teléfono: ${data.telefonoCliente || "-"}`, margin + 100, y + 12);
+    doc.text(`Proyecto: ${data.proyecto || "-"}`, margin + 100, y + 17);
+    doc.text(`Ubicación: ${data.ubicacionProyecto || "-"}`, margin + 100, y + 22);
+
+    y += 38;
+
+    // Tipo de servicio
+    doc.setFillColor(248, 250, 252);
+    doc.roundedRect(margin, y, pageWidth - (margin * 2), 12, 2, 2, "F");
+    doc.setDrawColor(...lineGray);
+    doc.roundedRect(margin, y, pageWidth - (margin * 2), 12, 2, 2, "S");
+
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...accentBlue);
+    doc.setFontSize(10);
+    doc.text("Tipo de servicio:", margin + 4, y + 7.5);
+
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(30, 30, 30);
+    doc.text(data.tipoServicio || "-", margin + 38, y + 7.5);
+
+    y += 18;
+
+    // Tabla conceptos
+    const tableData = data.conceptos.map(item => [
+      item.no,
+      item.concepto || "-",
+      item.cantidad,
+      formatMoney(item.precio),
+      `${item.descuento}%`,
+      formatMoney(item.importe)
+    ]);
+
+    doc.autoTable({
+      startY: y,
+      head: [["#", "Concepto", "Cantidad", "P. Unitario", "Desc.", "Importe"]],
+      body: tableData,
+      theme: "grid",
+      margin: { left: margin, right: margin },
+      styles: {
+        fontSize: 9,
+        cellPadding: 3,
+        textColor: [30, 30, 30],
+        lineColor: lineGray,
+        lineWidth: 0.2
+      },
+      headStyles: {
+        fillColor: primaryBlue,
+        textColor: [255, 255, 255],
+        fontStyle: "bold"
+      },
+      alternateRowStyles: {
+        fillColor: [252, 252, 252]
+      },
+      columnStyles: {
+        0: { halign: "center", cellWidth: 10 },
+        2: { halign: "center", cellWidth: 22 },
+        3: { halign: "right", cellWidth: 28 },
+        4: { halign: "center", cellWidth: 20 },
+        5: { halign: "right", cellWidth: 30 }
+      }
+    });
+
+    let finalY = doc.lastAutoTable.finalY + 8;
+
+    // Resumen financiero
+    doc.setFillColor(...lightGray);
+    doc.roundedRect(120, finalY, 72, 36, 2, 2, "F");
+    doc.setDrawColor(...lineGray);
+    doc.roundedRect(120, finalY, 72, 36, 2, 2, "S");
+
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...accentBlue);
+    doc.setFontSize(10);
+    doc.text("RESUMEN FINANCIERO", 156, finalY + 6, { align: "center" });
+
+    doc.setTextColor(...textGray);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9.2);
+    doc.text("Subtotal:", 124, finalY + 13);
+    doc.text("Descuento:", 124, finalY + 18);
+    doc.text("IVA:", 124, finalY + 23);
+    doc.setFont("helvetica", "bold");
+    doc.text("Total:", 124, finalY + 30);
+
+    doc.setTextColor(20, 20, 20);
+    doc.setFont("helvetica", "normal");
+    doc.text(formatMoney(data.subtotal), 188, finalY + 13, { align: "right" });
+    doc.text(formatMoney(data.descuentoMonto), 188, finalY + 18, { align: "right" });
+    doc.text(formatMoney(data.ivaMonto), 188, finalY + 23, { align: "right" });
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...primaryBlue);
+    doc.text(formatMoney(data.total), 188, finalY + 30, { align: "right" });
+
+    // Anticipo
+    doc.setFillColor(237, 247, 255);
+    doc.roundedRect(margin, finalY, 92, 16, 2, 2, "F");
+    doc.setDrawColor(200, 223, 245);
+    doc.roundedRect(margin, finalY, 92, 16, 2, 2, "S");
+
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...accentBlue);
+    doc.setFontSize(9.5);
+    doc.text("ANTICIPO SUGERIDO", margin + 4, finalY + 6);
+
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...primaryBlue);
+    doc.setFontSize(12);
+    doc.text(formatMoney(data.anticipoMonto), margin + 4, finalY + 12);
+
+    finalY += 44;
+
+    // Notas
+    if (data.notas && data.notas.trim()) {
+      const notasText = doc.splitTextToSize(data.notas, 180);
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...accentBlue);
+      doc.setFontSize(10);
+      doc.text("NOTAS", margin, finalY);
+
+      finalY += 5;
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(40, 40, 40);
+      doc.setFontSize(9.2);
+      doc.text(notasText, margin, finalY);
+
+      finalY += (notasText.length * 4.5) + 6;
+    }
+
+    // Términos
+    if (data.terminos && data.terminos.trim()) {
+      const terminosText = doc.splitTextToSize(data.terminos, 180);
+
+      if (finalY > pageHeight - 35) {
+        doc.addPage();
+        finalY = 20;
+      }
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...accentBlue);
+      doc.setFontSize(10);
+      doc.text("TÉRMINOS Y CONDICIONES", margin, finalY);
+
+      finalY += 5;
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(40, 40, 40);
+      doc.setFontSize(9.2);
+      doc.text(terminosText, margin, finalY);
+    }
+
+    // Footer
+    const footerY = pageHeight - 10;
+    doc.setDrawColor(...lineGray);
+    doc.line(margin, footerY - 4, pageWidth - margin, footerY - 4);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(120, 120, 120);
+    doc.text(`${data.empresa || "LinkWich-IT"} | ${data.sitioEmpresa || ""}`, margin, footerY);
+    doc.text(`Documento generado automáticamente`, pageWidth - margin, footerY, { align: "right" });
+
+    const nombreArchivo = `Cotizacion_${(data.folio || "sin_folio").replace(/\s+/g, "_")}.pdf`;
+    doc.save(nombreArchivo);
+
+  } catch (error) {
+    console.error(error);
+    alert("Ocurrió un error al generar el PDF. Revisa que exista assets/logo-pdf.png");
+  }
 }
 
 function exportarExcel() {
