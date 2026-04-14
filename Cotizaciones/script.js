@@ -290,6 +290,7 @@ async function exportarPDF() {
 
     const primaryBlue = [18, 70, 140];
     const accentBlue = [35, 95, 170];
+    const logoPanelBlue = [29, 92, 170]; // azul para fondo del logo
     const softGray = [245, 247, 250];
     const borderGray = [220, 226, 234];
     const textGray = [95, 105, 120];
@@ -314,8 +315,12 @@ async function exportarPDF() {
     const logoBoxW = 34;
     const logoBoxH = 30;
 
-    doc.setFillColor(255, 255, 255);
+    // Fondo azul para logo blanco
+    doc.setFillColor(...logoPanelBlue);
     doc.roundedRect(logoBoxX, logoBoxY, logoBoxW, logoBoxH, 3, 3, "F");
+    doc.setDrawColor(255, 255, 255);
+    doc.setLineWidth(0.35);
+    doc.roundedRect(logoBoxX, logoBoxY, logoBoxW, logoBoxH, 3, 3, "S");
 
     // Caja cotización
     const quoteBoxW = 50;
@@ -330,8 +335,8 @@ async function exportarPDF() {
     try {
       const logo = await loadImageAsDataURL("assets/logo-pdf.png");
 
-      const maxW = logoBoxW - 4;
-      const maxH = logoBoxH - 4;
+      const maxW = logoBoxW - 5;
+      const maxH = logoBoxH - 5;
 
       const ratio = Math.min(maxW / logo.width, maxH / logo.height);
       const drawW = logo.width * ratio;
@@ -405,6 +410,7 @@ async function exportarPDF() {
     doc.setFillColor(...softGray);
     doc.roundedRect(margin, y, contentWidth, 32, 3, 3, "F");
     doc.setDrawColor(...borderGray);
+    doc.setRoundedRect = doc.roundedRect;
     doc.roundedRect(margin, y, contentWidth, 32, 3, 3, "S");
 
     doc.setTextColor(...accentBlue);
@@ -609,6 +615,8 @@ async function exportarPDF() {
     alert("Ocurrió un error al generar el PDF. Revisa que exista assets/logo-pdf.png");
   }
 }
+
+
 function exportarExcel() {
   const data = obtenerDatosFormulario();
 
