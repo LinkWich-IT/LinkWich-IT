@@ -370,14 +370,17 @@ function importarDesdeWorkbook(workbook) {
     setFieldIfExists("ubicacionProyecto", mapa["UBICACIÓN"]);
     setFieldIfExists("notas", mapa["NOTAS"]);
     setFieldIfExists("terminos", mapa["TÉRMINOS"]);
+    setFieldIfExists("formaPago", mapa["FORMA DE PAGO"]);
+
+    if (mapa["MONEDA"] === "MXN" || mapa["MONEDA"] === "USD") {
+      setFieldIfExists("moneda", mapa["MONEDA"]);
+    }
 
     if (typeof mapa["VIGENCIA"] === "string") {
       const m = mapa["VIGENCIA"].match(/\d+/);
       if (m) setFieldIfExists("vigencia", m[0]);
-    }
-
-    if (typeof mapa["SUBTOTAL"] === "number" || typeof mapa["DESCUENTO GENERAL"] === "number" || typeof mapa["IVA"] === "number") {
-      // No se pisan porque ya se recalculan desde conceptos
+    } else if (typeof mapa["VIGENCIA"] === "number") {
+      setFieldIfExists("vigencia", mapa["VIGENCIA"]);
     }
   }
 
