@@ -7,6 +7,8 @@ const btnExcel = document.getElementById("btnExcel");
 const btnNuevo = document.getElementById("btnNuevo");
 const btnGuardar = document.getElementById("btnGuardar");
 const btnCargar = document.getElementById("btnCargar");
+const btnImportarExcel = document.getElementById("btnImportarExcel");
+const inputImportarExcel = document.getElementById("inputImportarExcel");
 
 const subtotalEl = document.getElementById("subtotal");
 const descuentoMontoEl = document.getElementById("descuentoMonto");
@@ -33,6 +35,13 @@ function formatMoney(value) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   }).format(Number(value) || 0);
+}
+
+function getCurrencyLabel() {
+  const moneda = document.getElementById("moneda").value || "MXN";
+  return moneda === "USD"
+    ? "dólares estadounidenses (USD)"
+    : "pesos mexicanos (MXN)";
 }
 
 function getCurrentYear() {
@@ -190,8 +199,10 @@ function obtenerDatosFormulario() {
     iva,
     descuentoGeneral,
     anticipo,
+    formaPago: document.getElementById("formaPago") ? document.getElementById("formaPago").value : "Únicamente mediante transferencia bancaria.",
     notas: document.getElementById("notas").value,
     terminos: document.getElementById("terminos").value,
+    monedaDescripcion: getCurrencyLabel(),
 
     conceptos,
     subtotal,
@@ -209,8 +220,16 @@ function limpiarFormulario() {
   ];
 
   ids.forEach(id => {
-    document.getElementById(id).value = "";
+    const el = document.getElementById(id);
+    if (el) el.value = "";
   });
+
+  if (document.getElementById("formaPago")) {
+    document.getElementById("formaPago").value = "Únicamente mediante transferencia bancaria.";
+  }
+
+  document.getElementById("terminos").value =
+    "Todos los precios están expresados en moneda seleccionada e incluyen IVA, salvo que se indique lo contrario. La presente cotización tiene vigencia conforme al periodo indicado. Los tiempos de entrega pueden variar según disponibilidad. No incluye trabajos adicionales no especificados.";
 
   document.getElementById("vigencia").value = 15;
   document.getElementById("tipoServicio").selectedIndex = 0;
@@ -262,6 +281,11 @@ function cargarBorrador() {
   document.getElementById("iva").value = data.iva ?? 16;
   document.getElementById("descuentoGeneral").value = data.descuentoGeneral ?? 0;
   document.getElementById("anticipo").value = data.anticipo ?? 50;
+
+  if (document.getElementById("formaPago")) {
+    document.getElementById("formaPago").value = data.formaPago || "Únicamente mediante transferencia bancaria.";
+  }
+
   document.getElementById("notas").value = data.notas || "";
   document.getElementById("terminos").value = data.terminos || "";
 
@@ -302,6 +326,99 @@ function loadImageAsDataURL(src) {
 
     img.src = src;
   });
+}
+
+function setFieldIfExists(id, value) {
+  const el = document.getElementById(id);
+  if (el && value !== undefined && value !== null) {
+    el.value = value;
+  }
+}
+
+function importarDesdeWorkbook(workbook) {
+  const resumenSheet = workbook.Sheets["Resumen"];
+  const conceptosSheet = workbook.Sheets["Conceptos"];
+
+  if (!resumenSheet && !conceptosSheet) {
+    alert("El archivo no contiene hojas 'Resumen' o 'Conceptos'. Usa el mismo formato exportado por el cotizador.");
+    return;
+  }
+
+  if (resumenSheet) {
+    const resumenRows = XLSX.utils.sheet_to_json(resumenSheet, { header: 1, defval: "" });
+    const mapa = {};
+
+    resumenRows.forEach(row => {
+      const key = String(row[0] || "").trim().toUpperCase();
+      const value = row[1];
+      if (key) mapa[key] = value;
+    });
+
+    setFieldIfExists("empresa", mapa["EMPRESA"]);
+    setFieldIfExists("correoEmpresa", mapa["CORREO EMPRESA"]);
+    setFieldIfExists("telefonoEmpresa", mapa["TELÉFONO EMPRESA"]);
+    setFieldIfExists("sitioEmpresa", mapa["SITIO WEB"]);
+    setFieldIfExists("ciudadEmpresa", mapa["CIUDAD"]);
+    setFieldIfExists("folio", mapa["FOLIO"]);
+    setFieldIfExists("fecha", mapa["FECHA"]);
+    setFieldIfExists("tipoServicio", mapa["TIPO DE SERVICIO"]);
+    setFieldIfExists("cliente", mapa["CLIENTE"]);
+    setFieldIfExists("contacto", mapa["CONTACTO"]);
+    setFieldIfExists("correoCliente", mapa["CORREO CLIENTE"]);
+    setFieldIfExists("telefonoCliente", mapa["TELÉFONO CLIENTE"]);
+    setFieldIfExists("proyecto", mapa["PROYECTO"]);
+    setFieldIfExists("ubicacionProyecto", mapa["UBICACIÓN"]);
+    setFieldIfExists("notas", mapa["NOTAS"]);
+    setFieldIfExists("terminos", mapa["TÉRMINOS"]);
+
+    if (typeof mapa["VIGENCIA"] === "string") {
+      const m = mapa["VIGENCIA"].match(/\d+/);
+      if (m) setFieldIfExists("vigencia", m[0]);
+    }
+
+    if (typeof mapa["SUBTOTAL"] === "number" || typeof mapa["DESCUENTO GENERAL"] === "number" || typeof mapa["IVA"] === "number") {
+      // No se pisan porque ya se recalculan desde conceptos
+    }
+  }
+
+  if (conceptosSheet) {
+    const conceptos = XLSX.utils.sheet_to_json(conceptosSheet, { defval: "" });
+
+    conceptosBody.innerHTML = "";
+
+    conceptos.forEach(item => {
+      crearFila({
+        concepto: item.Concepto || item.CONCEPTO || "",
+        cantidad: item.Cantidad || item.CANTIDAD || 1,
+        precio: item.Precio_Unitario || item.PRECIO_UNITARIO || item["Precio Unitario"] || 0,
+        descuento: item.Descuento_Porcentaje || item.DESCUENTO_PORCENTAJE || item["Desc. %"] || 0
+      });
+    });
+
+    if (!conceptos.length) {
+      crearFila();
+    }
+  }
+
+  recalcularTodo();
+  alert("Excel importado correctamente.");
+}
+
+function importarExcel(file) {
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      importarDesdeWorkbook(workbook);
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo leer el archivo Excel.");
+    }
+  };
+  reader.readAsArrayBuffer(file);
 }
 
 async function exportarPDF() {
@@ -542,7 +659,39 @@ async function exportarPDF() {
     doc.setTextColor(...primaryBlue);
     doc.text(formatMoney(data.anticipoMonto), margin + 4, finalY + 13);
 
-    finalY += 46;
+    finalY += 26;
+
+    const formaPagoTexto = doc.splitTextToSize(
+      data.formaPago || "Únicamente mediante transferencia bancaria.",
+      contentWidth
+    );
+
+    const monedaTexto = doc.splitTextToSize(
+      `Todos los precios están expresados en ${data.monedaDescripcion} e incluyen IVA, salvo que se indique lo contrario.`,
+      contentWidth
+    );
+
+    if (finalY > pageHeight - 60) {
+      doc.addPage();
+      finalY = 20;
+    }
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(...accentBlue);
+    doc.text("FORMA DE PAGO", margin, finalY);
+
+    finalY += 5;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9.2);
+    doc.setTextColor(...darkText);
+    doc.text(formaPagoTexto, margin, finalY);
+
+    finalY += (formaPagoTexto.length * 4.5) + 4;
+    doc.text(monedaTexto, margin, finalY);
+
+    finalY += (monedaTexto.length * 4.5) + 6;
 
     if (data.notas && data.notas.trim()) {
       const notasText = doc.splitTextToSize(data.notas, contentWidth);
@@ -626,6 +775,10 @@ function exportarExcel() {
     ["PROYECTO", data.proyecto],
     ["UBICACIÓN", data.ubicacionProyecto],
     [],
+    ["FORMA DE PAGO", data.formaPago],
+    ["MONEDA", data.moneda],
+    ["DESCRIPCIÓN MONEDA", data.monedaDescripcion],
+    [],
     ["SUBTOTAL", data.subtotal],
     ["DESCUENTO GENERAL", data.descuentoMonto],
     ["IVA", data.ivaMonto],
@@ -659,13 +812,24 @@ btnAgregarFila.addEventListener("click", () => crearFila());
 btnAgregarFilaTop.addEventListener("click", () => crearFila());
 btnPDF.addEventListener("click", exportarPDF);
 btnExcel.addEventListener("click", exportarExcel);
+
 btnNuevo.addEventListener("click", () => {
   if (confirm("¿Deseas limpiar la cotización actual?")) {
     limpiarFormulario();
   }
 });
+
 btnGuardar.addEventListener("click", guardarBorrador);
 btnCargar.addEventListener("click", cargarBorrador);
+
+if (btnImportarExcel && inputImportarExcel) {
+  btnImportarExcel.addEventListener("click", () => inputImportarExcel.click());
+  inputImportarExcel.addEventListener("change", (e) => {
+    const file = e.target.files?.[0];
+    importarExcel(file);
+    e.target.value = "";
+  });
+}
 
 [ivaInput, descuentoGeneralInput, anticipoInput, document.getElementById("moneda")].forEach(el => {
   el.addEventListener("input", recalcularTodo);
