@@ -229,7 +229,7 @@ function limpiarFormulario() {
   }
 
   document.getElementById("terminos").value =
-    "Todos los precios están expresados en moneda seleccionada e incluyen IVA, salvo que se indique lo contrario. La presente cotización tiene vigencia conforme al periodo indicado. Los tiempos de entrega pueden variar según disponibilidad. No incluye trabajos adicionales no especificados.";
+    "La presente cotización tiene vigencia conforme al periodo indicado. Los tiempos de entrega pueden variar según disponibilidad. No incluye trabajos adicionales no especificados.";
 
   document.getElementById("vigencia").value = 15;
   document.getElementById("tipoServicio").selectedIndex = 0;
@@ -669,11 +669,6 @@ async function exportarPDF() {
       contentWidth
     );
 
-    const monedaTexto = doc.splitTextToSize(
-      `Todos los precios están expresados en ${data.monedaDescripcion} e incluyen IVA, salvo que se indique lo contrario.`,
-      contentWidth
-    );
-
     if (finalY > pageHeight - 60) {
       doc.addPage();
       finalY = 20;
@@ -691,31 +686,14 @@ async function exportarPDF() {
     doc.setTextColor(...darkText);
     doc.text(formaPagoTexto, margin, finalY);
 
-    finalY += (formaPagoTexto.length * 4.5) + 4;
-    doc.text(monedaTexto, margin, finalY);
-
-    finalY += (monedaTexto.length * 4.5) + 6;
-
-    if (data.notas && data.notas.trim()) {
-      const notasText = doc.splitTextToSize(data.notas, contentWidth);
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(10);
-      doc.setTextColor(...accentBlue);
-      doc.text("NOTAS", margin, finalY);
-
-      finalY += 5;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9.2);
-      doc.setTextColor(...darkText);
-      doc.text(notasText, margin, finalY);
-
-      finalY += (notasText.length * 4.5) + 6;
-    }
+    finalY += (formaPagoTexto.length * 4.5) + 6;
 
     if (data.terminos && data.terminos.trim()) {
-      const terminosText = doc.splitTextToSize(data.terminos, contentWidth);
+      const terminosCompletos =
+        `Todos los precios están expresados en ${data.monedaDescripcion} e incluyen IVA, salvo que se indique lo contrario. ` +
+        data.terminos.trim();
+
+      const terminosText = doc.splitTextToSize(terminosCompletos, contentWidth);
 
       if (finalY > pageHeight - 35) {
         doc.addPage();
@@ -733,6 +711,29 @@ async function exportarPDF() {
       doc.setFontSize(9.2);
       doc.setTextColor(...darkText);
       doc.text(terminosText, margin, finalY);
+    }
+
+    if (data.notas && data.notas.trim()) {
+      const notasText = doc.splitTextToSize(data.notas, contentWidth);
+
+      finalY += 10;
+
+      if (finalY > pageHeight - 35) {
+        doc.addPage();
+        finalY = 20;
+      }
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...accentBlue);
+      doc.text("NOTAS", margin, finalY);
+
+      finalY += 5;
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.2);
+      doc.setTextColor(...darkText);
+      doc.text(notasText, margin, finalY);
     }
 
     const footerY = pageHeight - 10;
