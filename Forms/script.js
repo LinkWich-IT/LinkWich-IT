@@ -6,6 +6,11 @@ const ratingLabel = document.getElementById('ratingLabel');
 const starButtons = document.querySelectorAll('.star-btn');
 const ratingWrapper = document.getElementById('ratingWrapper');
 
+const currentYear = document.getElementById("currentYear");
+if (currentYear) {
+  currentYear.textContent = new Date().getFullYear();
+}
+
 const ratingTexts = {
   1: '1 estrella - Muy mala',
   2: '2 estrellas - Regular',
