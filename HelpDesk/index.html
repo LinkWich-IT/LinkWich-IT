@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Service Desk | LinkWich-IT</title>
+  <meta name="description" content="Portal de tickets e incidencias de LinkWich-IT." />
+
+  <!-- FAVICON / LOGO EN PESTAÑA -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="theme-color" content="#081224">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <main class="layout">
+      <section class="brand-panel">
+        <div class="brand-card">
+          <div class="hero-logo-wrap">
+            <div class="logo-frame">
+              <img
+                src="logo.png"
+                alt="Logo LinkWich-IT"
+                class="brand-logo"
+                onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='grid';"
+              >
+              <div class="logo-fallback" style="display:none;">LW</div>
+            </div>
+          </div>
+
+          <h1>Portal de soporte e incidencias</h1>
+          <p class="hero-text">
+            Reporta incidencias, solicitudes o requerimientos técnicos de forma rápida y ordenada.
+            Nuestro equipo revisará la información enviada para dar seguimiento.
+          </p>
+
+          <div class="info-pills">
+            <div class="pill"><i class="bi bi-ticket-detailed-fill"></i><span>Folio automático</span></div>
+            <div class="pill"><i class="bi bi-envelope-paper-fill"></i><span>Envío por correo</span></div>
+            <div class="pill"><i class="bi bi-headset"></i><span>Atención profesional</span></div>
+          </div>
+
+          <div class="social-block">
+            <p class="social-title">Síguenos en nuestras redes sociales</p>
+
+            <div class="brand-links">
+              <a href="https://linkwich-it.github.io/LinkWich-IT/" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-globe2"></i>
+                <span>Sitio web</span>
+              </a>
+
+              <a href="https://www.instagram.com/linkwich.it/" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-instagram"></i>
+                <span>Instagram</span>
+              </a>
+
+              <a href="https://www.facebook.com/people/LinkWich-IT/61579142500818/" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-facebook"></i>
+                <span>Facebook</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="whatsapp-block">
+  <p class="whatsapp-title">¿Necesitas atención directa?</p>
+  <p class="whatsapp-text">
+    También puedes contactar a un agente por WhatsApp para recibir apoyo más rápido.
+  </p>
+
+  <a
+    class="whatsapp-btn"
+    href="https://api.whatsapp.com/send?phone=526241586134&text=Hola%2C+quiero+contactar+con+un+agente+de+LinkWich-IT+para+recibir+apoyo+con+una+incidencia+o+solicitud.+Gracias."
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <i class="bi bi-whatsapp"></i>
+    <span>Contactar agente por WhatsApp</span>
+  </a>
+</div>
+        </div>
+      </section>
+
+      <section class="form-panel">
+        <div class="form-card">
+          <div class="form-header">
+            <p class="eyebrow">Mesa de ayuda</p>
+            <h2><i class="bi bi-headset"></i> Levantar ticket</h2>
+            <p>Completa los siguientes campos para registrar tu incidencia o solicitud.</p>
+          </div>
+
+          <div class="ticket-preview">
+            <div>
+              <span class="ticket-label">Folio generado</span>
+              <strong id="ticketPreview">LW-00000000-0000</strong>
+            </div>
+            <div>
+              <span class="ticket-label">Fecha</span>
+              <strong id="ticketDate"></strong>
+            </div>
+          </div>
+
+          <form
+            action="https://formspree.io/f/mdkogdan"
+            method="POST"
+            class="php-email-form"
+            id="ticketForm"
+            enctype="multipart/form-data"
+            novalidate
+          >
+            <input type="hidden" name="_subject" value="Nuevo ticket de soporte - LinkWich-IT">
+            <input type="hidden" name="folio_ticket" id="folio_ticket">
+            <input type="hidden" name="fecha_ticket" id="fecha_ticket">
+
+            <div class="form-grid two-cols">
+              <div class="input-group">
+                <label for="empresa">Empresa o negocio <span>*</span></label>
+                <input type="text" id="empresa" name="empresa" placeholder="Ej. Hotel Vista Mar" required>
+                <small class="error-text"></small>
+              </div>
+
+              <div class="input-group">
+                <label for="nombre">Nombre del solicitante <span>*</span></label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+                <small class="error-text"></small>
+              </div>
+            </div>
+
+            <div class="form-grid two-cols">
+              <div class="input-group">
+                <label for="email">Correo electrónico <span>*</span></label>
+                <input type="email" id="email" name="email" placeholder="cliente@empresa.com" required>
+                <small class="error-text"></small>
+              </div>
+
+              <div class="input-group">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="Ej. 6241234567">
+              </div>
+            </div>
+
+            <div class="form-grid two-cols">
+              <div class="input-group">
+                <label for="categoria">Categoría <span>*</span></label>
+                <select id="categoria" name="categoria" required>
+                  <option value="">Selecciona una opción</option>
+                  <option>Monitoreo LinkWich-Monitor</option>
+                  <option>Red / conectividad</option>
+                  <option>Configuración de equipos</option>
+                  <option>Videovigilancia</option>
+                  <option>Soporte técnico</option>
+                  <option>Accesos / credenciales</option>
+                  <option>Otro</option>
+                </select>
+                <small class="error-text"></small>
+              </div>
+
+              <div class="input-group">
+                <label for="prioridad">Prioridad <span>*</span></label>
+                <select id="prioridad" name="prioridad" required>
+                  <option value="">Selecciona una opción</option>
+                  <option>Baja</option>
+                  <option>Media</option>
+                  <option>Alta</option>
+                  <option>Crítica</option>
+                </select>
+                <small class="error-text"></small>
+              </div>
+            </div>
+
+            <div class="form-grid two-cols">
+              <div class="input-group">
+                <label for="servicio_afectado">Servicio afectado <span>*</span></label>
+                <input
+                  type="text"
+                  id="servicio_afectado"
+                  name="servicio_afectado"
+                  placeholder="Ej. Portal, red, cámara, switch, servidor"
+                  required
+                >
+                <small class="error-text"></small>
+              </div>
+
+              <div class="input-group">
+                <label for="impacto">Impacto <span>*</span></label>
+                <select id="impacto" name="impacto" required>
+                  <option value="">Selecciona una opción</option>
+                  <option>Afecta a un usuario</option>
+                  <option>Afecta a un área</option>
+                  <option>Afecta a varios usuarios</option>
+                  <option>Servicio caído / operación detenida</option>
+                </select>
+                <small class="error-text"></small>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="asunto">Asunto del ticket <span>*</span></label>
+              <input type="text" id="asunto" name="asunto" placeholder="Resume el problema o solicitud" required>
+              <small class="error-text"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="descripcion">Descripción de la incidencia <span>*</span></label>
+              <textarea
+                id="descripcion"
+                name="descripcion"
+                rows="6"
+                placeholder="Describe con detalle la incidencia, cuándo inició, qué equipos o servicios están involucrados y cualquier dato relevante..."
+                required
+              ></textarea>
+              <small class="error-text"></small>
+            </div>
+
+           <!-- <div class="input-group">
+              <label for="adjuntos">Adjuntar evidencia (JPG, PNG, PDF)</label>
+              <input
+                type="file"
+                id="adjuntos"
+                name="adjuntos"
+                accept=".jpg,.jpeg,.png,.pdf,image/png,image/jpeg,application/pdf"
+                multiple
+              >
+              <small class="helper-text">
+                Puedes adjuntar evidencia en formato JPG, PNG o PDF.
+              </small>
+              <small class="error-text"></small>
+            </div> -->
+
+            <div class="checkbox-group">
+              <label class="custom-check">
+                <input type="checkbox" id="consentimiento" name="consentimiento" required>
+                <span class="checkmark"></span>
+                <span class="check-text">
+                  Confirmo que la información proporcionada es correcta y autorizo su envío para seguimiento del ticket. <strong>*</strong>
+                </span>
+              </label>
+              <small class="error-text"></small>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="submit-btn" id="submitBtn">
+                <span class="btn-text"><i class="bi bi-send-check"></i> Enviar ticket</span>
+                <span class="btn-loader" aria-hidden="true"></span>
+              </button>
+              <p class="form-note">Los campos marcados con <span>*</span> son obligatorios.</p>
+            </div>
+
+            <div class="form-status" id="formStatus" role="alert" aria-live="polite"></div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
