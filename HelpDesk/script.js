@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const consentimiento = document.getElementById("consentimiento");
   const adjuntosInput = document.getElementById("adjuntos");
 
+  const currentYear = document.getElementById("currentYear");
+if (currentYear) {
+  currentYear.textContent = new Date().getFullYear();
+}
+
   function generarFolio() {
     const now = new Date();
     const y = now.getFullYear();
