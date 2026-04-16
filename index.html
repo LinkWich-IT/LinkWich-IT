@@ -76,6 +76,154 @@
 }
 </script>
 
+
+<style>
+  .support-access-card{
+    margin-top: 1.35rem;
+    padding: 1.15rem 1rem;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(8px);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .support-access-icon{
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: rgba(13,110,253,0.14);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+
+  .support-access-icon i{
+    font-size: 1.45rem;
+    color: #0d6efd;
+  }
+
+  .support-access-content{
+    flex: 1 1 260px;
+  }
+
+  .support-access-content h4{
+    margin: 0 0 .35rem;
+    color: #fff;
+    font-size: 1.05rem;
+  }
+
+  .support-access-content p{
+    margin: 0;
+    color: rgba(255,255,255,0.86);
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .support-open-btn{
+    border-radius: 14px;
+    padding: .85rem 1.15rem;
+    font-weight: 600;
+    box-shadow: 0 10px 22px rgba(13,110,253,0.18);
+  }
+
+  .support-login-modal .modal-content{
+    border: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(2, 6, 23, 0.28);
+  }
+
+  .support-login-modal .modal-header{
+    background: linear-gradient(135deg, #0b1730, #132c57);
+    color: #fff;
+    border-bottom: 0;
+    padding: 1.1rem 1.25rem;
+  }
+
+  .support-login-modal .modal-title{
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+    font-weight: 700;
+  }
+
+  .support-login-modal .modal-title i{
+    font-size: 1.1rem;
+    color: #7cc0ff;
+  }
+
+  .support-login-modal .btn-close{
+    filter: invert(1);
+  }
+
+  .support-login-modal .modal-body{
+    padding: 1.35rem;
+  }
+
+  .support-login-note{
+    background: #f8fbff;
+    border: 1px solid #dbe9ff;
+    border-radius: 16px;
+    padding: .9rem 1rem;
+    font-size: .94rem;
+    color: #49617f;
+    margin-bottom: 1rem;
+  }
+
+  .support-login-modal .form-label{
+    font-weight: 600;
+    color: #243b5e;
+  }
+
+  .support-login-modal .form-control{
+    min-height: 52px;
+    border-radius: 14px;
+    border: 1px solid #d7e3f3;
+    box-shadow: none;
+  }
+
+  .support-login-modal .form-control:focus{
+    border-color: #86b6fe;
+    box-shadow: 0 0 0 .2rem rgba(13,110,253,.14);
+  }
+
+  .support-login-error{
+    display:none;
+    margin-top: .85rem;
+    padding: .85rem 1rem;
+    border-radius: 14px;
+    background: rgba(220,53,69,.08);
+    border: 1px solid rgba(220,53,69,.18);
+    color: #b02a37;
+    font-size: .93rem;
+  }
+
+  .support-login-help{
+    font-size: .85rem;
+    color: #6b7a90;
+    margin-top: .85rem;
+  }
+
+  @media (max-width: 767px){
+    .support-access-card{
+      align-items: flex-start;
+    }
+    .support-access-actions{
+      width:100%;
+    }
+    .support-open-btn{
+      width:100%;
+      justify-content:center;
+    }
+  }
+</style>
+
 </head>
 
 <style>
@@ -451,6 +599,7 @@
   <li><a href="#portfolio"><i class="bi bi-images me-1"></i> Portafolio</a></li>
   <li><a href="#experiencia"><i class="bi bi-people-fill me-1"></i> Experiencia</a></li>
   <li><a href="#contact"><i class="bi bi-envelope-fill me-1"></i> Contacto</a></li>
+  <li><a href="#" id="openSupportAccess"><i class="bi bi-headset me-1"></i> Soporte</a></li>
   <a class="btn-getstarted" href="https://linkwich-it.github.io/LinkWich-IT/LinkWich-Monitor/index.html"><i class="bi bi-rocket-fill me-1"></i> Ver LinkWich-Monitor</a>
 
 </ul>
@@ -491,6 +640,22 @@
                   </div>
                 </div>
               </div>
+
+              <div class="support-access-card" data-aos="fade-up" data-aos-delay="220">
+                <div class="support-access-icon">
+                  <i class="bi bi-headset"></i>
+                </div>
+                <div class="support-access-content">
+                  <h4>Soporte / HelpDesk</h4>
+                  <p>Si ya eres cliente y necesitas levantar o consultar un ticket, accede a nuestro portal de soporte.</p>
+                </div>
+                <div class="support-access-actions">
+                  <button type="button" class="btn btn-primary support-open-btn" id="openSupportAccessHero">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Acceder a Soporte
+                  </button>
+                </div>
+              </div>
+
  <div class="hero-stats d-flex justify-content-around text-center">
   <div class="stat-item">
     <span class="number-with-plus">
@@ -1575,6 +1740,47 @@
 </div>
 
 
+
+<!-- Support Access Modal -->
+<div class="modal fade support-login-modal" id="supportAccessModal" tabindex="-1" aria-labelledby="supportAccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="supportAccessModalLabel">
+          <i class="bi bi-headset"></i> Acceso a Soporte
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="support-login-note">
+          Ingresa tus credenciales para acceder al portal HelpDesk. Este acceso local solo funciona como una capa básica de restricción visual.
+        </div>
+
+        <form id="supportAccessForm" novalidate>
+          <div class="mb-3">
+            <label for="supportUser" class="form-label">Usuario</label>
+            <input type="text" class="form-control" id="supportUser" placeholder="Ingresa tu usuario" autocomplete="username" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="supportPass" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="supportPass" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar al HelpDesk
+          </button>
+
+          <div class="support-login-error" id="supportLoginError"></div>
+          <div class="support-login-help">
+            Si no cuentas con acceso, contáctanos por WhatsApp o correo para solicitar soporte.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- Preloader -->
   <div id="preloader"></div>
 
@@ -1630,6 +1836,74 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const SUPPORT_URL = "https://linkwich-it.github.io/LinkWich-IT/HelpDesk/";
+  const ACCESS_USER = "cliente.linkwich";
+  const ACCESS_PASS = "LwHelpDesk2026!";
+  const sessionKey = "lw_helpdesk_access_ok";
+
+  const modalEl = document.getElementById("supportAccessModal");
+  const supportForm = document.getElementById("supportAccessForm");
+  const supportUser = document.getElementById("supportUser");
+  const supportPass = document.getElementById("supportPass");
+  const supportError = document.getElementById("supportLoginError");
+  const openSupportButtons = [
+    document.getElementById("openSupportAccess"),
+    document.getElementById("openSupportAccessHero")
+  ].filter(Boolean);
+
+  let supportModal = null;
+  if (modalEl && window.bootstrap) {
+    supportModal = new bootstrap.Modal(modalEl);
+  }
+
+  function openSupportModal() {
+    if (sessionStorage.getItem(sessionKey) === "1") {
+      window.location.href = SUPPORT_URL;
+      return;
+    }
+    if (supportError) {
+      supportError.style.display = "none";
+      supportError.textContent = "";
+    }
+    if (supportForm) supportForm.reset();
+    if (supportModal) {
+      supportModal.show();
+      setTimeout(() => supportUser && supportUser.focus(), 250);
+    }
+  }
+
+  openSupportButtons.forEach((btn) => {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      openSupportModal();
+    });
+  });
+
+  if (supportForm) {
+    supportForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const user = (supportUser.value || "").trim();
+      const pass = supportPass.value || "";
+
+      if (user === ACCESS_USER && pass === ACCESS_PASS) {
+        sessionStorage.setItem(sessionKey, "1");
+        if (supportModal) supportModal.hide();
+        window.location.href = SUPPORT_URL;
+      } else {
+        supportError.textContent = "Usuario o contraseña incorrectos. Verifica tus datos e inténtalo nuevamente.";
+        supportError.style.display = "block";
+        supportPass.value = "";
+        supportPass.focus();
+      }
+    });
+  }
+});
+</script>
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
