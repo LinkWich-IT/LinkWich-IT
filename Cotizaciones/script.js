@@ -433,6 +433,7 @@ async function exportarPDF() {
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 14;
+    const footerHeight = 12;
 
     const primaryBlue = [18, 70, 140];
     const accentBlue = [35, 95, 170];
@@ -442,7 +443,265 @@ async function exportarPDF() {
     const darkText = [30, 35, 45];
 
     const contentWidth = pageWidth - (margin * 2);
+    const usablePageBottom = pageHeight - footerHeight - 6;
 
+    function addFooterToPage(pageNumber) {
+      doc.setPage(pageNumber);
+
+      const footerY = pageHeight - 10;
+      doc.setDrawColor(...borderGray);
+      doc.line(margin, footerY - 4, pageWidth - margin, footerY - 4);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(120, 120, 120);
+      doc.text(`${data.empresa || "LinkWich-IT"} | ${data.sitioEmpresa || ""}`, margin, footerY);
+      doc.text(`Página ${pageNumber} de ${doc.getNumberOfPages()}`, pageWidth - margin, footerY, { align: "right" });
+    }
+
+    function addFooterToAllPages() {
+      const totalPages = doc.getNumberOfPages();
+      for (let i = 1; i <= totalPages; i++) {
+        addFooterToPage(i);
+      }
+    }
+
+    function ensureSpace(currentY, neededHeight) {
+      if (currentY + neededHeight > usablePageBottom) {
+        doc.addPage();
+        return 20;
+      }
+      return currentY;
+    }
+
+    function drawWrappedTextBlock({
+      title,
+      text,
+      x = margin,
+      y,
+      width = contentWidth,
+      titleColor = accentBlue,
+      textColor = darkText,
+      titleFontSize = 10,
+      textFontSize = 9.2,
+      lineHeight = 4.5,
+      beforeGap = 0,
+      afterGap = 6
+    }) {
+      let currentY = y + beforeGap;
+
+      const safeText = (text || "").trim();
+      if (!safeText) return currentY;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(titleFontSize);
+      const titleHeight = 5;
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(textFontSize);
+      const lines = doc.splitTextToSize(safeText, width);
+      const bodyHeight = Math.max(4.5, lines.length * lineHeight);
+
+      currentY = ensureSpace(currentY, titleHeight + bodyHeight + afterGap);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(titleFontSize);
+      doc.setTextColor(...titleColor);
+      doc.text(title, x, currentY);
+
+      currentY += 5;
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(textFontSize);
+      doc.setTextColor(...textColor);
+      doc.text(lines, x, currentY);
+
+      currentY += bodyHeight + afterGap;
+      return currentY;
+    }
+
+    function getWrappedLines(text, width, fontSize = 9.2, fontStyle = "normal") {
+      doc.setFont("helvetica", fontStyle);
+      doc.setFontSize(fontSize);
+      return doc.splitTextToSize(text || "-", width);
+    }
+
+    function drawInfoLine(label, value, x, y, width) {
+      const labelText = `${label}: `;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.2);
+      const labelWidth = doc.getTextWidth(labelText);
+
+      const availableWidth = Math.max(20, width - labelWidth);
+      const valueLines = getWrappedLines(value || "-", availableWidth, 9.2, "normal");
+
+      doc.setTextColor(...darkText);
+      doc.setFont("helvetica", "bold");
+      doc.text(labelText, x, y);
+
+      doc.setFont("helvetica", "normal");
+      doc.text(valueLines, x + labelWidth, y);
+
+      return Math.max(1, valueLines.length) * 4.5;
+    }
+
+    function drawClientBox(y) {
+      const boxX = margin;
+      const boxW = contentWidth;
+      const innerPadding = 4;
+      const titleHeight = 7;
+      const leftX = boxX + innerPadding;
+      const rightX = boxX + boxW / 2 + 2;
+      const colWidth = (boxW / 2) - innerPadding - 6;
+
+      const leftHeights = [
+        drawInfoLineMeasure("Cliente", data.cliente, colWidth),
+        drawInfoLineMeasure("Contacto", data.contacto, colWidth),
+        drawInfoLineMeasure("Correo", data.correoCliente, colWidth)
+      ];
+
+      const rightHeights = [
+        drawInfoLineMeasure("Teléfono", data.telefonoCliente, colWidth),
+        drawInfoLineMeasure("Proyecto", data.proyecto, colWidth),
+        drawInfoLineMeasure("Ubicación", data.ubicacionProyecto, colWidth)
+      ];
+
+      const leftTotal = leftHeights.reduce((a, b) => a + b, 0);
+      const rightTotal = rightHeights.reduce((a, b) => a + b, 0);
+      const contentHeight = Math.max(leftTotal, rightTotal);
+      const boxH = titleHeight + contentHeight + 8;
+
+      let currentY = ensureSpace(y, boxH + 6);
+
+      doc.setFillColor(...softGray);
+      doc.roundedRect(boxX, currentY, boxW, boxH, 3, 3, "F");
+      doc.setDrawColor(...borderGray);
+      doc.roundedRect(boxX, currentY, boxW, boxH, 3, 3, "S");
+
+      doc.setTextColor(...accentBlue);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.text("DATOS DEL CLIENTE", boxX + innerPadding, currentY + 7);
+
+      let leftY = currentY + 14;
+      let rightY = currentY + 14;
+
+      leftY += drawInfoLine("Cliente", data.cliente || "-", leftX, leftY, colWidth);
+      leftY += drawInfoLine("Contacto", data.contacto || "-", leftX, leftY, colWidth);
+      leftY += drawInfoLine("Correo", data.correoCliente || "-", leftX, leftY, colWidth);
+
+      rightY += drawInfoLine("Teléfono", data.telefonoCliente || "-", rightX, rightY, colWidth);
+      rightY += drawInfoLine("Proyecto", data.proyecto || "-", rightX, rightY, colWidth);
+      rightY += drawInfoLine("Ubicación", data.ubicacionProyecto || "-", rightX, rightY, colWidth);
+
+      return currentY + boxH + 6;
+    }
+
+    function drawInfoLineMeasure(label, value, width) {
+      const labelText = `${label}: `;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.2);
+      const labelWidth = doc.getTextWidth(labelText);
+
+      const availableWidth = Math.max(20, width - labelWidth);
+      const valueLines = getWrappedLines(value || "-", availableWidth, 9.2, "normal");
+      return Math.max(1, valueLines.length) * 4.5;
+    }
+
+    function drawServiceTypeBox(y) {
+      const label = "Tipo de servicio:";
+      const labelWidth = 34;
+      const textWidth = contentWidth - 8 - labelWidth;
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.5);
+      const valueLines = doc.splitTextToSize(data.tipoServicio || "-", textWidth);
+      const boxH = Math.max(12, 8 + (valueLines.length * 4.5));
+
+      let currentY = ensureSpace(y, boxH + 6);
+
+      doc.setFillColor(250, 251, 253);
+      doc.roundedRect(margin, currentY, contentWidth, boxH, 2, 2, "F");
+      doc.setDrawColor(...borderGray);
+      doc.roundedRect(margin, currentY, contentWidth, boxH, 2, 2, "S");
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...accentBlue);
+      doc.setFontSize(10);
+      doc.text(label, margin + 4, currentY + 7);
+
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(...darkText);
+      doc.setFontSize(9.5);
+      doc.text(valueLines, margin + 4 + labelWidth, currentY + 7);
+
+      return currentY + boxH + 6;
+    }
+
+    function drawFinancialSummary(y) {
+      const leftBoxW = 92;
+      const rightBoxW = 74;
+      const gap = 12;
+
+      const leftX = margin;
+      const rightX = margin + leftBoxW + gap;
+
+      const leftH = 17;
+      const rightH = 38;
+      const rowH = Math.max(leftH, rightH);
+
+      let currentY = ensureSpace(y, rowH + 10);
+
+      doc.setFillColor(236, 244, 255);
+      doc.roundedRect(leftX, currentY, leftBoxW, leftH, 3, 3, "F");
+      doc.setDrawColor(205, 223, 245);
+      doc.roundedRect(leftX, currentY, leftBoxW, leftH, 3, 3, "S");
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...accentBlue);
+      doc.setFontSize(9.4);
+      doc.text("ANTICIPO SUGERIDO", leftX + 4, currentY + 6.5);
+
+      doc.setFontSize(12);
+      doc.setTextColor(...primaryBlue);
+      doc.text(formatMoney(data.anticipoMonto), leftX + 4, currentY + 13);
+
+      doc.setFillColor(...softGray);
+      doc.roundedRect(rightX, currentY, rightBoxW, rightH, 3, 3, "F");
+      doc.setDrawColor(...borderGray);
+      doc.roundedRect(rightX, currentY, rightBoxW, rightH, 3, 3, "S");
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...accentBlue);
+      doc.setFontSize(10);
+      doc.text("RESUMEN FINANCIERO", rightX + rightBoxW / 2, currentY + 7, { align: "center" });
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(...textGray);
+      doc.text("Subtotal:", rightX + 4, currentY + 15);
+      doc.text("Descuento:", rightX + 4, currentY + 21);
+      doc.text("IVA:", rightX + 4, currentY + 27);
+
+      doc.setFont("helvetica", "bold");
+      doc.text("Total:", rightX + 4, currentY + 34);
+
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(...darkText);
+      doc.text(formatMoney(data.subtotal), rightX + rightBoxW - 4, currentY + 15, { align: "right" });
+      doc.text(formatMoney(data.descuentoMonto), rightX + rightBoxW - 4, currentY + 21, { align: "right" });
+      doc.text(formatMoney(data.ivaMonto), rightX + rightBoxW - 4, currentY + 27, { align: "right" });
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...primaryBlue);
+      doc.text(formatMoney(data.total), rightX + rightBoxW - 4, currentY + 34, { align: "right" });
+
+      return currentY + rightH + 8;
+    }
+
+    // =========================
+    // HEADER
+    // =========================
     const headerX = margin;
     const headerY = 10;
     const headerW = contentWidth;
@@ -469,11 +728,9 @@ async function exportarPDF() {
 
       const maxW = logoBoxW;
       const maxH = logoBoxH;
-
       const ratio = Math.min(maxW / logo.width, maxH / logo.height);
       const drawW = logo.width * ratio;
       const drawH = logo.height * ratio;
-
       const drawX = logoBoxX + (logoBoxW - drawW) / 2;
       const drawY = logoBoxY + (logoBoxH - drawH) / 2;
 
@@ -531,50 +788,13 @@ async function exportarPDF() {
     doc.text(`Fecha: ${data.fecha || "-"}`, quoteBoxX + 4, quoteBoxY + 18);
     doc.text(`Vigencia: ${data.vigencia || "-"} días`, quoteBoxX + 4, quoteBoxY + 23);
 
+    // =========================
+    // CONTENIDO
+    // =========================
     let y = headerY + headerH + 8;
 
-    doc.setFillColor(...softGray);
-    doc.roundedRect(margin, y, contentWidth, 32, 3, 3, "F");
-    doc.setDrawColor(...borderGray);
-    doc.roundedRect(margin, y, contentWidth, 32, 3, 3, "S");
-
-    doc.setTextColor(...accentBlue);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
-    doc.text("DATOS DEL CLIENTE", margin + 4, y + 7);
-
-    doc.setTextColor(...darkText);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9.2);
-
-    const leftX = margin + 4;
-    const rightX = margin + 104;
-
-    doc.text(`Cliente: ${data.cliente || "-"}`, leftX, y + 14);
-    doc.text(`Contacto: ${data.contacto || "-"}`, leftX, y + 20);
-    doc.text(`Correo: ${data.correoCliente || "-"}`, leftX, y + 26);
-
-    doc.text(`Teléfono: ${data.telefonoCliente || "-"}`, rightX, y + 14);
-    doc.text(`Proyecto: ${data.proyecto || "-"}`, rightX, y + 20);
-    doc.text(`Ubicación: ${data.ubicacionProyecto || "-"}`, rightX, y + 26);
-
-    y += 38;
-
-    doc.setFillColor(250, 251, 253);
-    doc.roundedRect(margin, y, contentWidth, 12, 2, 2, "F");
-    doc.setDrawColor(...borderGray);
-    doc.roundedRect(margin, y, contentWidth, 12, 2, 2, "S");
-
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...accentBlue);
-    doc.setFontSize(10);
-    doc.text("Tipo de servicio:", margin + 4, y + 7.5);
-
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(...darkText);
-    doc.text(data.tipoServicio || "-", margin + 38, y + 7.5);
-
-    y += 18;
+    y = drawClientBox(y);
+    y = drawServiceTypeBox(y);
 
     const tableData = data.conceptos.map(item => [
       item.no,
@@ -590,13 +810,15 @@ async function exportarPDF() {
       head: [["#", "Concepto", "Cantidad", "P. Unitario", "Desc.", "Importe"]],
       body: tableData,
       theme: "grid",
-      margin: { left: margin, right: margin },
+      margin: { left: margin, right: margin, bottom: footerHeight + 4 },
       styles: {
         fontSize: 9,
         cellPadding: 3,
         textColor: darkText,
         lineColor: borderGray,
-        lineWidth: 0.2
+        lineWidth: 0.2,
+        overflow: "linebreak",
+        valign: "middle"
       },
       headStyles: {
         fillColor: primaryBlue,
@@ -613,138 +835,46 @@ async function exportarPDF() {
         3: { halign: "right", cellWidth: 28 },
         4: { halign: "center", cellWidth: 20 },
         5: { halign: "right", cellWidth: 30 }
+      },
+      didDrawPage: function () {
+        // aquí no ponemos footer final porque el total de páginas puede cambiar después
       }
     });
 
     let finalY = doc.lastAutoTable.finalY + 8;
 
-    doc.setFillColor(...softGray);
-    doc.roundedRect(118, finalY, 74, 38, 3, 3, "F");
-    doc.setDrawColor(...borderGray);
-    doc.roundedRect(118, finalY, 74, 38, 3, 3, "S");
+    y = drawFinancialSummary(finalY);
 
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...accentBlue);
-    doc.setFontSize(10);
-    doc.text("RESUMEN FINANCIERO", 155, finalY + 7, { align: "center" });
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(...textGray);
-    doc.text("Subtotal:", 122, finalY + 15);
-    doc.text("Descuento:", 122, finalY + 21);
-    doc.text("IVA:", 122, finalY + 27);
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Total:", 122, finalY + 34);
-
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(...darkText);
-    doc.text(formatMoney(data.subtotal), 188, finalY + 15, { align: "right" });
-    doc.text(formatMoney(data.descuentoMonto), 188, finalY + 21, { align: "right" });
-    doc.text(formatMoney(data.ivaMonto), 188, finalY + 27, { align: "right" });
-
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...primaryBlue);
-    doc.text(formatMoney(data.total), 188, finalY + 34, { align: "right" });
-
-    doc.setFillColor(236, 244, 255);
-    doc.roundedRect(margin, finalY, 92, 17, 3, 3, "F");
-    doc.setDrawColor(205, 223, 245);
-    doc.roundedRect(margin, finalY, 92, 17, 3, 3, "S");
-
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(...accentBlue);
-    doc.setFontSize(9.4);
-    doc.text("ANTICIPO SUGERIDO", margin + 4, finalY + 6.5);
-
-    doc.setFontSize(12);
-    doc.setTextColor(...primaryBlue);
-    doc.text(formatMoney(data.anticipoMonto), margin + 4, finalY + 13);
-
-    finalY += 26;
-
-    const formaPagoTexto = doc.splitTextToSize(
-      data.formaPago || "Únicamente mediante transferencia bancaria.",
-      contentWidth
-    );
-
-    if (finalY > pageHeight - 60) {
-      doc.addPage();
-      finalY = 20;
-    }
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.setTextColor(...accentBlue);
-    doc.text("FORMA DE PAGO", margin, finalY);
-
-    finalY += 5;
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9.2);
-    doc.setTextColor(...darkText);
-    doc.text(formaPagoTexto, margin, finalY);
-
-    finalY += (formaPagoTexto.length * 4.5) + 6;
+    const formaPagoTexto = data.formaPago || "Únicamente mediante transferencia bancaria.";
+    y = drawWrappedTextBlock({
+      title: "FORMA DE PAGO",
+      text: formaPagoTexto,
+      y: y,
+      width: contentWidth
+    });
 
     if (data.terminos && data.terminos.trim()) {
       const terminosCompletos =
-        `Todos los precios están expresados en ${data.monedaDescripcion} e incluyen IVA, salvo que se indique lo contrario. ` +
-        data.terminos.trim();
+        `Todos los precios están expresados en ${data.monedaDescripcion} e incluyen IVA, salvo que se indique lo contrario. ${data.terminos.trim()}`;
 
-      const terminosText = doc.splitTextToSize(terminosCompletos, contentWidth);
-
-      if (finalY > pageHeight - 35) {
-        doc.addPage();
-        finalY = 20;
-      }
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(10);
-      doc.setTextColor(...accentBlue);
-      doc.text("TÉRMINOS Y CONDICIONES", margin, finalY);
-
-      finalY += 5;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9.2);
-      doc.setTextColor(...darkText);
-      doc.text(terminosText, margin, finalY);
+      y = drawWrappedTextBlock({
+        title: "TÉRMINOS Y CONDICIONES",
+        text: terminosCompletos,
+        y: y,
+        width: contentWidth
+      });
     }
 
     if (data.notas && data.notas.trim()) {
-      const notasText = doc.splitTextToSize(data.notas, contentWidth);
-
-      finalY += 10;
-
-      if (finalY > pageHeight - 35) {
-        doc.addPage();
-        finalY = 20;
-      }
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(10);
-      doc.setTextColor(...accentBlue);
-      doc.text("NOTAS", margin, finalY);
-
-      finalY += 5;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9.2);
-      doc.setTextColor(...darkText);
-      doc.text(notasText, margin, finalY);
+      y = drawWrappedTextBlock({
+        title: "NOTAS",
+        text: data.notas.trim(),
+        y: y,
+        width: contentWidth
+      });
     }
 
-    const footerY = pageHeight - 10;
-    doc.setDrawColor(...borderGray);
-    doc.line(margin, footerY - 4, pageWidth - margin, footerY - 4);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(120, 120, 120);
-    doc.text(`${data.empresa || "LinkWich-IT"} | ${data.sitioEmpresa || ""}`, margin, footerY);
-    doc.text("Documento generado automáticamente", pageWidth - margin, footerY, { align: "right" });
+    addFooterToAllPages();
 
     const nombreArchivo = `Cotizacion_${(data.folio || "sin_folio").replace(/\s+/g, "_")}.pdf`;
     doc.save(nombreArchivo);
