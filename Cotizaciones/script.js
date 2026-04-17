@@ -68,6 +68,39 @@ function generarNuevoFolio() {
   return folio;
 }
 
+function formatearFechaVisual(fechaStr) {
+  if (!fechaStr) return "-";
+
+  const partes = String(fechaStr).split("-");
+  if (partes.length !== 3) return fechaStr;
+
+  const [yyyy, mm, dd] = partes;
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function calcularFechaExpiracion(fechaStr, vigenciaDias) {
+  if (!fechaStr) return "-";
+
+  const partes = String(fechaStr).split("-");
+  if (partes.length !== 3) return "-";
+
+  const anio = parseInt(partes[0], 10);
+  const mes = parseInt(partes[1], 10) - 1;
+  const dia = parseInt(partes[2], 10);
+  const dias = parseInt(vigenciaDias, 10) || 0;
+
+  const fecha = new Date(anio, mes, dia);
+  if (isNaN(fecha.getTime())) return "-";
+
+  fecha.setDate(fecha.getDate() + dias);
+
+  const dd = String(fecha.getDate()).padStart(2, "0");
+  const mm = String(fecha.getMonth() + 1).padStart(2, "0");
+  const yyyy = fecha.getFullYear();
+
+  return `${dd}/${mm}/${yyyy}`;
+}
+
 function crearFila(data = {}) {
   const tr = document.createElement("tr");
 
@@ -186,6 +219,11 @@ function obtenerDatosFormulario() {
 
     folio: document.getElementById("folio").value,
     fecha: document.getElementById("fecha").value,
+    fechaVisual: formatearFechaVisual(document.getElementById("fecha").value),
+    fechaExpiracion: calcularFechaExpiracion(
+      document.getElementById("fecha").value,
+      document.getElementById("vigencia").value
+    ),
     vigencia: document.getElementById("vigencia").value,
     tipoServicio: document.getElementById("tipoServicio").value,
 
@@ -445,6 +483,9 @@ async function exportarPDF() {
     const contentWidth = pageWidth - (margin * 2);
     const usablePageBottom = pageHeight - footerHeight - 6;
 
+    const fechaCotizacionVisual = formatearFechaVisual(data.fecha);
+    const fechaExpiracion = calcularFechaExpiracion(data.fecha, data.vigencia);
+
     function addFooterToPage(pageNumber) {
       doc.setPage(pageNumber);
 
@@ -545,6 +586,17 @@ async function exportarPDF() {
       return Math.max(1, valueLines.length) * 4.5;
     }
 
+    function drawInfoLineMeasure(label, value, width) {
+      const labelText = `${label}: `;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.2);
+      const labelWidth = doc.getTextWidth(labelText);
+
+      const availableWidth = Math.max(20, width - labelWidth);
+      const valueLines = getWrappedLines(value || "-", availableWidth, 9.2, "normal");
+      return Math.max(1, valueLines.length) * 4.5;
+    }
+
     function drawClientBox(y) {
       const boxX = margin;
       const boxW = contentWidth;
@@ -595,17 +647,6 @@ async function exportarPDF() {
       rightY += drawInfoLine("Ubicación", data.ubicacionProyecto || "-", rightX, rightY, colWidth);
 
       return currentY + boxH + 6;
-    }
-
-    function drawInfoLineMeasure(label, value, width) {
-      const labelText = `${label}: `;
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9.2);
-      const labelWidth = doc.getTextWidth(labelText);
-
-      const availableWidth = Math.max(20, width - labelWidth);
-      const valueLines = getWrappedLines(value || "-", availableWidth, 9.2, "normal");
-      return Math.max(1, valueLines.length) * 4.5;
     }
 
     function drawServiceTypeBox(y) {
@@ -699,9 +740,6 @@ async function exportarPDF() {
       return currentY + rightH + 8;
     }
 
-    // =========================
-    // HEADER
-    // =========================
     const headerX = margin;
     const headerY = 10;
     const headerW = contentWidth;
@@ -716,9 +754,9 @@ async function exportarPDF() {
     const logoBoxH = 28;
 
     const quoteBoxW = 50;
-    const quoteBoxH = 28;
+    const quoteBoxH = 31;
     const quoteBoxX = headerX + headerW - quoteBoxW - 4;
-    const quoteBoxY = headerY + 5;
+    const quoteBoxY = headerY + 4;
 
     doc.setFillColor(255, 255, 255);
     doc.roundedRect(quoteBoxX, quoteBoxY, quoteBoxW, quoteBoxH, 3, 3, "F");
@@ -780,17 +818,15 @@ async function exportarPDF() {
     doc.setTextColor(...primaryBlue);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
-    doc.text("COTIZACIÓN", quoteBoxX + quoteBoxW / 2, quoteBoxY + 7, { align: "center" });
+    doc.text("COTIZACIÓN", quoteBoxX + quoteBoxW / 2, quoteBoxY + 6.8, { align: "center" });
 
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.8);
-    doc.text(`Folio: ${data.folio || "-"}`, quoteBoxX + 4, quoteBoxY + 13);
-    doc.text(`Fecha: ${data.fecha || "-"}`, quoteBoxX + 4, quoteBoxY + 18);
-    doc.text(`Vigencia: ${data.vigencia || "-"} días`, quoteBoxX + 4, quoteBoxY + 23);
+    doc.setFontSize(8.2);
+    doc.text(`Folio: ${data.folio || "-"}`, quoteBoxX + 4, quoteBoxY + 12);
+    doc.text(`Fecha: ${fechaCotizacionVisual || "-"}`, quoteBoxX + 4, quoteBoxY + 17);
+    doc.text(`Vigencia: ${data.vigencia || "-"} días`, quoteBoxX + 4, quoteBoxY + 22);
+    doc.text(`Expira: ${fechaExpiracion || "-"}`, quoteBoxX + 4, quoteBoxY + 27);
 
-    // =========================
-    // CONTENIDO
-    // =========================
     let y = headerY + headerH + 8;
 
     y = drawClientBox(y);
@@ -812,7 +848,7 @@ async function exportarPDF() {
       theme: "grid",
       margin: { left: margin, right: margin, bottom: footerHeight + 4 },
       styles: {
-        fontSize: 9,
+        fontSize: 8.8,
         cellPadding: 3,
         textColor: darkText,
         lineColor: borderGray,
@@ -830,14 +866,13 @@ async function exportarPDF() {
       },
       columnStyles: {
         0: { halign: "center", cellWidth: 10 },
-        1: { cellWidth: 78 },
-        2: { halign: "center", cellWidth: 22 },
-        3: { halign: "right", cellWidth: 28 },
-        4: { halign: "center", cellWidth: 20 },
-        5: { halign: "right", cellWidth: 30 }
+        1: { cellWidth: 82 },
+        2: { halign: "center", cellWidth: 18 },
+        3: { halign: "right", cellWidth: 26 },
+        4: { halign: "center", cellWidth: 18 },
+        5: { halign: "right", cellWidth: 28 }
       },
       didDrawPage: function () {
-        // aquí no ponemos footer final porque el total de páginas puede cambiar después
       }
     });
 
@@ -899,6 +934,8 @@ function exportarExcel() {
     [],
     ["FOLIO", data.folio],
     ["FECHA", data.fecha],
+    ["FECHA VISUAL", data.fechaVisual],
+    ["EXPIRA", data.fechaExpiracion],
     ["VIGENCIA", `${data.vigencia} días`],
     ["TIPO DE SERVICIO", data.tipoServicio],
     [],
