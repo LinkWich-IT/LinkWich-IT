@@ -6,6 +6,23 @@
   <title>LinkWich-IT | Cotizador Profesional</title>
   <link rel="stylesheet" href="style.css" />
 
+  <style>
+    .field-help {
+      display: block;
+      margin-top: 6px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    .internal-row span,
+    .internal-row strong {
+      color: #475569;
+    }
+    .neto-row strong {
+      font-weight: 800;
+    }
+  </style>
+
   <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <!-- AutoTable -->
@@ -187,7 +204,7 @@
           <h3>Condiciones comerciales</h3>
         </div>
 
-        <div class="grid grid-3">
+        <div class="grid grid-4">
           <div class="field">
             <label>IVA (%)</label>
             <input type="number" id="iva" value="16" min="0" step="0.01" />
@@ -195,6 +212,11 @@
           <div class="field">
             <label>Descuento general (%)</label>
             <input type="number" id="descuentoGeneral" value="0" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label>ISR RESICO interno (%)</label>
+            <input type="number" id="isrResico" value="1.25" min="0" step="0.01" />
+            <small class="field-help">Solo cálculo interno, no aparece en el PDF.</small>
           </div>
           <div class="field">
             <label>Anticipo sugerido (%)</label>
@@ -232,9 +254,17 @@
             <span>IVA</span>
             <strong id="ivaMonto">$0.00</strong>
           </div>
+          <div class="total-row internal-row">
+            <span>ISR RESICO interno</span>
+            <strong id="isrResicoMonto">$0.00</strong>
+          </div>
           <div class="total-row grand-total">
-            <span>Total</span>
+            <span>Total cliente</span>
             <strong id="total">$0.00</strong>
+          </div>
+          <div class="total-row internal-row neto-row">
+            <span>Neto estimado a recibir</span>
+            <strong id="netoResico">$0.00</strong>
           </div>
           <div class="total-row anticipo-row">
             <span>Anticipo sugerido</span>
