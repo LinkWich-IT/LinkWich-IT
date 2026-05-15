@@ -635,3 +635,40 @@ tbody tr:hover {
     min-width: 700px;
   }
 }
+/* ============================================================
+   FIX SELECT / OPTIONS - MODO DARK
+   Evita que las opciones se vean blancas sobre fondo blanco
+   ============================================================ */
+
+.field select {
+  color: var(--text);
+  background-color: rgba(255, 255, 255, 0.04);
+  color-scheme: dark;
+  appearance: auto;
+  -webkit-appearance: menulist;
+}
+
+/* Opciones del desplegable */
+.field select option {
+  background-color: #111a2e;
+  color: #eaf1ff;
+}
+
+/* Opción seleccionada o resaltada */
+.field select option:checked,
+.field select option:hover,
+.field select option:focus {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+/* Firefox */
+.field select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 var(--text);
+}
+
+/* Chrome / Edge: mejora contraste del calendario y selects nativos */
+.field input[type="date"] {
+  color-scheme: dark;
+}
