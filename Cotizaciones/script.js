@@ -15,6 +15,7 @@ const descuentoMontoEl = document.getElementById("descuentoMonto");
 const ivaMontoEl = document.getElementById("ivaMonto");
 const totalEl = document.getElementById("total");
 const anticipoMontoEl = document.getElementById("anticipoMonto");
+
 const isrResicoMontoEl = document.getElementById("isrResicoMonto");
 const netoResicoEl = document.getElementById("netoResico");
 
@@ -168,9 +169,12 @@ function recalcularTodo() {
   const subtotalConDescuento = subtotal - descuentoMonto;
   const ivaMonto = subtotalConDescuento * (iva / 100);
 
-  // Cálculo interno RESICO.
-  // Se calcula sobre la base antes de IVA.
-  // No cambia el total que verá el cliente ni aparece en el PDF.
+  /*
+    CÁLCULO INTERNO RESICO:
+    - Se calcula sobre la base antes de IVA.
+    - No cambia el total que verá el cliente.
+    - No se muestra en el PDF.
+  */
   const isrResicoMonto = subtotalConDescuento * (isrResico / 100);
 
   const total = subtotalConDescuento + ivaMonto;
@@ -415,13 +419,35 @@ function loadImageAsDataURL(src) {
   });
 }
 
-function setFieldIfExists(id, value) {
+/*
+  FUNCIÓN SEGURA:
+  - Si el campo ya tiene información, NO lo sobrescribe.
+  - Esto evita que al importar Excel se borre lo que ya llenaste manualmente.
+  - Si algún día quieres forzar sobrescritura, puedes usar:
+    setFieldIfExists("cliente", valor, { overwrite: true });
+*/
+function setFieldIfExists(id, value, options = {}) {
   const el = document.getElementById(id);
-  if (el && value !== undefined && value !== null) {
-    el.value = value;
-  }
+  if (!el || value === undefined || value === null) return;
+
+  const overwrite = options.overwrite === true;
+  const currentValue = String(el.value || "").trim();
+  const newValue = String(value || "").trim();
+
+  if (!newValue) return;
+
+  if (!overwrite && currentValue) return;
+
+  el.value = value;
 }
 
+/*
+  IMPORTACIÓN NO DESTRUCTIVA:
+  - No borra campos llenados manualmente.
+  - Solo llena campos vacíos.
+  - No borra conceptos actuales.
+  - Agrega conceptos del Excel debajo de los existentes.
+*/
 function importarDesdeWorkbook(workbook) {
   const resumenSheet = workbook.Sheets["Resumen"];
   const conceptosSheet = workbook.Sheets["Conceptos"];
@@ -450,15 +476,18 @@ function importarDesdeWorkbook(workbook) {
     setFieldIfExists("telefonoEmpresa", mapa["TELÉFONO EMPRESA"]);
     setFieldIfExists("sitioEmpresa", mapa["SITIO WEB"]);
     setFieldIfExists("ciudadEmpresa", mapa["CIUDAD"]);
+
     setFieldIfExists("folio", mapa["FOLIO"]);
     setFieldIfExists("fecha", mapa["FECHA"]);
     setFieldIfExists("tipoServicio", mapa["TIPO DE SERVICIO"]);
+
     setFieldIfExists("cliente", mapa["CLIENTE"]);
     setFieldIfExists("contacto", mapa["CONTACTO"]);
     setFieldIfExists("correoCliente", mapa["CORREO CLIENTE"]);
     setFieldIfExists("telefonoCliente", mapa["TELÉFONO CLIENTE"]);
     setFieldIfExists("proyecto", mapa["PROYECTO"]);
     setFieldIfExists("ubicacionProyecto", mapa["UBICACIÓN"]);
+
     setFieldIfExists("notas", mapa["NOTAS"]);
     setFieldIfExists("terminos", mapa["TÉRMINOS"]);
     setFieldIfExists("formaPago", mapa["FORMA DE PAGO"]);
@@ -484,32 +513,93 @@ function importarDesdeWorkbook(workbook) {
       defval: ""
     });
 
-    conceptosBody.innerHTML = "";
+    /*
+      Antes aquí se hacía:
+      conceptosBody.innerHTML = "";
+
+      Eso borraba toda la tabla.
+      Ahora NO se borra. Solo se agregan los conceptos importados.
+    */
+
+    const filasActuales = [...conceptosBody.querySelectorAll("tr")];
+
+    /*
+      Si solo existe la fila inicial automática "Servicio profesional"
+      con precio 0, la quitamos para que no quede como basura.
+      Pero si ya capturaste algo real, no se toca.
+    */
+    if (filasActuales.length === 1) {
+      const row = filasActuales[0];
+
+      const concepto = row.querySelector(".concepto")?.value.trim() || "";
+      const cantidad = parseFloat(row.querySelector(".cantidad")?.value) || 0;
+      const precio = parseFloat(row.querySelector(".precio")?.value) || 0;
+      const descuento = parseFloat(row.querySelector(".descuento")?.value) || 0;
+
+      const esFilaInicialVacia =
+        concepto === "Servicio profesional" &&
+        cantidad === 1 &&
+        precio === 0 &&
+        descuento === 0;
+
+      if (esFilaInicialVacia) {
+        row.remove();
+      }
+    }
 
     conceptos.forEach(item => {
+      const concepto =
+        item.Concepto ||
+        item.CONCEPTO ||
+        item.concepto ||
+        "";
+
+      const cantidad =
+        item.Cantidad ||
+        item.CANTIDAD ||
+        item.cantidad ||
+        1;
+
+      const precio =
+        item.Precio_Unitario ||
+        item.PRECIO_UNITARIO ||
+        item["Precio Unitario"] ||
+        item["PRECIO UNITARIO"] ||
+        item.precio ||
+        0;
+
+      const descuento =
+        item.Descuento_Porcentaje ||
+        item.DESCUENTO_PORCENTAJE ||
+        item["Desc. %"] ||
+        item["DESC. %"] ||
+        item.descuento ||
+        0;
+
+      const conceptoLimpio = String(concepto || "").trim();
+      const precioNumerico = parseFloat(precio) || 0;
+
+      /*
+        Evita agregar filas completamente vacías del Excel.
+      */
+      if (!conceptoLimpio && !precioNumerico) return;
+
       crearFila({
-        concepto: item.Concepto || item.CONCEPTO || "",
-        cantidad: item.Cantidad || item.CANTIDAD || 1,
-        precio:
-          item.Precio_Unitario ||
-          item.PRECIO_UNITARIO ||
-          item["Precio Unitario"] ||
-          0,
-        descuento:
-          item.Descuento_Porcentaje ||
-          item.DESCUENTO_PORCENTAJE ||
-          item["Desc. %"] ||
-          0
+        concepto: conceptoLimpio,
+        cantidad,
+        precio,
+        descuento
       });
     });
 
-    if (!conceptos.length) {
+    if (!conceptosBody.querySelectorAll("tr").length) {
       crearFila();
     }
   }
 
   recalcularTodo();
-  alert("Excel importado correctamente.");
+
+  alert("Excel importado correctamente. Los datos existentes se conservaron y los conceptos se agregaron a la cotización actual.");
 }
 
 function importarExcel(file) {
@@ -549,7 +639,7 @@ async function exportarPDF() {
     const textGray = [95, 105, 120];
     const darkText = [30, 35, 45];
 
-    const contentWidth = pageWidth - margin * 2;
+    const contentWidth = pageWidth - (margin * 2);
     const usablePageBottom = pageHeight - footerHeight - 6;
 
     const fechaCotizacionVisual = formatearFechaVisual(data.fecha);
@@ -566,9 +656,7 @@ async function exportarPDF() {
       doc.setFontSize(8);
       doc.setTextColor(120, 120, 120);
       doc.text(`${data.empresa || "LinkWich-IT"} | ${data.sitioEmpresa || ""}`, margin, footerY);
-      doc.text(`Página ${pageNumber} de ${doc.getNumberOfPages()}`, pageWidth - margin, footerY, {
-        align: "right"
-      });
+      doc.text(`Página ${pageNumber} de ${doc.getNumberOfPages()}`, pageWidth - margin, footerY, { align: "right" });
     }
 
     function addFooterToAllPages() {
@@ -675,7 +763,7 @@ async function exportarPDF() {
       const titleHeight = 7;
       const leftX = boxX + innerPadding;
       const rightX = boxX + boxW / 2 + 2;
-      const colWidth = boxW / 2 - innerPadding - 6;
+      const colWidth = (boxW / 2) - innerPadding - 6;
 
       const leftHeights = [
         drawInfoLineMeasure("Cliente", data.cliente, colWidth),
@@ -728,7 +816,7 @@ async function exportarPDF() {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9.5);
       const valueLines = doc.splitTextToSize(data.tipoServicio || "-", textWidth);
-      const boxH = Math.max(12, 8 + valueLines.length * 4.5);
+      const boxH = Math.max(12, 8 + (valueLines.length * 4.5));
 
       let currentY = ensureSpace(y, boxH + 6);
 
@@ -786,9 +874,7 @@ async function exportarPDF() {
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...accentBlue);
       doc.setFontSize(10);
-      doc.text("RESUMEN FINANCIERO", rightX + rightBoxW / 2, currentY + 7, {
-        align: "center"
-      });
+      doc.text("RESUMEN FINANCIERO", rightX + rightBoxW / 2, currentY + 7, { align: "center" });
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
@@ -802,21 +888,13 @@ async function exportarPDF() {
 
       doc.setFont("helvetica", "normal");
       doc.setTextColor(...darkText);
-      doc.text(formatMoney(data.subtotal), rightX + rightBoxW - 4, currentY + 15, {
-        align: "right"
-      });
-      doc.text(formatMoney(data.descuentoMonto), rightX + rightBoxW - 4, currentY + 21, {
-        align: "right"
-      });
-      doc.text(formatMoney(data.ivaMonto), rightX + rightBoxW - 4, currentY + 27, {
-        align: "right"
-      });
+      doc.text(formatMoney(data.subtotal), rightX + rightBoxW - 4, currentY + 15, { align: "right" });
+      doc.text(formatMoney(data.descuentoMonto), rightX + rightBoxW - 4, currentY + 21, { align: "right" });
+      doc.text(formatMoney(data.ivaMonto), rightX + rightBoxW - 4, currentY + 27, { align: "right" });
 
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryBlue);
-      doc.text(formatMoney(data.total), rightX + rightBoxW - 4, currentY + 34, {
-        align: "right"
-      });
+      doc.text(formatMoney(data.total), rightX + rightBoxW - 4, currentY + 34, { align: "right" });
 
       return currentY + rightH + 8;
     }
@@ -899,9 +977,7 @@ async function exportarPDF() {
     doc.setTextColor(...primaryBlue);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
-    doc.text("COTIZACIÓN", quoteBoxX + quoteBoxW / 2, quoteBoxY + 6.8, {
-      align: "center"
-    });
+    doc.text("COTIZACIÓN", quoteBoxX + quoteBoxW / 2, quoteBoxY + 6.8, { align: "center" });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.2);
@@ -995,6 +1071,7 @@ async function exportarPDF() {
 
     const nombreArchivo = `Cotizacion_${(data.folio || "sin_folio").replace(/\s+/g, "_")}.pdf`;
     doc.save(nombreArchivo);
+
   } catch (error) {
     console.error(error);
     alert("Ocurrió un error al generar el PDF. Revisa que exista assets/logo-pdf.png");
