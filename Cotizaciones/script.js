@@ -15,6 +15,8 @@ const descuentoMontoEl = document.getElementById("descuentoMonto");
 const ivaMontoEl = document.getElementById("ivaMonto");
 const totalEl = document.getElementById("total");
 const anticipoMontoEl = document.getElementById("anticipoMonto");
+const isrResicoMontoEl = document.getElementById("isrResicoMonto");
+const netoResicoEl = document.getElementById("netoResico");
 
 const resConceptos = document.getElementById("resConceptos");
 const resSubtotal = document.getElementById("resSubtotal");
@@ -24,6 +26,7 @@ const resTotal = document.getElementById("resTotal");
 const ivaInput = document.getElementById("iva");
 const descuentoGeneralInput = document.getElementById("descuentoGeneral");
 const anticipoInput = document.getElementById("anticipo");
+const isrResicoInput = document.getElementById("isrResico");
 
 document.getElementById("fecha").valueAsDate = new Date();
 
@@ -159,11 +162,19 @@ function recalcularTodo() {
   const descuentoGeneral = parseFloat(descuentoGeneralInput.value) || 0;
   const iva = parseFloat(ivaInput.value) || 0;
   const anticipo = parseFloat(anticipoInput.value) || 0;
+  const isrResico = isrResicoInput ? (parseFloat(isrResicoInput.value) || 0) : 0;
 
   const descuentoMonto = subtotal * (descuentoGeneral / 100);
   const subtotalConDescuento = subtotal - descuentoMonto;
   const ivaMonto = subtotalConDescuento * (iva / 100);
+
+  // Cálculo interno RESICO.
+  // Se calcula sobre la base antes de IVA.
+  // No cambia el total que verá el cliente ni aparece en el PDF.
+  const isrResicoMonto = subtotalConDescuento * (isrResico / 100);
+
   const total = subtotalConDescuento + ivaMonto;
+  const netoEstimadoResico = total - isrResicoMonto;
   const anticipoMonto = total * (anticipo / 100);
 
   subtotalEl.textContent = formatMoney(subtotal);
@@ -171,6 +182,14 @@ function recalcularTodo() {
   ivaMontoEl.textContent = formatMoney(ivaMonto);
   totalEl.textContent = formatMoney(total);
   anticipoMontoEl.textContent = formatMoney(anticipoMonto);
+
+  if (isrResicoMontoEl) {
+    isrResicoMontoEl.textContent = formatMoney(isrResicoMonto);
+  }
+
+  if (netoResicoEl) {
+    netoResicoEl.textContent = formatMoney(netoEstimadoResico);
+  }
 
   resConceptos.textContent = rows.length;
   resSubtotal.textContent = formatMoney(subtotal);
@@ -203,9 +222,16 @@ function obtenerDatosFormulario() {
   const descuentoGeneral = parseFloat(descuentoGeneralInput.value) || 0;
   const descuentoMonto = subtotal * (descuentoGeneral / 100);
   const subtotalConDescuento = subtotal - descuentoMonto;
+
   const iva = parseFloat(ivaInput.value) || 0;
   const ivaMonto = subtotalConDescuento * (iva / 100);
+
+  const isrResico = isrResicoInput ? (parseFloat(isrResicoInput.value) || 0) : 0;
+  const isrResicoMonto = subtotalConDescuento * (isrResico / 100);
+
   const total = subtotalConDescuento + ivaMonto;
+  const netoEstimadoResico = total - isrResicoMonto;
+
   const anticipo = parseFloat(anticipoInput.value) || 0;
   const anticipoMonto = total * (anticipo / 100);
 
@@ -237,7 +263,12 @@ function obtenerDatosFormulario() {
     iva,
     descuentoGeneral,
     anticipo,
-    formaPago: document.getElementById("formaPago") ? document.getElementById("formaPago").value : "Únicamente mediante transferencia bancaria.",
+    isrResico,
+
+    formaPago: document.getElementById("formaPago")
+      ? document.getElementById("formaPago").value
+      : "Únicamente mediante transferencia bancaria.",
+
     notas: document.getElementById("notas").value,
     terminos: document.getElementById("terminos").value,
     monedaDescripcion: getCurrencyLabel(),
@@ -246,15 +277,22 @@ function obtenerDatosFormulario() {
     subtotal,
     descuentoMonto,
     ivaMonto,
+    isrResicoMonto,
     total,
+    netoEstimadoResico,
     anticipoMonto
   };
 }
 
 function limpiarFormulario() {
   const ids = [
-    "cliente", "contacto", "correoCliente", "telefonoCliente",
-    "proyecto", "ubicacionProyecto", "notas"
+    "cliente",
+    "contacto",
+    "correoCliente",
+    "telefonoCliente",
+    "proyecto",
+    "ubicacionProyecto",
+    "notas"
   ];
 
   ids.forEach(id => {
@@ -273,6 +311,11 @@ function limpiarFormulario() {
   document.getElementById("tipoServicio").selectedIndex = 0;
   document.getElementById("iva").value = 16;
   document.getElementById("descuentoGeneral").value = 0;
+
+  if (document.getElementById("isrResico")) {
+    document.getElementById("isrResico").value = 1.25;
+  }
+
   document.getElementById("anticipo").value = 50;
   document.getElementById("fecha").valueAsDate = new Date();
 
@@ -318,10 +361,16 @@ function cargarBorrador() {
 
   document.getElementById("iva").value = data.iva ?? 16;
   document.getElementById("descuentoGeneral").value = data.descuentoGeneral ?? 0;
+
+  if (document.getElementById("isrResico")) {
+    document.getElementById("isrResico").value = data.isrResico ?? 1.25;
+  }
+
   document.getElementById("anticipo").value = data.anticipo ?? 50;
 
   if (document.getElementById("formaPago")) {
-    document.getElementById("formaPago").value = data.formaPago || "Únicamente mediante transferencia bancaria.";
+    document.getElementById("formaPago").value =
+      data.formaPago || "Únicamente mediante transferencia bancaria.";
   }
 
   document.getElementById("notas").value = data.notas || "";
@@ -383,7 +432,11 @@ function importarDesdeWorkbook(workbook) {
   }
 
   if (resumenSheet) {
-    const resumenRows = XLSX.utils.sheet_to_json(resumenSheet, { header: 1, defval: "" });
+    const resumenRows = XLSX.utils.sheet_to_json(resumenSheet, {
+      header: 1,
+      defval: ""
+    });
+
     const mapa = {};
 
     resumenRows.forEach(row => {
@@ -414,6 +467,10 @@ function importarDesdeWorkbook(workbook) {
       setFieldIfExists("moneda", mapa["MONEDA"]);
     }
 
+    if (mapa["ISR RESICO INTERNO"] !== undefined) {
+      setFieldIfExists("isrResico", mapa["ISR RESICO INTERNO"]);
+    }
+
     if (typeof mapa["VIGENCIA"] === "string") {
       const m = mapa["VIGENCIA"].match(/\d+/);
       if (m) setFieldIfExists("vigencia", m[0]);
@@ -423,7 +480,9 @@ function importarDesdeWorkbook(workbook) {
   }
 
   if (conceptosSheet) {
-    const conceptos = XLSX.utils.sheet_to_json(conceptosSheet, { defval: "" });
+    const conceptos = XLSX.utils.sheet_to_json(conceptosSheet, {
+      defval: ""
+    });
 
     conceptosBody.innerHTML = "";
 
@@ -431,8 +490,16 @@ function importarDesdeWorkbook(workbook) {
       crearFila({
         concepto: item.Concepto || item.CONCEPTO || "",
         cantidad: item.Cantidad || item.CANTIDAD || 1,
-        precio: item.Precio_Unitario || item.PRECIO_UNITARIO || item["Precio Unitario"] || 0,
-        descuento: item.Descuento_Porcentaje || item.DESCUENTO_PORCENTAJE || item["Desc. %"] || 0
+        precio:
+          item.Precio_Unitario ||
+          item.PRECIO_UNITARIO ||
+          item["Precio Unitario"] ||
+          0,
+        descuento:
+          item.Descuento_Porcentaje ||
+          item.DESCUENTO_PORCENTAJE ||
+          item["Desc. %"] ||
+          0
       });
     });
 
@@ -449,6 +516,7 @@ function importarExcel(file) {
   if (!file) return;
 
   const reader = new FileReader();
+
   reader.onload = function (e) {
     try {
       const data = new Uint8Array(e.target.result);
@@ -459,6 +527,7 @@ function importarExcel(file) {
       alert("No se pudo leer el archivo Excel.");
     }
   };
+
   reader.readAsArrayBuffer(file);
 }
 
@@ -480,7 +549,7 @@ async function exportarPDF() {
     const textGray = [95, 105, 120];
     const darkText = [30, 35, 45];
 
-    const contentWidth = pageWidth - (margin * 2);
+    const contentWidth = pageWidth - margin * 2;
     const usablePageBottom = pageHeight - footerHeight - 6;
 
     const fechaCotizacionVisual = formatearFechaVisual(data.fecha);
@@ -497,7 +566,9 @@ async function exportarPDF() {
       doc.setFontSize(8);
       doc.setTextColor(120, 120, 120);
       doc.text(`${data.empresa || "LinkWich-IT"} | ${data.sitioEmpresa || ""}`, margin, footerY);
-      doc.text(`Página ${pageNumber} de ${doc.getNumberOfPages()}`, pageWidth - margin, footerY, { align: "right" });
+      doc.text(`Página ${pageNumber} de ${doc.getNumberOfPages()}`, pageWidth - margin, footerY, {
+        align: "right"
+      });
     }
 
     function addFooterToAllPages() {
@@ -604,7 +675,7 @@ async function exportarPDF() {
       const titleHeight = 7;
       const leftX = boxX + innerPadding;
       const rightX = boxX + boxW / 2 + 2;
-      const colWidth = (boxW / 2) - innerPadding - 6;
+      const colWidth = boxW / 2 - innerPadding - 6;
 
       const leftHeights = [
         drawInfoLineMeasure("Cliente", data.cliente, colWidth),
@@ -657,7 +728,7 @@ async function exportarPDF() {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9.5);
       const valueLines = doc.splitTextToSize(data.tipoServicio || "-", textWidth);
-      const boxH = Math.max(12, 8 + (valueLines.length * 4.5));
+      const boxH = Math.max(12, 8 + valueLines.length * 4.5);
 
       let currentY = ensureSpace(y, boxH + 6);
 
@@ -715,7 +786,9 @@ async function exportarPDF() {
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...accentBlue);
       doc.setFontSize(10);
-      doc.text("RESUMEN FINANCIERO", rightX + rightBoxW / 2, currentY + 7, { align: "center" });
+      doc.text("RESUMEN FINANCIERO", rightX + rightBoxW / 2, currentY + 7, {
+        align: "center"
+      });
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
@@ -729,13 +802,21 @@ async function exportarPDF() {
 
       doc.setFont("helvetica", "normal");
       doc.setTextColor(...darkText);
-      doc.text(formatMoney(data.subtotal), rightX + rightBoxW - 4, currentY + 15, { align: "right" });
-      doc.text(formatMoney(data.descuentoMonto), rightX + rightBoxW - 4, currentY + 21, { align: "right" });
-      doc.text(formatMoney(data.ivaMonto), rightX + rightBoxW - 4, currentY + 27, { align: "right" });
+      doc.text(formatMoney(data.subtotal), rightX + rightBoxW - 4, currentY + 15, {
+        align: "right"
+      });
+      doc.text(formatMoney(data.descuentoMonto), rightX + rightBoxW - 4, currentY + 21, {
+        align: "right"
+      });
+      doc.text(formatMoney(data.ivaMonto), rightX + rightBoxW - 4, currentY + 27, {
+        align: "right"
+      });
 
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryBlue);
-      doc.text(formatMoney(data.total), rightX + rightBoxW - 4, currentY + 34, { align: "right" });
+      doc.text(formatMoney(data.total), rightX + rightBoxW - 4, currentY + 34, {
+        align: "right"
+      });
 
       return currentY + rightH + 8;
     }
@@ -818,7 +899,9 @@ async function exportarPDF() {
     doc.setTextColor(...primaryBlue);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
-    doc.text("COTIZACIÓN", quoteBoxX + quoteBoxW / 2, quoteBoxY + 6.8, { align: "center" });
+    doc.text("COTIZACIÓN", quoteBoxX + quoteBoxW / 2, quoteBoxY + 6.8, {
+      align: "center"
+    });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.2);
@@ -872,8 +955,7 @@ async function exportarPDF() {
         4: { halign: "center", cellWidth: 18 },
         5: { halign: "right", cellWidth: 28 }
       },
-      didDrawPage: function () {
-      }
+      didDrawPage: function () {}
     });
 
     let finalY = doc.lastAutoTable.finalY + 8;
@@ -913,7 +995,6 @@ async function exportarPDF() {
 
     const nombreArchivo = `Cotizacion_${(data.folio || "sin_folio").replace(/\s+/g, "_")}.pdf`;
     doc.save(nombreArchivo);
-
   } catch (error) {
     console.error(error);
     alert("Ocurrió un error al generar el PDF. Revisa que exista assets/logo-pdf.png");
@@ -954,6 +1035,8 @@ function exportarExcel() {
     ["DESCUENTO GENERAL", data.descuentoMonto],
     ["IVA", data.ivaMonto],
     ["TOTAL", data.total],
+    ["ISR RESICO INTERNO", data.isrResicoMonto],
+    ["NETO ESTIMADO RESICO", data.netoEstimadoResico],
     ["ANTICIPO SUGERIDO", data.anticipoMonto],
     [],
     ["NOTAS", data.notas],
@@ -995,17 +1078,25 @@ btnCargar.addEventListener("click", cargarBorrador);
 
 if (btnImportarExcel && inputImportarExcel) {
   btnImportarExcel.addEventListener("click", () => inputImportarExcel.click());
-  inputImportarExcel.addEventListener("change", (e) => {
+  inputImportarExcel.addEventListener("change", e => {
     const file = e.target.files?.[0];
     importarExcel(file);
     e.target.value = "";
   });
 }
 
-[ivaInput, descuentoGeneralInput, anticipoInput, document.getElementById("moneda")].forEach(el => {
-  el.addEventListener("input", recalcularTodo);
-  el.addEventListener("change", recalcularTodo);
-});
+[
+  ivaInput,
+  descuentoGeneralInput,
+  isrResicoInput,
+  anticipoInput,
+  document.getElementById("moneda")
+]
+  .filter(Boolean)
+  .forEach(el => {
+    el.addEventListener("input", recalcularTodo);
+    el.addEventListener("change", recalcularTodo);
+  });
 
 if (!document.getElementById("folio").value.trim()) {
   generarNuevoFolio();
