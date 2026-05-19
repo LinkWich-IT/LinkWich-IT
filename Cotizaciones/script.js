@@ -1,3 +1,11 @@
+const DEFAULT_EMPRESA = "LinkWich-IT System & Networking Solution";
+const DEFAULT_CORREO_EMPRESA = "jhernandez@linkwich-it.com";
+const DEFAULT_TELEFONO_EMPRESA = "+52 624 185 6134";
+const DEFAULT_SITIO_EMPRESA = "www.linkwich-it.com";
+const DEFAULT_CIUDAD_EMPRESA = "San José del Cabo, B.C.S.";
+const DEFAULT_MONEDA = "MXN";
+const DEFAULT_ANTICIPO = 60;
+
 const conceptosBody = document.getElementById("conceptosBody");
 
 const btnAgregarFila = document.getElementById("btnAgregarFila");
@@ -30,6 +38,28 @@ const anticipoInput = document.getElementById("anticipo");
 const isrResicoInput = document.getElementById("isrResico");
 
 document.getElementById("fecha").valueAsDate = new Date();
+
+function aplicarDatosEmpresaPorDefecto(options = {}) {
+  const overwrite = options.overwrite === true;
+
+  const campos = [
+    { id: "empresa", value: DEFAULT_EMPRESA },
+    { id: "correoEmpresa", value: DEFAULT_CORREO_EMPRESA },
+    { id: "telefonoEmpresa", value: DEFAULT_TELEFONO_EMPRESA },
+    { id: "sitioEmpresa", value: DEFAULT_SITIO_EMPRESA },
+    { id: "ciudadEmpresa", value: DEFAULT_CIUDAD_EMPRESA },
+    { id: "moneda", value: DEFAULT_MONEDA }
+  ];
+
+  campos.forEach(item => {
+    const el = document.getElementById(item.id);
+    if (!el) return;
+
+    if (overwrite || !String(el.value || "").trim()) {
+      el.value = item.value;
+    }
+  });
+}
 
 function formatMoney(value) {
   const moneda = document.getElementById("moneda").value || "MXN";
@@ -304,6 +334,8 @@ function limpiarFormulario() {
     if (el) el.value = "";
   });
 
+  aplicarDatosEmpresaPorDefecto({ overwrite: true });
+
   if (document.getElementById("formaPago")) {
     document.getElementById("formaPago").value = "Únicamente mediante transferencia bancaria.";
   }
@@ -320,7 +352,7 @@ function limpiarFormulario() {
     document.getElementById("isrResico").value = 1.25;
   }
 
-  document.getElementById("anticipo").value = 50;
+  document.getElementById("anticipo").value = DEFAULT_ANTICIPO;
   document.getElementById("fecha").valueAsDate = new Date();
 
   generarNuevoFolio();
@@ -344,12 +376,12 @@ function cargarBorrador() {
 
   const data = JSON.parse(raw);
 
-  document.getElementById("empresa").value = data.empresa || "";
-  document.getElementById("correoEmpresa").value = data.correoEmpresa || "";
-  document.getElementById("telefonoEmpresa").value = data.telefonoEmpresa || "";
-  document.getElementById("sitioEmpresa").value = data.sitioEmpresa || "";
-  document.getElementById("ciudadEmpresa").value = data.ciudadEmpresa || "";
-  document.getElementById("moneda").value = data.moneda || "MXN";
+  document.getElementById("empresa").value = data.empresa || DEFAULT_EMPRESA;
+  document.getElementById("correoEmpresa").value = data.correoEmpresa || DEFAULT_CORREO_EMPRESA;
+  document.getElementById("telefonoEmpresa").value = data.telefonoEmpresa || DEFAULT_TELEFONO_EMPRESA;
+  document.getElementById("sitioEmpresa").value = data.sitioEmpresa || DEFAULT_SITIO_EMPRESA;
+  document.getElementById("ciudadEmpresa").value = data.ciudadEmpresa || DEFAULT_CIUDAD_EMPRESA;
+  document.getElementById("moneda").value = data.moneda || DEFAULT_MONEDA;
 
   document.getElementById("folio").value = data.folio || "";
   document.getElementById("fecha").value = data.fecha || "";
@@ -370,7 +402,7 @@ function cargarBorrador() {
     document.getElementById("isrResico").value = data.isrResico ?? 1.25;
   }
 
-  document.getElementById("anticipo").value = data.anticipo ?? 50;
+  document.getElementById("anticipo").value = data.anticipo ?? DEFAULT_ANTICIPO;
 
   if (document.getElementById("formaPago")) {
     document.getElementById("formaPago").value =
@@ -498,6 +530,10 @@ function importarDesdeWorkbook(workbook) {
 
     if (mapa["ISR RESICO INTERNO"] !== undefined) {
       setFieldIfExists("isrResico", mapa["ISR RESICO INTERNO"]);
+    }
+
+    if (mapa["ANTICIPO SUGERIDO"] !== undefined) {
+      setFieldIfExists("anticipo", mapa["ANTICIPO SUGERIDO"]);
     }
 
     if (typeof mapa["VIGENCIA"] === "string") {
@@ -655,7 +691,7 @@ async function exportarPDF() {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(8);
       doc.setTextColor(120, 120, 120);
-      doc.text(`${data.empresa || "LinkWich-IT"} | ${data.sitioEmpresa || ""}`, margin, footerY);
+      doc.text(`${data.empresa || DEFAULT_EMPRESA} | ${data.sitioEmpresa || DEFAULT_SITIO_EMPRESA}`, margin, footerY);
       doc.text(`Página ${pageNumber} de ${doc.getNumberOfPages()}`, pageWidth - margin, footerY, { align: "right" });
     }
 
@@ -947,13 +983,13 @@ async function exportarPDF() {
 
     while (empresaFontSize >= 10) {
       doc.setFontSize(empresaFontSize);
-      const lines = doc.splitTextToSize(data.empresa || "LinkWich-IT", infoW);
+      const lines = doc.splitTextToSize(data.empresa || DEFAULT_EMPRESA, infoW);
       if (lines.length <= 2) break;
       empresaFontSize -= 1;
     }
 
     doc.setFontSize(empresaFontSize);
-    const empresaLines = doc.splitTextToSize(data.empresa || "LinkWich-IT", infoW);
+    const empresaLines = doc.splitTextToSize(data.empresa || DEFAULT_EMPRESA, infoW);
     doc.text(empresaLines, infoX, infoY);
 
     const empresaTextHeight = empresaLines.length * (empresaFontSize * 0.42);
@@ -963,9 +999,9 @@ async function exportarPDF() {
     doc.setFontSize(9.5);
 
     const contactoLines = [
-      data.correoEmpresa || "-",
-      data.telefonoEmpresa || "-",
-      data.sitioEmpresa || "-"
+      data.correoEmpresa || DEFAULT_CORREO_EMPRESA,
+      data.telefonoEmpresa || DEFAULT_TELEFONO_EMPRESA,
+      data.sitioEmpresa || DEFAULT_SITIO_EMPRESA
     ];
 
     contactoLines.forEach(line => {
@@ -1175,6 +1211,12 @@ if (btnImportarExcel && inputImportarExcel) {
     el.addEventListener("change", recalcularTodo);
   });
 
+aplicarDatosEmpresaPorDefecto({ overwrite: false });
+
+if (anticipoInput && !String(anticipoInput.value || "").trim()) {
+  anticipoInput.value = DEFAULT_ANTICIPO;
+}
+
 if (!document.getElementById("folio").value.trim()) {
   generarNuevoFolio();
 }
@@ -1185,3 +1227,5 @@ crearFila({
   precio: 0,
   descuento: 0
 });
+
+recalcularTodo();
