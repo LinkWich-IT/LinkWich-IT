@@ -832,6 +832,116 @@
 
 </style>
 
+
+<style>
+/* ============================================================
+   FIX HEADER + TELÉFONO MÉXICO
+   LinkWich-IT | Bootstrap 5
+   ÚLTIMA ACTUALIZACIÓN 2026-05-20
+
+   Objetivo:
+   - Evitar que el teléfono se vaya hasta el extremo derecho separado del botón.
+   - Mantener acciones agrupadas: Ver LinkWich-Monitor + teléfono.
+   - Quitar fondo blanco del ícono/bandera MX para modo dark.
+   - Conservar menú móvil sin romper Bootstrap 5 ni main.js.
+   ============================================================ */
+.header .header-container{
+  gap: 1rem;
+}
+
+#header .logo{
+  flex: 0 0 auto;
+}
+
+#header .navmenu{
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+#header .navmenu ul{
+  align-items: center;
+  gap: .18rem;
+}
+
+#header .navmenu a{
+  white-space: nowrap;
+}
+
+.lw-header-actions{
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .65rem;
+  margin-left: .65rem;
+}
+
+.lw-header-actions .btn-getstarted,
+#header .lw-mobile-action{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .38rem;
+  border-radius: 999px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.lw-header-actions .btn-getstarted{
+  padding: .72rem 1rem;
+  min-height: 42px;
+}
+
+.lw-header-actions .lw-phone-header{
+  padding-inline: .95rem;
+}
+
+/* Elimina el círculo/fondo blanco que se veía feo en dark mode */
+.lw-phone-flag{
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: auto !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.05rem !important;
+  line-height: 1 !important;
+  transform: translateY(-.5px);
+}
+
+.lw-phone-badge{
+  gap: .42rem !important;
+}
+
+#header .lw-mobile-action{
+  width: 100%;
+  padding: .85rem 1rem !important;
+  margin: .25rem 0;
+  color: #fff !important;
+  background: linear-gradient(135deg, #5b4ee6, #4b6cff) !important;
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+@media (max-width: 1399px){
+  #header .navmenu ul{ gap: .05rem; }
+  #header .navmenu a{ font-size: .9rem; }
+  .lw-header-actions{ gap: .45rem; margin-left: .45rem; }
+  .lw-header-actions .btn-getstarted{ padding: .68rem .82rem; font-size: .88rem; }
+}
+
+@media (max-width: 1199px){
+  #header .navmenu{
+    flex: 0 0 auto;
+    justify-content: flex-end;
+  }
+}
+</style>
+
 </head>
 
 <body class="index-page">
@@ -845,19 +955,39 @@
       </a>
 
       <nav id="navmenu" class="navmenu">
- <ul>
-  <li><a href="#hero" class="active"><i class="bi bi-house-door-fill me-1"></i> Inicio</a></li>
-  <li><a href="#about"><i class="bi bi-info-circle-fill me-1"></i> Acerca de</a></li>
-  <li><a href="#services"><i class="bi bi-gear-fill me-1"></i> Servicios</a></li>
-  <li><a href="#portfolio"><i class="bi bi-images me-1"></i> Portafolio</a></li>
-  <li><a href="#experiencia"><i class="bi bi-people-fill me-1"></i> Experiencia</a></li>
-  <li><a href="#contact"><i class="bi bi-envelope-fill me-1"></i> Contacto</a></li>
-  <li><a href="#" id="openSupportAccess"><i class="bi bi-headset me-1"></i> Soporte</a></li>
-  <a class="btn-getstarted" href="https://www.linkwich-it.com/LinkWich-Monitor/index.html"><i class="bi bi-rocket-fill me-1"></i> Ver LinkWich-Monitor</a>
-  <a class="btn-getstarted lw-phone-badge" href="tel:+526241586134" aria-label="Llamar a LinkWich-IT"><span class="lw-phone-flag">🇲🇽</span> +52 624 158 61 34</a>
-</ul>
-  <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-</nav>
+        <ul>
+          <li><a href="#hero" class="active"><i class="bi bi-house-door-fill me-1"></i> Inicio</a></li>
+          <li><a href="#about"><i class="bi bi-info-circle-fill me-1"></i> Acerca de</a></li>
+          <li><a href="#services"><i class="bi bi-gear-fill me-1"></i> Servicios</a></li>
+          <li><a href="#portfolio"><i class="bi bi-images me-1"></i> Portafolio</a></li>
+          <li><a href="#experiencia"><i class="bi bi-people-fill me-1"></i> Experiencia</a></li>
+          <li><a href="#contact"><i class="bi bi-envelope-fill me-1"></i> Contacto</a></li>
+          <li><a href="#" id="openSupportAccess"><i class="bi bi-headset me-1"></i> Soporte</a></li>
+
+          <!-- Acciones visibles dentro del menú móvil -->
+          <li class="d-xl-none mt-3">
+            <a class="lw-mobile-action" href="https://www.linkwich-it.com/LinkWich-Monitor/index.html">
+              <i class="bi bi-rocket-fill me-1"></i> Ver LinkWich-Monitor
+            </a>
+          </li>
+          <li class="d-xl-none">
+            <a class="lw-mobile-action lw-phone-badge" href="tel:+526241586134" aria-label="Llamar a LinkWich-IT">
+              <span class="lw-phone-flag">🇲🇽</span> +52 624 158 61 34
+            </a>
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <!-- Acciones desktop separadas del nav para evitar que el teléfono se vaya al extremo -->
+      <div class="lw-header-actions d-none d-xl-flex">
+        <a class="btn-getstarted lw-monitor-btn" href="https://www.linkwich-it.com/LinkWich-Monitor/index.html">
+          <i class="bi bi-rocket-fill me-1"></i> Ver LinkWich-Monitor
+        </a>
+        <a class="btn-getstarted lw-phone-badge lw-phone-header" href="tel:+526241586134" aria-label="Llamar a LinkWich-IT">
+          <span class="lw-phone-flag">🇲🇽</span> +52 624 158 61 34
+        </a>
+      </div>
 
     </div>
   </header>
