@@ -30,6 +30,19 @@
       color: #334155;
       font-weight: 600;
     }
+    #isrResico {
+      background: #f8fafc;
+      color: #0f766e;
+      font-weight: 800;
+    }
+    #resicoDetalle {
+      color: #334155;
+      font-weight: 600;
+    }
+    #resicoConceptoIndex:disabled {
+      opacity: .75;
+      cursor: not-allowed;
+    }
   </style>
 
   <!-- jsPDF -->
@@ -223,9 +236,24 @@
             <input type="number" id="descuentoGeneral" value="0" min="0" step="0.01" />
           </div>
           <div class="field">
-            <label>ISR RESICO interno (%)</label>
-            <input type="number" id="isrResico" value="1.25" min="0" step="0.01" />
-            <small class="field-help">Solo cálculo interno, no aparece en el PDF.</small>
+            <label>RESICO automático (%)</label>
+            <input type="number" id="isrResico" value="0" min="0" step="0.01" readonly />
+            <small class="field-help">Se calcula sobre la base antes de IVA y se integra al precio. No aparece como impuesto en el PDF.</small>
+          </div>
+          <div class="field">
+            <label>Tabla RESICO</label>
+            <select id="resicoTabla">
+              <option value="mensual" selected>Mensual</option>
+              <option value="anual">Anual</option>
+            </select>
+            <small class="field-help" id="resicoDetalle">Base sin IVA: $0.00 | tabla mensual | tasa 0%.</small>
+          </div>
+          <div class="field">
+            <label>Cargar RESICO en concepto</label>
+            <select id="resicoConceptoIndex">
+              <option value="0">Concepto #1</option>
+            </select>
+            <small class="field-help">Si hay varios conceptos, aquí eliges dónde se integrará internamente antes de imprimir.</small>
           </div>
           <div class="field">
             <label>Anticipo sugerido (%)</label>
@@ -270,15 +298,19 @@
             <strong id="ivaMonto">$0.00</strong>
           </div>
           <div class="total-row internal-row">
-            <span>ISR RESICO interno</span>
+            <span>RESICO estimado integrado</span>
             <strong id="isrResicoMonto">$0.00</strong>
+          </div>
+          <div class="total-row internal-row">
+            <span>Cargado en</span>
+            <strong id="resicoConceptoResumen">Concepto #1</strong>
           </div>
           <div class="total-row grand-total">
             <span>Total cliente</span>
             <strong id="total">$0.00</strong>
           </div>
           <div class="total-row internal-row neto-row">
-            <span>Neto estimado a recibir</span>
+            <span>Neto estimado después RESICO</span>
             <strong id="netoResico">$0.00</strong>
           </div>
           <div class="total-row anticipo-row">
