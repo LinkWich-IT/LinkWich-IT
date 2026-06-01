@@ -235,6 +235,263 @@ function calcularFechaExpiracion(fechaStr, vigenciaDias) {
   return `${dd}/${mm}/${yyyy}`;
 }
 
+function getResicoTablaMode() {
+  const el = document.getElementById("resicoTabla");
+  return el ? (el.value || "mensual") : "mensual";
+}
+
+function getResicoRateInfo(baseAntesIVA, mode = getResicoTablaMode()) {
+  const base = Number(baseAntesIVA) || 0;
+
+  const tablas = {
+    mensual: [
+      { limite: 25000.00, tasa: 1.00, etiqueta: "Hasta $25,000 mensual" },
+      { limite: 50000.00, tasa: 1.10, etiqueta: "Hasta $50,000 mensual" },
+      { limite: 83333.33, tasa: 1.50, etiqueta: "Hasta $83,333.33 mensual" },
+      { limite: 208333.33, tasa: 2.00, etiqueta: "Hasta $208,333.33 mensual" },
+      { limite: 3500000.00, tasa: 2.50, etiqueta: "Hasta $3,500,000 mensual" }
+    ],
+    anual: [
+      { limite: 300000.00, tasa: 1.00, etiqueta: "Hasta $300,000 anual" },
+      { limite: 600000.00, tasa: 1.10, etiqueta: "Hasta $600,000 anual" },
+      { limite: 1000000.00, tasa: 1.50, etiqueta: "Hasta $1,000,000 anual" },
+      { limite: 2500000.00, tasa: 2.00, etiqueta: "Hasta $2,500,000 anual" },
+      { limite: 3500000.00, tasa: 2.50, etiqueta: "Hasta $3,500,000 anual" }
+    ]
+  };
+
+  if (base <= 0) {
+    return {
+      mode,
+      tasa: 0,
+      tasaDecimal: 0,
+      etiqueta: "Sin base gravable",
+      excedeLimite: false
+    };
+  }
+
+  const tabla = tablas[mode] || tablas.mensual;
+  const tramo = tabla.find(item => base <= item.limite);
+
+  if (!tramo) {
+    return {
+      mode,
+      tasa: 2.50,
+      tasaDecimal: 0.025,
+      etiqueta: "Excede $3,500,000; validar RESICO con contador",
+      excedeLimite: true
+    };
+  }
+
+  return {
+    mode,
+    tasa: tramo.tasa,
+    tasaDecimal: tramo.tasa / 100,
+    etiqueta: tramo.etiqueta,
+    excedeLimite: false
+  };
+}
+
+function leerConceptosDesdeTabla() {
+  const rows = [...conceptosBody.querySelectorAll("tr")];
+
+  return rows.map((row, i) => {
+    const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
+    const precio = parseFloat(row.querySelector(".precio").value) || 0;
+    const descuento = parseFloat(row.querySelector(".descuento").value) || 0;
+
+    let importe = cantidad * precio;
+    importe -= importe * (descuento / 100);
+
+    return {
+      no: i + 1,
+      concepto: row.querySelector(".concepto").value.trim(),
+      cantidad,
+      precio,
+      descuento,
+      importe
+    };
+  });
+}
+
+function actualizarSelectorConceptoResico(conceptos) {
+  const select = document.getElementById("resicoConceptoIndex");
+  if (!select) return 0;
+
+  const previousValue = select.value;
+  select.innerHTML = "";
+
+  conceptos.forEach((item, index) => {
+    const opt = document.createElement("option");
+    opt.value = String(index);
+    const nombre = item.concepto || `Concepto ${index + 1}`;
+    opt.textContent = `#${index + 1} - ${nombre.substring(0, 55)}${nombre.length > 55 ? "..." : ""}`;
+    select.appendChild(opt);
+  });
+
+  if (!conceptos.length) {
+    const opt = document.createElement("option");
+    opt.value = "0";
+    opt.textContent = "Sin conceptos";
+    select.appendChild(opt);
+    select.disabled = true;
+    return 0;
+  }
+
+  const previousIndex = parseInt(previousValue, 10);
+  const nextIndex = !isNaN(previousIndex) && previousIndex >= 0 && previousIndex < conceptos.length
+    ? previousIndex
+    : 0;
+
+  select.value = String(nextIndex);
+  select.disabled = conceptos.length <= 1;
+  return nextIndex;
+}
+
+function getSelectedResicoConceptIndex(conceptosLength) {
+  const select = document.getElementById("resicoConceptoIndex");
+  if (!select || !conceptosLength) return 0;
+
+  const selected = parseInt(select.value, 10);
+  if (isNaN(selected) || selected < 0 || selected >= conceptosLength) return 0;
+
+  return selected;
+}
+
+function aplicarCargoResicoAConceptos(conceptos, cargoAntesDescuentoGeneral, selectedIndex) {
+  const adjusted = conceptos.map(item => ({ ...item }));
+  const cargo = Number(cargoAntesDescuentoGeneral) || 0;
+
+  if (!adjusted.length || cargo <= 0) return adjusted;
+
+  const index = selectedIndex >= 0 && selectedIndex < adjusted.length ? selectedIndex : 0;
+  const item = adjusted[index];
+
+  const cantidadSegura = item.cantidad > 0 ? item.cantidad : 1;
+  const factorDescuentoConcepto = Math.max(0.0001, 1 - ((Number(item.descuento) || 0) / 100));
+  const incrementoPrecioUnitario = cargo / cantidadSegura / factorDescuentoConcepto;
+
+  item.cantidad = cantidadSegura;
+  item.precio = (Number(item.precio) || 0) + incrementoPrecioUnitario;
+
+  let importe = item.cantidad * item.precio;
+  importe -= importe * ((Number(item.descuento) || 0) / 100);
+  item.importe = importe;
+
+  adjusted[index] = item;
+  return adjusted;
+}
+
+function calcularDatosFinancieros(options = {}) {
+  const actualizarUI = options.actualizarUI === true;
+  const rows = [...conceptosBody.querySelectorAll("tr")];
+
+  const conceptosBase = leerConceptosDesdeTabla();
+
+  if (actualizarUI) {
+    rows.forEach((row, index) => {
+      row.querySelector(".row-number").textContent = index + 1;
+      row.querySelector(".importe-cell").textContent = formatMoney(conceptosBase[index]?.importe || 0);
+    });
+  }
+
+  const selectedIndex = actualizarSelectorConceptoResico(conceptosBase);
+  const resicoConceptoIndex = getSelectedResicoConceptIndex(conceptosBase.length || 0);
+
+  const subtotalBase = conceptosBase.reduce((acc, item) => acc + item.importe, 0);
+  const descuentoGeneral = parseFloat(descuentoGeneralInput.value) || 0;
+  const iva = parseFloat(ivaInput.value) || 0;
+  const anticipo = parseFloat(anticipoInput.value) || 0;
+
+  const factorDescuentoGeneral = Math.max(0, 1 - (descuentoGeneral / 100));
+  const descuentoMontoBase = subtotalBase * (descuentoGeneral / 100);
+  const subtotalConDescuentoBase = subtotalBase - descuentoMontoBase;
+
+  const resicoInfo = getResicoRateInfo(subtotalConDescuentoBase);
+
+  /*
+    RESICO AUTOMÁTICO INTERNO:
+    - Base: subtotal antes de IVA, después de descuentos.
+    - No aparece como impuesto en el PDF.
+    - Se integra al concepto seleccionado para que el total del cliente ya lo contemple.
+    - Se usa gross-up para que el impuesto estimado quede cubierto al subir el precio.
+  */
+  const isrResicoMonto = subtotalConDescuentoBase > 0 && resicoInfo.tasaDecimal > 0 && resicoInfo.tasaDecimal < 1
+    ? subtotalConDescuentoBase * (resicoInfo.tasaDecimal / (1 - resicoInfo.tasaDecimal))
+    : 0;
+
+  const cargoResicoAntesDescuentoGeneral = factorDescuentoGeneral > 0
+    ? isrResicoMonto / factorDescuentoGeneral
+    : isrResicoMonto;
+
+  const conceptosCliente = aplicarCargoResicoAConceptos(
+    conceptosBase,
+    cargoResicoAntesDescuentoGeneral,
+    resicoConceptoIndex
+  );
+
+  const subtotal = conceptosCliente.reduce((acc, item) => acc + item.importe, 0);
+  const descuentoMonto = subtotal * (descuentoGeneral / 100);
+  const subtotalConDescuento = subtotal - descuentoMonto;
+  const ivaMonto = subtotalConDescuento * (iva / 100);
+  const total = subtotalConDescuento + ivaMonto;
+  const netoEstimadoResico = total - isrResicoMonto;
+  const anticipoMonto = total * (anticipo / 100);
+  const pagoInfoDetalle = actualizarResumenPago(anticipo, total, anticipoMonto);
+  const saldoPendiente = Math.max(total - anticipoMonto, 0);
+
+  if (actualizarUI) {
+    if (isrResicoInput) {
+      isrResicoInput.value = formatPercent(resicoInfo.tasa);
+    }
+
+    const resicoDetalleEl = document.getElementById("resicoDetalle");
+    if (resicoDetalleEl) {
+      const modoLabel = resicoInfo.mode === "anual" ? "tabla anual" : "tabla mensual";
+      const concepto = conceptosBase[resicoConceptoIndex]?.concepto || `Concepto ${resicoConceptoIndex + 1}`;
+      const extra = resicoInfo.excedeLimite ? " Importante: el monto excede el límite de RESICO; valida con tu contador." : "";
+      resicoDetalleEl.textContent = `Base sin IVA: ${formatMoney(subtotalConDescuentoBase)} | ${modoLabel} | tasa ${formatPercent(resicoInfo.tasa)}% | se integra en #${resicoConceptoIndex + 1}: ${concepto || "Sin descripción"}.${extra}`;
+    }
+
+    const resicoConceptoResumenEl = document.getElementById("resicoConceptoResumen");
+    if (resicoConceptoResumenEl) {
+      resicoConceptoResumenEl.textContent = conceptosBase.length
+        ? `Concepto #${resicoConceptoIndex + 1}`
+        : "Sin conceptos";
+    }
+  }
+
+  return {
+    conceptosBase,
+    conceptos: conceptosCliente,
+    resicoConceptoIndex,
+    resicoTabla: resicoInfo.mode,
+    resicoTasa: resicoInfo.tasa,
+    resicoEtiqueta: resicoInfo.etiqueta,
+    resicoExcedeLimite: resicoInfo.excedeLimite,
+    subtotalBase,
+    descuentoMontoBase,
+    subtotalConDescuentoBase,
+    cargoResicoAntesDescuentoGeneral,
+    subtotal,
+    descuentoGeneral,
+    descuentoMonto,
+    iva,
+    ivaMonto,
+    isrResico: resicoInfo.tasa,
+    isrResicoMonto,
+    total,
+    netoEstimadoResico,
+    anticipo,
+    anticipoMonto,
+    metodoPagoClave: pagoInfoDetalle.clave,
+    metodoPagoDescripcion: pagoInfoDetalle.descripcion,
+    metodoPago: pagoInfoDetalle.label,
+    anticipoLabel: pagoInfoDetalle.anticipoLabel,
+    saldoPendiente
+  };
+}
+
 function crearFila(data = {}) {
   const tr = document.createElement("tr");
 
@@ -273,106 +530,30 @@ function crearFila(data = {}) {
 }
 
 function recalcularTodo() {
-  const rows = [...conceptosBody.querySelectorAll("tr")];
-  let subtotal = 0;
+  const financieros = calcularDatosFinancieros({ actualizarUI: true });
 
-  rows.forEach((row, index) => {
-    row.querySelector(".row-number").textContent = index + 1;
-
-    const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
-    const precio = parseFloat(row.querySelector(".precio").value) || 0;
-    const descuento = parseFloat(row.querySelector(".descuento").value) || 0;
-
-    let importe = cantidad * precio;
-    importe -= importe * (descuento / 100);
-
-    row.querySelector(".importe-cell").textContent = formatMoney(importe);
-    subtotal += importe;
-  });
-
-  const descuentoGeneral = parseFloat(descuentoGeneralInput.value) || 0;
-  const iva = parseFloat(ivaInput.value) || 0;
-  const anticipo = parseFloat(anticipoInput.value) || 0;
-  const isrResico = isrResicoInput ? (parseFloat(isrResicoInput.value) || 0) : 0;
-
-  const descuentoMonto = subtotal * (descuentoGeneral / 100);
-  const subtotalConDescuento = subtotal - descuentoMonto;
-  const ivaMonto = subtotalConDescuento * (iva / 100);
-
-  /*
-    CÁLCULO INTERNO RESICO:
-    - Se calcula sobre la base antes de IVA.
-    - No cambia el total que verá el cliente.
-    - No se muestra en el PDF.
-  */
-  const isrResicoMonto = subtotalConDescuento * (isrResico / 100);
-
-  const total = subtotalConDescuento + ivaMonto;
-  const netoEstimadoResico = total - isrResicoMonto;
-  const anticipoMonto = total * (anticipo / 100);
-
-  actualizarResumenPago(anticipo, total, anticipoMonto);
-
-  subtotalEl.textContent = formatMoney(subtotal);
-  descuentoMontoEl.textContent = formatMoney(descuentoMonto);
-  ivaMontoEl.textContent = formatMoney(ivaMonto);
-  totalEl.textContent = formatMoney(total);
-  anticipoMontoEl.textContent = formatMoney(anticipoMonto);
+  subtotalEl.textContent = formatMoney(financieros.subtotal);
+  descuentoMontoEl.textContent = formatMoney(financieros.descuentoMonto);
+  ivaMontoEl.textContent = formatMoney(financieros.ivaMonto);
+  totalEl.textContent = formatMoney(financieros.total);
+  anticipoMontoEl.textContent = formatMoney(financieros.anticipoMonto);
 
   if (isrResicoMontoEl) {
-    isrResicoMontoEl.textContent = formatMoney(isrResicoMonto);
+    isrResicoMontoEl.textContent = formatMoney(financieros.isrResicoMonto);
   }
 
   if (netoResicoEl) {
-    netoResicoEl.textContent = formatMoney(netoEstimadoResico);
+    netoResicoEl.textContent = formatMoney(financieros.netoEstimadoResico);
   }
 
-  resConceptos.textContent = rows.length;
-  resSubtotal.textContent = formatMoney(subtotal);
-  resIVA.textContent = formatMoney(ivaMonto);
-  resTotal.textContent = formatMoney(total);
+  resConceptos.textContent = financieros.conceptosBase.length;
+  resSubtotal.textContent = formatMoney(financieros.subtotal);
+  resIVA.textContent = formatMoney(financieros.ivaMonto);
+  resTotal.textContent = formatMoney(financieros.total);
 }
 
 function obtenerDatosFormulario() {
-  const rows = [...conceptosBody.querySelectorAll("tr")];
-
-  const conceptos = rows.map((row, i) => {
-    const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
-    const precio = parseFloat(row.querySelector(".precio").value) || 0;
-    const descuento = parseFloat(row.querySelector(".descuento").value) || 0;
-
-    let importe = cantidad * precio;
-    importe -= importe * (descuento / 100);
-
-    return {
-      no: i + 1,
-      concepto: row.querySelector(".concepto").value.trim(),
-      cantidad,
-      precio,
-      descuento,
-      importe
-    };
-  });
-
-  const subtotal = conceptos.reduce((acc, item) => acc + item.importe, 0);
-  const descuentoGeneral = parseFloat(descuentoGeneralInput.value) || 0;
-  const descuentoMonto = subtotal * (descuentoGeneral / 100);
-  const subtotalConDescuento = subtotal - descuentoMonto;
-
-  const iva = parseFloat(ivaInput.value) || 0;
-  const ivaMonto = subtotalConDescuento * (iva / 100);
-
-  const isrResico = isrResicoInput ? (parseFloat(isrResicoInput.value) || 0) : 0;
-  const isrResicoMonto = subtotalConDescuento * (isrResico / 100);
-
-  const total = subtotalConDescuento + ivaMonto;
-  const netoEstimadoResico = total - isrResicoMonto;
-
-  const anticipo = parseFloat(anticipoInput.value) || 0;
-  const anticipoMonto = total * (anticipo / 100);
-  const pagoInfoDetalle = getMetodoPagoInfo(anticipo);
-  const anticipoLabel = getAnticipoComercialLabel(anticipo);
-  const saldoPendiente = Math.max(total - anticipoMonto, 0);
+  const financieros = calcularDatosFinancieros({ actualizarUI: false });
 
   return {
     empresa: document.getElementById("empresa").value,
@@ -399,33 +580,43 @@ function obtenerDatosFormulario() {
     proyecto: document.getElementById("proyecto").value,
     ubicacionProyecto: document.getElementById("ubicacionProyecto").value,
 
-    iva,
-    descuentoGeneral,
-    anticipo,
-    isrResico,
+    iva: financieros.iva,
+    descuentoGeneral: financieros.descuentoGeneral,
+    anticipo: financieros.anticipo,
+    isrResico: financieros.isrResico,
+    resicoTabla: financieros.resicoTabla,
+    resicoTasa: financieros.resicoTasa,
+    resicoEtiqueta: financieros.resicoEtiqueta,
+    resicoExcedeLimite: financieros.resicoExcedeLimite,
+    resicoConceptoIndex: financieros.resicoConceptoIndex,
 
     formaPago: document.getElementById("formaPago")
       ? document.getElementById("formaPago").value
       : "Únicamente mediante transferencia bancaria.",
 
-    metodoPagoClave: pagoInfoDetalle.clave,
-    metodoPagoDescripcion: pagoInfoDetalle.descripcion,
-    metodoPago: pagoInfoDetalle.label,
-    anticipoLabel,
-    saldoPendiente,
+    metodoPagoClave: financieros.metodoPagoClave,
+    metodoPagoDescripcion: financieros.metodoPagoDescripcion,
+    metodoPago: financieros.metodoPago,
+    anticipoLabel: financieros.anticipoLabel,
+    saldoPendiente: financieros.saldoPendiente,
 
     notas: document.getElementById("notas").value,
     terminos: document.getElementById("terminos").value,
     monedaDescripcion: getCurrencyLabel(),
 
-    conceptos,
-    subtotal,
-    descuentoMonto,
-    ivaMonto,
-    isrResicoMonto,
-    total,
-    netoEstimadoResico,
-    anticipoMonto
+    conceptosBase: financieros.conceptosBase,
+    conceptos: financieros.conceptos,
+    subtotalBase: financieros.subtotalBase,
+    descuentoMontoBase: financieros.descuentoMontoBase,
+    subtotalConDescuentoBase: financieros.subtotalConDescuentoBase,
+    cargoResicoAntesDescuentoGeneral: financieros.cargoResicoAntesDescuentoGeneral,
+    subtotal: financieros.subtotal,
+    descuentoMonto: financieros.descuentoMonto,
+    ivaMonto: financieros.ivaMonto,
+    isrResicoMonto: financieros.isrResicoMonto,
+    total: financieros.total,
+    netoEstimadoResico: financieros.netoEstimadoResico,
+    anticipoMonto: financieros.anticipoMonto
   };
 }
 
@@ -459,8 +650,12 @@ function limpiarFormulario() {
   document.getElementById("iva").value = 16;
   document.getElementById("descuentoGeneral").value = 0;
 
+  if (document.getElementById("resicoTabla")) {
+    document.getElementById("resicoTabla").value = "mensual";
+  }
+
   if (document.getElementById("isrResico")) {
-    document.getElementById("isrResico").value = 1.25;
+    document.getElementById("isrResico").value = 0;
   }
 
   document.getElementById("anticipo").value = DEFAULT_ANTICIPO;
@@ -474,7 +669,18 @@ function limpiarFormulario() {
 
 function guardarBorrador() {
   const data = obtenerDatosFormulario();
-  localStorage.setItem("linkwich_cotizador_borrador", JSON.stringify(data));
+
+  /*
+    IMPORTANTE:
+    El PDF y Excel usan conceptos con RESICO integrado al precio.
+    Para borrador guardamos los conceptos originales capturados para evitar duplicar el cargo al cargarlo después.
+  */
+  const borrador = {
+    ...data,
+    conceptos: data.conceptosBase
+  };
+
+  localStorage.setItem("linkwich_cotizador_borrador", JSON.stringify(borrador));
   alert("Borrador guardado correctamente.");
 }
 
@@ -509,8 +715,12 @@ function cargarBorrador() {
   document.getElementById("iva").value = data.iva ?? 16;
   document.getElementById("descuentoGeneral").value = data.descuentoGeneral ?? 0;
 
+  if (document.getElementById("resicoTabla")) {
+    document.getElementById("resicoTabla").value = data.resicoTabla || "mensual";
+  }
+
   if (document.getElementById("isrResico")) {
-    document.getElementById("isrResico").value = data.isrResico ?? 1.25;
+    document.getElementById("isrResico").value = data.isrResico ?? 0;
   }
 
   document.getElementById("anticipo").value = data.anticipo ?? DEFAULT_ANTICIPO;
@@ -524,10 +734,16 @@ function cargarBorrador() {
   document.getElementById("terminos").value = data.terminos || "";
 
   conceptosBody.innerHTML = "";
-  (data.conceptos || []).forEach(item => crearFila(item));
+  const conceptosBorrador = data.conceptosBase || data.conceptos || [];
+  conceptosBorrador.forEach(item => crearFila(item));
 
-  if (!data.conceptos || !data.conceptos.length) {
+  if (!conceptosBorrador.length) {
     crearFila();
+  }
+
+  const resicoSelect = document.getElementById("resicoConceptoIndex");
+  if (resicoSelect && data.resicoConceptoIndex !== undefined && data.resicoConceptoIndex !== null) {
+    resicoSelect.value = String(data.resicoConceptoIndex);
   }
 
   recalcularTodo();
@@ -639,8 +855,11 @@ function importarDesdeWorkbook(workbook) {
       setFieldIfExists("moneda", mapa["MONEDA"]);
     }
 
-    if (mapa["ISR RESICO INTERNO"] !== undefined) {
-      setFieldIfExists("isrResico", mapa["ISR RESICO INTERNO"]);
+    if (mapa["RESICO TABLA"] !== undefined) {
+      const modoResico = String(mapa["RESICO TABLA"] || "").trim().toLowerCase();
+      if (modoResico === "mensual" || modoResico === "anual") {
+        setFieldIfExists("resicoTabla", modoResico, { overwrite: true });
+      }
     }
 
     if (mapa["ANTICIPO (%)"] !== undefined) {
@@ -782,6 +1001,24 @@ function importarExcel(file) {
 async function exportarPDF() {
   try {
     const data = obtenerDatosFormulario();
+
+    if (data.conceptosBase.length > 1 && data.isrResicoMonto > 0) {
+      const conceptoSeleccionado = data.conceptosBase[data.resicoConceptoIndex]?.concepto || `Concepto ${data.resicoConceptoIndex + 1}`;
+      const continuar = confirm(
+        `Antes de imprimir:
+
+` +
+        `El RESICO estimado de ${formatMoney(data.isrResicoMonto)} se integrará internamente al concepto #${data.resicoConceptoIndex + 1}:
+` +
+        `"${conceptoSeleccionado}"
+
+` +
+        `No aparecerá como impuesto separado en el PDF. ¿Deseas continuar?`
+      );
+
+      if (!continuar) return;
+    }
+
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF("p", "mm", "a4");
 
@@ -1295,14 +1532,19 @@ function exportarExcel() {
     ["FORMA DE PAGO", data.formaPago],
     ["MÉTODO DE PAGO", data.metodoPagoClave],
     ["ANTICIPO (%)", data.anticipo],
+    ["RESICO TABLA", data.resicoTabla],
+    ["RESICO TASA (%)", data.resicoTasa],
+    ["RESICO CONCEPTO", `#${(data.resicoConceptoIndex || 0) + 1}`],
     ["MONEDA", data.moneda],
     ["DESCRIPCIÓN MONEDA", data.monedaDescripcion],
     [],
-    ["SUBTOTAL", data.subtotal],
+    ["SUBTOTAL BASE ORIGINAL", data.subtotalBase],
+    ["BASE ORIGINAL SIN IVA", data.subtotalConDescuentoBase],
+    ["RESICO INTEGRADO AL PRECIO", data.isrResicoMonto],
+    ["SUBTOTAL CLIENTE", data.subtotal],
     ["DESCUENTO GENERAL", data.descuentoMonto],
     ["IVA", data.ivaMonto],
     ["TOTAL", data.total],
-    ["ISR RESICO INTERNO", data.isrResicoMonto],
     ["NETO ESTIMADO RESICO", data.netoEstimadoResico],
     ["ANTICIPO SUGERIDO", data.anticipoMonto],
     ["SALDO PENDIENTE", data.saldoPendiente],
@@ -1356,8 +1598,9 @@ if (btnImportarExcel && inputImportarExcel) {
 [
   ivaInput,
   descuentoGeneralInput,
-  isrResicoInput,
   anticipoInput,
+  document.getElementById("resicoTabla"),
+  document.getElementById("resicoConceptoIndex"),
   document.getElementById("moneda")
 ]
   .filter(Boolean)
