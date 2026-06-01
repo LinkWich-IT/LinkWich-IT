@@ -5,8 +5,8 @@ const DEFAULT_SITIO_EMPRESA = "www.linkwich-it.com";
 const DEFAULT_CIUDAD_EMPRESA = "San José del Cabo, B.C.S.";
 const DEFAULT_MONEDA = "MXN";
 const DEFAULT_ANTICIPO = 60;
-const DEFAULT_METODO_PAGO_SAT_PARCIALIDADES = "PPD - Pago en parcialidades o diferido";
-const DEFAULT_METODO_PAGO_SAT_UNICO = "PUE - Pago en una sola exhibición";
+const DEFAULT_METODO_PAGO_PARCIALIDADES = "PPD";
+const DEFAULT_METODO_PAGO_UNICO = "PUE";
 
 const conceptosBody = document.getElementById("conceptosBody");
 
@@ -102,47 +102,47 @@ function getAnticipoComercialLabel(anticipo) {
   return `Anticipo del ${formatPercent(porcentaje)}%`;
 }
 
-function getMetodoPagoSatInfo(anticipo) {
+function getMetodoPagoInfo(anticipo) {
   const porcentaje = Math.max(0, Math.min(100, parseFloat(anticipo) || 0));
 
   if (porcentaje >= 100) {
     return {
       clave: "PUE",
       descripcion: "Pago en una sola exhibición",
-      label: DEFAULT_METODO_PAGO_SAT_UNICO
+      label: DEFAULT_METODO_PAGO_UNICO
     };
   }
 
   return {
     clave: "PPD",
     descripcion: "Pago en parcialidades o diferido",
-    label: DEFAULT_METODO_PAGO_SAT_PARCIALIDADES
+    label: DEFAULT_METODO_PAGO_PARCIALIDADES
   };
 }
 
 function actualizarResumenPago(anticipo, total, anticipoMonto) {
-  const pagoInfo = getMetodoPagoSatInfo(anticipo);
+  const pagoInfo = getMetodoPagoInfo(anticipo);
   const anticipoLabel = getAnticipoComercialLabel(anticipo);
   const saldoPendiente = Math.max((Number(total) || 0) - (Number(anticipoMonto) || 0), 0);
 
   const anticipoLabelEl = document.getElementById("anticipoLabel");
-  const metodoPagoSatEl = document.getElementById("metodoPagoSat");
-  const metodoPagoSatDetalleEl = document.getElementById("metodoPagoSatDetalle");
+  const metodoPagoEl = document.getElementById("metodoPago");
+  const metodoPagoDetalleEl = document.getElementById("metodoPagoDetalle");
 
   if (anticipoLabelEl) {
     anticipoLabelEl.textContent = anticipoLabel;
   }
 
-  if (metodoPagoSatEl) {
-    metodoPagoSatEl.value = pagoInfo.label;
+  if (metodoPagoEl) {
+    metodoPagoEl.value = pagoInfo.label;
   }
 
-  if (metodoPagoSatDetalleEl) {
+  if (metodoPagoDetalleEl) {
     if (pagoInfo.clave === "PUE") {
-      metodoPagoSatDetalleEl.textContent =
+      metodoPagoDetalleEl.textContent =
         `Con 100%, se considera pago único por ${formatMoney(total)}.`;
     } else {
-      metodoPagoSatDetalleEl.textContent =
+      metodoPagoDetalleEl.textContent =
         `${anticipoLabel}; saldo pendiente estimado: ${formatMoney(saldoPendiente)}.`;
     }
   }
@@ -370,7 +370,7 @@ function obtenerDatosFormulario() {
 
   const anticipo = parseFloat(anticipoInput.value) || 0;
   const anticipoMonto = total * (anticipo / 100);
-  const pagoSatInfo = getMetodoPagoSatInfo(anticipo);
+  const pagoInfoDetalle = getMetodoPagoInfo(anticipo);
   const anticipoLabel = getAnticipoComercialLabel(anticipo);
   const saldoPendiente = Math.max(total - anticipoMonto, 0);
 
@@ -408,9 +408,9 @@ function obtenerDatosFormulario() {
       ? document.getElementById("formaPago").value
       : "Únicamente mediante transferencia bancaria.",
 
-    metodoPagoSatClave: pagoSatInfo.clave,
-    metodoPagoSatDescripcion: pagoSatInfo.descripcion,
-    metodoPagoSat: pagoSatInfo.label,
+    metodoPagoClave: pagoInfoDetalle.clave,
+    metodoPagoDescripcion: pagoInfoDetalle.descripcion,
+    metodoPago: pagoInfoDetalle.label,
     anticipoLabel,
     saldoPendiente,
 
@@ -1004,8 +1004,9 @@ async function exportarPDF() {
       const leftX = margin;
       const rightX = margin + leftBoxW + gap;
 
-      const leftH = 42;
-      const rightH = 42;
+      // Misma altura visual del resumen financiero para no desajustar el PDF.
+      const leftH = 38;
+      const rightH = 38;
       const rowH = Math.max(leftH, rightH);
 
       let currentY = ensureSpace(y, rowH + 10);
@@ -1015,30 +1016,43 @@ async function exportarPDF() {
       doc.setDrawColor(205, 223, 245);
       doc.roundedRect(leftX, currentY, leftBoxW, leftH, 3, 3, "S");
 
-      const anticipoTitulo = (data.anticipoLabel || getAnticipoComercialLabel(data.anticipo)).toUpperCase();
+      const anticipoLabelPdf = data.anticipoLabel || getAnticipoComercialLabel(data.anticipo);
+      const metodoPagoPdf = data.metodoPagoClave || getMetodoPagoInfo(data.anticipo).clave;
+      const saldoTextoPdf = (data.saldoPendiente || 0) > 0
+        ? `Saldo pendiente: ${formatMoney(data.saldoPendiente)}`
+        : "Pago total de la cotización";
 
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...accentBlue);
-      doc.setFontSize(9.4);
-      doc.text(anticipoTitulo, leftX + 4, currentY + 6.5);
+      doc.setFontSize(8.2);
+      doc.text("ANTICIPO SUGERIDO", leftX + 4, currentY + 6);
 
-      doc.setFontSize(12);
+      doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryBlue);
-      doc.text(formatMoney(data.anticipoMonto), leftX + 4, currentY + 14);
+      doc.setFontSize(9.4);
+      doc.text(anticipoLabelPdf, leftX + 4, currentY + 11.5);
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...primaryBlue);
+      doc.setFontSize(12);
+      doc.text(formatMoney(data.anticipoMonto), leftX + 4, currentY + 18.5);
+
+      // Método de pago en tamaño pequeño dentro del mismo bloque de anticipo.
+      doc.setFillColor(255, 255, 255);
+      doc.setDrawColor(205, 223, 245);
+      doc.roundedRect(leftX + 4, currentY + 21.5, leftBoxW - 8, 7, 2, 2, "FD");
 
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(8.2);
+      doc.setFontSize(7.1);
       doc.setTextColor(...textGray);
+      const metodoPagoText = `Método: ${metodoPagoPdf}`;
+      const metodoPagoLines = doc.splitTextToSize(metodoPagoText, leftBoxW - 12);
+      doc.text(metodoPagoLines.slice(0, 1), leftX + 6, currentY + 26.1);
 
-      if ((data.saldoPendiente || 0) > 0) {
-        doc.text(`Saldo pendiente: ${formatMoney(data.saldoPendiente)}`, leftX + 4, currentY + 21);
-      } else {
-        doc.text("Pago total de la cotización", leftX + 4, currentY + 21);
-      }
-
-      const satText = `SAT: ${data.metodoPagoSat || "-"}`;
-      const satLines = doc.splitTextToSize(satText, leftBoxW - 8);
-      doc.text(satLines, leftX + 4, currentY + 28);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...textGray);
+      doc.text(saldoTextoPdf, leftX + 4, currentY + 34.2);
 
       doc.setFillColor(...softGray);
       doc.roundedRect(rightX, currentY, rightBoxW, rightH, 3, 3, "F");
@@ -1220,17 +1234,6 @@ async function exportarPDF() {
       width: contentWidth
     });
 
-    const metodoPagoSatTexto = data.metodoPagoSatClave === "PUE"
-      ? `Método de pago SAT sugerido: ${data.metodoPagoSat}. Al configurarse el anticipo en 100%, esta cotización se maneja como pago único por ${formatMoney(data.total)}.`
-      : `Método de pago SAT sugerido: ${data.metodoPagoSat}. Se considera ${data.anticipoLabel.toLowerCase()} por ${formatMoney(data.anticipoMonto)} y saldo pendiente por ${formatMoney(data.saldoPendiente)}.`;
-
-    y = drawWrappedTextBlock({
-      title: "MÉTODO DE PAGO SAT",
-      text: metodoPagoSatTexto,
-      y: y,
-      width: contentWidth
-    });
-
     if (data.terminos && data.terminos.trim()) {
       const terminosCompletos =
         `Todos los precios están expresados en ${data.monedaDescripcion} e incluyen IVA, salvo que se indique lo contrario. ${data.terminos.trim()}`;
@@ -1290,8 +1293,7 @@ function exportarExcel() {
     ["UBICACIÓN", data.ubicacionProyecto],
     [],
     ["FORMA DE PAGO", data.formaPago],
-    ["MÉTODO DE PAGO SAT", data.metodoPagoSat],
-    ["CLAVE MÉTODO SAT", data.metodoPagoSatClave],
+    ["MÉTODO DE PAGO", data.metodoPagoClave],
     ["ANTICIPO (%)", data.anticipo],
     ["MONEDA", data.moneda],
     ["DESCRIPCIÓN MONEDA", data.monedaDescripcion],
