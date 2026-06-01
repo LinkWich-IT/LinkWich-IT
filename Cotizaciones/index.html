@@ -21,6 +21,15 @@
     .neto-row strong {
       font-weight: 800;
     }
+    #metodoPagoSat {
+      background: #f8fafc;
+      color: #1d4ed8;
+      font-weight: 800;
+    }
+    #metodoPagoSatDetalle {
+      color: #334155;
+      font-weight: 600;
+    }
   </style>
 
   <!-- jsPDF -->
@@ -221,6 +230,12 @@
           <div class="field">
             <label>Anticipo sugerido (%)</label>
             <input type="number" id="anticipo" value="60" min="0" max="100" step="0.01" />
+            <small class="field-help">Por defecto 60%. Si colocas 100%, se considera pago único.</small>
+          </div>
+          <div class="field">
+            <label>Método de pago SAT</label>
+            <input type="text" id="metodoPagoSat" value="PPD - Pago en parcialidades o diferido" readonly />
+            <small class="field-help" id="metodoPagoSatDetalle">Anticipo del 60%; saldo pendiente estimado.</small>
           </div>
         </div>
 
@@ -267,7 +282,7 @@
             <strong id="netoResico">$0.00</strong>
           </div>
           <div class="total-row anticipo-row">
-            <span>Anticipo sugerido</span>
+            <span id="anticipoLabel">Anticipo del 60%</span>
             <strong id="anticipoMonto">$0.00</strong>
           </div>
         </div>
