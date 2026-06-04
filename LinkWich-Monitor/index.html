@@ -1298,6 +1298,184 @@
     [data-bs-theme="dark"] #brand-ecosystem .lw-brand-card-v9 p{ color:rgba(255,255,255,.76); }
   </style>
 
+
+
+  <style id="lw-sniffer-feature-styles">
+    /* ===== Sniffer / Analizador de paquetes - modal y tarjeta ===== */
+    #features .lw-feature-click{
+      cursor:pointer;
+      border-color:rgba(26,204,141,.35);
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+    }
+    #features .lw-feature-click:hover{
+      transform:translateY(-4px);
+      border-color:rgba(26,204,141,.65);
+      box-shadow:0 14px 34px rgba(2,6,23,.10);
+      background:#ffffff;
+    }
+    #features .lw-feature-click h3 a{
+      pointer-events:none;
+    }
+    #features .lw-feature-click .lw-feature-hint{
+      display:block;
+      margin-top:.28rem;
+      font-size:.78rem;
+      font-weight:600;
+      color:#64748b;
+      line-height:1.2;
+    }
+    #features .lw-feature-click:hover .lw-feature-hint{
+      color:#1acc8d;
+    }
+
+    .lw-sniffer-modal{
+      border:0;
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 26px 80px rgba(2,6,23,.28);
+    }
+    .lw-sniffer-modal .modal-header{
+      border:0;
+      color:#fff;
+      background:linear-gradient(135deg,#040677 0%, #0d6efd 62%, #1acc8d 100%);
+      padding:1.25rem 1.35rem;
+    }
+    .lw-sniffer-modal .modal-title{
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      font-weight:800;
+      line-height:1.2;
+    }
+    .lw-sniffer-modal .modal-title i{
+      width:42px;
+      height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:14px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.18);
+      font-size:1.25rem;
+      flex:0 0 auto;
+    }
+    .lw-sniffer-modal .btn-close{
+      filter:invert(1) grayscale(1);
+      opacity:.9;
+    }
+    .lw-sniffer-hero{
+      padding:1.25rem;
+      border-radius:18px;
+      background:linear-gradient(180deg,#f8fbff 0%, #ffffff 100%);
+      border:1px solid rgba(4,6,119,.08);
+    }
+    .lw-sniffer-hero p{
+      color:#465a7a;
+      line-height:1.65;
+      margin-bottom:0;
+    }
+    .lw-sniffer-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.42rem .7rem;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:800;
+      color:#040677;
+      background:rgba(26,204,141,.12);
+      border:1px solid rgba(26,204,141,.25);
+      margin-bottom:.75rem;
+    }
+    .lw-sniffer-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:1rem;
+    }
+    .lw-sniffer-card{
+      height:100%;
+      padding:1rem;
+      border-radius:16px;
+      border:1px solid rgba(4,6,119,.09);
+      background:#fff;
+      box-shadow:0 10px 26px rgba(2,6,23,.05);
+    }
+    .lw-sniffer-card i{
+      width:38px;
+      height:38px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      color:#fff;
+      background:linear-gradient(135deg,#0d6efd,#1acc8d);
+      margin-bottom:.7rem;
+      font-size:1.1rem;
+    }
+    .lw-sniffer-card h6{
+      margin:0 0 .35rem;
+      color:#040677;
+      font-weight:800;
+    }
+    .lw-sniffer-card p{
+      margin:0;
+      color:#5f6f89;
+      font-size:.92rem;
+      line-height:1.48;
+    }
+    .lw-sniffer-list{
+      display:grid;
+      gap:.65rem;
+      padding:0;
+      margin:0;
+      list-style:none;
+    }
+    .lw-sniffer-list li{
+      display:flex;
+      gap:.6rem;
+      align-items:flex-start;
+      color:#465a7a;
+      line-height:1.45;
+    }
+    .lw-sniffer-list li i{
+      color:#1acc8d;
+      margin-top:.1rem;
+      flex:0 0 auto;
+    }
+    .lw-sniffer-note{
+      border-radius:16px;
+      padding:1rem;
+      background:rgba(13,110,253,.06);
+      border:1px solid rgba(13,110,253,.14);
+      color:#465a7a;
+      line-height:1.55;
+    }
+
+    [data-bs-theme="dark"] .lw-sniffer-modal{ background:#0b1220; color:#fff; }
+    [data-bs-theme="dark"] .lw-sniffer-hero,
+    [data-bs-theme="dark"] .lw-sniffer-card,
+    [data-bs-theme="dark"] .lw-sniffer-note{
+      background:rgba(255,255,255,.04);
+      border-color:rgba(255,255,255,.10);
+    }
+    [data-bs-theme="dark"] .lw-sniffer-hero p,
+    [data-bs-theme="dark"] .lw-sniffer-card p,
+    [data-bs-theme="dark"] .lw-sniffer-list li,
+    [data-bs-theme="dark"] .lw-sniffer-note{ color:rgba(255,255,255,.78); }
+    [data-bs-theme="dark"] .lw-sniffer-card h6{ color:#fff; }
+
+    @media (max-width: 767.98px){
+      .lw-sniffer-grid{ grid-template-columns:1fr; }
+      .lw-sniffer-modal .modal-header{ padding:1rem; }
+      .lw-sniffer-modal .modal-title{ font-size:1rem; align-items:flex-start; }
+      .lw-sniffer-modal .modal-title i{ width:38px; height:38px; }
+    }
+    @media (max-width: 575.98px){
+      #snifferModal .modal-dialog{ margin:.75rem; }
+      .lw-sniffer-hero{ padding:1rem; }
+    }
+  </style>
+
 </head>
 
 <body class="index-page">
@@ -1605,6 +1783,15 @@
             <div class="features-item">
               <i class="bi bi-diagram-2-fill" style="color: #0984e3;"></i>
               <h3><a href="#" class="stretched-link">Auto-descubrimiento de topología</a></h3>
+            </div>
+          </div>
+
+          <!-- 19 · Sniffer / Analizador de paquetes -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1900">
+            <div class="features-item lw-feature-click" data-bs-toggle="modal" data-bs-target="#snifferModal" role="button" tabindex="0" aria-label="Ver detalle del sniffer de red">
+              <i class="bi bi-broadcast-pin" style="color: #1acc8d;"></i>
+              <h3><a href="#" class="stretched-link">Sniffer de red</a></h3>
+              <span class="lw-feature-hint">Analizador de paquetes y anomalías</span>
             </div>
           </div>
 
@@ -3105,6 +3292,99 @@
       </div>
     </section>
     <!-- /Contact CTA Section -->
+
+
+    <!-- Modal: Sniffer de red -->
+    <div class="modal fade" id="snifferModal" tabindex="-1" aria-labelledby="snifferModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content lw-sniffer-modal">
+          <div class="modal-header">
+            <h5 class="modal-title" id="snifferModalLabel">
+              <i class="bi bi-broadcast-pin"></i>
+              Sniffer de red / Analizador de paquetes
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+
+          <div class="modal-body p-3 p-md-4">
+            <div class="lw-sniffer-hero mb-4">
+              <span class="lw-sniffer-badge"><i class="bi bi-shield-check"></i> Detección proactiva de anomalías</span>
+              <p>
+                El sniffer de red de <strong>LinkWich-Monitor</strong> analiza paquetes y comportamiento de tráfico
+                para ayudar a detectar condiciones que pueden afectar la estabilidad de la red, como IP duplicada,
+                broadcast elevado, posibles loops, tráfico DHCP no esperado y otros eventos que requieren atención operativa.
+              </p>
+            </div>
+
+            <div class="lw-sniffer-grid mb-4">
+              <div class="lw-sniffer-card">
+                <i class="bi bi-files"></i>
+                <h6>Detección de IP duplicada</h6>
+                <p>Identifica posibles conflictos de direccionamiento que pueden provocar intermitencias, pérdida de conectividad o comportamiento inestable en usuarios y equipos críticos.</p>
+              </div>
+
+              <div class="lw-sniffer-card">
+                <i class="bi bi-soundwave"></i>
+                <h6>Broadcast alto</h6>
+                <p>Monitorea patrones de tráfico excesivo para anticipar saturación, tormentas de broadcast o segmentos con comportamiento anormal.</p>
+              </div>
+
+              <div class="lw-sniffer-card">
+                <i class="bi bi-arrow-repeat"></i>
+                <h6>Posibles loops en la red</h6>
+                <p>Ayuda a identificar señales asociadas a loops físicos o lógicos que pueden degradar la red y causar caídas masivas de servicio.</p>
+              </div>
+
+              <div class="lw-sniffer-card">
+                <i class="bi bi-hdd-network"></i>
+                <h6>DHCP filtrada o no autorizada</h6>
+                <p>Permite detectar respuestas DHCP inesperadas o servidores no autorizados dentro del segmento para reducir riesgos de asignaciones incorrectas.</p>
+              </div>
+            </div>
+
+            <div class="row g-4 align-items-stretch">
+              <div class="col-lg-6">
+                <div class="lw-sniffer-card h-100">
+                  <h6 class="mb-3"><i class="bi bi-bell-fill me-2" style="width:auto;height:auto;background:none;color:#1acc8d;margin:0;"></i>¿Qué puede alertar?</h6>
+                  <ul class="lw-sniffer-list">
+                    <li><i class="bi bi-check-circle-fill"></i><span>Conflictos de IP o MAC sospechosas en el mismo segmento.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Aumento anormal de broadcast o tráfico repetitivo.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Eventos que puedan indicar loop o mala conexión entre switches.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>DHCP no esperado, filtrado o respuesta desde origen no autorizado.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Patrones de tráfico que requieren revisión por parte del área de TI.</span></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="lw-sniffer-card h-100">
+                  <h6 class="mb-3"><i class="bi bi-gear-fill me-2" style="width:auto;height:auto;background:none;color:#0d6efd;margin:0;"></i>Beneficio operativo</h6>
+                  <ul class="lw-sniffer-list">
+                    <li><i class="bi bi-check-circle-fill"></i><span>Reduce tiempos de diagnóstico ante fallas intermitentes.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Mejora la visibilidad de eventos difíciles de detectar solo con ping o SNMP.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Complementa alertas, syslog y monitoreo de disponibilidad.</span></li>
+                    <li><i class="bi bi-check-circle-fill"></i><span>Ayuda a documentar eventos para análisis posterior y soporte técnico.</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="lw-sniffer-note mt-4">
+              <strong>Nota técnica:</strong> el alcance depende de la ubicación del sensor, permisos del sistema operativo,
+              segmento donde se capture el tráfico, configuración de SPAN/mirror port y políticas de seguridad del cliente.
+              La funcionalidad se puede ajustar de forma modular según viabilidad técnica.
+            </div>
+          </div>
+
+          <div class="modal-footer flex-column flex-sm-row gap-2">
+            <a href="#contact-cta" class="btn btn-primary" data-bs-dismiss="modal"><i class="bi bi-send-check me-2"></i>Solicitar validación técnica</a>
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Modal: Sniffer de red -->
+
   </main>
 
   <!-- Footer -->
@@ -3751,6 +4031,18 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
     }
   });
 })();
+</script>
+
+
+<script id="lw-sniffer-feature-js">
+  document.querySelectorAll('.lw-feature-click[tabindex="0"]').forEach(function(card){
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
 </script>
 
 </body>
