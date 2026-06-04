@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>LinkWich-Monitor - Aplicación de Monitoreo de redes</title>
-  <meta name="description" content="LinkWich-Monitor: plataforma profesional de monitoreo de redes, SNMP, syslog, mapas LLDP, respaldos, alertas y reportes para infraestructura TI.">
+  <meta name="description" content="LinkWich-Monitor: plataforma profesional de monitoreo de redes, SNMP, syslog, mapas LLDP, respaldos SSH/Telnet, alertas y reportes para infraestructura TI.">
   <meta name="keywords" content="LinkWich-Monitor, monitoreo de redes, SNMP, Syslog, LLDP, SSH, Telnet, Fortinet, Cisco, Aruba, Allied Telesis, Ruckus, Hikvision, Axis, redes, consultoría IT">
   <meta property="og:title" content="LinkWich-Monitor - Monitoreo profesional de infraestructura TI">
   <meta property="og:description" content="Centraliza monitoreo, alertas, respaldos, syslog, mapas LLDP y reportes en una sola plataforma.">
@@ -1638,6 +1638,123 @@
         font-size: 1.02rem !important;
         letter-spacing: -.02em;
       }
+    }
+  </style>
+
+
+
+  <style id="lw-header-overlap-fix-v15">
+    /* ===== Fix v15: evita que el logo se encime con el menú ===== */
+    #header .container-xl{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1.4rem;
+    }
+
+    #header .logo{
+      flex:0 0 auto;
+      max-width:280px;
+      min-width:220px;
+      overflow:visible;
+      position:relative;
+      z-index:3;
+    }
+
+    #header .logo img{
+      max-height:38px !important;
+      flex:0 0 auto;
+    }
+
+    #header .logo .sitename{
+      font-size:1.22rem !important;
+      line-height:1 !important;
+      white-space:nowrap !important;
+      letter-spacing:-.035em;
+      max-width:190px;
+      overflow:hidden;
+      text-overflow:clip;
+    }
+
+    #header .navmenu{
+      flex:1 1 auto;
+      min-width:0;
+      margin-left:auto;
+      position:relative;
+      z-index:2;
+    }
+
+    #header .navmenu ul{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:.35rem;
+      margin:0;
+      padding:0;
+      flex-wrap:nowrap;
+    }
+
+    #header .navmenu a,
+    #header .navmenu a:focus{
+      padding:18px 9px !important;
+      font-size:.90rem !important;
+      line-height:1 !important;
+      white-space:nowrap !important;
+    }
+
+    #header .navmenu a i{
+      font-size:.86rem !important;
+      margin-right:.18rem !important;
+    }
+
+    @media (min-width:1200px) and (max-width:1399.98px){
+      #header .container-xl{ gap:1rem; }
+      #header .logo{ min-width:205px; max-width:225px; }
+      #header .logo img{ max-height:34px !important; }
+      #header .logo .sitename{
+        font-size:1.05rem !important;
+        max-width:165px;
+      }
+      #header .navmenu ul{ gap:.18rem; }
+      #header .navmenu a,
+      #header .navmenu a:focus{
+        padding-left:7px !important;
+        padding-right:7px !important;
+        font-size:.82rem !important;
+      }
+      #header .navmenu a i{
+        font-size:.78rem !important;
+        margin-right:.12rem !important;
+      }
+    }
+
+    @media (min-width:1400px){
+      #header .logo{ min-width:250px; max-width:290px; }
+      #header .logo .sitename{ font-size:1.25rem !important; max-width:205px; }
+      #header .navmenu a,
+      #header .navmenu a:focus{
+        padding-left:11px !important;
+        padding-right:11px !important;
+        font-size:.92rem !important;
+      }
+    }
+
+    /* En tablet/móvil manda el menú hamburguesa y conserva el logo sin encimar */
+    @media (max-width:1199.98px){
+      #header .container-xl{ gap:.75rem; }
+      #header .logo{ min-width:auto; max-width:calc(100% - 58px); }
+      #header .logo img{ max-height:36px !important; }
+      #header .logo .sitename{
+        font-size:1.08rem !important;
+        max-width:none;
+        overflow:visible;
+      }
+      #header .mobile-nav-toggle{ margin-left:auto; }
+    }
+
+    @media (max-width:575.98px){
+      #header .logo img{ max-height:32px !important; }
+      #header .logo .sitename{ font-size:.96rem !important; }
     }
   </style>
 
