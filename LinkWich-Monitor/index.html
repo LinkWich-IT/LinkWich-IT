@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>LinkWich-Monitor - Aplicación de Monitoreo de redes</title>
-  <meta name="description" content="LinkWich-Monitor: plataforma profesional de monitoreo de redes, SNMP, syslog, mapas LLDP, respaldos a equipos de red, alertas y reportes para infraestructura TI.">
+  <meta name="description" content="LinkWich-Monitor: plataforma profesional de monitoreo de redes, SNMP, syslog, mapas LLDP, respaldos SSH/Telnet, alertas y reportes para infraestructura TI.">
   <meta name="keywords" content="LinkWich-Monitor, monitoreo de redes, SNMP, Syslog, LLDP, SSH, Telnet, Fortinet, Cisco, Aruba, Allied Telesis, Ruckus, Hikvision, Axis, redes, consultoría IT">
   <meta property="og:title" content="LinkWich-Monitor - Monitoreo profesional de infraestructura TI">
   <meta property="og:description" content="Centraliza monitoreo, alertas, respaldos, syslog, mapas LLDP y reportes en una sola plataforma.">
@@ -1540,6 +1540,107 @@
     }
   </style>
 
+
+
+  <style id="lw-header-clean-v14">
+    /* ===== Header / Logo limpio y responsive ===== */
+    #header.header{
+      min-height: 76px;
+      padding: 10px 0;
+    }
+
+    #header .container-xl{
+      gap: 1rem;
+    }
+
+    #header .logo{
+      flex: 0 0 auto;
+      min-width: 0;
+      gap: .55rem;
+      text-decoration: none;
+    }
+
+    #header .logo img{
+      max-height: 42px !important;
+      width: auto;
+      margin: 0 !important;
+      display: block;
+    }
+
+    #header .logo .sitename{
+      margin: 0;
+      color: #fff;
+      font-family: var(--heading-font, "Raleway", sans-serif);
+      font-size: clamp(1.15rem, 1.55vw, 1.55rem) !important;
+      line-height: 1.05 !important;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      white-space: nowrap;
+    }
+
+    #header .navmenu{
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    #header .navmenu ul{
+      align-items: center;
+      justify-content: flex-end;
+      gap: .2rem;
+    }
+
+    #header .navmenu a,
+    #header .navmenu a:focus{
+      padding: 18px 10px !important;
+      font-size: .95rem !important;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    #header .navmenu a i{
+      font-size: .92rem !important;
+      margin-right: .24rem !important;
+    }
+
+    @media (min-width: 1200px) and (max-width: 1399.98px){
+      #header .logo .sitename{
+        font-size: 1.25rem !important;
+      }
+      #header .logo img{
+        max-height: 38px !important;
+      }
+      #header .navmenu a,
+      #header .navmenu a:focus{
+        padding-left: 7px !important;
+        padding-right: 7px !important;
+        font-size: .88rem !important;
+      }
+    }
+
+    @media (max-width: 1199.98px){
+      #header.header{
+        min-height: 70px;
+        padding: 8px 0;
+      }
+      #header .logo img{
+        max-height: 38px !important;
+      }
+      #header .logo .sitename{
+        font-size: 1.22rem !important;
+      }
+    }
+
+    @media (max-width: 575.98px){
+      #header .logo img{
+        max-height: 34px !important;
+      }
+      #header .logo .sitename{
+        font-size: 1.02rem !important;
+        letter-spacing: -.02em;
+      }
+    }
+  </style>
+
 </head>
 
 <body class="index-page">
@@ -1549,7 +1650,7 @@
 
       <a href="index.html" class="logo d-flex align-items-center">
         <!-- Uncomment the line below if you also wish to use an image logo -->
-        <img src="assets/img/logo2.png" alt="">
+        <img src="assets/img/logo2.png" alt="Logo LinkWich-Monitor">
         <h1 class="sitename">LinkWich-Monitor</h1>
       </a>
 
@@ -1901,14 +2002,14 @@
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1300">
             <div class="features-item lw-feature-open" role="button" tabindex="0"
                  data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
-                 data-feature-title="Acceso SSH/Telnet centralizado"
+                 data-feature-title="Acceso SSH centralizado"
                  data-feature-icon="bi bi-terminal-dash"
                  data-feature-color="#00b894"
                  data-feature-badge="Terminal web"
                  data-feature-desc="Acceso operativo controlado para administrar equipos desde una consola web centralizada."
                  data-feature-bullets="Terminal web para equipos compatibles por SSH o Telnet.||Facilita la operación sin depender de herramientas externas en cada estación.||Puede registrar actividad para auditoría operativa según configuración.">
               <i class="bi bi-terminal-dash" style="color: #00b894;"></i>
-              <h3><a href="#" class="stretched-link">Acceso SSH/Telnet centralizado</a></h3>
+              <h3><a href="#" class="stretched-link">Acceso SSH centralizado</a></h3>
             </div>
           </div>
 
@@ -3711,7 +3812,7 @@
           </div>
 
           <div class="small text-muted mt-3">
-            Acceso con usuario y contraseña proporcionado por equipo de LinkWich-IT. en caso de que no cuentes con uno y eres parter solicitarlo a soporte@linkwich-it.com
+            Acceso de demostración local. Para producción se recomienda validar usuarios desde backend/base de datos.
           </div>
         </div>
 
