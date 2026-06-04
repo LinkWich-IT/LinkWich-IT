@@ -1797,259 +1797,153 @@
   </div>
 </div>
     <!-- /Instagram Reel -->
+
+
     <!-- Gallery Section -->
-        <!-- Gallery Section -->
-    <section id="gallery" class="gallery section lw-gallery-clean">
+    <section id="gallery" class="gallery section">
 
-      <!-- Estilos SOLO para esta sección (aislado en #gallery) -->
+      <!-- Estilos SOLO para esta sección: galería limpia y corporativa -->
       <style>
-        #gallery.lw-gallery-clean{
-          background:#ffffff;
-          position:relative;
-          overflow:hidden;
-        }
-
-        #gallery .lw-gallery-intro{
-          max-width:860px;
-          color:#53637f;
-        }
-
-        #gallery .lw-gallery-filters{
-          display:flex;
-          flex-wrap:wrap;
-          justify-content:center;
-          gap:.55rem;
-          margin:1.25rem auto 0;
-        }
-
-        #gallery .lw-gallery-filter{
-          border:1px solid #d9e3f2;
+        #gallery{
           background:#fff;
-          color:#0b1a3c;
-          border-radius:999px;
-          padding:.52rem .9rem;
-          font-size:.86rem;
-          font-weight:700;
-          display:inline-flex;
-          align-items:center;
-          gap:.42rem;
-          line-height:1;
-          box-shadow:0 6px 18px rgba(15,23,42,.04);
-          transition:background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
         }
-
-        #gallery .lw-gallery-filter:hover{
-          transform:translateY(-1px);
-          border-color:#b9c8df;
-          background:#f8fbff;
+        #gallery .section-title{
+          margin-bottom:34px;
         }
-
-        #gallery .lw-gallery-filter.active{
-          background:#07145f;
-          color:#fff;
-          border-color:#07145f;
-          box-shadow:0 10px 24px rgba(7,20,95,.14);
-        }
-
-        #gallery .lw-gallery-grid{
-          margin-top:2.4rem;
-        }
-
-        #gallery .lw-gallery-item{
-          transition:opacity .28s ease, transform .28s ease;
-        }
-
-        #gallery .lw-gallery-item.is-hidden{
-          opacity:0;
-          transform:translateY(10px);
-          pointer-events:none;
-          display:none;
-        }
-
         #gallery .gallery-card{
+          position:relative;
           height:100%;
           overflow:hidden;
           border-radius:18px;
           background:#fff;
           border:1px solid rgba(15,23,42,.08);
           box-shadow:0 14px 34px rgba(15,23,42,.08);
-          transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+          transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
         }
-
         #gallery .gallery-card:hover{
           transform:translateY(-5px);
-          box-shadow:0 18px 44px rgba(15,23,42,.12);
-          border-color:rgba(7,20,95,.16);
+          box-shadow:0 20px 45px rgba(15,23,42,.12);
+          border-color:rgba(13,110,253,.18);
         }
-
         #gallery .gallery-link{
           display:block;
+          position:relative;
           color:inherit;
           text-decoration:none;
         }
-
         #gallery .gallery-thumb{
           position:relative;
           overflow:hidden;
-          background:#f3f6fb;
-          border-bottom:1px solid rgba(15,23,42,.08);
+          background:#f4f7fb;
         }
-
         #gallery .gallery-thumb::after{
           content:"";
           position:absolute;
           inset:0;
-          pointer-events:none;
-          background:linear-gradient(180deg, rgba(7,20,95,0) 50%, rgba(7,20,95,.18) 100%);
-          opacity:.75;
-          transition:opacity .25s ease;
+          background:linear-gradient(180deg, rgba(6,18,49,0) 45%, rgba(6,18,49,.70) 100%);
+          opacity:.78;
+          transition:opacity .28s ease;
         }
-
-        #gallery .gallery-card:hover .gallery-thumb::after{
-          opacity:.45;
-        }
-
-        #gallery .gallery-thumb img{
+        #gallery img{
           width:100%;
           height:100%;
           object-fit:cover;
-          object-position:top center;
+          object-position:center;
           transform:scale(1.01);
           transition:transform .45s ease, filter .45s ease;
         }
-
-        #gallery .gallery-card:hover .gallery-thumb img{
-          transform:scale(1.055);
-          filter:saturate(1.03);
+        #gallery .gallery-card:hover img{
+          transform:scale(1.045);
+          filter:saturate(1.04) contrast(1.02);
         }
-
+        #gallery .gallery-card:hover .gallery-thumb::after{
+          opacity:.68;
+        }
         #gallery .gallery-badge{
           position:absolute;
           top:12px;
           left:12px;
-          z-index:2;
+          z-index:3;
           display:inline-flex;
           align-items:center;
-          gap:.38rem;
-          padding:.42rem .7rem;
+          gap:6px;
+          padding:6px 11px;
           border-radius:999px;
-          color:#fff;
-          background:rgba(7,20,95,.86);
-          border:1px solid rgba(255,255,255,.25);
-          backdrop-filter:blur(10px);
-          -webkit-backdrop-filter:blur(10px);
           font-size:.78rem;
           font-weight:700;
+          color:#073b75;
+          background:rgba(255,255,255,.92);
+          border:1px solid rgba(255,255,255,.65);
+          box-shadow:0 8px 20px rgba(15,23,42,.12);
+          backdrop-filter:blur(8px);
+          -webkit-backdrop-filter:blur(8px);
         }
-
-        #gallery .gallery-expand{
+        #gallery .gallery-caption{
           position:absolute;
-          top:12px;
-          right:12px;
-          z-index:2;
-          width:34px;
-          height:34px;
-          border-radius:999px;
-          display:grid;
-          place-items:center;
+          left:0;
+          right:0;
+          bottom:0;
+          z-index:3;
+          padding:22px 18px 16px;
           color:#fff;
-          background:rgba(15,23,42,.72);
-          border:1px solid rgba(255,255,255,.24);
-          opacity:0;
-          transform:scale(.94);
-          transition:opacity .22s ease, transform .22s ease;
         }
-
-        #gallery .gallery-card:hover .gallery-expand{
-          opacity:1;
-          transform:scale(1);
-        }
-
-        #gallery .gallery-info{
-          padding:1rem 1rem 1.05rem;
-        }
-
-        #gallery .gallery-info h6{
-          margin:0 0 .35rem;
-          color:#07145f;
+        #gallery .gallery-caption h6{
+          margin:0 0 4px;
           font-size:1rem;
           font-weight:800;
+          letter-spacing:.1px;
+          color:#fff;
+          text-shadow:0 2px 14px rgba(0,0,0,.32);
         }
-
-        #gallery .gallery-info p{
+        #gallery .gallery-caption small{
+          display:block;
           margin:0;
-          color:#60708f;
-          font-size:.91rem;
-          line-height:1.45;
+          max-width:92%;
+          color:rgba(255,255,255,.90);
+          font-size:.84rem;
+          line-height:1.35;
         }
-
-        #gallery .lw-gallery-note{
-          margin:1.7rem auto 0;
-          max-width:760px;
-          display:flex;
+        #gallery .gallery-open{
+          position:absolute;
+          right:14px;
+          bottom:14px;
+          z-index:4;
+          width:34px;
+          height:34px;
+          display:inline-flex;
           align-items:center;
           justify-content:center;
-          gap:.55rem;
-          color:#53637f;
-          font-size:.92rem;
-          text-align:center;
+          border-radius:50%;
+          color:#fff;
+          background:rgba(13,110,253,.92);
+          box-shadow:0 10px 25px rgba(13,110,253,.25);
+          opacity:0;
+          transform:translateY(6px);
+          transition:opacity .25s ease, transform .25s ease;
         }
-
-        #gallery .lw-gallery-note i{
-          color:#07145f;
+        #gallery .gallery-card:hover .gallery-open{
+          opacity:1;
+          transform:translateY(0);
         }
-
-        [data-bs-theme="dark"] #gallery.lw-gallery-clean{
+        #gallery .gallery-link:focus-visible{
+          outline:3px solid rgba(13,110,253,.42);
+          outline-offset:4px;
+          border-radius:18px;
+        }
+        [data-bs-theme="dark"] #gallery{
           background:#0b1220;
         }
-
-        [data-bs-theme="dark"] #gallery .lw-gallery-intro,
-        [data-bs-theme="dark"] #gallery .gallery-info p,
-        [data-bs-theme="dark"] #gallery .lw-gallery-note{
-          color:rgba(255,255,255,.72);
-        }
-
-        [data-bs-theme="dark"] #gallery .lw-gallery-filter{
-          background:rgba(255,255,255,.04);
-          border-color:rgba(255,255,255,.12);
-          color:rgba(255,255,255,.90);
-        }
-
-        [data-bs-theme="dark"] #gallery .lw-gallery-filter.active{
-          background:#ffffff;
-          color:#07145f;
-          border-color:#ffffff;
-        }
-
         [data-bs-theme="dark"] #gallery .gallery-card{
-          background:rgba(255,255,255,.04);
-          border-color:rgba(255,255,255,.10);
-          box-shadow:0 18px 44px rgba(0,0,0,.25);
-        }
-
-        [data-bs-theme="dark"] #gallery .gallery-thumb{
           background:#111827;
-          border-bottom-color:rgba(255,255,255,.10);
+          border-color:rgba(255,255,255,.08);
+          box-shadow:0 18px 40px rgba(0,0,0,.24);
         }
-
-        [data-bs-theme="dark"] #gallery .gallery-info h6{
-          color:#fff;
-        }
-
         @media (max-width: 575.98px){
-          #gallery .lw-gallery-filters{
-            justify-content:flex-start;
-            overflow-x:auto;
-            flex-wrap:nowrap;
-            padding-bottom:.4rem;
+          #gallery .gallery-caption{
+            padding:20px 15px 14px;
           }
-
-          #gallery .lw-gallery-filter{
-            white-space:nowrap;
-          }
-
-          #gallery .lw-gallery-grid{
-            margin-top:1.7rem;
+          #gallery .gallery-caption small{
+            max-width:86%;
           }
         }
       </style>
@@ -2058,163 +1952,150 @@
       <div class="container section-title" data-aos="fade-up">
         <h2>Galería</h2>
         <div><span>Explora el sistema</span> <span class="description-title">en acción</span></div>
-        <p class="mt-3 mb-0 small lw-gallery-intro">
-          Vistas reales de LinkWich-Monitor: dashboards, topología LLDP, terminal web, syslog, interfaces y herramientas de operación.
+        <p class="mt-3 mb-0 small text-muted">
+          Vistas reales de dashboard, topología LLDP, terminal SSH, reportes e inteligencia operativa para redes empresariales.
         </p>
-
-        <div class="lw-gallery-filters" aria-label="Filtros de galería">
-          <button type="button" class="lw-gallery-filter active" data-filter="all"><i class="bi bi-grid-3x3-gap-fill"></i> Todo</button>
-          <button type="button" class="lw-gallery-filter" data-filter="dashboard"><i class="bi bi-speedometer2"></i> Dashboards</button>
-          <button type="button" class="lw-gallery-filter" data-filter="topologia"><i class="bi bi-diagram-3"></i> Topología</button>
-          <button type="button" class="lw-gallery-filter" data-filter="operacion"><i class="bi bi-terminal"></i> Operación</button>
-          <button type="button" class="lw-gallery-filter" data-filter="eventos"><i class="bi bi-journal-text"></i> Eventos</button>
-        </div>
       </div><!-- End Section Title -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row g-4 lw-gallery-grid">
+        <div class="row g-4">
 
           <!-- 1 -->
-          <div class="col-lg-3 col-md-4 col-sm-6 lw-gallery-item" data-category="topologia">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="gallery-card">
               <a href="assets/img/MAP.jpg" class="glightbox gallery-link" data-gallery="images-gallery" title="Mapa LLDP interactivo">
+                <span class="gallery-badge"><i class="bi bi-diagram-3"></i> Topología</span>
                 <div class="ratio ratio-4x3 gallery-thumb">
-                  <img src="assets/img/MAP.jpg" alt="Mapa LLDP interactivo" class="img-fluid" loading="lazy">
-                  <span class="gallery-badge"><i class="bi bi-diagram-3"></i> Topología</span>
-                  <span class="gallery-expand"><i class="bi bi-arrows-fullscreen"></i></span>
+                  <img src="assets/img/MAP.jpg" alt="Mapa LLDP interactivo" class="img-fluid">
                 </div>
-                <div class="gallery-info">
+                <div class="gallery-caption">
                   <h6>Mapa LLDP interactivo</h6>
-                  <p>Visualiza conexiones, equipos y relaciones de red de forma centralizada.</p>
+                  <small>Visualización de conexiones y relaciones entre equipos.</small>
                 </div>
+                <span class="gallery-open"><i class="bi bi-arrows-fullscreen"></i></span>
               </a>
             </div>
-          </div>
+          </div><!-- End Gallery Item -->
 
           <!-- 2 -->
-          <div class="col-lg-3 col-md-4 col-sm-6 lw-gallery-item" data-category="dashboard">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="gallery-card">
-              <a href="assets/img/DASHBOARD-CISCO.png" class="glightbox gallery-link" data-gallery="images-gallery" title="Dashboard ejecutivo">
+              <a href="assets/img/DASHBOARD-CISCO.png" class="glightbox gallery-link" data-gallery="images-gallery" title="Dashboard multi-vendor">
+                <span class="gallery-badge"><i class="bi bi-speedometer2"></i> Dashboard</span>
                 <div class="ratio ratio-4x3 gallery-thumb">
-                  <img src="assets/img/DASHBOARD-CISCO.png" alt="Dashboard ejecutivo" class="img-fluid" loading="lazy">
-                  <span class="gallery-badge"><i class="bi bi-speedometer2"></i> Dashboard</span>
-                  <span class="gallery-expand"><i class="bi bi-arrows-fullscreen"></i></span>
+                  <img src="assets/img/DASHBOARD-CISCO.png" alt="Dashboard multi-vendor" class="img-fluid">
                 </div>
-                <div class="gallery-info">
-                  <h6>Dashboard ejecutivo</h6>
-                  <p>Estado general, disponibilidad, alertas y métricas clave para operación diaria.</p>
+                <div class="gallery-caption">
+                  <h6>Dashboard multi-vendor</h6>
+                  <small>Vista centralizada de estado, alertas y métricas clave.</small>
                 </div>
+                <span class="gallery-open"><i class="bi bi-arrows-fullscreen"></i></span>
               </a>
             </div>
-          </div>
+          </div><!-- End Gallery Item -->
 
           <!-- 3 -->
-          <div class="col-lg-3 col-md-4 col-sm-6 lw-gallery-item" data-category="operacion">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="gallery-card">
               <a href="assets/img/traza.jpg" class="glightbox gallery-link" data-gallery="images-gallery" title="Trazas y diagnóstico">
+                <span class="gallery-badge"><i class="bi bi-activity"></i> Diagnóstico</span>
                 <div class="ratio ratio-4x3 gallery-thumb">
-                  <img src="assets/img/traza.jpg" alt="Trazas y diagnóstico" class="img-fluid" loading="lazy">
-                  <span class="gallery-badge"><i class="bi bi-activity"></i> Diagnóstico</span>
-                  <span class="gallery-expand"><i class="bi bi-arrows-fullscreen"></i></span>
+                  <img src="assets/img/traza.jpg" alt="Trazas y diagnóstico" class="img-fluid">
                 </div>
-                <div class="gallery-info">
+                <div class="gallery-caption">
                   <h6>Trazas y diagnóstico</h6>
-                  <p>Validación de rutas, pruebas operativas y análisis básico de conectividad.</p>
+                  <small>Validación de rutas, pruebas y análisis de conectividad.</small>
                 </div>
+                <span class="gallery-open"><i class="bi bi-arrows-fullscreen"></i></span>
               </a>
             </div>
-          </div>
+          </div><!-- End Gallery Item -->
 
           <!-- 4 -->
-          <div class="col-lg-3 col-md-4 col-sm-6 lw-gallery-item" data-category="operacion">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="gallery-card">
               <a href="assets/img/SSH.png" class="glightbox gallery-link" data-gallery="images-gallery" title="Terminal SSH web">
+                <span class="gallery-badge"><i class="bi bi-terminal"></i> SSH</span>
                 <div class="ratio ratio-4x3 gallery-thumb">
-                  <img src="assets/img/SSH.png" alt="Terminal SSH web" class="img-fluid" loading="lazy">
-                  <span class="gallery-badge"><i class="bi bi-terminal"></i> SSH</span>
-                  <span class="gallery-expand"><i class="bi bi-arrows-fullscreen"></i></span>
+                  <img src="assets/img/SSH.png" alt="Terminal SSH web" class="img-fluid">
                 </div>
-                <div class="gallery-info">
+                <div class="gallery-caption">
                   <h6>Terminal SSH web</h6>
-                  <p>Acceso centralizado para operación remota de equipos autorizados.</p>
+                  <small>Acceso centralizado para operación remota controlada.</small>
                 </div>
+                <span class="gallery-open"><i class="bi bi-arrows-fullscreen"></i></span>
               </a>
             </div>
-          </div>
+          </div><!-- End Gallery Item -->
 
           <!-- 5 -->
-          <div class="col-lg-3 col-md-4 col-sm-6 lw-gallery-item" data-category="dashboard">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="gallery-card">
-              <a href="assets/img/dashboard.jpg" class="glightbox gallery-link" data-gallery="images-gallery" title="Dashboard de disponibilidad">
+              <a href="assets/img/dashboard.jpg" class="glightbox gallery-link" data-gallery="images-gallery" title="Dashboard ejecutivo">
+                <span class="gallery-badge"><i class="bi bi-graph-up-arrow"></i> KPIs</span>
                 <div class="ratio ratio-4x3 gallery-thumb">
-                  <img src="assets/img/dashboard.jpg" alt="Dashboard de disponibilidad" class="img-fluid" loading="lazy">
-                  <span class="gallery-badge"><i class="bi bi-graph-up-arrow"></i> KPIs</span>
-                  <span class="gallery-expand"><i class="bi bi-arrows-fullscreen"></i></span>
+                  <img src="assets/img/dashboard.jpg" alt="Dashboard ejecutivo" class="img-fluid">
                 </div>
-                <div class="gallery-info">
-                  <h6>KPIs de disponibilidad</h6>
-                  <p>Vista ejecutiva para identificar estado general, cortes y tendencias.</p>
+                <div class="gallery-caption">
+                  <h6>Dashboard ejecutivo</h6>
+                  <small>Indicadores claros para toma de decisiones operativas.</small>
                 </div>
+                <span class="gallery-open"><i class="bi bi-arrows-fullscreen"></i></span>
               </a>
             </div>
-          </div>
+          </div><!-- End Gallery Item -->
 
           <!-- 6 -->
-          <div class="col-lg-3 col-md-4 col-sm-6 lw-gallery-item" data-category="operacion">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="gallery-card">
               <a href="assets/img/INTERACCION2.png" class="glightbox gallery-link" data-gallery="images-gallery" title="Interacción y gestión">
+                <span class="gallery-badge"><i class="bi bi-grid-1x2"></i> Gestión</span>
                 <div class="ratio ratio-4x3 gallery-thumb">
-                  <img src="assets/img/INTERACCION2.png" alt="Interacción y gestión" class="img-fluid" loading="lazy">
-                  <span class="gallery-badge"><i class="bi bi-grid-1x2"></i> Gestión</span>
-                  <span class="gallery-expand"><i class="bi bi-arrows-fullscreen"></i></span>
+                  <img src="assets/img/INTERACCION2.png" alt="Interacción y gestión" class="img-fluid">
                 </div>
-                <div class="gallery-info">
+                <div class="gallery-caption">
                   <h6>Interacción y gestión</h6>
-                  <p>Herramientas para consulta, operación y administración desde una misma interfaz.</p>
+                  <small>Herramientas para administrar equipos desde la plataforma.</small>
                 </div>
+                <span class="gallery-open"><i class="bi bi-arrows-fullscreen"></i></span>
               </a>
             </div>
-          </div>
+          </div><!-- End Gallery Item -->
 
           <!-- 7 -->
-          <div class="col-lg-3 col-md-4 col-sm-6 lw-gallery-item" data-category="dashboard">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="gallery-card">
               <a href="assets/img/DASHBOARD-INTERFACES.png" class="glightbox gallery-link" data-gallery="images-gallery" title="Interfaces y ancho de banda">
+                <span class="gallery-badge"><i class="bi bi-hdd-network"></i> Interfaces</span>
                 <div class="ratio ratio-4x3 gallery-thumb">
-                  <img src="assets/img/DASHBOARD-INTERFACES.png" alt="Interfaces y ancho de banda" class="img-fluid" loading="lazy">
-                  <span class="gallery-badge"><i class="bi bi-hdd-network"></i> Interfaces</span>
-                  <span class="gallery-expand"><i class="bi bi-arrows-fullscreen"></i></span>
+                  <img src="assets/img/DASHBOARD-INTERFACES.png" alt="Interfaces y ancho de banda" class="img-fluid">
                 </div>
-                <div class="gallery-info">
+                <div class="gallery-caption">
                   <h6>Interfaces y tráfico</h6>
-                  <p>Consulta de capacidad, consumo, estado de puertos y métricas operativas.</p>
+                  <small>Consumo, disponibilidad y estado de interfaces críticas.</small>
                 </div>
+                <span class="gallery-open"><i class="bi bi-arrows-fullscreen"></i></span>
               </a>
             </div>
-          </div>
+          </div><!-- End Gallery Item -->
 
           <!-- 8 -->
-          <div class="col-lg-3 col-md-4 col-sm-6 lw-gallery-item" data-category="eventos">
+          <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="gallery-card">
               <a href="assets/img/SYSLOG.png" class="glightbox gallery-link" data-gallery="images-gallery" title="Syslog centralizado">
+                <span class="gallery-badge"><i class="bi bi-journal-text"></i> Syslog</span>
                 <div class="ratio ratio-4x3 gallery-thumb">
-                  <img src="assets/img/SYSLOG.png" alt="Syslog centralizado" class="img-fluid" loading="lazy">
-                  <span class="gallery-badge"><i class="bi bi-journal-text"></i> Syslog</span>
-                  <span class="gallery-expand"><i class="bi bi-arrows-fullscreen"></i></span>
+                  <img src="assets/img/SYSLOG.png" alt="Syslog centralizado" class="img-fluid">
                 </div>
-                <div class="gallery-info">
+                <div class="gallery-caption">
                   <h6>Syslog centralizado</h6>
-                  <p>Eventos, severidades y registros para troubleshooting y análisis de incidentes.</p>
+                  <small>Eventos, severidades y análisis para troubleshooting.</small>
                 </div>
+                <span class="gallery-open"><i class="bi bi-arrows-fullscreen"></i></span>
               </a>
             </div>
-          </div>
+          </div><!-- End Gallery Item -->
 
-        </div>
-
-        <div class="lw-gallery-note" data-aos="fade-up" data-aos-delay="150">
-          <i class="bi bi-search"></i>
-          <span>Haz clic en cualquier captura para verla en grande. Los filtros ayudan a navegar por módulo sin saturar la vista.</span>
         </div>
       </div>
 
@@ -3640,47 +3521,6 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
   });
 })();
 </script>
-
-
-
-<script id="lw-gallery-clean-js">
-(function(){
-  const gallery = document.getElementById('gallery');
-  if(!gallery) return;
-
-  const filters = gallery.querySelectorAll('.lw-gallery-filter');
-  const items = gallery.querySelectorAll('.lw-gallery-item');
-
-  filters.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      const filter = btn.getAttribute('data-filter') || 'all';
-
-      filters.forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-
-      items.forEach(function(item){
-        const category = item.getAttribute('data-category');
-        const show = filter === 'all' || category === filter;
-
-        if(show){
-          item.style.display = '';
-          requestAnimationFrame(function(){
-            item.classList.remove('is-hidden');
-          });
-        }else{
-          item.classList.add('is-hidden');
-          window.setTimeout(function(){
-            if(item.classList.contains('is-hidden')){
-              item.style.display = 'none';
-            }
-          }, 240);
-        }
-      });
-    });
-  });
-})();
-</script>
-
 
 </body>
 </html>
