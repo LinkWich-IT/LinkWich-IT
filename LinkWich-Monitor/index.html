@@ -972,6 +972,180 @@
     }
   </style>
 
+
+  <style id="lw-partner-pricing-styles">
+    /* ===== Partner / precios protegidos ===== */
+    #pricing .lw-partner-gate,
+    #pricing .lw-partner-private{
+      border-radius: 26px;
+      padding: clamp(1.25rem, 3vw, 2.2rem);
+      border: 1px solid rgba(13, 110, 253, .10);
+      background: linear-gradient(135deg, #ffffff 0%, #f7faff 100%);
+      box-shadow: 0 18px 50px rgba(17, 24, 39, .08);
+      overflow: hidden;
+      position: relative;
+    }
+    #pricing .lw-partner-gate::before{
+      content:"";
+      position:absolute;
+      width:280px;
+      height:280px;
+      right:-110px;
+      top:-130px;
+      border-radius:999px;
+      background: radial-gradient(circle, rgba(13,110,253,.15), transparent 68%);
+      pointer-events:none;
+    }
+    #pricing .lw-partner-eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      padding:.45rem .8rem;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:800;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      color:#0d6efd;
+      background:rgba(13,110,253,.08);
+      border:1px solid rgba(13,110,253,.14);
+      margin-bottom:.9rem;
+    }
+    #pricing .lw-partner-gate h3,
+    #pricing .lw-partner-private h3,
+    #pricing .lw-partner-quote-card h3{
+      color:#071739;
+      font-weight:900;
+      line-height:1.15;
+    }
+    #pricing .lw-partner-gate h3{ font-size:clamp(1.65rem, 3vw, 2.35rem); max-width:760px; }
+    #pricing .lw-partner-gate p{
+      color:#526581;
+      font-size:1.05rem;
+      line-height:1.65;
+      max-width:780px;
+    }
+    #pricing .lw-partner-actions{
+      display:flex;
+      gap:.85rem;
+      flex-wrap:wrap;
+      margin-top:1.25rem;
+    }
+    #pricing .lw-partner-actions .btn,
+    #pricing .lw-partner-quote-card .btn{
+      border-radius:999px;
+      padding:.85rem 1.25rem;
+      font-weight:800;
+    }
+    #pricing .lw-partner-note{
+      margin-top:1rem;
+      color:#5b6f8f;
+      font-size:.95rem;
+    }
+    #pricing .lw-partner-panel,
+    #pricing .lw-partner-quote-card{
+      height:100%;
+      padding:1.35rem;
+      border-radius:22px;
+      background:#fff;
+      border:1px solid rgba(17,24,39,.08);
+      box-shadow:0 12px 30px rgba(17,24,39,.07);
+    }
+    #pricing .lw-partner-panel-icon{
+      width:56px;
+      height:56px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:18px;
+      margin-bottom:1rem;
+      color:#fff;
+      background:linear-gradient(135deg,#0d6efd,#14b8a6);
+      box-shadow:0 12px 24px rgba(13,110,253,.20);
+      font-size:1.45rem;
+    }
+    #pricing .lw-partner-panel h4{
+      font-weight:900;
+      margin-bottom:1rem;
+      color:#071739;
+    }
+    #pricing .lw-partner-feature{
+      display:flex;
+      gap:.65rem;
+      align-items:flex-start;
+      padding:.58rem 0;
+      color:#526581;
+      font-weight:650;
+    }
+    #pricing .lw-partner-feature i{ color:#198754; margin-top:.15rem; }
+    #pricing .lw-partner-unlocked{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      flex-wrap:wrap;
+      padding:1rem 1.1rem;
+      border-radius:20px;
+      background:#fff;
+      border:1px solid rgba(17,24,39,.08);
+    }
+    #pricing .lw-partner-quote-card p{
+      color:#526581;
+      line-height:1.65;
+    }
+    .lw-partner-login-modal{
+      border:0;
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 26px 80px rgba(0,0,0,.24);
+    }
+    .lw-partner-login-modal .modal-header{
+      background:linear-gradient(135deg, rgba(13,110,253,.12), rgba(20,184,166,.08));
+      border-bottom:1px solid rgba(17,24,39,.08);
+    }
+    .lw-partner-login-modal .input-group-text,
+    .lw-partner-login-modal .form-control,
+    .lw-partner-login-modal .btn{
+      min-height:46px;
+    }
+    .lw-partner-login-modal .form-control:focus{
+      box-shadow:0 0 0 .22rem rgba(13,110,253,.16);
+      border-color:rgba(13,110,253,.45);
+    }
+    [data-bs-theme="dark"] #pricing .lw-partner-gate,
+    [data-bs-theme="dark"] #pricing .lw-partner-private{
+      background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
+      border-color:rgba(255,255,255,.10);
+      box-shadow:0 18px 50px rgba(0,0,0,.22);
+    }
+    [data-bs-theme="dark"] #pricing .lw-partner-panel,
+    [data-bs-theme="dark"] #pricing .lw-partner-quote-card,
+    [data-bs-theme="dark"] #pricing .lw-partner-unlocked{
+      background:rgba(255,255,255,.045);
+      border-color:rgba(255,255,255,.10);
+    }
+    [data-bs-theme="dark"] #pricing .lw-partner-gate h3,
+    [data-bs-theme="dark"] #pricing .lw-partner-private h3,
+    [data-bs-theme="dark"] #pricing .lw-partner-quote-card h3,
+    [data-bs-theme="dark"] #pricing .lw-partner-panel h4{ color:#fff; }
+    [data-bs-theme="dark"] #pricing .lw-partner-gate p,
+    [data-bs-theme="dark"] #pricing .lw-partner-quote-card p,
+    [data-bs-theme="dark"] #pricing .lw-partner-note,
+    [data-bs-theme="dark"] #pricing .lw-partner-feature{ color:rgba(255,255,255,.78); }
+    [data-bs-theme="dark"] .lw-partner-login-modal{ background:#0b1220; color:#fff; }
+    [data-bs-theme="dark"] .lw-partner-login-modal .modal-header{ border-bottom-color:rgba(255,255,255,.10); }
+    [data-bs-theme="dark"] .lw-partner-login-modal .btn-close{ filter:invert(1) grayscale(1); }
+    @media (max-width: 575.98px){
+      #pricing .lw-partner-gate,
+      #pricing .lw-partner-private{ border-radius:20px; }
+      #pricing .lw-partner-actions{ flex-direction:column; }
+      #pricing .lw-partner-actions .btn,
+      #pricing .lw-partner-quote-card .btn{ width:100%; }
+      #pricing .lw-partner-unlocked{ align-items:flex-start; }
+      #pricing .lw-partner-unlocked #lwPartnerLogout{ width:100%; }
+    }
+  </style>
+
 </head>
 
 <body class="index-page">
@@ -2251,410 +2425,194 @@
     <section id="pricing" class="pricing section">
 
       <div class="container section-title" data-aos="fade-up">
-        <h2>Precios</h2>
+        <h2>Partners</h2>
         <div>
-          <span>Conoce nuestros</span>
-          <span class="description-title">Paquetes</span>
+          <span>Programa para</span>
+          <span class="description-title">distribuidores</span>
         </div>
-        <p class="text-center mt-2 small fst-italic">
-          *Todos los paquetes incluyen la suite completa de funcionalidades de LinkWich-Monitor.<br>
-          Entre más nodos contrates, menor es el costo por nodo &nbsp;|&nbsp; Contrato mínimo de 6 meses &nbsp;|&nbsp; Los precios de lista no incluyen IVA.
+        <p class="text-center mt-3 small text-muted mx-auto" style="max-width:850px;">
+          ¿Eres integrador, consultor TI o proveedor de servicios administrados? Solicita acceso partner
+          para consultar precios, crear cotizaciones y distribuir LinkWich-Monitor con un modelo claro por nodo.
         </p>
       </div>
 
       <div class="container">
-        <div class="row gy-4">
 
-          <!-- Paquete Básico -->
-          <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="100">
-            <div class="pricing-item">
-              <div class="deal-ribbon">-23% OFF</div>
+        <!-- Vista pública: no muestra precios -->
+        <div id="lwPartnerGate" class="lw-partner-gate" data-aos="fade-up" data-aos-delay="100">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+              <span class="lw-partner-eyebrow"><i class="bi bi-shield-lock-fill me-2"></i>Acceso privado para partners</span>
+              <h3>Distribuye LinkWich-Monitor sin mostrar precios públicos al usuario final.</h3>
+              <p>
+                Protege tu estrategia comercial: los precios, paquetes y cotizador interno solo se muestran
+                a partners autorizados. Desde este acceso podrás revisar esquemas por nodo y preparar propuestas.
+              </p>
 
-              <h3>Paquete Básico</h3>
-              <p class="description">30 nodos &nbsp;|&nbsp; Redes pequeñas</p>
-
-              <div class="price-stack">
-                <div class="price-old"><small>Antes</small>$260 / nodo</div>
-                <div class="price-new"><sup>$</sup>200<span> / nodo&nbsp;mensual</span></div>
-                <div class="save-pill"><i class="bi bi-lightning-charge-fill"></i> Precio promocional</div>
+              <div class="lw-partner-actions">
+                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#lwPartnerLoginModal">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar para ver precios
+                </button>
+                <a href="#demo-request" class="btn btn-outline-primary btn-lg">
+                  <i class="bi bi-person-plus me-2"></i>Solicitar ser partner
+                </a>
               </div>
 
-              <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
-
-              <p class="text-center small mb-1">$72,000 MXN/año (30 nodos)</p>
-              <p class="text-center small promo-note mb-1">Ahorro aprox.: $21,600 MXN/año</p>
-              <p class="text-center small">Licencia mínima de 6 meses</p>
-
-              <ul>
-                <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
-                <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Paquete Estándar -->
-          <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="150">
-            <div class="pricing-item">
-              <div class="deal-ribbon">-22% OFF</div>
-
-              <h3>Paquete Estándar</h3>
-              <p class="description">50 nodos &nbsp;|&nbsp; Redes en crecimiento</p>
-
-              <div class="price-stack">
-                <div class="price-old"><small>Antes</small>$230 / nodo</div>
-                <div class="price-new"><sup>$</sup>180<span> / nodo&nbsp;mensual</span></div>
-                <div class="save-pill"><i class="bi bi-piggy-bank-fill"></i> Ahorro inteligente</div>
+              <div class="lw-partner-note">
+                <i class="bi bi-info-circle me-2"></i>
+                El acceso comercial está pensado para integradores, canales, distribuidores y aliados de implementación.
               </div>
-
-              <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
-
-              <p class="text-center small mb-1">$108,000 MXN/año (50 nodos)</p>
-              <p class="text-center small promo-note mb-1">Ahorro aprox.: $30,000 MXN/año</p>
-              <p class="text-center small">Licencia mínima de 6 meses</p>
-
-              <ul>
-                <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
-                <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
-              </ul>
             </div>
-          </div>
 
-          <!-- Paquete Empresarial -->
-          <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="200">
-            <div class="pricing-item featured">
-              <p class="popular">Más popular</p>
-              <div class="deal-ribbon">-20% OFF</div>
-
-              <h3>Paquete Empresarial</h3>
-              <p class="description">100 nodos &nbsp;|&nbsp; Redes medianas-grandes</p>
-
-              <div class="price-stack">
-                <div class="price-old"><small>Antes</small>$200 / nodo</div>
-                <div class="price-new"><sup>$</sup>160<span> / nodo&nbsp;mensual</span></div>
-                <div class="save-pill"><i class="bi bi-award-fill"></i> Mejor relación costo/valor</div>
+            <div class="col-lg-5">
+              <div class="lw-partner-panel">
+                <div class="lw-partner-panel-icon"><i class="bi bi-building-check"></i></div>
+                <h4>Portal comercial protegido</h4>
+                <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Lista de precios por nodo</span></div>
+                <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Cotizador interno para propuestas</span></div>
+                <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Modelos de licencia y demos comerciales</span></div>
+                <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Paquetes escalables para proyectos pequeños o corporativos</span></div>
               </div>
-
-              <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
-
-              <p class="text-center small mb-1">$192,000 MXN/año (100 nodos)</p>
-              <p class="text-center small promo-note mb-1">Ahorro aprox.: $48,000 MXN/año</p>
-              <p class="text-center small">Licencia mínima de 1 año</p>
-
-              <ul>
-                <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
-                <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
-              </ul>
             </div>
           </div>
-
-          <!-- Paquete Corporativo -->
-          <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="250">
-            <div class="pricing-item">
-              <div class="deal-ribbon">-13% OFF</div>
-
-              <h3>Paquete Corporativo</h3>
-              <p class="description">Más de 150 nodos &nbsp;|&nbsp; Grandes corporativos</p>
-
-              <div class="price-stack">
-                <div class="price-old"><small>Antes</small>$160 / nodo</div>
-                <div class="price-new"><sup>$</sup>140<span> / nodo&nbsp;mensual</span></div>
-                <div class="save-pill"><i class="bi bi-building-fill-check"></i> Ideal multi-sitio</div>
-              </div>
-
-              <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Contáctanos</a>
-
-              <p class="text-center small mb-1">$252,000 MXN/año (150 nodos estimados)</p>
-              <p class="text-center small promo-note mb-1">Ahorro aprox.: $36,000 MXN/año</p>
-              <p class="text-center small">Licencia mínima de 1 año</p>
-
-              <ul>
-                <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
-                <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Paquete Personalizado -->
-          <div class="col-lg-3" data-aos="zoom-in" data-aos-delay="300">
-            <div class="pricing-item">
-              <h3>Paquete Personalizado</h3>
-              <p class="description">Solución a la medida con módulos y automatizaciones personalizadas.</p>
-
-              <div class="price-stack">
-                <div class="price-new" style="font-size:1.35rem;"><span>Precio bajo cotización</span></div>
-              </div>
-
-              <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Diseña tu paquete</a>
-
-              <p class="text-center small">Se cotiza según alcance y diseño</p>
-              <p class="text-center small">Contrato mínimo de 6 meses</p>
-
-              <ul>
-                <li><i class="bi bi-check"></i> Todas las funcionalidades del sistema</li>
-                <li><i class="bi bi-check"></i> Módulos adicionales a la carta</li>
-                <li><i class="bi bi-check"></i> Automatizaciones 100 % personalizadas</li>
-                <li><i class="bi bi-check"></i> Integración con sistemas externos</li>
-                <li><i class="bi bi-info-circle text-warning"></i> Soporte presencial y servidor físico <strong>se cotizan por separado</strong></li>
-              </ul>
-            </div>
-          </div>
-
-          <!--COTIZADOR VIRTUAL -->
-<style>
-/* =========================
-   LINKWICH QUOTE MODAL - UI PRO
-   (bonito en light y dark)
-========================= */
-
-/* Base modal */
-#lwQuoteModal .lwq-modal{
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(0,0,0,.06);
-  box-shadow: 0 20px 70px rgba(0,0,0,.25);
-}
-
-/* Header / Footer */
-#lwQuoteModal .modal-header{
-  border-bottom: 1px solid rgba(0,0,0,.06);
-  background: linear-gradient(135deg, rgba(13,110,253,.10), rgba(13,110,253,.02));
-}
-#lwQuoteModal .modal-footer{
-  border-top: 1px solid rgba(0,0,0,.06);
-  background: rgba(248,250,252,.75);
-}
-
-/* Fondo del body (light) */
-#lwQuoteModal .modal-body{
-  background:
-    radial-gradient(900px 380px at 10% 0%, rgba(13,110,253,.10), transparent 55%),
-    radial-gradient(900px 380px at 100% 30%, rgba(25,135,84,.08), transparent 50%),
-    #f6f8fb;
-}
-
-/* Grid */
-#lwQuoteModal .lwq-grid{
-  display:grid;
-  grid-template-columns: 1.05fr .95fr;
-  gap: 14px;
-}
-@media (max-width: 991.98px){
-  #lwQuoteModal .lwq-grid{ grid-template-columns: 1fr; }
-}
-
-/* Panels = Cards */
-#lwQuoteModal .lwq-panel{
-  border-radius: 16px;
-  padding: 14px;
-  border: 1px solid rgba(0,0,0,.06);
-  background: rgba(255,255,255,.78);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 12px 30px rgba(0,0,0,.08);
-}
-
-/* Títulos */
-#lwQuoteModal .lwq-h6{
-  font-weight: 900;
-  margin: 0 0 12px 0;
-  color: rgba(11,18,32,.92);
-}
-
-/* Labels */
-#lwQuoteModal .lwq-label{
-  display:block;
-  margin: 10px 0 6px;
-  font-weight: 800;
-  color: rgba(11,18,32,.72);
-  font-size: .92rem;
-}
-
-/* Inputs */
-#lwQuoteModal .lwq-input{
-  width:100%;
-  border-radius: 12px;
-  padding: .70rem .80rem;
-  border: 1px solid rgba(11,18,32,.12);
-  background: rgba(255,255,255,.95);
-  color: rgba(11,18,32,.92);
-  outline: none;
-  transition: box-shadow .15s ease, border-color .15s ease, transform .12s ease;
-}
-#lwQuoteModal .lwq-input:focus{
-  border-color: rgba(13,110,253,.45);
-  box-shadow: 0 0 0 4px rgba(13,110,253,.18);
-}
-
-/* Filas */
-#lwQuoteModal .lwq-row{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-@media (max-width: 575.98px){
-  #lwQuoteModal .lwq-row{ grid-template-columns: 1fr; }
-}
-
-/* Helper */
-#lwQuoteModal .lwq-help{
-  display:block;
-  margin-top:6px;
-  color: rgba(11,18,32,.55);
-  font-size: .85rem;
-}
-
-/* Checkbox IVA */
-#lwQuoteModal .lwq-check{
-  display:flex;
-  align-items:center;
-  gap:.55rem;
-  margin: 0;
-  padding: .70rem .80rem;
-  border-radius: 12px;
-  border: 1px solid rgba(11,18,32,.10);
-  background: rgba(255,255,255,.70);
-  color: rgba(11,18,32,.78);
-}
-#lwQuoteModal .lwq-check input{ width:18px; height:18px; }
-
-/* KPIs */
-#lwQuoteModal .lwq-kpis{
-  display:grid;
-  gap: 10px;
-}
-#lwQuoteModal .lwq-kpi{
-  border-radius: 14px;
-  padding: 12px;
-  border: 1px solid rgba(0,0,0,.06);
-  background: rgba(255,255,255,.70);
-}
-#lwQuoteModal .lwq-kpi .k{
-  color: rgba(11,18,32,.60);
-  font-weight: 800;
-}
-#lwQuoteModal .lwq-kpi .v{
-  color: rgba(11,18,32,.92);
-  font-weight: 950;
-  font-size: 1.35rem;
-  margin-top: 2px;
-}
-
-/* Lista de resultados */
-#lwQuoteModal .lwq-list{ display:grid; gap: 10px; }
-#lwQuoteModal .lwq-item{
-  display:flex;
-  justify-content:space-between;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,.06);
-  background: rgba(255,255,255,.65);
-  color: rgba(11,18,32,.72);
-}
-#lwQuoteModal .lwq-item strong{
-  color: rgba(11,18,32,.92);
-}
-
-/* Nota */
-#lwQuoteModal .lwq-note{
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px dashed rgba(13,110,253,.25);
-  background: rgba(13,110,253,.06);
-  color: rgba(11,18,32,.70);
-}
-
-/* Botones dentro del panel (más bonitos) */
-#lwQuoteModal #lwq_copy.btn{
-  border-radius: 12px;
-  font-weight: 900;
-  box-shadow: 0 12px 26px rgba(13,110,253,.22);
-}
-#lwQuoteModal #lwq_wa.btn{
-  border-radius: 12px;
-  font-weight: 900;
-  box-shadow: 0 12px 26px rgba(25,135,84,.20);
-}
-
-/* Toast */
-#lwQuoteModal .lwq-toast{
-  min-height: 18px;
-  color: rgba(11,18,32,.75);
-}
-
-/* ===== Dark mode (si usas data-bs-theme="dark") ===== */
-[data-bs-theme="dark"] #lwQuoteModal .modal-body{
-  background:
-    radial-gradient(900px 380px at 10% 0%, rgba(13,110,253,.18), transparent 55%),
-    radial-gradient(900px 380px at 100% 30%, rgba(16,185,129,.14), transparent 50%),
-    #0b1220;
-}
-[data-bs-theme="dark"] #lwQuoteModal .lwq-modal{
-  border-color: rgba(255,255,255,.10);
-}
-[data-bs-theme="dark"] #lwQuoteModal .modal-header{
-  border-bottom-color: rgba(255,255,255,.10);
-  background: linear-gradient(135deg, rgba(13,110,253,.20), rgba(255,255,255,.03));
-}
-[data-bs-theme="dark"] #lwQuoteModal .modal-footer{
-  border-top-color: rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-}
-[data-bs-theme="dark"] #lwQuoteModal .lwq-panel{
-  border-color: rgba(255,255,255,.10);
-  background: rgba(255,255,255,.04);
-  box-shadow: 0 18px 40px rgba(0,0,0,.35);
-}
-[data-bs-theme="dark"] #lwQuoteModal .lwq-h6,
-[data-bs-theme="dark"] #lwQuoteModal .lwq-label,
-[data-bs-theme="dark"] #lwQuoteModal .lwq-help,
-[data-bs-theme="dark"] #lwQuoteModal .lwq-item,
-[data-bs-theme="dark"] #lwQuoteModal .lwq-toast{
-  color: rgba(255,255,255,.82);
-}
-[data-bs-theme="dark"] #lwQuoteModal .lwq-input{
-  border-color: rgba(255,255,255,.12);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.92);
-}
-[data-bs-theme="dark"] #lwQuoteModal .lwq-kpi,
-[data-bs-theme="dark"] #lwQuoteModal .lwq-item{
-  border-color: rgba(255,255,255,.10);
-  background: rgba(255,255,255,.04);
-}
-[data-bs-theme="dark"] #lwQuoteModal .lwq-note{
-  border-color: rgba(13,110,253,.35);
-  background: rgba(13,110,253,.10);
-  color: rgba(255,255,255,.78);
-}
-[data-bs-theme="dark"] #lwQuoteModal .btn-close{
-  filter: invert(1) grayscale(1);
-}
-
-  
-</style>
-<style>
-  #lwQuoteModal .lwq-disclaimer{
-    display:block;
-    margin-top:6px;
-    font-size:.88rem;
-    opacity:.85;
-  }
-</style>
-          
-          <div class="text-center mt-3" data-aos="fade-up" data-aos-delay="250">
-  <button type="button" class="btn btn-primary btn-lg px-4"
-          data-bs-toggle="modal" data-bs-target="#lwQuoteModal">
-    <i class="bi bi-calculator me-2"></i> Cotización rápida
-  </button>
-  <div class="small fst-italic mt-2 opacity-75">
-    Calcula nodos, meses, descuento y total en 10 segundos.
-  </div>
-</div>
-
-   
         </div>
+
+        <!-- Vista privada: visible después del login -->
+        <div id="lwPartnerPrivateArea" class="lw-partner-private d-none" data-aos="fade-up" data-aos-delay="100">
+          <div class="lw-partner-unlocked mb-4">
+            <div>
+              <span class="lw-partner-eyebrow"><i class="bi bi-unlock-fill me-2"></i>Acceso autorizado</span>
+              <h3 class="mb-1">Precios y cotizador partner</h3>
+              <p class="mb-0 text-muted">Información visible únicamente para usuarios autorizados.</p>
+            </div>
+            <button id="lwPartnerLogout" type="button" class="btn btn-outline-secondary">
+              <i class="bi bi-box-arrow-right me-2"></i>Cerrar acceso
+            </button>
+          </div>
+
+          <div class="row gy-4">
+
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+              <div class="pricing-item">
+                <div class="deal-ribbon">-23% OFF</div>
+                <h3>Paquete Básico</h3>
+                <p class="description">30 nodos &nbsp;|&nbsp; Redes pequeñas</p>
+                <div class="price-stack">
+                  <div class="price-old"><small>Antes</small>$260 / nodo</div>
+                  <div class="price-new"><sup>$</sup>200<span> / nodo mensual</span></div>
+                  <div class="save-pill"><i class="bi bi-lightning-charge-fill"></i> Precio promocional</div>
+                </div>
+                <p class="text-center small mb-1">$72,000 MXN/año (30 nodos)</p>
+                <p class="text-center small promo-note mb-1">Ahorro aprox.: $21,600 MXN/año</p>
+                <p class="text-center small">Licencia mínima de 6 meses</p>
+                <ul>
+                  <li><i class="bi bi-check"></i> Suite completa de monitoreo</li>
+                  <li><i class="bi bi-check"></i> Ideal para primer proyecto partner</li>
+                  <li><i class="bi bi-info-circle text-warning"></i> Implementación y servidor se cotizan por separado</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="150">
+              <div class="pricing-item">
+                <div class="deal-ribbon">-22% OFF</div>
+                <h3>Paquete Estándar</h3>
+                <p class="description">50 nodos &nbsp;|&nbsp; Redes en crecimiento</p>
+                <div class="price-stack">
+                  <div class="price-old"><small>Antes</small>$230 / nodo</div>
+                  <div class="price-new"><sup>$</sup>180<span> / nodo mensual</span></div>
+                  <div class="save-pill"><i class="bi bi-piggy-bank-fill"></i> Ahorro inteligente</div>
+                </div>
+                <p class="text-center small mb-1">$108,000 MXN/año (50 nodos)</p>
+                <p class="text-center small promo-note mb-1">Ahorro aprox.: $30,000 MXN/año</p>
+                <p class="text-center small">Licencia mínima de 6 meses</p>
+                <ul>
+                  <li><i class="bi bi-check"></i> Suite completa de monitoreo</li>
+                  <li><i class="bi bi-check"></i> Recomendado para redes medianas</li>
+                  <li><i class="bi bi-info-circle text-warning"></i> Implementación y servidor se cotizan por separado</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+              <div class="pricing-item featured">
+                <p class="popular">Más popular</p>
+                <div class="deal-ribbon">-20% OFF</div>
+                <h3>Paquete Empresarial</h3>
+                <p class="description">100 nodos &nbsp;|&nbsp; Redes medianas-grandes</p>
+                <div class="price-stack">
+                  <div class="price-old"><small>Antes</small>$200 / nodo</div>
+                  <div class="price-new"><sup>$</sup>160<span> / nodo mensual</span></div>
+                  <div class="save-pill"><i class="bi bi-award-fill"></i> Mejor relación costo/valor</div>
+                </div>
+                <p class="text-center small mb-1">$192,000 MXN/año (100 nodos)</p>
+                <p class="text-center small promo-note mb-1">Ahorro aprox.: $48,000 MXN/año</p>
+                <p class="text-center small">Licencia mínima de 1 año</p>
+                <ul>
+                  <li><i class="bi bi-check"></i> Suite completa de monitoreo</li>
+                  <li><i class="bi bi-check"></i> Ideal para hotelería, campus y corporativo</li>
+                  <li><i class="bi bi-info-circle text-warning"></i> Implementación y servidor se cotizan por separado</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="250">
+              <div class="pricing-item">
+                <div class="deal-ribbon">-13% OFF</div>
+                <h3>Paquete Corporativo</h3>
+                <p class="description">Más de 150 nodos &nbsp;|&nbsp; Multi-sitio</p>
+                <div class="price-stack">
+                  <div class="price-old"><small>Antes</small>$160 / nodo</div>
+                  <div class="price-new"><sup>$</sup>140<span> / nodo mensual</span></div>
+                  <div class="save-pill"><i class="bi bi-building-fill-check"></i> Ideal multi-sitio</div>
+                </div>
+                <p class="text-center small mb-1">$252,000 MXN/año (150 nodos estimados)</p>
+                <p class="text-center small promo-note mb-1">Ahorro aprox.: $36,000 MXN/año</p>
+                <p class="text-center small">Licencia mínima de 1 año</p>
+                <ul>
+                  <li><i class="bi bi-check"></i> Suite completa de monitoreo</li>
+                  <li><i class="bi bi-check"></i> Diseñado para operación distribuida</li>
+                  <li><i class="bi bi-info-circle text-warning"></i> Implementación y servidor se cotizan por separado</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="300">
+              <div class="pricing-item h-100">
+                <h3>Paquete Personalizado</h3>
+                <p class="description">Solución modular para necesidades especiales del cliente.</p>
+                <div class="price-stack">
+                  <div class="price-new" style="font-size:1.35rem;"><span>Precio bajo cotización</span></div>
+                </div>
+                <p class="text-center small">Se cotiza según alcance, módulos, integraciones y viabilidad técnica.</p>
+                <ul>
+                  <li><i class="bi bi-check"></i> Automatizaciones personalizadas</li>
+                  <li><i class="bi bi-check"></i> Integración con sistemas externos</li>
+                  <li><i class="bi bi-check"></i> Desarrollo modular según necesidades del cliente</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="350">
+              <div class="lw-partner-quote-card h-100">
+                <div class="lw-partner-panel-icon"><i class="bi bi-calculator"></i></div>
+                <h3>Cotizador rápido partner</h3>
+                <p>
+                  Calcula nodos, meses, descuento comercial, implementación, servidor físico y total estimado
+                  para preparar una propuesta inicial.
+                </p>
+                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#lwQuoteModal">
+                  <i class="bi bi-calculator me-2"></i>Abrir cotizador
+                </button>
+                <div class="small fst-italic mt-3 opacity-75">
+                  Los importes son estimados y no incluyen IVA, salvo que se indique lo contrario.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </section>
     <!-- /Pricing Section -->
@@ -3160,6 +3118,58 @@
     </div>
   </div>
 
+
+<!-- =========================
+     MODAL: ACCESO PARTNER
+========================= -->
+<div class="modal fade" id="lwPartnerLoginModal" tabindex="-1" aria-labelledby="lwPartnerLoginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content lw-partner-login-modal">
+      <div class="modal-header">
+        <div>
+          <h5 class="modal-title" id="lwPartnerLoginModalLabel">
+            <i class="bi bi-shield-lock me-2"></i>Acceso partner
+          </h5>
+          <p class="mb-0 small opacity-75">Ingresa para visualizar precios y cotizador interno.</p>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <form id="lwPartnerLoginForm" autocomplete="off">
+        <div class="modal-body">
+          <div id="lwPartnerLoginAlert" class="alert alert-danger d-none" role="alert"></div>
+
+          <label class="form-label fw-bold" for="lwPartnerUser">Usuario</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <input id="lwPartnerUser" type="text" class="form-control" placeholder="Usuario partner" required>
+          </div>
+
+          <label class="form-label fw-bold" for="lwPartnerPass">Contraseña</label>
+          <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-key"></i></span>
+            <input id="lwPartnerPass" type="password" class="form-control" placeholder="Contraseña" required>
+            <button id="lwPartnerTogglePass" class="btn btn-outline-secondary" type="button" aria-label="Mostrar u ocultar contraseña">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+
+          <div class="small text-muted mt-3">
+            Acceso de demostración local. Para producción se recomienda validar usuarios desde backend/base de datos.
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
          <!-- =========================
      MODAL: COTIZACIÓN RÁPIDA
 ========================= -->
@@ -3518,6 +3528,94 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
     if (img.complete && (!img.naturalWidth || img.naturalWidth === 0)) {
       activateFallback(img.closest('.lw-brand-wordmark'));
     }
+  });
+})();
+</script>
+
+
+<script id="lw-partner-login-js">
+(function(){
+  const VALID_USER = "admin";
+  const VALID_PASS = "LinkWich-IT";
+
+  const gate = document.getElementById("lwPartnerGate");
+  const privateArea = document.getElementById("lwPartnerPrivateArea");
+  const form = document.getElementById("lwPartnerLoginForm");
+  const userInput = document.getElementById("lwPartnerUser");
+  const passInput = document.getElementById("lwPartnerPass");
+  const alertBox = document.getElementById("lwPartnerLoginAlert");
+  const logoutBtn = document.getElementById("lwPartnerLogout");
+  const togglePass = document.getElementById("lwPartnerTogglePass");
+  const modalEl = document.getElementById("lwPartnerLoginModal");
+
+  function setAccess(isLogged){
+    if (!gate || !privateArea) return;
+    gate.classList.toggle("d-none", isLogged);
+    privateArea.classList.toggle("d-none", !isLogged);
+
+    if (isLogged && window.AOS) {
+      setTimeout(function(){ window.AOS.refresh(); }, 100);
+    }
+  }
+
+  function showError(message){
+    if (!alertBox) return;
+    alertBox.textContent = message;
+    alertBox.classList.remove("d-none");
+  }
+
+  function clearError(){
+    if (!alertBox) return;
+    alertBox.textContent = "";
+    alertBox.classList.add("d-none");
+  }
+
+  if (sessionStorage.getItem("lwPartnerAuthorized") === "1") {
+    setAccess(true);
+  } else {
+    setAccess(false);
+  }
+
+  form?.addEventListener("submit", function(e){
+    e.preventDefault();
+    clearError();
+
+    const user = (userInput?.value || "").trim();
+    const pass = passInput?.value || "";
+
+    if (user === VALID_USER && pass === VALID_PASS) {
+      sessionStorage.setItem("lwPartnerAuthorized", "1");
+      setAccess(true);
+
+      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+      modal.hide();
+
+      form.reset();
+      setTimeout(function(){
+        privateArea?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 250);
+      return;
+    }
+
+    showError("Usuario o contraseña incorrectos. Verifica los datos de acceso partner.");
+  });
+
+  logoutBtn?.addEventListener("click", function(){
+    sessionStorage.removeItem("lwPartnerAuthorized");
+    setAccess(false);
+    gate?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  togglePass?.addEventListener("click", function(){
+    if (!passInput) return;
+    const isPassword = passInput.type === "password";
+    passInput.type = isPassword ? "text" : "password";
+    togglePass.innerHTML = isPassword ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+  });
+
+  modalEl?.addEventListener("shown.bs.modal", function(){
+    clearError();
+    userInput?.focus();
   });
 })();
 </script>
