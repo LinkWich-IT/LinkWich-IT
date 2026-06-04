@@ -464,7 +464,6 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-  <link href="assets/css/linkwich-enterprise-v4.css" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: Bootslander
@@ -476,7 +475,6 @@
 </head>
 
 <body class="index-page">
-  <!-- LinkWich-Monitor Landing Empresarial V4 corregida: diseño integrado con plantilla original, sin eliminar cotizador, precios ni legales -->
 
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
@@ -489,16 +487,56 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero" class="active"><i class="bi bi-house-door-fill me-1"></i>Inicio</a></li>
-          <li><a href="#about"><i class="bi bi-building-gear me-1"></i>Plataforma</a></li>
-          <li><a href="#features"><i class="bi bi-grid-3x3-gap-fill me-1"></i>Módulos</a></li>
-          <li><a href="#architecture"><i class="bi bi-hdd-rack-fill me-1"></i>Arquitectura</a></li>
-          <li><a href="#gallery"><i class="bi bi-images me-1"></i>Galería</a></li>
-          <li><a href="#pricing"><i class="bi bi-tags-fill me-1"></i>Precios</a></li>
-          <li><a href="#requirements"><i class="bi bi-pc-display-horizontal me-1"></i>Requerimientos</a></li>
-          <li><a href="#contact-cta"><i class="bi bi-telephone-fill me-1"></i>Contacto</a></li>
-          <li><a href="#demo-request"><i class="bi bi-play-circle-fill me-1"></i>Demo</a></li>
+          <li>
+            <a href="#hero" class="active">
+              <i class="bi bi-house-door-fill me-1"></i>Inicio
+            </a>
+          </li>
+          <li>
+            <a href="#about">
+              <i class="bi bi-info-circle-fill me-1"></i>Acerca
+            </a>
+          </li>
+          <li>
+            <a href="#features">
+              <i class="bi bi-stars me-1"></i>Características
+            </a>
+          </li>
+          <li>
+            <a href="#gallery">
+              <i class="bi bi-images me-1"></i>Galería
+            </a>
+          </li>
+          <li>
+            <a href="#pricing">
+              <i class="bi bi-tag-fill me-1"></i>Precios
+            </a>
+          </li>
+
+          <!-- ✅ NUEVO -->
+          <li>
+            <a href="#requirements">
+              <i class="bi bi-pc-display-horizontal me-1"></i>Requerimientos
+            </a>
+          </li>
+
+          <li>
+            <a href="#contact-cta">
+              <i class="bi bi-telephone-fill me-1"></i>Contacto
+            </a>
+          </li>
+          <li>
+            <a href="#demo-request">
+              <i class="bi bi-play-circle-fill me-1"></i>Demo
+            </a>
+          </li>
+          <li>
+            <a href="https://linkwich-it.github.io/LinkWich-IT" target="_blank">
+              <i class="bi bi-github me-1"></i>LinkWich-IT
+            </a>
+          </li>
         </ul>
+
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
@@ -509,456 +547,460 @@
   <main class="main">
 
     <!-- Hero Section -->
-    <!-- Hero Section -->
-    <section id="hero" class="hero section dark-background lw-hero-enterprise">
-      <img src="assets/img/hero-bg-2.jpg" alt="Infraestructura de red" class="hero-bg">
-      <div class="lw-hero-overlay"></div>
+    <section id="hero" class="hero section dark-background">
+      <img src="assets/img/hero-bg-2.jpg" alt="" class="hero-bg">
 
-      <div class="container position-relative">
-        <div class="row gy-5 align-items-center justify-content-between">
-          <div class="col-lg-7 d-flex flex-column justify-content-center" data-aos="fade-up">
-            <div class="lw-eyebrow mb-3">
-              <i class="bi bi-shield-check"></i>
-              Plataforma on-premise para monitoreo, operación y continuidad de infraestructura TI
-            </div>
+      <div class="container">  <!-- AQUI VA LA IMAGEN PRINCPIAL -->
+        <div class="row gy-4 justify-content-between">
+          <div class="col-lg-4 order-lg-last hero-img" data-aos="zoom-out" data-aos-delay="100">
+            <img src="assets/img/Linkwich-Monitor-Landing2.png" class="img-fluid animated" alt="">
+          </div>
 
-            <h1>Monitorea, administra y protege tu red con <span>LinkWich-Monitor</span></h1>
-            <p class="lw-hero-lead">
-              Solución profesional para empresas que necesitan visibilidad en tiempo real, alertas proactivas,
-              mapas automáticos, syslog, respaldos, reportes y acceso remoto seguro desde una sola plataforma.
+          <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-in">
+            <h1>Transforma tu red con <span>LinkWich-Monitor</span></h1>
+            <p>
+              Descubre una nueva forma de monitorear tu infraestructura. Con
+              <strong>LinkWich-Monitor</strong> tendrás control total de tu red, visibilidad
+              en tiempo real y alertas inteligentes. Todo en una sola plataforma fácil de
+              usar, rápida y pensada para tu negocio.
             </p>
 
-            <div class="lw-hero-actions d-flex flex-wrap align-items-center gap-3 mt-4">
-              <a href="#pricing" class="btn-get-started lw-btn-primary"><i class="bi bi-tags-fill me-2"></i>Ver paquetes</a>
-              <a href="http://linkwich-monitor.ddns.net:5003" target="_blank" rel="noopener" class="btn-watch-video d-flex align-items-center lw-btn-secondary">
-                <i class="bi bi-play-circle"></i><span class="ps-2">Ver demo</span>
+            <!-- Botones -->
+            <div class="d-flex align-items-center gap-4 mt-3">
+              <!-- CTA principal -->
+              <a href="#about" class="btn-get-started">Comienza hoy</a>
+
+              <!-- CTA Demo: mismo estilo, sin light-box -->
+              <a href="http://linkwich-monitor.ddns.net:5003"
+                 target="_blank" rel="noopener"
+                 class="btn-watch-video d-flex align-items-center">
+                <i class="bi bi-play-circle"></i>
+                <span class="ps-2">Ver&nbsp;demo</span>
               </a>
-              <button type="button" class="btn lw-btn-quote" data-bs-toggle="modal" data-bs-target="#lwQuoteModal">
-                <i class="bi bi-calculator me-2"></i>Cotización rápida
-              </button>
             </div>
 
-            <div class="lw-hero-badges mt-4">
-              <span><i class="bi bi-router-fill"></i> ICMP / SNMP</span>
-              <span><i class="bi bi-journal-text"></i> Syslog + IA</span>
-              <span><i class="bi bi-terminal-fill"></i> SSH / Telnet</span>
-              <span><i class="bi bi-diagram-3-fill"></i> LLDP / Topología</span>
-              <span><i class="bi bi-whatsapp"></i> WhatsApp / Correo</span>
-              <span><i class="bi bi-shield-lock-fill"></i> Roles + 2FA</span>
-            </div>
           </div>
 
-          <div class="col-lg-5 hero-img" data-aos="zoom-out" data-aos-delay="120">
-            <div class="lw-product-frame">
-              <div class="lw-window-bar"><span></span><span></span><span></span><strong>Dashboard operativo</strong></div>
-              <img src="assets/img/Linkwich-Monitor-Landing2.png" class="img-fluid animated" alt="Dashboard LinkWich-Monitor">
-              <div class="lw-floating-card lw-float-1"><i class="bi bi-bell-fill"></i><strong>Alertas</strong><small>Eventos críticos al instante</small></div>
-              <div class="lw-floating-card lw-float-2"><i class="bi bi-cloud-arrow-down-fill"></i><strong>Backups</strong><small>Respaldos programados</small></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="lw-hero-kpis" data-aos="fade-up" data-aos-delay="220">
-          <div><strong>24/7</strong><span>Supervisión continua</span></div>
-          <div><strong>Multi-vendor</strong><span>Cisco, Fortinet, Aruba, Allied, Ruckus y más</span></div>
-          <div><strong>On-premise</strong><span>Control local de datos y operación</span></div>
-          <div><strong>Por paquete</strong><span>Licenciamiento por tamaño de red y alcance</span></div>
         </div>
       </div>
 
-      <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
-        <defs><path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path></defs>
-        <g class="wave1"><use xlink:href="#wave-path" x="50" y="3"></use></g>
-        <g class="wave2"><use xlink:href="#wave-path" x="50" y="0"></use></g>
-        <g class="wave3"><use xlink:href="#wave-path" x="50" y="9"></use></g>
+      <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
+        <defs>
+          <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+        </defs>
+        <g class="wave1">
+          <use xlink:href="#wave-path" x="50" y="3"></use>
+        </g>
+        <g class="wave2">
+          <use xlink:href="#wave-path" x="50" y="0"></use>
+        </g>
+        <g class="wave3">
+          <use xlink:href="#wave-path" x="50" y="9"></use>
+        </g>
       </svg>
+
     </section><!-- /Hero Section -->
 
+    <!-- About Section -->
+    <section id="about" class="about section">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row align-items-xl-center gy-5">
 
-    <!-- About Section -->
-    <!-- About Section -->
-    <section id="about" class="about section lw-platform-section">
-      <div class="container" data-aos="fade-up">
-        <div class="row align-items-center gy-5">
           <div class="col-xl-5 content">
-            <span class="lw-section-pill"><i class="bi bi-building-gear"></i> Plataforma empresarial</span>
-            <h2>Una consola central para operar redes críticas con mayor control</h2>
-            <p>
-              <strong>LinkWich-Monitor</strong> centraliza monitoreo, diagnóstico, alertamiento, respaldos,
-              reportes y administración remota para que el equipo de TI tenga una visión clara de lo que sucede en la infraestructura.
-            </p>
-            <p>
-              Está pensado para hoteles, residenciales, corporativos, escuelas, retail e infraestructuras donde la continuidad operativa es clave.
-              La plataforma puede ajustarse de forma modular según el alcance del cliente y la viabilidad técnica.
-            </p>
-            <div class="lw-mini-list">
-              <div><i class="bi bi-check2-circle"></i><span>Visibilidad del estado de dispositivos, interfaces, servicios, almacenamiento y eventos.</span></div>
-              <div><i class="bi bi-check2-circle"></i><span>Alertas por correo, WhatsApp, campana interna y popups operativos.</span></div>
-              <div><i class="bi bi-check2-circle"></i><span>Reportes ejecutivos, auditoría y trazabilidad de operación.</span></div>
-            </div>
-            <a href="#features" class="read-more mt-3"><span>Ver módulos</span><i class="bi bi-arrow-right"></i></a>
+            <h3>Sobre Nosotros</h3>
+            <h2>Moderniza la forma en que supervisas tu red</h2>
+            <p>En <strong>LinkWich-Monitor</strong>, ayudamos a empresas a tener el control total de su infraestructura tecnológica. Nuestra plataforma de monitoreo ofrece visibilidad en tiempo real, alertas inteligentes y reportes detallados que simplifican la gestión de redes y dispositivos.</p>
+
+            <p><strong>¿Qué ofrecemos?</strong></p>
+            <p>Ofrecemos una solución completa y fácil de usar para monitorear el estado de tu red, detectar fallos antes de que se conviertan en problemas y tomar decisiones informadas con base en datos claros. Todo desde un panel centralizado, accesible desde cualquier lugar.</p>
+
+            <p><strong>¿Por qué elegir LinkWich-Monitor?</strong></p>
+            <p>Porque tu tiempo vale. Nuestra plataforma está diseñada para ayudarte a ahorrar recursos, evitar interrupciones y mantener tu operación siempre en marcha. Nos apoyamos en tecnología avanzada y una interfaz amigable que no requiere conocimientos técnicos para aprovechar al máximo.</p>
+
+            <a href="#features" class="read-more"><span>Leer más</span><i class="bi bi-arrow-right"></i></a>
           </div>
 
           <div class="col-xl-7">
-            <div class="row gy-4 icon-boxes lw-value-grid">
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
-                <div class="icon-box lw-value-card">
-                  <i class="bi bi-activity"></i>
-                  <h3>Continuidad operativa</h3>
-                  <p>Identifica fallas antes de que escalen y reduce tiempos de reacción en incidentes críticos.</p>
+            <div class="row gy-4 icon-boxes">
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-box">
+                  <i class="bi bi-laptop"></i>
+                  <h3>Visibilidad total</h3>
+                  <p>Visualiza el estado de tu red en tiempo real, desde cualquier lugar y en cualquier momento.</p>
                 </div>
               </div>
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="160">
-                <div class="icon-box lw-value-card">
-                  <i class="bi bi-diagram-3"></i>
-                  <h3>Topología entendible</h3>
-                  <p>Mapas LLDP, geolocalización y visualización de enlaces para entender cómo está conectada la red.</p>
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon-box">
+                  <i class="bi bi-clipboard-pulse"></i>
+                  <h3>Alertas proactivas</h3>
+                  <p>Recibe notificaciones al instante cuando algo no va bien, para que actúes antes de que impacte tu negocio.</p>
                 </div>
               </div>
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="220">
-                <div class="icon-box lw-value-card">
-                  <i class="bi bi-shield-lock"></i>
-                  <h3>Operación segura</h3>
-                  <p>Roles, 2FA, auditoría de usuarios y registro de sesiones de terminal para mayor control.</p>
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="icon-box">
+                  <i class="bi bi-command"></i>
+                  <h3>Análisis inteligente</h3>
+                  <p>Detecta patrones, identifica cuellos de botella y mejora el rendimiento de tu infraestructura con datos claros.</p>
                 </div>
               </div>
-              <div class="col-md-6" data-aos="fade-up" data-aos-delay="280">
-                <div class="icon-box lw-value-card">
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="icon-box">
                   <i class="bi bi-graph-up-arrow"></i>
-                  <h3>Datos para decidir</h3>
-                  <p>Dashboards, históricos, reportes PDF/Excel y métricas para capacidad, SLA y gestión ejecutiva.</p>
+                  <h3>Escala contigo</h3>
+                  <p>Ya seas una pequeña empresa o una red corporativa, LinkWich-Monitor se adapta a tus necesidades actuales y futuras.</p>
                 </div>
               </div>
+
             </div>
           </div>
+
         </div>
       </div>
-    </section><!-- /About Section -->
-
+    </section>
+    <!-- /About Section -->
 
     <!-- Features Section -->
     <!-- ==============================  Features Section  ============================== -->
-    <!-- Features Section -->
-    <section id="features" class="features section lw-modules-section">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title text-center">
-          <h2>Módulos</h2>
-          <div><span>Todo lo que puede hacer</span> <span class="description-title">LinkWich-Monitor</span></div>
-          <p class="mt-3 text-muted">
-            Módulos reales de monitoreo, alertamiento, diagnóstico, respaldos, seguridad, reportes y administración remota integrados en una sola plataforma.
-          </p>
-        </div>
+    <section id="features" class="features section">
+      <div class="container">
+        <div class="row gy-4">
 
-        <div class="lw-filterbar" data-aos="fade-up" data-aos-delay="80">
-          <button type="button" class="lw-filter-btn" data-filter="core">Monitoreo</button>
-<button type="button" class="lw-filter-btn" data-filter="alerts">Alertas</button>
-<button type="button" class="lw-filter-btn" data-filter="logs">Syslog/IA</button>
-<button type="button" class="lw-filter-btn" data-filter="topology">Mapas/VLAN</button>
-<button type="button" class="lw-filter-btn" data-filter="ops">Operación</button>
-<button type="button" class="lw-filter-btn" data-filter="security">Seguridad</button>
-<button type="button" class="lw-filter-btn" data-filter="reports">Reportes</button>
-        </div>
+          <!-- 1 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="features-item">
+              <i class="bi bi-eye" style="color: #ffbb2c;"></i>
+              <h3><a href="#" class="stretched-link">Monitoreo en tiempo real</a></h3>
+            </div>
+          </div>
 
-        <div class="row g-4 lw-modules-grid">
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="core" data-aos="fade-up" data-aos-delay="120">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-wifi"></i></div>
-              <div class="lw-module-num">01</div>
-              <h3>Monitoreo ICMP</h3>
-              <p>Validación de disponibilidad por ping, estado en línea/offline e histórico de cortes.</p>
-            </article>
+          <!-- 2 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="features-item">
+              <i class="bi bi-bell" style="color: #5578ff;"></i>
+              <h3><a href="#" class="stretched-link">Alertas inteligentes</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="core" data-aos="fade-up" data-aos-delay="160">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-hdd-network"></i></div>
-              <div class="lw-module-num">02</div>
-              <h3>Monitoreo SNMP</h3>
-              <p>Lectura de métricas de switches, routers, servidores, UPS y equipos compatibles.</p>
-            </article>
+
+          <!-- 3 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="features-item">
+              <i class="bi bi-diagram-3" style="color: #e80368;"></i>
+              <h3><a href="#" class="stretched-link">Mapa de red interactivo</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="core" data-aos="fade-up" data-aos-delay="200">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-graph-up-arrow"></i></div>
-              <div class="lw-module-num">03</div>
-              <h3>Interfaces y ancho de banda</h3>
-              <p>Tráfico por interfaz, consumo, utilización, gráficas e históricos de bandwidth.</p>
-            </article>
+
+          <!-- 4 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="features-item">
+              <i class="bi bi-clock-history" style="color: #e361ff;"></i>
+              <h3><a href="#" class="stretched-link">Historial de eventos</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="core" data-aos="fade-up" data-aos-delay="240">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-cpu"></i></div>
-              <div class="lw-module-num">04</div>
-              <h3>CPU, memoria y almacenamiento</h3>
-              <p>Seguimiento de recursos críticos para detectar saturación o crecimiento de capacidad.</p>
-            </article>
+
+          <!-- 5 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="500">
+            <div class="features-item">
+              <i class="bi bi-graph-up-arrow" style="color: #47aeff;"></i>
+              <h3><a href="#" class="stretched-link">Estadísticas detalladas</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="core" data-aos="fade-up" data-aos-delay="280">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-toggles2"></i></div>
-              <div class="lw-module-num">05</div>
-              <h3>Servicios, programas y puertos</h3>
-              <p>Supervisión de servicios TCP/UDP, IIS, procesos y disponibilidad de servicios críticos.</p>
-            </article>
+
+          <!-- 6 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="600">
+            <div class="features-item">
+              <i class="bi bi-terminal" style="color: #ffa76e;"></i>
+              <h3><a href="#" class="stretched-link">Compatibilidad SNMP</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="core" data-aos="fade-up" data-aos-delay="320">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-speedometer2"></i></div>
-              <div class="lw-module-num">06</div>
-              <h3>Dashboard ejecutivo</h3>
-              <p>KPIs, tarjetas, gráficas, disponibilidad, top de interfaces y resumen operacional.</p>
-            </article>
+
+          <!-- 7 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="700">
+            <div class="features-item">
+              <i class="bi bi-hdd-network" style="color: #11dbcf;"></i>
+              <h3><a href="#" class="stretched-link">Detección automática de dispositivos</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="core" data-aos="fade-up" data-aos-delay="360">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-collection"></i></div>
-              <div class="lw-module-num">07</div>
-              <h3>Inventario y grupos</h3>
-              <p>Administración de dispositivos, grupos, ubicaciones, marcas, licencias y datos técnicos.</p>
-            </article>
+
+          <!-- 8 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="800">
+            <div class="features-item">
+              <i class="bi bi-shield-lock" style="color: #4233ff;"></i>
+              <h3><a href="#" class="stretched-link">Seguridad de la información</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="alerts" data-aos="fade-up" data-aos-delay="80">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-bell-fill"></i></div>
-              <div class="lw-module-num">08</div>
-              <h3>Alertas inteligentes</h3>
-              <p>Alertas por disponibilidad, SNMP, interfaces, servicios, almacenamiento, UPS y syslog.</p>
-            </article>
+
+          <!-- 9 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="900">
+            <div class="features-item">
+              <i class="bi bi-pc-display" style="color: #b2904f;"></i>
+              <h3><a href="#" class="stretched-link">Interfaz web amigable</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="alerts" data-aos="fade-up" data-aos-delay="120">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-send-check"></i></div>
-              <div class="lw-module-num">09</div>
-              <h3>Notificaciones multicanal</h3>
-              <p>Correo, WhatsApp, popups, campana interna y persistencia de eventos relevantes.</p>
-            </article>
+
+          <!-- 10 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1000">
+            <div class="features-item">
+              <i class="bi bi-gear-wide-connected" style="color: #b20969;"></i>
+              <h3><a href="#" class="stretched-link">Integración sencilla</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="logs" data-aos="fade-up" data-aos-delay="160">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-journal-text"></i></div>
-              <div class="lw-module-num">10</div>
-              <h3>Syslog centralizado</h3>
-              <p>Recepción, filtrado, severidad, reglas y trazabilidad de eventos de red.</p>
-            </article>
+
+          <!-- 11 -->
+          <!-- 19  · Syslog con explicación IA -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1900">
+            <div class="features-item">
+              <i class="bi bi-robot" style="color: #ff7f50;"></i>
+              <h3><a href="#" class="stretched-link">Syslog con IA</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="logs" data-aos="fade-up" data-aos-delay="200">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-robot"></i></div>
-              <div class="lw-module-num">11</div>
-              <h3>Syslog con IA local</h3>
-              <p>Explicación asistida de logs para acelerar diagnóstico y análisis operativo.</p>
-            </article>
+
+          <!-- 12 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1200">
+            <div class="features-item">
+              <i class="bi bi-bar-chart" style="color: #29cc61;"></i>
+              <h3><a href="#" class="stretched-link">Reportes mensuales</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="logs" data-aos="fade-up" data-aos-delay="240">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-clock-history"></i></div>
-              <div class="lw-module-num">12</div>
-              <h3>Histórico de alertas</h3>
-              <p>Registro histórico para auditoría, seguimiento de reincidencias y análisis de tendencias.</p>
-            </article>
+
+          <!-- ============  NUEVAS FUNCIONALIDADES  ============ -->
+
+          <!-- 13  · SSH centralizado -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1300">
+            <div class="features-item">
+              <i class="bi bi-terminal-dash" style="color: #00b894;"></i>
+              <h3><a href="#" class="stretched-link">Acceso&nbsp;SSH centralizado</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="topology" data-aos="fade-up" data-aos-delay="280">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-diagram-3-fill"></i></div>
-              <div class="lw-module-num">13</div>
-              <h3>Mapa LLDP / Hypermap</h3>
-              <p>Topología automática por LLDP con nodos, enlaces, layouts y detalles por dispositivo.</p>
-            </article>
+
+          <!-- 14  · Respaldos automatizados -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1400">
+            <div class="features-item">
+              <i class="bi bi-arrow-repeat" style="color: #fdcb6e;"></i>
+              <h3><a href="#" class="stretched-link">Respaldos automatizados</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="topology" data-aos="fade-up" data-aos-delay="320">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-geo-alt-fill"></i></div>
-              <div class="lw-module-num">14</div>
-              <h3>Geolocalización</h3>
-              <p>Ubicación de equipos en mapa para operación multi-sitio o instalaciones distribuidas.</p>
-            </article>
+
+          <!-- 15  · Alertas por WhatsApp -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1500">
+            <div class="features-item">
+              <i class="bi bi-whatsapp" style="color: #25d366;"></i>
+              <h3><a href="#" class="stretched-link">Alertas por WhatsApp</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="topology" data-aos="fade-up" data-aos-delay="360">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-option"></i></div>
-              <div class="lw-module-num">15</div>
-              <h3>Visualizador de VLANs</h3>
-              <p>Consulta visual de VLANs, puertos y distribución lógica por dispositivo.</p>
-            </article>
+
+          <!-- 16  · Visualizador de VLANs -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1600">
+            <div class="features-item">
+              <i class="bi bi-option" style="color: #6c5ce7;"></i>
+              <h3><a href="#" class="stretched-link">Visualizador de VLANs</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="topology" data-aos="fade-up" data-aos-delay="80">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-radar"></i></div>
-              <div class="lw-module-num">16</div>
-              <h3>Descubrimiento automático</h3>
-              <p>Detección SNMP/LLDP/ARP para acelerar altas, inventario y documentación.</p>
-            </article>
+
+          <!-- 17  · Geolocalización de dispositivos -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1700">
+            <div class="features-item">
+              <i class="bi bi-geo-alt" style="color: #e17055;"></i>
+              <h3><a href="#" class="stretched-link">Geolocalización de dispositivos</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="ops" data-aos="fade-up" data-aos-delay="120">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-cloud-arrow-down-fill"></i></div>
-              <div class="lw-module-num">17</div>
-              <h3>Respaldos SSH/Telnet</h3>
-              <p>Respaldos manuales y programados de configuraciones de switching y equipos de red.</p>
-            </article>
+
+          <!-- 18  · Auto-descubrimiento de topología -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1800">
+            <div class="features-item">
+              <i class="bi bi-diagram-2-fill" style="color: #0984e3;"></i>
+              <h3><a href="#" class="stretched-link">Auto-descubrimiento de topología</a></h3>
+            </div>
           </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="ops" data-aos="fade-up" data-aos-delay="160">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-terminal-fill"></i></div>
-              <div class="lw-module-num">18</div>
-              <h3>Terminal web SSH/Telnet</h3>
-              <p>Acceso centralizado tipo terminal con control de sesión y trazabilidad de comandos.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="security" data-aos="fade-up" data-aos-delay="200">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-file-earmark-lock2"></i></div>
-              <div class="lw-module-num">19</div>
-              <h3>Auditoría de terminal</h3>
-              <p>Registro de actividad para validar quién accedió, cuándo y qué operación ejecutó.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="security" data-aos="fade-up" data-aos-delay="240">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-person-lock"></i></div>
-              <div class="lw-module-num">20</div>
-              <h3>Roles y permisos</h3>
-              <p>Perfiles visitante, admin y super admin para separar visualización, operación y administración.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="security" data-aos="fade-up" data-aos-delay="280">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-shield-lock-fill"></i></div>
-              <div class="lw-module-num">21</div>
-              <h3>Autenticación 2FA</h3>
-              <p>Segundo factor TOTP para proteger el acceso a la plataforma.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="reports" data-aos="fade-up" data-aos-delay="320">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-filetype-pdf"></i></div>
-              <div class="lw-module-num">22</div>
-              <h3>Reportes PDF / Excel</h3>
-              <p>Informes de disponibilidad, syslog, inventario, dispositivos y métricas listos para presentación.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="ops" data-aos="fade-up" data-aos-delay="360">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-signpost-split"></i></div>
-              <div class="lw-module-num">23</div>
-              <h3>NetPath y diagnóstico</h3>
-              <p>Trazas, saltos y diagnóstico de ruta para identificar pérdida, latencia y puntos problemáticos.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="ops" data-aos="fade-up" data-aos-delay="80">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-broadcast-pin"></i></div>
-              <div class="lw-module-num">24</div>
-              <h3>Sniffer de red</h3>
-              <p>Captura/observación de tráfico para apoyar análisis de red y troubleshooting.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="core" data-aos="fade-up" data-aos-delay="120">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-battery-charging"></i></div>
-              <div class="lw-module-num">25</div>
-              <h3>UPS y energía</h3>
-              <p>Monitoreo de UPS, estado eléctrico e históricos para continuidad de operación.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="security" data-aos="fade-up" data-aos-delay="160">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-phone"></i></div>
-              <div class="lw-module-num">26</div>
-              <h3>PWA multiplataforma</h3>
-              <p>Acceso tipo aplicación desde navegador en escritorio o móvil, sin instalar clientes pesados.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="ops" data-aos="fade-up" data-aos-delay="200">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-plug-fill"></i></div>
-              <div class="lw-module-num">27</div>
-              <h3>Integraciones personalizadas</h3>
-              <p>Conexión con sistemas externos, dashboards a medida, automatizaciones y APIs bajo alcance técnico.</p>
-            </article>
-          </div>
-          <div class="col-xl-3 col-lg-4 col-md-6 lw-module-col" data-cat="reports" data-aos="fade-up" data-aos-delay="240">
-            <article class="lw-module-card h-100">
-              <div class="lw-module-icon"><i class="bi bi-tags-fill"></i></div>
-              <div class="lw-module-num">28</div>
-              <h3>Licenciamiento por nodo</h3>
-              <p>Modelo claro por nodo, paquetes escalables y módulos según licenciamiento contratado.</p>
-            </article>
-          </div>
-        </div>
+
+        </div><!-- /row -->
       </div>
-    </section><!-- /Features Section -->
-
+    </section>
     <!-- ============================  /Features Section  ============================ -->
 
     <!-- Casos de Uso -->
-    <!-- Casos de Uso -->
-    <section id="use-cases" class="stats section light-background lw-industries-section">
+    <section id="use-cases" class="stats section light-background">
       <div class="container" data-aos="fade-up">
-        <div class="section-title text-center">
-          <h2>Casos de uso</h2>
-          <div><span>Diseñado para infraestructura</span> <span class="description-title">crítica y multi-sitio</span></div>
-        </div>
         <div class="row gy-4">
-          <div class="col-lg-3 col-md-6"><div class="lw-industry-card"><i class="bi bi-building"></i><h4>Hoteles y Resorts</h4><p>Switches, WiFi, servidores, CCTV, UPS, enlaces, cuartos de telecom y operación 24/7.</p></div></div>
-          <div class="col-lg-3 col-md-6"><div class="lw-industry-card"><i class="bi bi-houses"></i><h4>Residenciales y clubes</h4><p>Monitoreo de infraestructura distribuida, topologías, respaldos y alertas de continuidad.</p></div></div>
-          <div class="col-lg-3 col-md-6"><div class="lw-industry-card"><i class="bi bi-bank"></i><h4>Educación y corporativos</h4><p>Control de redes de campus, aulas, oficinas, servidores, acceso remoto y reportes ejecutivos.</p></div></div>
-          <div class="col-lg-3 col-md-6"><div class="lw-industry-card"><i class="bi bi-shop-window"></i><h4>Retail y sucursales</h4><p>Gestión de nodos, disponibilidad, servicios, terminales, enlaces y alertas por ubicación.</p></div></div>
+
+          <div class="col-lg-3 col-md-6 text-center">
+            <i class="bi bi-building fs-1 text-primary"></i>
+            <h4>Hoteles y Resorts</h4>
+            <p>Monitoreo de switches, WiFi, servidores y control de accesos.</p>
+          </div>
+
+          <div class="col-lg-3 col-md-6 text-center">
+            <i class="bi bi-bank fs-1 text-success"></i>
+            <h4>Instituciones Educativas</h4>
+            <p>Control de redes de aula, videovigilancia y laboratorios.</p>
+          </div>
+
+          <div class="col-lg-3 col-md-6 text-center">
+            <i class="bi bi-hospital fs-1 text-danger"></i>
+            <h4>Clínicas y Hospitales</h4>
+            <p>Supervisión de redes críticas para equipos médicos y servidores.</p>
+          </div>
+
+          <div class="col-lg-3 col-md-6 text-center">
+            <i class="bi bi-shop-window fs-1 text-info"></i>
+            <h4>Tiendas y Retail</h4>
+            <p>Monitoreo de terminales, puntos de venta y redes internas.</p>
+          </div>
+
         </div>
       </div>
-    </section><!-- /Casos de Uso -->
-
+    </section>
+    <!-- /Casos de Uso -->
 
     <!-- Sección de Pasos -->
-    <!-- Sección de Pasos -->
-    <section id="workflow" class="workflow section lw-process-section">
+    <section id="workflow" class="workflow section">
       <div class="container" data-aos="fade-up">
         <div class="section-title text-center">
-          <h2>Implementación</h2>
-          <div><span>De la revisión inicial</span> <span class="description-title">a la operación diaria</span></div>
-          <p class="text-muted mt-3">El alcance puede ser modular y ajustarse a las necesidades del cliente conforme a viabilidad técnica.</p>
+          <h1><i class="bi bi-diagram-3 mb-2"></i>¿Cómo funciona LinkWich-Monitor?</h1>
+          <p class="text-muted">Sigue el flujo de implementación y uso en solo 4 pasos.</p>
         </div>
 
-        <div class="row g-4 mt-2">
-          <div class="col-lg-3 col-md-6"><div class="lw-step"><span>01</span><i class="bi bi-search"></i><h5>Assessment</h5><p>Revisión de red, nodos, marcas, protocolos, segmentos, accesos y prioridades operativas.</p></div></div>
-          <div class="col-lg-3 col-md-6"><div class="lw-step"><span>02</span><i class="bi bi-hdd-network"></i><h5>Descubrimiento</h5><p>Alta de dispositivos, SNMP/ICMP, LLDP, syslog, servicios, interfaces y geolocalización.</p></div></div>
-          <div class="col-lg-3 col-md-6"><div class="lw-step"><span>03</span><i class="bi bi-bell"></i><h5>Reglas y operación</h5><p>Configuración de alertas, destinatarios, dashboards, respaldos, roles y auditoría.</p></div></div>
-          <div class="col-lg-3 col-md-6"><div class="lw-step"><span>04</span><i class="bi bi-file-earmark-bar-graph"></i><h5>Reportes y mejora</h5><p>Indicadores, tendencias, documentación y roadmap de mejoras conforme al crecimiento.</p></div></div>
+        <div class="row justify-content-center mt-5">
+          <div class="col-lg-10">
+            <div class="d-flex flex-wrap justify-content-between text-center">
+
+              <!-- Paso 1 -->
+              <div class="flex-fill px-3 mb-4">
+                <div class="step-icon mb-2">
+                  <i class="bi bi-hdd-network text-primary fs-2"></i>
+                </div>
+                <h5 class="fw-bold">1. Descubrimiento</h5>
+                <p class="text-muted">Detectamos automáticamente tus dispositivos SNMP y LLDP.</p>
+              </div>
+
+              <!-- Línea conectora -->
+              <div class="d-none d-md-block align-self-center">
+                <i class="bi bi-arrow-right-circle-fill fs-3 text-secondary"></i>
+              </div>
+
+              <!-- Paso 2 -->
+              <div class="flex-fill px-3 mb-4">
+                <div class="step-icon mb-2">
+                  <i class="bi bi-eye-fill text-success fs-2"></i>
+                </div>
+                <h5 class="fw-bold">2. Monitoreo</h5>
+                <p class="text-muted">Supervisión de interfaces, almacenamiento, CPU, disponibilidad y más.</p>
+              </div>
+
+              <!-- Línea conectora -->
+              <div class="d-none d-md-block align-self-center">
+                <i class="bi bi-arrow-right-circle-fill fs-3 text-secondary"></i>
+              </div>
+
+              <!-- Paso 3 -->
+              <div class="flex-fill px-3 mb-4">
+                <div class="step-icon mb-2">
+                  <i class="bi bi-bell-fill text-warning fs-2"></i>
+                </div>
+                <h5 class="fw-bold">3. Alertas</h5>
+                <p class="text-muted">Notificaciones inmediatas por correo, banner, y dashboard.</p>
+              </div>
+
+              <!-- Línea conectora -->
+              <div class="d-none d-md-block align-self-center">
+                <i class="bi bi-arrow-right-circle-fill fs-3 text-secondary"></i>
+              </div>
+
+              <!-- Paso 4 -->
+              <div class="flex-fill px-3 mb-4">
+                <div class="step-icon mb-2">
+                  <i class="bi bi-bar-chart-line-fill text-info fs-2"></i>
+                </div>
+                <h5 class="fw-bold">4. Reportes</h5>
+                <p class="text-muted">Reportes automatizados, inventarios, y métricas descargables.</p>
+              </div>
+
+            </div>
+          </div>
         </div>
       </div>
-    </section><!-- /Sección de Pasos -->
-
+    </section>
+    <!-- /Sección de Pasos -->
 
     <!-- Details Section -->
-    <!-- Arquitectura Section -->
-    <section id="architecture" class="details section lw-architecture-section">
+    <section id="details" class="details section">
+
+      <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
-        <h2>Arquitectura</h2>
-        <div><span>Operación técnica</span> <span class="description-title">on-premise y segura</span></div>
-        <p class="mt-3 text-muted">Pensada para operar cerca de la infraestructura del cliente, con control de datos, acceso web y módulos escalables.</p>
-      </div>
+        <h2>Detalles</h2>
+        <div><span>Conoce más sobre</span> <span class="description-title">LinkWich-Monitor</span></div>
+      </div><!-- End Section Title -->
 
       <div class="container">
-        <div class="row gy-4 align-items-center">
-          <div class="col-lg-5" data-aos="zoom-out" data-aos-delay="100">
-            <div class="lw-architecture-visual">
-              <img src="assets/img/DASHBOARD-MAIN.png" class="img-fluid" alt="Dashboard LinkWich-Monitor">
-              <div class="lw-arch-badge one"><i class="bi bi-database-fill"></i> MariaDB / históricos</div>
-              <div class="lw-arch-badge two"><i class="bi bi-router-fill"></i> SNMP / ICMP / LLDP</div>
-              <div class="lw-arch-badge three"><i class="bi bi-shield-check"></i> Roles / 2FA / auditoría</div>
-            </div>
-          </div>
-          <div class="col-lg-7" data-aos="fade-up" data-aos-delay="150">
-            <div class="lw-arch-grid">
-              <div><i class="bi bi-pc-display-horizontal"></i><h4>Acceso web</h4><p>Portal web responsivo para operación diaria, dashboard, reportes, mapas, alertas y administración.</p></div>
-              <div><i class="bi bi-hdd-rack"></i><h4>Servidor local</h4><p>Despliegue on-premise en Windows 10/11 Pro, Windows Server y alternativa Linux bajo validación técnica.</p></div>
-              <div><i class="bi bi-arrow-left-right"></i><h4>Protocolos de red</h4><p>ICMP, SNMP, Syslog, SSH, Telnet, LLDP, servicios TCP/UDP y módulos avanzados de diagnóstico.</p></div>
-              <div><i class="bi bi-cloud-check"></i><h4>Continuidad</h4><p>Respaldos programados, históricos, alertas y reportes para soportar operación y toma de decisiones.</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section><!-- /Arquitectura Section -->
 
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+            <img src="assets/img/detalles-2.png" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7" data-aos="fade-up" data-aos-delay="100">
+            <h3>Supervisión continua y sin complicaciones</h3>
+            <p class="fst-italic">
+              Mantén el control total de tu red con monitoreo en tiempo real y una vista clara de todos tus dispositivos.
+            </p>
+            <ul>
+              <li><i class="bi bi-check"></i><span>Visualiza el estado actual de cada equipo en segundos.</span></li>
+              <li><i class="bi bi-check"></i><span>Accede desde cualquier lugar con una interfaz web intuitiva.</span></li>
+              <li><i class="bi bi-check"></i><span>Actualización constante de datos sin intervención manual.</span></li>
+            </ul>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="200">
+            <img src="assets/img/detalles-4.png" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up" data-aos-delay="200">
+            <h3>Alertas que te mantienen un paso adelante</h3>
+            <p class="fst-italic">
+              No esperes a que surjan problemas. LinkWich-Monitor te avisa automáticamente cuando algo no está funcionando como debería.
+            </p>
+            <p>
+              Configura alertas personalizadas por email, popup o notificaciones internas. Reacciona en minutos y evita pérdidas de tiempo o interrupciones críticas.
+            </p>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 d-flex align-items-center" data-aos="zoom-out">
+            <img src="assets/img/detalles-3.png" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7" data-aos="fade-up">
+            <h3>Mapa visual e interactivo de tu red</h3>
+            <p>Descubre cómo se conectan tus equipos con nuestro mapa dinámico basado en LLDP. Ideal para identificar problemas de conexión o crecimiento desordenado.</p>
+            <ul>
+              <li><i class="bi bi-check"></i><span>Visualización automática de topología de red.</span></li>
+              <li><i class="bi bi-check"></i><span>Acceso rápido a información de cada dispositivo desde el mapa.</span></li>
+              <li><i class="bi bi-check"></i><span>Organiza y guarda tu layout personalizado.</span></li>
+            </ul>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-md-5 order-1 order-md-2 d-flex align-items-center" data-aos="zoom-out">
+            <img src="assets/img/detalles-5.png" class="img-fluid" alt="">
+          </div>
+          <div class="col-md-7 order-2 order-md-1" data-aos="fade-up">
+            <h3>Reportes automáticos y análisis inteligente</h3>
+            <p class="fst-italic">
+              Toma decisiones informadas gracias a reportes claros y completos sobre disponibilidad, uso de ancho de banda y eventos importantes.
+            </p>
+            <p>
+              Conoce tendencias, identifica cuellos de botella y demuestra resultados con reportes exportables listos para presentación. Ideal para auditorías, gestión de SLA y planificación de capacidad.
+            </p>
+          </div>
+        </div><!-- Features Item -->
+
+      </div>
+
+    </section><!-- /Details Section -->
 
 
     <!-- ✅ Instagram Reel (CORREGIDO: centrado + card + no full screen) -->
@@ -1033,6 +1075,7 @@
     </div>
   </div>
 </div>
+    </section>
     <!-- /Instagram Reel -->
 
 
@@ -1277,75 +1320,152 @@
 
 
     <!-- =========================  Diferenciadores LinkWich-Monitor  ========================= -->
-    <!-- Diferenciadores LinkWich-Monitor -->
-    <section id="differentiators" class="section lw-differentiators-section position-relative overflow-hidden">
+    <section id="differentiators" class="section bg-light position-relative overflow-hidden">
+
+      <!-- Decoración de fondo sutil -->
+      <span class="position-absolute top-0 start-50 translate-middle-x opacity-10" style="font-size:18rem; line-height:1;">
+        <i class="bi bi-stars-fill text-primary"></i>
+      </span>
+
+      <!-- Título de la sección -->
       <div class="container section-title mb-5" data-aos="fade-up">
-        <h2>Ventajas</h2>
-        <div><span>Por qué elegir</span> <span class="description-title">LinkWich-Monitor</span></div>
+        <h2>¿Por qué <span class="text-primary">LinkWich-Monitor</span>?</h2>
+        <div class="description-title">Lo que nos hace diferentes</div>
       </div>
 
+      <!-- Contenido -->
       <div class="container">
+
+        <!-- Fila de tarjetas de diferenciadores -->
         <div class="row g-4">
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100"><div class="lw-diff-card"><i class="bi bi-grid-fill"></i><h5>Suite todo-en-uno</h5><p>Reduce herramientas dispersas: monitoreo, mapas, syslog, respaldos, terminal, reportes y alertas en una sola plataforma.</p></div></div>
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="160"><div class="lw-diff-card"><i class="bi bi-box-seam"></i><h5>Licenciamiento por paquete</h5><p>Modelo comercial claro por volumen de nodos, vigencia y alcance, sin depender de licenciamiento por cada sensor individual.</p></div></div>
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="220"><div class="lw-diff-card"><i class="bi bi-tools"></i><h5>Desarrollo modular</h5><p>Se pueden crear módulos, automatizaciones e integraciones a la medida según el alcance y viabilidad técnica.</p></div></div>
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="280"><div class="lw-diff-card"><i class="bi bi-shield-check"></i><h5>Control de datos</h5><p>Implementación local/on-premise para organizaciones que requieren mayor control operativo y privacidad de información.</p></div></div>
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="340"><div class="lw-diff-card"><i class="bi bi-whatsapp"></i><h5>Alertamiento real</h5><p>Notificaciones por WhatsApp, correo, popups y campana para mejorar tiempos de respuesta ante incidentes.</p></div></div>
-          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="400"><div class="lw-diff-card"><i class="bi bi-box-arrow-in-up-right"></i><h5>Roadmap vivo</h5><p>La plataforma se mejora continuamente, integrando nuevas marcas, módulos y capacidades conforme crece el proyecto.</p></div></div>
-        </div>
 
-        <div class="lw-comparison mt-5" data-aos="fade-up" data-aos-delay="450">
-          <div class="table-responsive">
-            <table class="table align-middle mb-0">
-              <thead><tr><th>Capacidad</th><th>LinkWich-Monitor</th><th>Herramientas tradicionales</th></tr></thead>
-              <tbody>
-                <tr><td>Licenciamiento</td><td><i class="bi bi-check-circle-fill text-success"></i> Por paquete / volumen de nodos</td><td>Frecuentemente por sensor o módulo</td></tr>
-                <tr><td>Alertas WhatsApp</td><td><i class="bi bi-check-circle-fill text-success"></i> Integrables</td><td>No siempre incluido</td></tr>
-                <tr><td>Terminal y respaldos</td><td><i class="bi bi-check-circle-fill text-success"></i> En la misma plataforma</td><td>Normalmente separado</td></tr>
-                <tr><td>Personalización</td><td><i class="bi bi-check-circle-fill text-success"></i> Modular bajo alcance técnico</td><td>Limitada o costosa</td></tr>
-              </tbody>
-            </table>
+          <!-- Suite completa -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body text-center">
+                <i class="bi bi-grid-fill display-5 text-primary mb-3"></i>
+                <h5 class="card-title">Suite todo-en-uno</h5>
+                <p class="card-text small">
+                  Monitoreo SNMP, syslog con IA, mapas LLDP, respaldos automáticos y mucho más en una sola plataforma.
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </section><!-- /Diferenciadores LinkWich-Monitor -->
 
+          <!-- WhatsApp & multicanal -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="150">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body text-center">
+                <i class="bi bi-whatsapp display-5 text-success mb-3"></i>
+                <h5 class="card-title">Alertas multicanal</h5>
+                <p class="card-text small">
+                  Notificaciones instantáneas vía <strong>WhatsApp</strong>, correo y dentro de la app para que nada se te escape.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Precio claro -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body text-center">
+                <i class="bi bi-currency-dollar display-5 text-warning mb-3"></i>
+                <h5 class="card-title">Precio transparente</h5>
+                <p class="card-text small">
+                  <strong>Pagas por nodo, no por sensor</strong>. Sin costos ocultos ni sorpresas a fin de mes.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personalización -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="250">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body text-center">
+                <i class="bi bi-sliders display-5 text-info mb-3"></i>
+                <h5 class="card-title">Personalizable</h5>
+                <p class="card-text small">
+                  Módulos y automatizaciones a la carta. Evaluamos la viabilidad técnica y diseñamos soluciones a tu medida.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instalación flexible -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body text-center">
+                <i class="bi bi-phone-display display-5 text-danger mb-3"></i>
+                <h5 class="card-title">PWA para iOS &amp; más</h5>
+                <p class="card-text small">
+                  Instálalo como <abbr title="Progressive Web App">PWA</abbr> en iOS, Android, Windows o Linux y accede a tus métricas en cualquier lugar.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Todo en uno -->
+          <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="350">
+            <div class="card h-100 shadow-sm border-0">
+              <div class="card-body text-center">
+                <i class="bi bi-puzzle-fill display-5 text-secondary mb-3"></i>
+                <h5 class="card-title">Integración total</h5>
+                <p class="card-text small">
+                  Dashboard unificado, roles de usuario y geolocalización: evita depender de múltiples herramientas disparejas.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /row -->
+
+        <!-- Comparativa rápida -->
+        <div class="table-responsive mt-5" data-aos="fade-up" data-aos-delay="400">
+          <table class="table table-bordered align-middle small">
+            <thead class="table-light text-center">
+              <tr>
+                <th class="w-25"></th>
+                <th><span class="fw-bold text-primary">LinkWich-Monitor</span></th>
+                <th>Competidores típicos</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Modelo de precios</th>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i> Por nodo</td>
+                <td class="text-center"><i class="bi bi-x-circle-fill text-danger"></i> Por sensor/​módulo</td>
+              </tr>
+              <tr>
+                <th>Suite completa incluida</th>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+                <td class="text-center"><i class="bi bi-dash-circle-fill text-warning"></i> Parcial</td>
+              </tr>
+              <tr>
+                <th>Alertas vía WhatsApp</th>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+                <td class="text-center"><i class="bi bi-x-circle-fill text-danger"></i></td>
+              </tr>
+              <tr>
+                <th>Personalización / Integraciones</th>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+                <td class="text-center"><i class="bi bi-dash-circle-fill text-warning"></i> Limitada</td>
+              </tr>
+              <tr>
+                <th>PWA iOS &amp; multiplataforma</th>
+                <td class="text-center"><i class="bi bi-check-circle-fill text-success"></i></td>
+                <td class="text-center"><i class="bi bi-x-circle-fill text-danger"></i></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /container -->
+    </section>
     <!-- ======================  /Diferenciadores LinkWich-Monitor  ======================= -->
 
     <!-- Pricing Section -->
     <!-- Pricing Section -->
-    <!-- Compatibilidad Multivendor -->
-    <section id="multivendor" class="section lw-brands-section">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title text-center">
-          <h2>Compatibilidad</h2>
-          <div><span>Infraestructura</span> <span class="description-title">multi-vendor</span></div>
-          <p class="mt-3 text-muted">Compatible con equipos que expongan protocolos estándar como ICMP, SNMP, Syslog, SSH, Telnet y LLDP. El soporte por marca puede ampliarse conforme al roadmap y necesidades del cliente.</p>
-        </div>
-
-        <div class="lw-brand-grid" aria-label="Marcas y plataformas compatibles">
-          <a class="lw-brand-card" href="https://www.cisco.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><img src="assets/img/CISCO.png" alt="Cisco" onerror="this.remove()"><i class="bi bi-hdd-network"></i></span><strong>Cisco</strong><small>Switching / routing</small></a>
-          <a class="lw-brand-card" href="https://www.fortinet.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-shield-check"></i></span><strong>Fortinet / FortiSwitch</strong><small>Firewall / switching</small></a>
-          <a class="lw-brand-card" href="https://www.alliedtelesis.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-diagram-3"></i></span><strong>Allied Telesis</strong><small>Switching empresarial</small></a>
-          <a class="lw-brand-card" href="https://www.arubanetworks.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-wifi"></i></span><strong>Aruba / HPE</strong><small>Campus / switching</small></a>
-          <a class="lw-brand-card" href="https://www.ruckusnetworks.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-broadcast-pin"></i></span><strong>Ruckus ICX</strong><small>Switching / WiFi</small></a>
-          <a class="lw-brand-card" href="https://mikrotik.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-router"></i></span><strong>MikroTik</strong><small>Routing / wireless</small></a>
-          <a class="lw-brand-card" href="https://www.ruijienetworks.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-hdd-rack"></i></span><strong>Ruijie</strong><small>Routing / switching</small></a>
-          <a class="lw-brand-card" href="https://ui.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-wifi"></i></span><strong>Ubiquiti</strong><small>Wireless / switching</small></a>
-          <a class="lw-brand-card" href="https://www.hikvision.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-camera-video"></i></span><strong>Hikvision / NVR</strong><small>CCTV / video</small></a>
-          <a class="lw-brand-card" href="https://www.apc.com/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-battery-charging"></i></span><strong>APC / CyberPower</strong><small>UPS / energía</small></a>
-          <a class="lw-brand-card" href="https://www.microsoft.com/windows-server" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-windows"></i></span><strong>Windows Server</strong><small>Servicios / hosts</small></a>
-          <a class="lw-brand-card" href="https://www.linux.org/" target="_blank" rel="noopener"><span class="lw-brand-mark"><i class="bi bi-terminal"></i></span><strong>Linux Server</strong><small>Servicios / hosts</small></a>
-        </div>
-
-        <div class="lw-roadmap-note mt-4">
-          <i class="bi bi-lightning-charge-fill"></i>
-          <p class="mb-0"><strong>Roadmap en evolución:</strong> LinkWich-Monitor se mejora constantemente, agregando nuevas integraciones, comandos por marca, reportes y módulos conforme a necesidades reales de operación. También puede evaluarse compatibilidad con muchas marcas más mediante protocolos estándar.</p>
-        </div>
-      </div>
-    </section><!-- /Compatibilidad Multivendor -->
-
-<section id="pricing" class="pricing section">
+    <section id="pricing" class="pricing section">
 
       <div class="container section-title" data-aos="fade-up">
         <h2>Precios</h2>
@@ -1354,8 +1474,8 @@
           <span class="description-title">Paquetes</span>
         </div>
         <p class="text-center mt-2 small fst-italic">
-          *Los paquetes se estructuran por volumen de nodos, vigencia y alcance del proyecto.<br>
-          Contrato mínimo de 6 meses &nbsp;|&nbsp; Los precios de lista no incluyen IVA &nbsp;|&nbsp; La propuesta final se confirma según alcance técnico.
+          *Todos los paquetes incluyen la suite completa de funcionalidades de LinkWich-Monitor.<br>
+          Entre más nodos contrates, menor es el costo por nodo &nbsp;|&nbsp; Contrato mínimo de 6 meses &nbsp;|&nbsp; Los precios de lista no incluyen IVA.
         </p>
       </div>
 
@@ -1371,9 +1491,9 @@
               <p class="description">30 nodos &nbsp;|&nbsp; Redes pequeñas</p>
 
               <div class="price-stack">
-                <div class="price-old"><small>Antes</small>$7,800 / mes</div>
-                <div class="price-new"><sup>$</sup>6,000<span> / mes</span></div>
-                <div class="save-pill"><i class="bi bi-lightning-charge-fill"></i> 30 nodos incluidos</div>
+                <div class="price-old"><small>Antes</small>$260 / nodo</div>
+                <div class="price-new"><sup>$</sup>200<span> / nodo&nbsp;mensual</span></div>
+                <div class="save-pill"><i class="bi bi-lightning-charge-fill"></i> Precio promocional</div>
               </div>
 
               <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
@@ -1398,9 +1518,9 @@
               <p class="description">50 nodos &nbsp;|&nbsp; Redes en crecimiento</p>
 
               <div class="price-stack">
-                <div class="price-old"><small>Antes</small>$11,500 / mes</div>
-                <div class="price-new"><sup>$</sup>9,000<span> / mes</span></div>
-                <div class="save-pill"><i class="bi bi-piggy-bank-fill"></i> 50 nodos incluidos</div>
+                <div class="price-old"><small>Antes</small>$230 / nodo</div>
+                <div class="price-new"><sup>$</sup>180<span> / nodo&nbsp;mensual</span></div>
+                <div class="save-pill"><i class="bi bi-piggy-bank-fill"></i> Ahorro inteligente</div>
               </div>
 
               <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
@@ -1426,9 +1546,9 @@
               <p class="description">100 nodos &nbsp;|&nbsp; Redes medianas-grandes</p>
 
               <div class="price-stack">
-                <div class="price-old"><small>Antes</small>$20,000 / mes</div>
-                <div class="price-new"><sup>$</sup>16,000<span> / mes</span></div>
-                <div class="save-pill"><i class="bi bi-award-fill"></i> 100 nodos incluidos</div>
+                <div class="price-old"><small>Antes</small>$200 / nodo</div>
+                <div class="price-new"><sup>$</sup>160<span> / nodo&nbsp;mensual</span></div>
+                <div class="save-pill"><i class="bi bi-award-fill"></i> Mejor relación costo/valor</div>
               </div>
 
               <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Solicitar ahora</a>
@@ -1453,9 +1573,9 @@
               <p class="description">Más de 150 nodos &nbsp;|&nbsp; Grandes corporativos</p>
 
               <div class="price-stack">
-                <div class="price-old"><small>Antes</small>$24,000 / mes</div>
-                <div class="price-new"><sup>$</sup>21,000<span> / mes</span></div>
-                <div class="save-pill"><i class="bi bi-building-fill-check"></i> 150 nodos estimados</div>
+                <div class="price-old"><small>Antes</small>$160 / nodo</div>
+                <div class="price-new"><sup>$</sup>140<span> / nodo&nbsp;mensual</span></div>
+                <div class="save-pill"><i class="bi bi-building-fill-check"></i> Ideal multi-sitio</div>
               </div>
 
               <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="cta-btn">Contáctanos</a>
@@ -2156,24 +2276,25 @@
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Enlaces Útiles</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#hero">Inicio</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#about">Plataforma</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#features">Módulos</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#pricing">Precios</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#contact-cta">Contacto</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Términos y Condiciones</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Aviso de Privacidad</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Inicio</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Acerca</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Servicios</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Características</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Contacto</a></li>
+            <li><i class="bi bi-chevron-right"></i>
+              <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Términos y Condiciones</a>
+            </li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Servicios</h4>
+          <h4>Nuestros Servicios</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#features">Monitoreo SNMP/ICMP</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#features">Syslog y alertas</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#features">Mapas LLDP</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#features">Respaldos SSH/Telnet</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#requirements">Implementación</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Diseño Web</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Desarrollo Web</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Gestión de Productos</a></li>
+            <!-- <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Diseño Gráfico</a></li> -->
           </ul>
         </div>
 
@@ -2255,31 +2376,6 @@
     </div>
   </div>
 
-
-  <!-- Modal de Aviso de Privacidad (fuera del footer) -->
-  <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-      <div class="modal-content bg-white text-dark">
-        <div class="modal-header">
-          <h5 class="modal-title" id="privacyModalLabel">Aviso de Privacidad</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">
-          <p><strong>Responsable:</strong><br>LinkWich-IT System and Networking Solutions es responsable del tratamiento de los datos personales proporcionados mediante este sitio web.</p>
-          <p><strong>Datos que podemos solicitar:</strong><br>Nombre, empresa, teléfono, correo electrónico y datos técnicos necesarios para atender solicitudes de contacto, demo, cotización o dimensionamiento.</p>
-          <p><strong>Finalidades:</strong><br>Responder solicitudes comerciales, generar propuestas, coordinar demostraciones, brindar seguimiento técnico/comercial y mejorar nuestros servicios.</p>
-          <p><strong>Transferencias:</strong><br>No vendemos datos personales. Únicamente se compartirán cuando sea necesario para cumplir obligaciones legales o prestar un servicio solicitado por el cliente.</p>
-          <p><strong>Derechos ARCO:</strong><br>Puede solicitar acceso, rectificación, cancelación u oposición al tratamiento de sus datos escribiendo a <strong>hola@linkwich-it.com</strong>.</p>
-          <p><strong>Actualizaciones:</strong><br>Este aviso puede modificarse para cumplir cambios legales, comerciales o técnicos. La versión vigente estará disponible en este sitio.</p>
-          <p class="text-end fst-italic">Última actualización: Junio 2026</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
          <!-- =========================
      MODAL: COTIZACIÓN RÁPIDA
 ========================= -->
@@ -2326,12 +2422,12 @@
 
             <div class="lwq-row">
               <div>
-                <label class="lwq-label">Precio base equivalente</label>
+                <label class="lwq-label">Precio base (lista) por nodo</label>
                 <input id="lwq_base_price" type="number" class="lwq-input" min="0" value="260">
-                <small class="lwq-help">Para calcular el paquete de forma referencial.</small>
+                <small class="lwq-help">Para calcular “Ahorro vs lista”.</small>
               </div>
               <div>
-                <label class="lwq-label">Precio promo equivalente</label>
+                <label class="lwq-label">Precio promo por nodo</label>
                 <input id="lwq_promo_price" type="number" class="lwq-input" min="0" value="160">
               </div>
             </div>
@@ -2385,7 +2481,7 @@
             <hr class="lwq-hr">
 
             <div class="lwq-list">
-              <div class="lwq-item"><span>Precio final equivalente</span><strong id="out_final_node">$0</strong></div>
+              <div class="lwq-item"><span>Precio final por nodo</span><strong id="out_final_node">$0</strong></div>
               <div class="lwq-item"><span>Descuento total vs lista</span><strong id="out_discount">0%</strong></div>
               <div class="lwq-item"><span>Ahorro anual (vs lista)</span><strong id="out_saving_year">$0</strong></div>
               <div class="lwq-item"><span>Ahorro total (vs lista)</span><strong id="out_saving_total">$0</strong></div>
@@ -2483,7 +2579,7 @@ function recompute(){
   $("kpi_yearly").textContent  = money(yearly);
   $("kpi_total").textContent   = money(includeIVA ? totalWithIVA : total);
 
-  $("out_final_node").textContent   = money(finalNode) + " equiv.";
+  $("out_final_node").textContent   = money(finalNode) + " / nodo";
   $("out_discount").textContent     = pct(totalDiscountPct);
   $("out_saving_year").textContent  = money(savingYear);
   $("out_saving_total").textContent = money(savingTotal);
@@ -2502,10 +2598,10 @@ Paquete: ${pkg === "custom" ? "Personalizado" : pkg}
 Nodos: ${nodes}
 Meses: ${months}
 
-Precio lista equivalente: ${money(basePrice)}
-Precio promo equivalente: ${money(promoPrice)}
+Precio lista: ${money(basePrice)} / nodo
+Precio promo: ${money(promoPrice)} / nodo
 Descuento extra: ${pct(extra)}
-Precio final equivalente: ${money(finalNode)}
+Precio final: ${money(finalNode)} / nodo
 
 Mensual: ${money(includeIVA ? monthly * (1 + IVA_RATE) : monthly)}
 Anual (sin IVA): ${money(yearly)}
@@ -2570,7 +2666,6 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/linkwich-enterprise-v4.js"></script>
 
   <!-- ✅ Instagram Embed (solo 1 vez, al final) -->
   <script async src="https://www.instagram.com/embed.js"></script>
@@ -2623,6 +2718,8 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
   })();
 </script>
 
+<!-- Script oficial (SOLO 1 VEZ en toda la página) -->
+<script async src="https://www.instagram.com/embed.js"></script>
 
 </body>
 </html>
