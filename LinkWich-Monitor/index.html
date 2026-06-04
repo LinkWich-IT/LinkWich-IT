@@ -768,6 +768,84 @@
       background:linear-gradient(135deg, rgba(13,110,253,.18), rgba(0,194,255,.10));
       border-color:rgba(255,255,255,.12);
     }
+
+    /* ===== Ajustes finales solicitados: header limpio, hero menos saturado y marcas sin logos rotos ===== */
+    @media (min-width: 1200px){
+      .header .logo h1.sitename{
+        font-size:24px !important;
+        line-height:1.05 !important;
+      }
+      .header .logo img{
+        max-height:42px !important;
+        margin-right:8px !important;
+      }
+      .header .navmenu a,
+      .header .navmenu a:focus{
+        padding:18px 9px !important;
+        font-size:14px !important;
+        white-space:nowrap !important;
+      }
+      .header .navmenu a i{
+        font-size:.88rem !important;
+        margin-right:.2rem !important;
+      }
+    }
+    @media (min-width: 1400px){
+      .header .navmenu a,
+      .header .navmenu a:focus{
+        padding:18px 11px !important;
+        font-size:14.5px !important;
+      }
+    }
+
+    .lw-hero-badges{
+      margin-top:1rem;
+      margin-bottom:1.25rem;
+    }
+
+    .lw-brand-toolbar{
+      margin-top:1rem;
+      gap:.5rem;
+    }
+    .lw-brand-toolbar span{
+      padding:.48rem .75rem;
+      font-size:.82rem;
+    }
+    .lw-brand-card{
+      padding:1rem;
+      min-height:178px;
+    }
+    .lw-brand-card p{
+      font-size:.86rem;
+      line-height:1.42;
+      margin-top:.75rem;
+    }
+    .lw-brand-top{
+      min-height:auto;
+      gap:.75rem;
+    }
+    .lw-brand-logo{
+      color:#fff;
+      border:0;
+      box-shadow:0 10px 24px rgba(2,6,23,.12);
+    }
+    .lw-brand-logo i{
+      color:#fff;
+      font-size:1.45rem;
+    }
+    .lw-logo-red{ background:linear-gradient(135deg,#ef4444,#b91c1c); }
+    .lw-logo-blue{ background:linear-gradient(135deg,#0d6efd,#0b5ed7); }
+    .lw-logo-cyan{ background:linear-gradient(135deg,#06b6d4,#0284c7); }
+    .lw-logo-indigo{ background:linear-gradient(135deg,#4f46e5,#312e81); }
+    .lw-logo-purple{ background:linear-gradient(135deg,#7c3aed,#5b21b6); }
+    .lw-logo-sky{ background:linear-gradient(135deg,#38bdf8,#0369a1); }
+    .lw-logo-dark{ background:linear-gradient(135deg,#334155,#0f172a); }
+    .lw-logo-green{ background:linear-gradient(135deg,#22c55e,#15803d); }
+
+    [data-bs-theme="dark"] .lw-brand-logo{
+      background:linear-gradient(135deg,#0d6efd,#00c2ff) !important;
+    }
+
   </style>
 
   <!-- Main CSS File -->
@@ -795,64 +873,15 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li>
-            <a href="#hero" class="active">
-              <i class="bi bi-house-door-fill me-1"></i>Inicio
-            </a>
-          </li>
-          <li>
-            <a href="#about">
-              <i class="bi bi-info-circle-fill me-1"></i>Acerca
-            </a>
-          </li>
-          <li>
-            <a href="#features">
-              <i class="bi bi-stars me-1"></i>Características
-            </a>
-          </li>
-          <li>
-            <a href="#brand-ecosystem">
-              <i class="bi bi-patch-check-fill me-1"></i>Marcas
-            </a>
-          </li>
-          <li>
-            <a href="#platform-capabilities">
-              <i class="bi bi-cpu-fill me-1"></i>Módulos
-            </a>
-          </li>
-          <li>
-            <a href="#gallery">
-              <i class="bi bi-images me-1"></i>Galería
-            </a>
-          </li>
-          <li>
-            <a href="#pricing">
-              <i class="bi bi-tag-fill me-1"></i>Precios
-            </a>
-          </li>
-
-          <!-- ✅ NUEVO -->
-          <li>
-            <a href="#requirements">
-              <i class="bi bi-pc-display-horizontal me-1"></i>Requerimientos
-            </a>
-          </li>
-
-          <li>
-            <a href="#contact-cta">
-              <i class="bi bi-telephone-fill me-1"></i>Contacto
-            </a>
-          </li>
-          <li>
-            <a href="#demo-request">
-              <i class="bi bi-play-circle-fill me-1"></i>Demo
-            </a>
-          </li>
-          <li>
-            <a href="https://linkwich-it.github.io/LinkWich-IT" target="_blank">
-              <i class="bi bi-github me-1"></i>LinkWich-IT
-            </a>
-          </li>
+          <li><a href="#hero" class="active"><i class="bi bi-house-door-fill me-1"></i>Inicio</a></li>
+          <li><a href="#about"><i class="bi bi-info-circle-fill me-1"></i>Plataforma</a></li>
+          <li><a href="#features"><i class="bi bi-stars me-1"></i>Funciones</a></li>
+          <li><a href="#brand-ecosystem"><i class="bi bi-patch-check-fill me-1"></i>Marcas</a></li>
+          <li><a href="#gallery"><i class="bi bi-images me-1"></i>Galería</a></li>
+          <li><a href="#pricing"><i class="bi bi-tag-fill me-1"></i>Precios</a></li>
+          <li><a href="#requirements"><i class="bi bi-pc-display-horizontal me-1"></i>Requisitos</a></li>
+          <li><a href="#contact-cta"><i class="bi bi-telephone-fill me-1"></i>Contacto</a></li>
+          <li><a href="#demo-request"><i class="bi bi-play-circle-fill me-1"></i>Demo</a></li>
         </ul>
 
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -877,33 +906,16 @@
           <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-in">
             <h1>Transforma tu red con <span>LinkWich-Monitor</span></h1>
             <p>
-              Plataforma profesional para monitoreo, operación y continuidad de infraestructura TI.
-              Centraliza <strong>SNMP</strong>, <strong>syslog</strong>, <strong>mapas LLDP</strong>,
-              <strong>respaldos SSH/Telnet</strong>, alertas y reportes ejecutivos en una sola solución
-              diseñada para redes empresariales, hotelería, campus, retail y sitios críticos.
+              Monitoreo profesional para redes empresariales, hoteles y sitios críticos.
+              Centraliza disponibilidad, <strong>SNMP</strong>, <strong>syslog</strong>, mapas <strong>LLDP</strong>,
+              respaldos <strong>SSH/Telnet</strong>, alertas y reportes ejecutivos en una sola plataforma.
             </p>
 
             <div class="lw-hero-badges" aria-label="Capacidades principales">
               <span><i class="bi bi-activity"></i> Monitoreo 24/7</span>
-              <span><i class="bi bi-diagram-3"></i> Topología LLDP</span>
-              <span><i class="bi bi-terminal"></i> SSH/Telnet</span>
+              <span><i class="bi bi-diagram-3"></i> Mapas LLDP</span>
               <span><i class="bi bi-journal-code"></i> Syslog</span>
-              <span><i class="bi bi-whatsapp"></i> Alertas WhatsApp</span>
-            </div>
-
-            <div class="lw-hero-proof" aria-label="Indicadores de valor">
-              <div class="lw-proof-item">
-                <strong>+Multi‑vendor</strong>
-                <span>Compatible con múltiples marcas de red y seguridad</span>
-              </div>
-              <div class="lw-proof-item">
-                <strong>Por nodo</strong>
-                <span>Licenciamiento claro, escalable y fácil de dimensionar</span>
-              </div>
-              <div class="lw-proof-item">
-                <strong>Modular</strong>
-                <span>Se adapta a necesidades del cliente bajo viabilidad técnica</span>
-              </div>
+              <span><i class="bi bi-terminal"></i> Respaldos SSH/Telnet</span>
             </div>
 
             <!-- Botones -->
@@ -1169,18 +1181,15 @@
         <h2 class="mt-3">Marcas y fabricantes compatibles</h2>
         <div><span>Monitoreo y operación</span> <span class="description-title">multi‑vendor</span></div>
         <p class="mt-3 text-muted small mx-auto" style="max-width:850px;">
-          LinkWich-Monitor está diseñado para integrarse con equipos de red, seguridad, servidores,
-          videovigilancia y energía mediante protocolos estándar como SNMP, ICMP, syslog, SSH/Telnet y LLDP.
-          La compatibilidad puede variar por modelo, firmware, credenciales y permisos habilitados.
+          Compatibilidad multi‑marca mediante protocolos estándar. Cada integración se valida por modelo,
+          firmware, permisos disponibles y alcance técnico del proyecto.
         </p>
 
         <div class="lw-brand-toolbar" aria-label="Protocolos de integración">
           <span><i class="bi bi-router-fill text-primary"></i> SNMP v2/v3</span>
-          <span><i class="bi bi-wifi text-primary"></i> ICMP</span>
           <span><i class="bi bi-journal-text text-primary"></i> Syslog</span>
           <span><i class="bi bi-terminal text-primary"></i> SSH / Telnet</span>
           <span><i class="bi bi-diagram-3 text-primary"></i> LLDP</span>
-          <span><i class="bi bi-shield-lock text-primary"></i> Auditoría</span>
         </div>
       </div>
 
@@ -1190,120 +1199,120 @@
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="F"><img src="https://cdn.simpleicons.org/fortinet" alt="Fortinet" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>Fortinet</h3><span class="lw-brand-chip"><i class="bi bi-shield-check"></i> Firewall / Switching</span></div>
+                <div class="lw-brand-logo lw-logo-red"><i class="bi bi-shield-lock-fill"></i></div>
+                <div><h3>Fortinet</h3></div>
               </div>
-              <p>Monitoreo de disponibilidad, eventos, switches, interfaces y operación en ambientes FortiGate/FortiSwitch según alcance.</p>
+              <p>FortiGate/FortiSwitch: disponibilidad, interfaces, syslog y respaldos según alcance.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="C"><img src="https://cdn.simpleicons.org/cisco" alt="Cisco" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>Cisco</h3><span class="lw-brand-chip"><i class="bi bi-hdd-network"></i> Switching</span></div>
+                <div class="lw-brand-logo lw-logo-blue"><i class="bi bi-hdd-network-fill"></i></div>
+                <div><h3>Cisco</h3></div>
               </div>
-              <p>Supervisión de Catalyst/IOS, interfaces, syslog, respaldos, disponibilidad y trazabilidad de cambios por SSH/Telnet.</p>
+              <p>Catalyst/IOS: interfaces, eventos, disponibilidad y trazabilidad por SSH/Telnet.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="HPE"><img src="https://cdn.simpleicons.org/hpe" alt="HPE Aruba" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>Aruba / HPE</h3><span class="lw-brand-chip"><i class="bi bi-diagram-2"></i> Campus LAN</span></div>
+                <div class="lw-brand-logo lw-logo-cyan"><i class="bi bi-diagram-3-fill"></i></div>
+                <div><h3>Aruba / HPE</h3></div>
               </div>
-              <p>Monitoreo de switches Aruba/HPE, interfaces, LLDP, eventos, respaldos y operación para redes de campus y hotelería.</p>
+              <p>Switching campus: LLDP, interfaces, eventos y operación para hotelería/campus.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="AT"><img src="https://cdn.simpleicons.org/alliedtelesis" alt="Allied Telesis" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>Allied Telesis</h3><span class="lw-brand-chip"><i class="bi bi-node-plus"></i> Switching</span></div>
+                <div class="lw-brand-logo lw-logo-indigo"><i class="bi bi-ethernet"></i></div>
+                <div><h3>Allied Telesis</h3></div>
               </div>
-              <p>Integración con switches Allied Telesis para monitoreo, topología LLDP, interfaces, respaldos y administración operativa.</p>
+              <p>Switches Allied: topología LLDP, monitoreo, puertos y respaldos operativos.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="ICX"><i class="bi bi-hdd-rack"></i></div>
-                <div><h3>Ruckus ICX</h3><span class="lw-brand-chip"><i class="bi bi-broadcast-pin"></i> Switching</span></div>
+                <div class="lw-brand-logo lw-logo-purple"><i class="bi bi-hdd-rack-fill"></i></div>
+                <div><h3>Ruckus ICX</h3></div>
               </div>
-              <p>Visibilidad de disponibilidad, puertos, eventos y topología en entornos ICX bajo SNMP, syslog y acceso de administración.</p>
+              <p>Visibilidad de puertos, disponibilidad, eventos y topología en entornos ICX.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="R"><i class="bi bi-router"></i></div>
-                <div><h3>Ruijie / Reyee</h3><span class="lw-brand-chip"><i class="bi bi-wifi"></i> Routing / WiFi</span></div>
+                <div class="lw-brand-logo lw-logo-sky"><i class="bi bi-router-fill"></i></div>
+                <div><h3>Ruijie / Reyee</h3></div>
               </div>
-              <p>Monitoreo de disponibilidad, interfaces y eventos para redes distribuidas, sucursales y escenarios con múltiples enlaces.</p>
+              <p>Routing/WiFi: disponibilidad, enlaces, interfaces y eventos por sitio.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="U"><img src="https://cdn.simpleicons.org/ubiquiti" alt="Ubiquiti" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>Ubiquiti</h3><span class="lw-brand-chip"><i class="bi bi-wifi"></i> WiFi / Network</span></div>
+                <div class="lw-brand-logo lw-logo-blue"><i class="bi bi-wifi"></i></div>
+                <div><h3>Ubiquiti</h3></div>
               </div>
-              <p>Integración para supervisión de conectividad, enlaces, interfaces y disponibilidad en instalaciones UniFi/UISP según permisos.</p>
+              <p>UniFi/UISP: conectividad, enlaces, interfaces y disponibilidad según permisos.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="MT"><img src="https://cdn.simpleicons.org/mikrotik" alt="MikroTik" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>MikroTik</h3><span class="lw-brand-chip"><i class="bi bi-router-fill"></i> Routing</span></div>
+                <div class="lw-brand-logo lw-logo-dark"><i class="bi bi-signpost-split-fill"></i></div>
+                <div><h3>MikroTik</h3></div>
               </div>
-              <p>Monitoreo de enlaces, disponibilidad, tráfico, interfaces y eventos para routers y redes de borde bajo configuración adecuada.</p>
+              <p>Routers y borde: enlaces, tráfico, disponibilidad e interfaces críticas.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="HK"><img src="https://cdn.simpleicons.org/hikvision" alt="Hikvision" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>Hikvision</h3><span class="lw-brand-chip"><i class="bi bi-camera-video"></i> CCTV / NVR</span></div>
+                <div class="lw-brand-logo lw-logo-indigo"><i class="bi bi-camera-video-fill"></i></div>
+                <div><h3>Hikvision</h3></div>
               </div>
-              <p>Supervisión de conectividad y disponibilidad de infraestructura de videovigilancia crítica, NVRs y segmentos asociados.</p>
+              <p>CCTV/NVR: disponibilidad de equipos, segmentos y servicios de videovigilancia.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="AX"><img src="https://cdn.simpleicons.org/axiscommunications" alt="Axis Communications" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>Axis</h3><span class="lw-brand-chip"><i class="bi bi-camera"></i> Seguridad</span></div>
+                <div class="lw-brand-logo lw-logo-cyan"><i class="bi bi-camera-fill"></i></div>
+                <div><h3>Axis</h3></div>
               </div>
-              <p>Validación de disponibilidad, monitoreo por red y visibilidad operativa para cámaras y servicios de seguridad IP.</p>
+              <p>Cámaras IP: validación de conectividad y visibilidad operativa por red.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="APC"><img src="https://cdn.simpleicons.org/apc" alt="APC" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
-                <div><h3>APC / CyberPower</h3><span class="lw-brand-chip"><i class="bi bi-battery-charging"></i> Energía</span></div>
+                <div class="lw-brand-logo lw-logo-green"><i class="bi bi-battery-charging"></i></div>
+                <div><h3>APC / CyberPower</h3></div>
               </div>
-              <p>Lectura de estado, disponibilidad y variables SNMP en UPS compatibles para anticipar riesgos de energía.</p>
+              <p>UPS: estado, disponibilidad y variables SNMP para anticipar riesgos de energía.</p>
             </div>
           </div>
 
           <div class="col-xl-3 col-lg-4 col-md-6">
             <div class="lw-brand-card">
               <div class="lw-brand-top">
-                <div class="lw-brand-logo" data-initial="OS"><i class="bi bi-windows"></i></div>
-                <div><h3>Windows / Linux</h3><span class="lw-brand-chip"><i class="bi bi-server"></i> Servidores</span></div>
+                <div class="lw-brand-logo lw-logo-blue"><i class="bi bi-server"></i></div>
+                <div><h3>Windows / Linux</h3></div>
               </div>
-              <p>Plataforma instalable en ambientes Windows y preparada para despliegues Linux/Ubuntu según etapa del proyecto.</p>
+              <p>Servidores: monitoreo de disponibilidad, servicios, recursos y plataforma base.</p>
             </div>
           </div>
 
@@ -1312,10 +1321,10 @@
         <div class="lw-roadmap-card mt-5" data-aos="fade-up" data-aos-delay="150">
           <div class="row align-items-center g-3">
             <div class="col-lg-8">
-              <h3 class="h5 fw-bold mb-2"><i class="bi bi-stars text-primary me-2"></i>Roadmap en mejora continua</h3>
+              <h3 class="h5 fw-bold mb-2"><i class="bi bi-stars text-primary me-2"></i>Roadmap en mejora continua y muchas marcas más</h3>
               <p class="mb-0 text-muted">
-                Se continúa mejorando la compatibilidad, agregando nuevos comandos, reportes, respaldos e integraciones por marca.
-                Además de las marcas listadas, pueden evaluarse muchas más bajo viabilidad técnica, acceso disponible y pruebas controladas.
+                La plataforma evoluciona constantemente: se pueden agregar nuevos comandos, respaldos,
+                reportes e integraciones por marca, siempre bajo validación técnica y pruebas controladas.
               </p>
             </div>
             <div class="col-lg-4 text-lg-end">
