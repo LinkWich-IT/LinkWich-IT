@@ -5,8 +5,11 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>LinkWich-Monitor - Aplicación de Monitoreo de redes</title>
-  <meta name="description" content="Sistema de monitoreo de redes | LinkWich-Monitor">
-  <meta name="keywords" content="LinkWich-Monitor, Automatización, Redes, Consultoria IT">
+  <meta name="description" content="LinkWich-Monitor: plataforma profesional de monitoreo de redes, SNMP, syslog, mapas LLDP, respaldos SSH/Telnet, alertas y reportes para infraestructura TI.">
+  <meta name="keywords" content="LinkWich-Monitor, monitoreo de redes, SNMP, Syslog, LLDP, SSH, Telnet, Fortinet, Cisco, Aruba, Allied Telesis, Ruckus, Hikvision, Axis, redes, consultoría IT">
+  <meta property="og:title" content="LinkWich-Monitor - Monitoreo profesional de infraestructura TI">
+  <meta property="og:description" content="Centraliza monitoreo, alertas, respaldos, syslog, mapas LLDP y reportes en una sola plataforma.">
+  <meta property="og:type" content="website">
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -462,6 +465,311 @@
 #lwQuoteModal .lwq-toast{ min-height:18px; opacity:.85; }
 </style>
 
+
+
+  <style>
+    /* =====================================================================
+       LINKWICH WEBSITE UPGRADE 2026
+       Estilos aislados con prefijo lw- para NO corromper Bootstrap/main.css
+       ===================================================================== */
+    :root{
+      --lw-primary:#0d6efd;
+      --lw-primary-2:#00c2ff;
+      --lw-ink:#0b1220;
+      --lw-muted:#64748b;
+      --lw-soft:#f8fafc;
+      --lw-card:#ffffff;
+      --lw-border:rgba(15,23,42,.10);
+      --lw-shadow:0 18px 45px rgba(2,6,23,.10);
+      --lw-shadow-hover:0 24px 60px rgba(2,6,23,.16);
+    }
+
+    .lw-gradient-text{
+      background:linear-gradient(135deg, #ffffff 0%, #d9ecff 42%, #8bd8ff 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .lw-hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.55rem;
+      margin-top:1.15rem;
+    }
+    .lw-hero-badges span{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.48rem .78rem;
+      border-radius:999px;
+      color:#fff;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.20);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      font-size:.86rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .lw-hero-proof{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:.8rem;
+      max-width:680px;
+      margin-top:1.25rem;
+    }
+    .lw-hero-proof .lw-proof-item{
+      padding:.95rem 1rem;
+      border-radius:18px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 12px 30px rgba(0,0,0,.12);
+    }
+    .lw-hero-proof strong{
+      display:block;
+      color:#fff;
+      font-size:1.15rem;
+      line-height:1.15;
+      font-weight:900;
+    }
+    .lw-hero-proof span{
+      display:block;
+      color:rgba(255,255,255,.78);
+      font-size:.80rem;
+      margin-top:.15rem;
+    }
+
+    .lw-section-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.42rem .75rem;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:800;
+      color:#0b5ed7;
+      background:rgba(13,110,253,.10);
+      border:1px solid rgba(13,110,253,.18);
+    }
+
+    #brand-ecosystem,
+    #platform-capabilities{
+      position:relative;
+      overflow:hidden;
+    }
+    #brand-ecosystem::before,
+    #platform-capabilities::before{
+      content:"";
+      position:absolute;
+      inset:auto -10% -35% auto;
+      width:420px;
+      height:420px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(13,110,253,.12), transparent 65%);
+      pointer-events:none;
+    }
+
+    .lw-brand-toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.65rem;
+      justify-content:center;
+      margin-top:1.25rem;
+    }
+    .lw-brand-toolbar span{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.55rem .85rem;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--lw-border);
+      box-shadow:0 8px 22px rgba(2,6,23,.06);
+      font-size:.86rem;
+      font-weight:750;
+      color:#334155;
+    }
+
+    .lw-brand-card{
+      height:100%;
+      padding:1.05rem;
+      border-radius:22px;
+      background:linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      border:1px solid var(--lw-border);
+      box-shadow:var(--lw-shadow);
+      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .lw-brand-card:hover{
+      transform:translateY(-5px);
+      box-shadow:var(--lw-shadow-hover);
+      border-color:rgba(13,110,253,.24);
+    }
+    .lw-brand-top{
+      display:flex;
+      align-items:center;
+      gap:.85rem;
+      min-height:58px;
+    }
+    .lw-brand-logo{
+      width:54px;
+      height:54px;
+      min-width:54px;
+      border-radius:17px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#ffffff;
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.55), 0 8px 22px rgba(2,6,23,.08);
+      overflow:hidden;
+    }
+    .lw-brand-logo img{
+      width:32px;
+      height:32px;
+      object-fit:contain;
+      display:block;
+    }
+    .lw-brand-logo i{
+      font-size:1.55rem;
+      color:var(--lw-primary);
+    }
+    .lw-brand-fallback::before{
+      content:attr(data-initial);
+      font-size:.92rem;
+      line-height:1;
+      font-weight:950;
+      color:#0b5ed7;
+      letter-spacing:.2px;
+    }
+    .lw-brand-card h3{
+      font-size:1rem;
+      font-weight:900;
+      margin:0;
+      color:#0f172a;
+    }
+    .lw-brand-card p{
+      margin:.65rem 0 0;
+      color:var(--lw-muted);
+      font-size:.88rem;
+      line-height:1.48;
+    }
+    .lw-brand-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      margin-top:.75rem;
+      padding:.32rem .58rem;
+      border-radius:999px;
+      font-size:.76rem;
+      font-weight:800;
+      color:#0b5ed7;
+      background:rgba(13,110,253,.08);
+      border:1px solid rgba(13,110,253,.14);
+    }
+    .lw-roadmap-card{
+      border-radius:24px;
+      padding:1.25rem;
+      background:linear-gradient(135deg, rgba(13,110,253,.10), rgba(0,194,255,.10));
+      border:1px solid rgba(13,110,253,.18);
+      box-shadow:var(--lw-shadow);
+    }
+
+    .lw-cap-card{
+      height:100%;
+      padding:1.25rem;
+      border-radius:24px;
+      background:#fff;
+      border:1px solid var(--lw-border);
+      box-shadow:var(--lw-shadow);
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .lw-cap-card:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--lw-shadow-hover);
+    }
+    .lw-cap-icon{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      background:linear-gradient(135deg, var(--lw-primary), var(--lw-primary-2));
+      box-shadow:0 14px 30px rgba(13,110,253,.25);
+      margin-bottom:1rem;
+    }
+    .lw-cap-icon i{ font-size:1.6rem; }
+    .lw-cap-card h3{
+      font-size:1.05rem;
+      font-weight:900;
+      color:#0f172a;
+      margin-bottom:.55rem;
+    }
+    .lw-cap-card ul{
+      margin:0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:.5rem;
+    }
+    .lw-cap-card li{
+      display:flex;
+      align-items:flex-start;
+      gap:.52rem;
+      color:#64748b;
+      font-size:.9rem;
+    }
+    .lw-cap-card li i{
+      color:#198754;
+      margin-top:.1rem;
+    }
+
+    #differentiators .card,
+    #use-cases .text-center,
+    #workflow .flex-fill{
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    #differentiators .card:hover,
+    #use-cases .text-center:hover,
+    #workflow .flex-fill:hover{
+      transform:translateY(-4px);
+    }
+
+    @media (max-width: 991.98px){
+      .lw-hero-proof{ grid-template-columns:1fr; max-width:100%; }
+      .lw-hero-proof .lw-proof-item{ padding:.85rem .95rem; }
+    }
+    @media (max-width: 575.98px){
+      .lw-hero-badges span{ font-size:.78rem; padding:.42rem .65rem; }
+      .lw-brand-card{ padding:.95rem; border-radius:20px; }
+      .lw-brand-logo{ width:50px; height:50px; min-width:50px; }
+    }
+
+    [data-bs-theme="dark"] #brand-ecosystem,
+    [data-bs-theme="dark"] #platform-capabilities{
+      background:#0b1220 !important;
+    }
+    [data-bs-theme="dark"] .lw-brand-toolbar span,
+    [data-bs-theme="dark"] .lw-brand-card,
+    [data-bs-theme="dark"] .lw-cap-card{
+      background:rgba(255,255,255,.045);
+      border-color:rgba(255,255,255,.10);
+      color:rgba(255,255,255,.92);
+      box-shadow:0 18px 50px rgba(0,0,0,.35);
+    }
+    [data-bs-theme="dark"] .lw-brand-card h3,
+    [data-bs-theme="dark"] .lw-cap-card h3{ color:#fff; }
+    [data-bs-theme="dark"] .lw-brand-card p,
+    [data-bs-theme="dark"] .lw-cap-card li{ color:rgba(255,255,255,.72); }
+    [data-bs-theme="dark"] .lw-brand-logo{ background:#fff; }
+    [data-bs-theme="dark"] .lw-roadmap-card{
+      background:linear-gradient(135deg, rgba(13,110,253,.18), rgba(0,194,255,.10));
+      border-color:rgba(255,255,255,.12);
+    }
+  </style>
+
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
@@ -500,6 +808,16 @@
           <li>
             <a href="#features">
               <i class="bi bi-stars me-1"></i>Características
+            </a>
+          </li>
+          <li>
+            <a href="#brand-ecosystem">
+              <i class="bi bi-patch-check-fill me-1"></i>Marcas
+            </a>
+          </li>
+          <li>
+            <a href="#platform-capabilities">
+              <i class="bi bi-cpu-fill me-1"></i>Módulos
             </a>
           </li>
           <li>
@@ -559,11 +877,34 @@
           <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-in">
             <h1>Transforma tu red con <span>LinkWich-Monitor</span></h1>
             <p>
-              Descubre una nueva forma de monitorear tu infraestructura. Con
-              <strong>LinkWich-Monitor</strong> tendrás control total de tu red, visibilidad
-              en tiempo real y alertas inteligentes. Todo en una sola plataforma fácil de
-              usar, rápida y pensada para tu negocio.
+              Plataforma profesional para monitoreo, operación y continuidad de infraestructura TI.
+              Centraliza <strong>SNMP</strong>, <strong>syslog</strong>, <strong>mapas LLDP</strong>,
+              <strong>respaldos SSH/Telnet</strong>, alertas y reportes ejecutivos en una sola solución
+              diseñada para redes empresariales, hotelería, campus, retail y sitios críticos.
             </p>
+
+            <div class="lw-hero-badges" aria-label="Capacidades principales">
+              <span><i class="bi bi-activity"></i> Monitoreo 24/7</span>
+              <span><i class="bi bi-diagram-3"></i> Topología LLDP</span>
+              <span><i class="bi bi-terminal"></i> SSH/Telnet</span>
+              <span><i class="bi bi-journal-code"></i> Syslog</span>
+              <span><i class="bi bi-whatsapp"></i> Alertas WhatsApp</span>
+            </div>
+
+            <div class="lw-hero-proof" aria-label="Indicadores de valor">
+              <div class="lw-proof-item">
+                <strong>+Multi‑vendor</strong>
+                <span>Compatible con múltiples marcas de red y seguridad</span>
+              </div>
+              <div class="lw-proof-item">
+                <strong>Por nodo</strong>
+                <span>Licenciamiento claro, escalable y fácil de dimensionar</span>
+              </div>
+              <div class="lw-proof-item">
+                <strong>Modular</strong>
+                <span>Se adapta a necesidades del cliente bajo viabilidad técnica</span>
+              </div>
+            </div>
 
             <!-- Botones -->
             <div class="d-flex align-items-center gap-4 mt-3">
@@ -821,6 +1162,238 @@
     </section>
     <!-- ============================  /Features Section  ============================ -->
 
+    <!-- Brand Ecosystem Section -->
+    <section id="brand-ecosystem" class="section light-background">
+      <div class="container section-title text-center" data-aos="fade-up">
+        <span class="lw-section-kicker"><i class="bi bi-patch-check-fill"></i> Ecosistema compatible</span>
+        <h2 class="mt-3">Marcas y fabricantes compatibles</h2>
+        <div><span>Monitoreo y operación</span> <span class="description-title">multi‑vendor</span></div>
+        <p class="mt-3 text-muted small mx-auto" style="max-width:850px;">
+          LinkWich-Monitor está diseñado para integrarse con equipos de red, seguridad, servidores,
+          videovigilancia y energía mediante protocolos estándar como SNMP, ICMP, syslog, SSH/Telnet y LLDP.
+          La compatibilidad puede variar por modelo, firmware, credenciales y permisos habilitados.
+        </p>
+
+        <div class="lw-brand-toolbar" aria-label="Protocolos de integración">
+          <span><i class="bi bi-router-fill text-primary"></i> SNMP v2/v3</span>
+          <span><i class="bi bi-wifi text-primary"></i> ICMP</span>
+          <span><i class="bi bi-journal-text text-primary"></i> Syslog</span>
+          <span><i class="bi bi-terminal text-primary"></i> SSH / Telnet</span>
+          <span><i class="bi bi-diagram-3 text-primary"></i> LLDP</span>
+          <span><i class="bi bi-shield-lock text-primary"></i> Auditoría</span>
+        </div>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="F"><img src="https://cdn.simpleicons.org/fortinet" alt="Fortinet" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>Fortinet</h3><span class="lw-brand-chip"><i class="bi bi-shield-check"></i> Firewall / Switching</span></div>
+              </div>
+              <p>Monitoreo de disponibilidad, eventos, switches, interfaces y operación en ambientes FortiGate/FortiSwitch según alcance.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="C"><img src="https://cdn.simpleicons.org/cisco" alt="Cisco" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>Cisco</h3><span class="lw-brand-chip"><i class="bi bi-hdd-network"></i> Switching</span></div>
+              </div>
+              <p>Supervisión de Catalyst/IOS, interfaces, syslog, respaldos, disponibilidad y trazabilidad de cambios por SSH/Telnet.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="HPE"><img src="https://cdn.simpleicons.org/hpe" alt="HPE Aruba" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>Aruba / HPE</h3><span class="lw-brand-chip"><i class="bi bi-diagram-2"></i> Campus LAN</span></div>
+              </div>
+              <p>Monitoreo de switches Aruba/HPE, interfaces, LLDP, eventos, respaldos y operación para redes de campus y hotelería.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="AT"><img src="https://cdn.simpleicons.org/alliedtelesis" alt="Allied Telesis" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>Allied Telesis</h3><span class="lw-brand-chip"><i class="bi bi-node-plus"></i> Switching</span></div>
+              </div>
+              <p>Integración con switches Allied Telesis para monitoreo, topología LLDP, interfaces, respaldos y administración operativa.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="ICX"><i class="bi bi-hdd-rack"></i></div>
+                <div><h3>Ruckus ICX</h3><span class="lw-brand-chip"><i class="bi bi-broadcast-pin"></i> Switching</span></div>
+              </div>
+              <p>Visibilidad de disponibilidad, puertos, eventos y topología en entornos ICX bajo SNMP, syslog y acceso de administración.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="R"><i class="bi bi-router"></i></div>
+                <div><h3>Ruijie / Reyee</h3><span class="lw-brand-chip"><i class="bi bi-wifi"></i> Routing / WiFi</span></div>
+              </div>
+              <p>Monitoreo de disponibilidad, interfaces y eventos para redes distribuidas, sucursales y escenarios con múltiples enlaces.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="U"><img src="https://cdn.simpleicons.org/ubiquiti" alt="Ubiquiti" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>Ubiquiti</h3><span class="lw-brand-chip"><i class="bi bi-wifi"></i> WiFi / Network</span></div>
+              </div>
+              <p>Integración para supervisión de conectividad, enlaces, interfaces y disponibilidad en instalaciones UniFi/UISP según permisos.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="MT"><img src="https://cdn.simpleicons.org/mikrotik" alt="MikroTik" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>MikroTik</h3><span class="lw-brand-chip"><i class="bi bi-router-fill"></i> Routing</span></div>
+              </div>
+              <p>Monitoreo de enlaces, disponibilidad, tráfico, interfaces y eventos para routers y redes de borde bajo configuración adecuada.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="HK"><img src="https://cdn.simpleicons.org/hikvision" alt="Hikvision" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>Hikvision</h3><span class="lw-brand-chip"><i class="bi bi-camera-video"></i> CCTV / NVR</span></div>
+              </div>
+              <p>Supervisión de conectividad y disponibilidad de infraestructura de videovigilancia crítica, NVRs y segmentos asociados.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="AX"><img src="https://cdn.simpleicons.org/axiscommunications" alt="Axis Communications" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>Axis</h3><span class="lw-brand-chip"><i class="bi bi-camera"></i> Seguridad</span></div>
+              </div>
+              <p>Validación de disponibilidad, monitoreo por red y visibilidad operativa para cámaras y servicios de seguridad IP.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="APC"><img src="https://cdn.simpleicons.org/apc" alt="APC" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('lw-brand-fallback')"></div>
+                <div><h3>APC / CyberPower</h3><span class="lw-brand-chip"><i class="bi bi-battery-charging"></i> Energía</span></div>
+              </div>
+              <p>Lectura de estado, disponibilidad y variables SNMP en UPS compatibles para anticipar riesgos de energía.</p>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="lw-brand-card">
+              <div class="lw-brand-top">
+                <div class="lw-brand-logo" data-initial="OS"><i class="bi bi-windows"></i></div>
+                <div><h3>Windows / Linux</h3><span class="lw-brand-chip"><i class="bi bi-server"></i> Servidores</span></div>
+              </div>
+              <p>Plataforma instalable en ambientes Windows y preparada para despliegues Linux/Ubuntu según etapa del proyecto.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="lw-roadmap-card mt-5" data-aos="fade-up" data-aos-delay="150">
+          <div class="row align-items-center g-3">
+            <div class="col-lg-8">
+              <h3 class="h5 fw-bold mb-2"><i class="bi bi-stars text-primary me-2"></i>Roadmap en mejora continua</h3>
+              <p class="mb-0 text-muted">
+                Se continúa mejorando la compatibilidad, agregando nuevos comandos, reportes, respaldos e integraciones por marca.
+                Además de las marcas listadas, pueden evaluarse muchas más bajo viabilidad técnica, acceso disponible y pruebas controladas.
+              </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+              <a href="#demo-request" class="btn btn-primary"><i class="bi bi-send-check me-2"></i>Solicitar validación de marca</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /Brand Ecosystem Section -->
+
+    <!-- Platform Capabilities Section -->
+    <section id="platform-capabilities" class="section">
+      <div class="container section-title text-center" data-aos="fade-up">
+        <span class="lw-section-kicker"><i class="bi bi-cpu-fill"></i> Capacidades técnicas</span>
+        <h2 class="mt-3">Módulos principales de la plataforma</h2>
+        <div><span>Operación, seguridad y</span> <span class="description-title">continuidad</span></div>
+        <p class="mt-3 text-muted small mx-auto" style="max-width:850px;">
+          Una vista más clara de lo que resuelve LinkWich-Monitor en operación diaria: monitoreo, automatización,
+          alertamiento, auditoría y documentación para infraestructura TI.
+        </p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row g-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="lw-cap-card">
+              <div class="lw-cap-icon"><i class="bi bi-activity"></i></div>
+              <h3>Monitoreo e inventario</h3>
+              <ul>
+                <li><i class="bi bi-check-circle-fill"></i> ICMP, SNMP y disponibilidad por nodo.</li>
+                <li><i class="bi bi-check-circle-fill"></i> CPU, almacenamiento, interfaces y servicios.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Históricos, cortes y métricas operativas.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="lw-cap-card">
+              <div class="lw-cap-icon"><i class="bi bi-diagram-3"></i></div>
+              <h3>Topología y diagnóstico</h3>
+              <ul>
+                <li><i class="bi bi-check-circle-fill"></i> Mapa LLDP interactivo de la red.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Geolocalización y agrupación de equipos.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Trazas, interfaces y análisis de enlaces.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="lw-cap-card">
+              <div class="lw-cap-icon"><i class="bi bi-terminal-dash"></i></div>
+              <h3>Operación remota</h3>
+              <ul>
+                <li><i class="bi bi-check-circle-fill"></i> Terminal web SSH/Telnet centralizada.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Respaldos manuales y programados.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Auditoría de comandos y usuarios.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="lw-cap-card">
+              <div class="lw-cap-icon"><i class="bi bi-bell-fill"></i></div>
+              <h3>Alertas y reportes</h3>
+              <ul>
+                <li><i class="bi bi-check-circle-fill"></i> Correo, WhatsApp, popups y campana.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Syslog centralizado con explicación IA.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Reportes PDF/Excel para operación y SLA.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /Platform Capabilities Section -->
+
+
     <!-- Casos de Uso -->
     <section id="use-cases" class="stats section light-background">
       <div class="container" data-aos="fade-up">
@@ -1075,7 +1648,6 @@
     </div>
   </div>
 </div>
-    </section>
     <!-- /Instagram Reel -->
 
 
@@ -2267,8 +2839,8 @@
           </div>
           <div class="social-links d-flex mt-4">
             <!-- <a href="#"><i class="bi bi-twitter-x"></i></a> -->
-            <a href="https://www.facebook.com/people/LinkWich-IT/61579142500818/"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/linkwich.it/"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.facebook.com/people/LinkWich-IT/61579142500818/" target="_blank" rel="noopener"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.instagram.com/linkwich.it/" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
             <!-- <a href="#"><i class="bi bi-linkedin"></i></a> -->
           </div>
         </div>
@@ -2276,11 +2848,12 @@
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Enlaces Útiles</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Inicio</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Acerca</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Servicios</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Características</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Contacto</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#hero">Inicio</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#about">Acerca</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#features">Características</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#brand-ecosystem">Marcas compatibles</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#pricing">Precios</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#contact-cta">Contacto</a></li>
             <li><i class="bi bi-chevron-right"></i>
               <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Términos y Condiciones</a>
             </li>
@@ -2290,17 +2863,17 @@
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Nuestros Servicios</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Diseño Web</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Desarrollo Web</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Gestión de Productos</a></li>
-            <!-- <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Diseño Gráfico</a></li> -->
+            <li><i class="bi bi-chevron-right"></i> <a href="#platform-capabilities">Monitoreo SNMP/ICMP</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#platform-capabilities">Syslog y alertas</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#platform-capabilities">Mapas LLDP</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#platform-capabilities">Respaldos SSH/Telnet</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#requirements">Implementación modular</a></li>
           </ul>
         </div>
 
         <div class="col-lg-4 col-md-12 footer-newsletter">
-          <h4>Boletín</h4>
-          <p>Suscríbete y recibe las últimas novedades sobre nuestros servicios.</p>
+          <h4>Solicita información</h4>
+          <p>Déjanos tu correo para enviarte información comercial, demo o una validación rápida de compatibilidad por marca.</p>
           <form action="forms/newsletter.php" method="post" class="php-email-form">
             <div class="newsletter-form d-flex">
               <input type="email" name="email" placeholder="Tu correo electrónico" required>
@@ -2718,8 +3291,6 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
   })();
 </script>
 
-<!-- Script oficial (SOLO 1 VEZ en toda la página) -->
-<script async src="https://www.instagram.com/embed.js"></script>
 
 </body>
 </html>
