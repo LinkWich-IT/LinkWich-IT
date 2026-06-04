@@ -1402,6 +1402,144 @@
     [data-bs-theme="dark"] .lw-feature-modal .btn-close{ filter:invert(1) grayscale(1); }
   </style>
 
+
+  <style id="lw-contact-cta-clean-v13">
+    /* ===== CTA final: fondo blanco y estilo integrado al template ===== */
+    #contact-cta{
+      background:#fff !important;
+    }
+
+    #contact-cta .lw-contact-card{
+      display:grid;
+      grid-template-columns:auto minmax(0, 1fr) auto;
+      align-items:center;
+      gap:1.25rem;
+      padding:clamp(1.25rem, 3vw, 2rem);
+      border-radius:22px;
+      background:#fff;
+      border:1px solid rgba(4, 6, 119, .10);
+      box-shadow:0 14px 34px rgba(4, 6, 119, .06);
+    }
+
+    #contact-cta .lw-contact-icon{
+      width:62px;
+      height:62px;
+      min-width:62px;
+      border-radius:18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      background:linear-gradient(135deg, #040677, #1acc8d);
+      box-shadow:0 12px 28px rgba(4, 6, 119, .18);
+      font-size:1.55rem;
+    }
+
+    #contact-cta .lw-contact-kicker{
+      display:inline-flex;
+      align-items:center;
+      margin-bottom:.35rem;
+      color:#1acc8d;
+      font-weight:800;
+      font-size:.82rem;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+    }
+
+    #contact-cta .lw-contact-content h2{
+      margin:0 0 .45rem;
+      color:#040677;
+      font-family:inherit;
+      font-size:clamp(1.45rem, 2.2vw, 2rem);
+      font-weight:800;
+      line-height:1.18;
+    }
+
+    #contact-cta .lw-contact-content p{
+      margin:0;
+      max-width:760px;
+      color:#465a7a;
+      font-size:1rem;
+      line-height:1.65;
+    }
+
+    #contact-cta .lw-contact-action{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:.55rem;
+      min-width:240px;
+    }
+
+    #contact-cta .lw-contact-action .btn{
+      border-radius:999px;
+      padding:.82rem 1.25rem;
+      font-weight:800;
+      background:#1acc8d;
+      border-color:#1acc8d;
+      color:#fff;
+      box-shadow:none;
+      white-space:nowrap;
+    }
+
+    #contact-cta .lw-contact-action .btn:hover{
+      background:#17b980;
+      border-color:#17b980;
+    }
+
+    #contact-cta .lw-contact-action small{
+      color:#6b7a90;
+      font-size:.82rem;
+      text-align:right;
+      line-height:1.35;
+    }
+
+    [data-bs-theme="dark"] #contact-cta{
+      background:#0b1220 !important;
+    }
+
+    [data-bs-theme="dark"] #contact-cta .lw-contact-card{
+      background:rgba(255,255,255,.04);
+      border-color:rgba(255,255,255,.10);
+      box-shadow:0 16px 38px rgba(0,0,0,.20);
+    }
+
+    [data-bs-theme="dark"] #contact-cta .lw-contact-content h2{ color:#fff; }
+    [data-bs-theme="dark"] #contact-cta .lw-contact-content p,
+    [data-bs-theme="dark"] #contact-cta .lw-contact-action small{ color:rgba(255,255,255,.74); }
+
+    @media (max-width: 991.98px){
+      #contact-cta .lw-contact-card{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      #contact-cta .lw-contact-icon{
+        margin:0 auto;
+      }
+      #contact-cta .lw-contact-action{
+        align-items:center;
+        min-width:0;
+      }
+      #contact-cta .lw-contact-action small{
+        text-align:center;
+      }
+    }
+
+    @media (max-width: 575.98px){
+      #contact-cta .lw-contact-card{
+        border-radius:18px;
+        padding:1.15rem;
+      }
+      #contact-cta .lw-contact-action,
+      #contact-cta .lw-contact-action .btn{
+        width:100%;
+      }
+      #contact-cta .lw-contact-action .btn{
+        justify-content:center;
+      }
+    }
+  </style>
+
 </head>
 
 <body class="index-page">
@@ -3382,14 +3520,28 @@
 
 
     <!-- Contact CTA Section -->
-    <section id="contact-cta" class="contact-cta section bg-light">
+    <section id="contact-cta" class="contact-cta section">
       <div class="container" data-aos="zoom-in">
-        <div class="text-center">
-          <h2><i class="bi bi-rocket-takeoff-fill text-primary me-2"></i>Impulsa tu red al siguiente nivel</h2>
-          <p><i class="bi bi-chat-dots-fill text-success me-2"></i>Habla con nuestro equipo hoy y descubre cómo <strong>LinkWich-Monitor</strong> maximiza la disponibilidad y el rendimiento de tu infraestructura.</p>
-          <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="btn btn-primary btn-lg mt-3">
-            <i class="bi bi-send-fill me-2"></i>Contactar ahora
-          </a>
+        <div class="lw-contact-card">
+          <div class="lw-contact-icon" aria-hidden="true">
+            <i class="bi bi-rocket-takeoff-fill"></i>
+          </div>
+
+          <div class="lw-contact-content">
+            <span class="lw-contact-kicker">Agenda una evaluación</span>
+            <h2>Impulsa tu infraestructura con monitoreo profesional</h2>
+            <p>
+              Conoce cómo <strong>LinkWich-Monitor</strong> puede ayudarte a mejorar la disponibilidad,
+              anticipar incidencias y centralizar la operación de tu red desde una sola plataforma.
+            </p>
+          </div>
+
+          <div class="lw-contact-action">
+            <a href="https://www.linkwich-it.com/#contact" class="btn btn-primary btn-lg">
+              <i class="bi bi-send-fill me-2"></i>Solicitar información
+            </a>
+            <small>Respuesta para integradores, empresas y proyectos corporativos.</small>
+          </div>
         </div>
       </div>
     </section>
