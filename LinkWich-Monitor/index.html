@@ -1758,6 +1758,197 @@
     }
   </style>
 
+
+
+  <style id="lw-demo-modal-styles-v16">
+    /* ===== Modal del botón Ver demo - integrado al estilo del template ===== */
+    .lw-demo-modal .modal-content{
+      border:0;
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 24px 70px rgba(2,6,23,.24);
+      background:#fff;
+    }
+
+    .lw-demo-modal .modal-header{
+      border-bottom:1px solid rgba(4,6,119,.10);
+      background:linear-gradient(135deg, rgba(4,6,119,.04), rgba(26,204,141,.08));
+      padding:1.2rem 1.35rem;
+    }
+
+    .lw-demo-modal .lw-demo-title-wrap{
+      display:flex;
+      align-items:center;
+      gap:.9rem;
+      min-width:0;
+    }
+
+    .lw-demo-modal .lw-demo-icon{
+      width:52px;
+      height:52px;
+      min-width:52px;
+      border-radius:16px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      background:linear-gradient(135deg, #040677, #1acc8d);
+      box-shadow:0 14px 30px rgba(4,6,119,.18);
+      font-size:1.45rem;
+    }
+
+    .lw-demo-modal .modal-title{
+      margin:0;
+      color:#040677;
+      font-family:inherit;
+      font-weight:800;
+      line-height:1.18;
+      font-size:1.25rem;
+    }
+
+    .lw-demo-modal .lw-demo-kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:.35rem;
+      margin-top:.35rem;
+      padding:.25rem .6rem;
+      border-radius:999px;
+      color:#040677;
+      background:rgba(26,204,141,.12);
+      border:1px solid rgba(26,204,141,.24);
+      font-size:.76rem;
+      font-weight:800;
+    }
+
+    .lw-demo-modal .modal-body{
+      padding:1.35rem;
+    }
+
+    .lw-demo-modal .lw-demo-lead{
+      color:#465a7a;
+      font-size:1rem;
+      line-height:1.65;
+      margin-bottom:1.1rem;
+    }
+
+    .lw-demo-modal .lw-demo-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:.85rem;
+      margin-bottom:1rem;
+    }
+
+    .lw-demo-modal .lw-demo-point{
+      display:flex;
+      align-items:flex-start;
+      gap:.65rem;
+      padding:.85rem;
+      border-radius:16px;
+      background:#fbfcff;
+      border:1px solid rgba(4,6,119,.08);
+      color:#465a7a;
+      line-height:1.45;
+      font-size:.94rem;
+    }
+
+    .lw-demo-modal .lw-demo-point i{
+      color:#1acc8d;
+      font-size:1.05rem;
+      margin-top:.05rem;
+      flex:0 0 auto;
+    }
+
+    .lw-demo-modal .lw-demo-note{
+      margin:0;
+      padding:.85rem 1rem;
+      border-radius:16px;
+      background:rgba(26,204,141,.08);
+      border:1px solid rgba(26,204,141,.18);
+      color:#465a7a;
+      font-size:.94rem;
+      line-height:1.55;
+    }
+
+    .lw-demo-modal .modal-footer{
+      border-top:1px solid rgba(4,6,119,.08);
+      background:#fbfcff;
+      padding:1rem 1.35rem;
+      gap:.65rem;
+    }
+
+    .lw-demo-modal .btn{
+      border-radius:999px;
+      padding:.78rem 1.15rem;
+      font-weight:800;
+    }
+
+    .lw-demo-modal .btn-primary{
+      background:#1acc8d;
+      border-color:#1acc8d;
+      color:#fff;
+      box-shadow:none;
+    }
+
+    .lw-demo-modal .btn-primary:hover{
+      background:#17b980;
+      border-color:#17b980;
+    }
+
+    .lw-demo-modal .btn-outline-secondary{
+      color:#040677;
+      border-color:rgba(4,6,119,.22);
+    }
+
+    .lw-demo-modal .btn-outline-secondary:hover{
+      color:#fff;
+      background:#040677;
+      border-color:#040677;
+    }
+
+    @media (max-width:575.98px){
+      .lw-demo-modal .modal-dialog{
+        margin:.75rem;
+      }
+      .lw-demo-modal .modal-header,
+      .lw-demo-modal .modal-body,
+      .lw-demo-modal .modal-footer{
+        padding:1rem;
+      }
+      .lw-demo-modal .lw-demo-grid{
+        grid-template-columns:1fr;
+      }
+      .lw-demo-modal .lw-demo-icon{
+        width:46px;
+        height:46px;
+        min-width:46px;
+      }
+      .lw-demo-modal .modal-title{
+        font-size:1.08rem;
+      }
+      .lw-demo-modal .modal-footer .btn{
+        width:100%;
+      }
+    }
+
+    [data-bs-theme="dark"] .lw-demo-modal .modal-content,
+    [data-bs-theme="dark"] .lw-demo-modal .modal-header,
+    [data-bs-theme="dark"] .lw-demo-modal .modal-footer{
+      background:#0b1220;
+      color:#fff;
+      border-color:rgba(255,255,255,.10);
+    }
+    [data-bs-theme="dark"] .lw-demo-modal .modal-title{ color:#fff; }
+    [data-bs-theme="dark"] .lw-demo-modal .lw-demo-lead,
+    [data-bs-theme="dark"] .lw-demo-modal .lw-demo-point,
+    [data-bs-theme="dark"] .lw-demo-modal .lw-demo-note{ color:rgba(255,255,255,.78); }
+    [data-bs-theme="dark"] .lw-demo-modal .lw-demo-point,
+    [data-bs-theme="dark"] .lw-demo-modal .lw-demo-note{
+      background:rgba(255,255,255,.04);
+      border-color:rgba(255,255,255,.10);
+    }
+    [data-bs-theme="dark"] .lw-demo-modal .btn-close{ filter:invert(1) grayscale(1); }
+  </style>
+
 </head>
 
 <body class="index-page">
@@ -1822,10 +2013,12 @@
               <!-- CTA principal -->
               <a href="#about" class="btn-get-started">Comienza hoy</a>
 
-              <!-- CTA Demo: mismo estilo, sin light-box -->
-              <a href="http://linkwich-monitor.ddns.net:5003"
-                 target="_blank" rel="noopener"
-                 class="btn-watch-video d-flex align-items-center">
+              <!-- CTA Demo: abre modal informativo sin salir de la página -->
+              <a href="#"
+                 class="btn-watch-video d-flex align-items-center"
+                 data-bs-toggle="modal"
+                 data-bs-target="#lwDemoModal"
+                 aria-label="Abrir información para solicitar una demo de LinkWich-Monitor">
                 <i class="bi bi-play-circle"></i>
                 <span class="ps-2">Ver&nbsp;demo</span>
               </a>
@@ -4217,6 +4410,53 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
 </script>
 
           
+
+
+
+  <!-- Modal: Solicitud de demo LinkWich-Monitor -->
+  <div class="modal fade lw-demo-modal" id="lwDemoModal" tabindex="-1" aria-labelledby="lwDemoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="lw-demo-title-wrap">
+            <div class="lw-demo-icon"><i class="bi bi-play-circle-fill"></i></div>
+            <div>
+              <h5 class="modal-title" id="lwDemoModalLabel">Solicita una demo con ingenieros especializados</h5>
+              <span class="lw-demo-kicker"><i class="bi bi-shield-check"></i> Demo guiada sobre tu infraestructura</span>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+
+        <div class="modal-body">
+          <p class="lw-demo-lead">
+            Agenda una sesión técnica para revisar cómo <strong>LinkWich-Monitor</strong> puede adaptarse a tu red,
+            validar compatibilidad con tus equipos y mostrarte un flujo real de monitoreo, alertas, respaldos,
+            syslog, mapas LLDP y reportes operativos.
+          </p>
+
+          <div class="lw-demo-grid">
+            <div class="lw-demo-point"><i class="bi bi-diagram-3"></i><span>Revisión de topología, marcas, segmentos y necesidades de monitoreo.</span></div>
+            <div class="lw-demo-point"><i class="bi bi-bell"></i><span>Validación de alertas por WhatsApp/correo y eventos críticos.</span></div>
+            <div class="lw-demo-point"><i class="bi bi-terminal"></i><span>Evaluación de respaldos SSH/Telnet y operación remota segura.</span></div>
+            <div class="lw-demo-point"><i class="bi bi-clipboard-data"></i><span>Asesoramiento técnico para dimensionar nodos, módulos y alcance.</span></div>
+          </div>
+
+          <p class="lw-demo-note">
+            La demo puede orientarse a una prueba controlada, una revisión comercial o una validación técnica
+            según la infraestructura y viabilidad del proyecto.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <a href="https://www.linkwich-it.com/#contact" class="btn btn-primary">
+            <i class="bi bi-send-check me-2"></i>Solicitar información y asesoría técnica
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
