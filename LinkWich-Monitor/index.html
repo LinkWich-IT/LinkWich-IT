@@ -1300,180 +1300,106 @@
 
 
 
-  <style id="lw-sniffer-feature-styles">
-    /* ===== Sniffer / Analizador de paquetes - modal y tarjeta ===== */
-    #features .lw-feature-click{
-      cursor:pointer;
-      border-color:rgba(26,204,141,.35);
-      transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+  <style id="lw-feature-modal-styles-v11">
+    /* Modal de detalle para funciones: no altera el estilo original de las tarjetas */
+    #features .lw-feature-open{ cursor:pointer; }
+    #features .lw-feature-open:focus-visible{
+      outline:3px solid rgba(26,204,141,.35);
+      outline-offset:3px;
     }
-    #features .lw-feature-click:hover{
-      transform:translateY(-4px);
-      border-color:rgba(26,204,141,.65);
-      box-shadow:0 14px 34px rgba(2,6,23,.10);
-      background:#ffffff;
-    }
-    #features .lw-feature-click h3 a{
-      pointer-events:none;
-    }
-    #features .lw-feature-click .lw-feature-hint{
-      display:block;
-      margin-top:.28rem;
-      font-size:.78rem;
-      font-weight:600;
-      color:#64748b;
-      line-height:1.2;
-    }
-    #features .lw-feature-click:hover .lw-feature-hint{
-      color:#1acc8d;
-    }
-
-    .lw-sniffer-modal{
+    .lw-feature-modal .modal-content{
       border:0;
-      border-radius:22px;
+      border-radius:20px;
       overflow:hidden;
-      box-shadow:0 26px 80px rgba(2,6,23,.28);
+      box-shadow:0 24px 70px rgba(2,6,23,.22);
     }
-    .lw-sniffer-modal .modal-header{
-      border:0;
-      color:#fff;
-      background:linear-gradient(135deg,#040677 0%, #0d6efd 62%, #1acc8d 100%);
-      padding:1.25rem 1.35rem;
+    .lw-feature-modal .modal-header{
+      border-bottom:1px solid rgba(4,6,119,.10);
+      background:#fff;
+      padding:1.15rem 1.25rem;
     }
-    .lw-sniffer-modal .modal-title{
+    .lw-feature-modal .modal-title-wrap{
       display:flex;
       align-items:center;
-      gap:.65rem;
-      font-weight:800;
-      line-height:1.2;
+      gap:.9rem;
     }
-    .lw-sniffer-modal .modal-title i{
-      width:42px;
-      height:42px;
+    .lw-feature-modal .lw-feature-modal-icon{
+      width:48px;
+      height:48px;
+      min-width:48px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      border-radius:14px;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.18);
-      font-size:1.25rem;
-      flex:0 0 auto;
+      border-radius:15px;
+      background:rgba(26,204,141,.10);
+      border:1px solid rgba(26,204,141,.20);
+      font-size:1.55rem;
     }
-    .lw-sniffer-modal .btn-close{
-      filter:invert(1) grayscale(1);
-      opacity:.9;
+    .lw-feature-modal h5{
+      margin:0;
+      font-weight:800;
+      color:#040677;
+      line-height:1.2;
     }
-    .lw-sniffer-hero{
-      padding:1.25rem;
-      border-radius:18px;
-      background:linear-gradient(180deg,#f8fbff 0%, #ffffff 100%);
-      border:1px solid rgba(4,6,119,.08);
+    .lw-feature-modal .lw-feature-modal-badge{
+      display:inline-flex;
+      margin-top:.35rem;
+      padding:.25rem .55rem;
+      border-radius:999px;
+      font-size:.76rem;
+      font-weight:700;
+      color:#040677;
+      background:rgba(26,204,141,.10);
+      border:1px solid rgba(26,204,141,.22);
     }
-    .lw-sniffer-hero p{
+    .lw-feature-modal .modal-body{ padding:1.25rem; }
+    .lw-feature-modal .lw-feature-desc{
       color:#465a7a;
       line-height:1.65;
-      margin-bottom:0;
+      margin-bottom:1rem;
     }
-    .lw-sniffer-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:.45rem;
-      padding:.42rem .7rem;
-      border-radius:999px;
-      font-size:.78rem;
-      font-weight:800;
-      color:#040677;
-      background:rgba(26,204,141,.12);
-      border:1px solid rgba(26,204,141,.25);
-      margin-bottom:.75rem;
-    }
-    .lw-sniffer-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:1rem;
-    }
-    .lw-sniffer-card{
-      height:100%;
-      padding:1rem;
-      border-radius:16px;
-      border:1px solid rgba(4,6,119,.09);
-      background:#fff;
-      box-shadow:0 10px 26px rgba(2,6,23,.05);
-    }
-    .lw-sniffer-card i{
-      width:38px;
-      height:38px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:12px;
-      color:#fff;
-      background:linear-gradient(135deg,#0d6efd,#1acc8d);
-      margin-bottom:.7rem;
-      font-size:1.1rem;
-    }
-    .lw-sniffer-card h6{
-      margin:0 0 .35rem;
-      color:#040677;
-      font-weight:800;
-    }
-    .lw-sniffer-card p{
-      margin:0;
-      color:#5f6f89;
-      font-size:.92rem;
-      line-height:1.48;
-    }
-    .lw-sniffer-list{
+    .lw-feature-modal .lw-feature-list{
       display:grid;
       gap:.65rem;
-      padding:0;
       margin:0;
+      padding:0;
       list-style:none;
     }
-    .lw-sniffer-list li{
+    .lw-feature-modal .lw-feature-list li{
       display:flex;
-      gap:.6rem;
+      gap:.65rem;
       align-items:flex-start;
       color:#465a7a;
-      line-height:1.45;
+      line-height:1.5;
     }
-    .lw-sniffer-list li i{
+    .lw-feature-modal .lw-feature-list li i{
       color:#1acc8d;
-      margin-top:.1rem;
+      margin-top:.16rem;
       flex:0 0 auto;
     }
-    .lw-sniffer-note{
-      border-radius:16px;
-      padding:1rem;
-      background:rgba(13,110,253,.06);
-      border:1px solid rgba(13,110,253,.14);
-      color:#465a7a;
-      line-height:1.55;
+    .lw-feature-modal .modal-footer{
+      border-top:1px solid rgba(4,6,119,.08);
+      background:#fbfcff;
+      padding:1rem 1.25rem;
     }
-
-    [data-bs-theme="dark"] .lw-sniffer-modal{ background:#0b1220; color:#fff; }
-    [data-bs-theme="dark"] .lw-sniffer-hero,
-    [data-bs-theme="dark"] .lw-sniffer-card,
-    [data-bs-theme="dark"] .lw-sniffer-note{
-      background:rgba(255,255,255,.04);
+    @media (max-width:575.98px){
+      .lw-feature-modal .modal-dialog{ margin:.75rem; }
+      .lw-feature-modal .modal-header,
+      .lw-feature-modal .modal-body,
+      .lw-feature-modal .modal-footer{ padding:1rem; }
+      .lw-feature-modal .lw-feature-modal-icon{ width:44px; height:44px; min-width:44px; }
+    }
+    [data-bs-theme="dark"] .lw-feature-modal .modal-content,
+    [data-bs-theme="dark"] .lw-feature-modal .modal-header,
+    [data-bs-theme="dark"] .lw-feature-modal .modal-footer{
+      background:#0b1220;
+      color:#fff;
       border-color:rgba(255,255,255,.10);
     }
-    [data-bs-theme="dark"] .lw-sniffer-hero p,
-    [data-bs-theme="dark"] .lw-sniffer-card p,
-    [data-bs-theme="dark"] .lw-sniffer-list li,
-    [data-bs-theme="dark"] .lw-sniffer-note{ color:rgba(255,255,255,.78); }
-    [data-bs-theme="dark"] .lw-sniffer-card h6{ color:#fff; }
-
-    @media (max-width: 767.98px){
-      .lw-sniffer-grid{ grid-template-columns:1fr; }
-      .lw-sniffer-modal .modal-header{ padding:1rem; }
-      .lw-sniffer-modal .modal-title{ font-size:1rem; align-items:flex-start; }
-      .lw-sniffer-modal .modal-title i{ width:38px; height:38px; }
-    }
-    @media (max-width: 575.98px){
-      #snifferModal .modal-dialog{ margin:.75rem; }
-      .lw-sniffer-hero{ padding:1rem; }
-    }
+    [data-bs-theme="dark"] .lw-feature-modal h5{ color:#fff; }
+    [data-bs-theme="dark"] .lw-feature-modal .lw-feature-desc,
+    [data-bs-theme="dark"] .lw-feature-modal .lw-feature-list li{ color:rgba(255,255,255,.78); }
+    [data-bs-theme="dark"] .lw-feature-modal .btn-close{ filter:invert(1) grayscale(1); }
   </style>
 
 </head>
@@ -1632,7 +1558,6 @@
       </div>
     </section>
     <!-- /About Section -->
-
     <!-- Features Section -->
     <!-- ==============================  Features Section  ============================== -->
     <section id="features" class="features section">
@@ -1641,7 +1566,14 @@
 
           <!-- 1 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Monitoreo en tiempo real"
+                 data-feature-icon="bi bi-eye"
+                 data-feature-color="#ffbb2c"
+                 data-feature-badge="Visibilidad 24/7"
+                 data-feature-desc="Supervisa el estado de la infraestructura desde una vista centralizada y actualizada."
+                 data-feature-bullets="Validación de disponibilidad por ICMP y monitoreo SNMP.||Estado general de dispositivos, interfaces, servicios y recursos.||Apoyo para detectar caídas o degradaciones antes de que afecten la operación.">
               <i class="bi bi-eye" style="color: #ffbb2c;"></i>
               <h3><a href="#" class="stretched-link">Monitoreo en tiempo real</a></h3>
             </div>
@@ -1649,7 +1581,14 @@
 
           <!-- 2 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Alertas inteligentes"
+                 data-feature-icon="bi bi-bell"
+                 data-feature-color="#5578ff"
+                 data-feature-badge="Respuesta proactiva"
+                 data-feature-desc="Notificaciones orientadas a operación para actuar con mayor rapidez ante eventos relevantes."
+                 data-feature-bullets="Alertas por disponibilidad, interfaces, almacenamiento, servicios, UPS y eventos críticos.||Priorización de incidencias para reducir tiempos de respuesta.||Seguimiento de eventos para mantener evidencia operativa.">
               <i class="bi bi-bell" style="color: #5578ff;"></i>
               <h3><a href="#" class="stretched-link">Alertas inteligentes</a></h3>
             </div>
@@ -1657,7 +1596,14 @@
 
           <!-- 3 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Mapa de red interactivo"
+                 data-feature-icon="bi bi-diagram-3"
+                 data-feature-color="#e80368"
+                 data-feature-badge="Topología LLDP"
+                 data-feature-desc="Visualización gráfica de topologías y relaciones entre equipos para entender la red con mayor claridad."
+                 data-feature-bullets="Mapeo de conexiones mediante LLDP cuando el equipo lo permite.||Vista interactiva de nodos, enlaces y datos relevantes.||Ayuda para identificar dependencias, vecinos y posibles puntos de falla.">
               <i class="bi bi-diagram-3" style="color: #e80368;"></i>
               <h3><a href="#" class="stretched-link">Mapa de red interactivo</a></h3>
             </div>
@@ -1665,7 +1611,14 @@
 
           <!-- 4 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="400">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Historial de eventos"
+                 data-feature-icon="bi bi-clock-history"
+                 data-feature-color="#e361ff"
+                 data-feature-badge="Trazabilidad"
+                 data-feature-desc="Registro histórico para consultar incidencias, cambios de estado y comportamiento de la red."
+                 data-feature-bullets="Consulta de eventos pasados y cortes de disponibilidad.||Base para análisis de recurrencia y cumplimiento operativo.||Mejor trazabilidad para reportes y seguimiento interno.">
               <i class="bi bi-clock-history" style="color: #e361ff;"></i>
               <h3><a href="#" class="stretched-link">Historial de eventos</a></h3>
             </div>
@@ -1673,7 +1626,14 @@
 
           <!-- 5 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="500">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Estadísticas detalladas"
+                 data-feature-icon="bi bi-graph-up-arrow"
+                 data-feature-color="#47aeff"
+                 data-feature-badge="KPIs operativos"
+                 data-feature-desc="Indicadores y gráficas para entender desempeño, disponibilidad y consumo de recursos."
+                 data-feature-bullets="Métricas de interfaces, tráfico, disponibilidad y estado general.||Gráficas para identificar tendencias y saturación.||Información útil para planeación y mejora continua.">
               <i class="bi bi-graph-up-arrow" style="color: #47aeff;"></i>
               <h3><a href="#" class="stretched-link">Estadísticas detalladas</a></h3>
             </div>
@@ -1681,7 +1641,14 @@
 
           <!-- 6 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="600">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Compatibilidad SNMP"
+                 data-feature-icon="bi bi-terminal"
+                 data-feature-color="#ffa76e"
+                 data-feature-badge="SNMP v2/v3"
+                 data-feature-desc="Lectura de información técnica mediante SNMP para inventario, monitoreo y control operativo."
+                 data-feature-bullets="Soporte para monitoreo con SNMP v2/v3 según configuración del equipo.||Obtención de datos de interfaces, CPU, almacenamiento, servicios y más.||Integración dependiente de permisos, MIBs disponibles y alcance técnico.">
               <i class="bi bi-terminal" style="color: #ffa76e;"></i>
               <h3><a href="#" class="stretched-link">Compatibilidad SNMP</a></h3>
             </div>
@@ -1689,109 +1656,196 @@
 
           <!-- 7 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="700">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Detección automática de dispositivos"
+                 data-feature-icon="bi bi-hdd-network"
+                 data-feature-color="#11dbcf"
+                 data-feature-badge="Descubrimiento"
+                 data-feature-desc="Ayuda a descubrir equipos y alimentar el inventario operativo de la plataforma."
+                 data-feature-bullets="Escaneo y detección de dispositivos alcanzables en la red.||Apoyo para identificar equipos nuevos o no documentados.||Facilita el alta inicial y la visibilidad de infraestructura.">
               <i class="bi bi-hdd-network" style="color: #11dbcf;"></i>
               <h3><a href="#" class="stretched-link">Detección automática de dispositivos</a></h3>
             </div>
           </div>
 
           <!-- 8 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="750">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Sniffer de red automatizado"
+                 data-feature-icon="bi bi-broadcast-pin"
+                 data-feature-color="#0dcaf0"
+                 data-feature-badge="Análisis de paquetes"
+                 data-feature-desc="Analizador de paquetes orientado a detectar anomalías de red y alertar condiciones que pueden afectar la operación."
+                 data-feature-bullets="Detecta posibles IP duplicadas mediante análisis de tráfico y eventos observados.||Identifica broadcast alto o comportamiento anormal que pueda saturar segmentos.||Ayuda a detectar indicios de loop en la red por patrones de tráfico inusuales.||Permite observar presencia de DHCP no autorizado o DHCP filtrada según el comportamiento detectado.||Su alcance depende del punto de captura, permisos, sistema operativo y visibilidad del segmento monitoreado.">
+              <i class="bi bi-broadcast-pin" style="color: #0dcaf0;"></i>
+              <h3><a href="#" class="stretched-link">Sniffer de red automatizado</a></h3>
+            </div>
+          </div>
+
+          <!-- 9 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="800">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Seguridad de la información"
+                 data-feature-icon="bi bi-shield-lock"
+                 data-feature-color="#4233ff"
+                 data-feature-badge="Control y auditoría"
+                 data-feature-desc="Funciones orientadas a proteger el acceso, la operación y la trazabilidad dentro de la plataforma."
+                 data-feature-bullets="Acceso con usuarios y roles para separar permisos.||Soporte para autenticación y control de sesiones según configuración.||Auditoría de acciones relevantes para mayor control operativo.">
               <i class="bi bi-shield-lock" style="color: #4233ff;"></i>
               <h3><a href="#" class="stretched-link">Seguridad de la información</a></h3>
             </div>
           </div>
 
-          <!-- 9 -->
+          <!-- 10 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="900">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Interfaz web amigable"
+                 data-feature-icon="bi bi-pc-display"
+                 data-feature-color="#b2904f"
+                 data-feature-badge="Web responsive"
+                 data-feature-desc="Panel centralizado para operar la solución desde navegador de forma clara y ordenada."
+                 data-feature-bullets="Diseño web responsivo para escritorio, tablet y móvil.||Acceso a dashboards, reportes, mapas y herramientas operativas.||Experiencia enfocada en simplificar tareas diarias de administración.">
               <i class="bi bi-pc-display" style="color: #b2904f;"></i>
               <h3><a href="#" class="stretched-link">Interfaz web amigable</a></h3>
             </div>
           </div>
 
-          <!-- 10 -->
+          <!-- 11 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1000">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Integración sencilla"
+                 data-feature-icon="bi bi-gear-wide-connected"
+                 data-feature-color="#b20969"
+                 data-feature-badge="Modular"
+                 data-feature-desc="Implementación adaptable a la infraestructura existente y al alcance definido con el cliente."
+                 data-feature-bullets="Integración por protocolos estándar como SNMP, Syslog, LLDP, SSH y Telnet.||Adaptable por marca, modelo, firmware y permisos disponibles.||Puede crecer por módulos de acuerdo con la viabilidad técnica.">
               <i class="bi bi-gear-wide-connected" style="color: #b20969;"></i>
               <h3><a href="#" class="stretched-link">Integración sencilla</a></h3>
             </div>
           </div>
 
-          <!-- 11 -->
-          <!-- 19  · Syslog con explicación IA -->
-          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1900">
-            <div class="features-item">
+          <!-- 12 -->
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1100">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Syslog con IA"
+                 data-feature-icon="bi bi-robot"
+                 data-feature-color="#ff7f50"
+                 data-feature-badge="Eventos inteligentes"
+                 data-feature-desc="Recepción y análisis de eventos Syslog con apoyo de explicación automatizada para acelerar el diagnóstico."
+                 data-feature-bullets="Centralización de logs desde equipos compatibles.||Clasificación y consulta de eventos relevantes por origen y severidad.||Apoyo con explicación de logs para facilitar la interpretación técnica.">
               <i class="bi bi-robot" style="color: #ff7f50;"></i>
               <h3><a href="#" class="stretched-link">Syslog con IA</a></h3>
             </div>
           </div>
 
-          <!-- 12 -->
+          <!-- 13 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1200">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Reportes mensuales"
+                 data-feature-icon="bi bi-bar-chart"
+                 data-feature-color="#29cc61"
+                 data-feature-badge="Documentación"
+                 data-feature-desc="Generación de reportes para documentar disponibilidad, eventos y estado de infraestructura."
+                 data-feature-bullets="Reportes ejecutivos y técnicos según información disponible.||Apoyo para revisiones mensuales, evidencias y seguimiento de SLA internos.||Exportación y presentación de métricas clave para toma de decisiones.">
               <i class="bi bi-bar-chart" style="color: #29cc61;"></i>
               <h3><a href="#" class="stretched-link">Reportes mensuales</a></h3>
             </div>
           </div>
 
-          <!-- ============  NUEVAS FUNCIONALIDADES  ============ -->
-
-          <!-- 13  · SSH centralizado -->
+          <!-- 14 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1300">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Acceso SSH centralizado"
+                 data-feature-icon="bi bi-terminal-dash"
+                 data-feature-color="#00b894"
+                 data-feature-badge="Terminal web"
+                 data-feature-desc="Acceso operativo controlado para administrar equipos desde una consola web centralizada."
+                 data-feature-bullets="Terminal web para equipos compatibles por SSH o Telnet.||Facilita la operación sin depender de herramientas externas en cada estación.||Puede registrar actividad para auditoría operativa según configuración.">
               <i class="bi bi-terminal-dash" style="color: #00b894;"></i>
-              <h3><a href="#" class="stretched-link">Acceso&nbsp;SSH centralizado</a></h3>
+              <h3><a href="#" class="stretched-link">Acceso SSH centralizado</a></h3>
             </div>
           </div>
 
-          <!-- 14  · Respaldos automatizados -->
+          <!-- 15 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1400">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Respaldos automatizados"
+                 data-feature-icon="bi bi-arrow-repeat"
+                 data-feature-color="#fdcb6e"
+                 data-feature-badge="Backups"
+                 data-feature-desc="Automatización de respaldos de configuración para equipos de red compatibles."
+                 data-feature-bullets="Respaldos manuales o programados según marca y alcance.||Soporte por SSH/Telnet cuando el equipo lo permite.||Ayuda a reducir riesgo ante cambios, fallas o reemplazos de equipos.">
               <i class="bi bi-arrow-repeat" style="color: #fdcb6e;"></i>
               <h3><a href="#" class="stretched-link">Respaldos automatizados</a></h3>
             </div>
           </div>
 
-          <!-- 15  · Alertas por WhatsApp -->
+          <!-- 16 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1500">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Alertas por WhatsApp"
+                 data-feature-icon="bi bi-whatsapp"
+                 data-feature-color="#25d366"
+                 data-feature-badge="Notificación rápida"
+                 data-feature-desc="Envío de notificaciones a canales operativos para reaccionar rápidamente ante incidencias."
+                 data-feature-bullets="Alertas por eventos relevantes y cambios de estado.||Apoyo para equipos de soporte, operación o administración.||Complemento a notificaciones por correo o dashboard.">
               <i class="bi bi-whatsapp" style="color: #25d366;"></i>
               <h3><a href="#" class="stretched-link">Alertas por WhatsApp</a></h3>
             </div>
           </div>
 
-          <!-- 16  · Visualizador de VLANs -->
+          <!-- 17 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1600">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Visualizador de VLANs"
+                 data-feature-icon="bi bi-option"
+                 data-feature-color="#6c5ce7"
+                 data-feature-badge="Segmentación"
+                 data-feature-desc="Consulta y visualización de información VLAN para entender configuración y segmentación."
+                 data-feature-bullets="Muestra datos de VLANs e interfaces cuando el equipo expone la información.||Apoya en diagnósticos de segmentación y operación de switching.||Útil para documentación y revisión de cambios.">
               <i class="bi bi-option" style="color: #6c5ce7;"></i>
               <h3><a href="#" class="stretched-link">Visualizador de VLANs</a></h3>
             </div>
           </div>
 
-          <!-- 17  · Geolocalización de dispositivos -->
+          <!-- 18 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1700">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Geolocalización de dispositivos"
+                 data-feature-icon="bi bi-geo-alt"
+                 data-feature-color="#e17055"
+                 data-feature-badge="Ubicación"
+                 data-feature-desc="Ubicación visual de equipos o sitios para operación multisede y seguimiento de infraestructura."
+                 data-feature-bullets="Vista de dispositivos por ubicación o sitio.||Apoyo para identificar rápidamente dónde ocurre una incidencia.||Útil para clientes con campus, hoteles, sucursales o múltiples ubicaciones.">
               <i class="bi bi-geo-alt" style="color: #e17055;"></i>
               <h3><a href="#" class="stretched-link">Geolocalización de dispositivos</a></h3>
             </div>
           </div>
 
-          <!-- 18  · Auto-descubrimiento de topología -->
+          <!-- 19 -->
           <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1800">
-            <div class="features-item">
+            <div class="features-item lw-feature-open" role="button" tabindex="0"
+                 data-bs-toggle="modal" data-bs-target="#lwFeatureModal"
+                 data-feature-title="Auto-descubrimiento de topología"
+                 data-feature-icon="bi bi-diagram-2-fill"
+                 data-feature-color="#0984e3"
+                 data-feature-badge="Automatización"
+                 data-feature-desc="Construcción automática de relaciones entre equipos a partir de información disponible."
+                 data-feature-bullets="Identificación de vecinos mediante LLDP cuando está habilitado.||Generación de mapas para documentar la red.||Ayuda a detectar conexiones, dependencias y cambios de topología.">
               <i class="bi bi-diagram-2-fill" style="color: #0984e3;"></i>
               <h3><a href="#" class="stretched-link">Auto-descubrimiento de topología</a></h3>
-            </div>
-          </div>
-
-          <!-- 19 · Sniffer / Analizador de paquetes -->
-          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="1900">
-            <div class="features-item lw-feature-click" data-bs-toggle="modal" data-bs-target="#snifferModal" role="button" tabindex="0" aria-label="Ver detalle del sniffer de red">
-              <i class="bi bi-broadcast-pin" style="color: #1acc8d;"></i>
-              <h3><a href="#" class="stretched-link">Sniffer de red</a></h3>
-              <span class="lw-feature-hint">Analizador de paquetes y anomalías</span>
             </div>
           </div>
 
@@ -1799,6 +1853,39 @@
       </div>
     </section>
     <!-- ============================  /Features Section  ============================ -->
+
+
+    <!-- Modal general: detalle de funciones -->
+    <div class="modal fade lw-feature-modal" id="lwFeatureModal" tabindex="-1" aria-labelledby="lwFeatureModalTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="modal-title-wrap">
+              <div class="lw-feature-modal-icon" id="lwFeatureModalIconBox">
+                <i id="lwFeatureModalIcon" class="bi bi-info-circle"></i>
+              </div>
+              <div>
+                <h5 class="modal-title" id="lwFeatureModalTitle">Detalle de función</h5>
+                <span class="lw-feature-modal-badge" id="lwFeatureModalBadge">LinkWich-Monitor</span>
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <p class="lw-feature-desc" id="lwFeatureModalDesc"></p>
+            <ul class="lw-feature-list" id="lwFeatureModalList"></ul>
+          </div>
+          <div class="modal-footer justify-content-between flex-wrap gap-2">
+            <small class="text-muted">El alcance puede variar según marca, modelo, firmware, permisos y viabilidad técnica.</small>
+            <a href="#contact-cta" class="btn btn-primary" data-bs-dismiss="modal">
+              <i class="bi bi-send-check me-1"></i> Solicitar información
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Modal general: detalle de funciones -->
+
     <!-- Brand Ecosystem Section -->
     <section id="brand-ecosystem" class="section light-background">
       <div class="container section-title text-center" data-aos="fade-up">
@@ -3292,99 +3379,6 @@
       </div>
     </section>
     <!-- /Contact CTA Section -->
-
-
-    <!-- Modal: Sniffer de red -->
-    <div class="modal fade" id="snifferModal" tabindex="-1" aria-labelledby="snifferModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content lw-sniffer-modal">
-          <div class="modal-header">
-            <h5 class="modal-title" id="snifferModalLabel">
-              <i class="bi bi-broadcast-pin"></i>
-              Sniffer de red / Analizador de paquetes
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-          </div>
-
-          <div class="modal-body p-3 p-md-4">
-            <div class="lw-sniffer-hero mb-4">
-              <span class="lw-sniffer-badge"><i class="bi bi-shield-check"></i> Detección proactiva de anomalías</span>
-              <p>
-                El sniffer de red de <strong>LinkWich-Monitor</strong> analiza paquetes y comportamiento de tráfico
-                para ayudar a detectar condiciones que pueden afectar la estabilidad de la red, como IP duplicada,
-                broadcast elevado, posibles loops, tráfico DHCP no esperado y otros eventos que requieren atención operativa.
-              </p>
-            </div>
-
-            <div class="lw-sniffer-grid mb-4">
-              <div class="lw-sniffer-card">
-                <i class="bi bi-files"></i>
-                <h6>Detección de IP duplicada</h6>
-                <p>Identifica posibles conflictos de direccionamiento que pueden provocar intermitencias, pérdida de conectividad o comportamiento inestable en usuarios y equipos críticos.</p>
-              </div>
-
-              <div class="lw-sniffer-card">
-                <i class="bi bi-soundwave"></i>
-                <h6>Broadcast alto</h6>
-                <p>Monitorea patrones de tráfico excesivo para anticipar saturación, tormentas de broadcast o segmentos con comportamiento anormal.</p>
-              </div>
-
-              <div class="lw-sniffer-card">
-                <i class="bi bi-arrow-repeat"></i>
-                <h6>Posibles loops en la red</h6>
-                <p>Ayuda a identificar señales asociadas a loops físicos o lógicos que pueden degradar la red y causar caídas masivas de servicio.</p>
-              </div>
-
-              <div class="lw-sniffer-card">
-                <i class="bi bi-hdd-network"></i>
-                <h6>DHCP filtrada o no autorizada</h6>
-                <p>Permite detectar respuestas DHCP inesperadas o servidores no autorizados dentro del segmento para reducir riesgos de asignaciones incorrectas.</p>
-              </div>
-            </div>
-
-            <div class="row g-4 align-items-stretch">
-              <div class="col-lg-6">
-                <div class="lw-sniffer-card h-100">
-                  <h6 class="mb-3"><i class="bi bi-bell-fill me-2" style="width:auto;height:auto;background:none;color:#1acc8d;margin:0;"></i>¿Qué puede alertar?</h6>
-                  <ul class="lw-sniffer-list">
-                    <li><i class="bi bi-check-circle-fill"></i><span>Conflictos de IP o MAC sospechosas en el mismo segmento.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span>Aumento anormal de broadcast o tráfico repetitivo.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span>Eventos que puedan indicar loop o mala conexión entre switches.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span>DHCP no esperado, filtrado o respuesta desde origen no autorizado.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span>Patrones de tráfico que requieren revisión por parte del área de TI.</span></li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="lw-sniffer-card h-100">
-                  <h6 class="mb-3"><i class="bi bi-gear-fill me-2" style="width:auto;height:auto;background:none;color:#0d6efd;margin:0;"></i>Beneficio operativo</h6>
-                  <ul class="lw-sniffer-list">
-                    <li><i class="bi bi-check-circle-fill"></i><span>Reduce tiempos de diagnóstico ante fallas intermitentes.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span>Mejora la visibilidad de eventos difíciles de detectar solo con ping o SNMP.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span>Complementa alertas, syslog y monitoreo de disponibilidad.</span></li>
-                    <li><i class="bi bi-check-circle-fill"></i><span>Ayuda a documentar eventos para análisis posterior y soporte técnico.</span></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div class="lw-sniffer-note mt-4">
-              <strong>Nota técnica:</strong> el alcance depende de la ubicación del sensor, permisos del sistema operativo,
-              segmento donde se capture el tráfico, configuración de SPAN/mirror port y políticas de seguridad del cliente.
-              La funcionalidad se puede ajustar de forma modular según viabilidad técnica.
-            </div>
-          </div>
-
-          <div class="modal-footer flex-column flex-sm-row gap-2">
-            <a href="#contact-cta" class="btn btn-primary" data-bs-dismiss="modal"><i class="bi bi-send-check me-2"></i>Solicitar validación técnica</a>
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /Modal: Sniffer de red -->
-
   </main>
 
   <!-- Footer -->
@@ -4034,15 +4028,63 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
 </script>
 
 
-<script id="lw-sniffer-feature-js">
-  document.querySelectorAll('.lw-feature-click[tabindex="0"]').forEach(function(card){
+
+<script id="lw-feature-modal-js-v11">
+(function(){
+  const modal = document.getElementById('lwFeatureModal');
+  if(!modal) return;
+
+  modal.addEventListener('show.bs.modal', function(event){
+    const trigger = event.relatedTarget;
+    if(!trigger) return;
+
+    const title = trigger.getAttribute('data-feature-title') || 'Función de LinkWich-Monitor';
+    const icon = trigger.getAttribute('data-feature-icon') || 'bi bi-info-circle';
+    const color = trigger.getAttribute('data-feature-color') || '#1acc8d';
+    const badge = trigger.getAttribute('data-feature-badge') || 'LinkWich-Monitor';
+    const desc = trigger.getAttribute('data-feature-desc') || '';
+    const bullets = (trigger.getAttribute('data-feature-bullets') || '').split('||').filter(Boolean);
+
+    const titleEl = modal.querySelector('#lwFeatureModalTitle');
+    const iconEl = modal.querySelector('#lwFeatureModalIcon');
+    const iconBox = modal.querySelector('#lwFeatureModalIconBox');
+    const badgeEl = modal.querySelector('#lwFeatureModalBadge');
+    const descEl = modal.querySelector('#lwFeatureModalDesc');
+    const listEl = modal.querySelector('#lwFeatureModalList');
+
+    titleEl.textContent = title;
+    iconEl.className = icon;
+    iconEl.style.color = color;
+    iconBox.style.background = color + '14';
+    iconBox.style.borderColor = color + '33';
+    badgeEl.textContent = badge;
+    descEl.textContent = desc;
+
+    listEl.innerHTML = bullets.map(function(item){
+      return '<li><i class="bi bi-check-circle-fill"></i><span>' + escapeHtml(item) + '</span></li>';
+    }).join('');
+  });
+
+  document.querySelectorAll('#features .lw-feature-open .stretched-link').forEach(function(link){
+    link.addEventListener('click', function(e){ e.preventDefault(); });
+  });
+
+  document.querySelectorAll('#features .lw-feature-open').forEach(function(card){
     card.addEventListener('keydown', function(e){
       if(e.key === 'Enter' || e.key === ' '){
         e.preventDefault();
-        card.click();
+        const modalInstance = bootstrap.Modal.getOrCreateInstance(modal);
+        modalInstance.show(card);
       }
     });
   });
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, function(m){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[m];
+    });
+  }
+})();
 </script>
 
 </body>
