@@ -974,110 +974,135 @@
 
 
   <style id="lw-partner-pricing-styles">
-    /* ===== Partner / precios protegidos ===== */
+    /* ===== Partner / precios protegidos - estilo sobrio integrado al template ===== */
     #pricing .lw-partner-gate,
     #pricing .lw-partner-private{
-      border-radius: 26px;
-      padding: clamp(1.25rem, 3vw, 2.2rem);
-      border: 1px solid rgba(13, 110, 253, .10);
-      background: linear-gradient(135deg, #ffffff 0%, #f7faff 100%);
-      box-shadow: 0 18px 50px rgba(17, 24, 39, .08);
+      border-radius: 18px;
+      padding: clamp(1.25rem, 2.6vw, 2rem);
+      border: 1px solid rgba(4, 6, 119, .10);
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(4, 6, 119, .06);
       overflow: hidden;
       position: relative;
     }
-    #pricing .lw-partner-gate::before{
-      content:"";
-      position:absolute;
-      width:280px;
-      height:280px;
-      right:-110px;
-      top:-130px;
-      border-radius:999px;
-      background: radial-gradient(circle, rgba(13,110,253,.15), transparent 68%);
-      pointer-events:none;
-    }
+    #pricing .lw-partner-gate::before{ display:none; }
     #pricing .lw-partner-eyebrow{
       display:inline-flex;
       align-items:center;
-      gap:.35rem;
-      padding:.45rem .8rem;
+      gap:.45rem;
+      padding:.42rem .75rem;
       border-radius:999px;
-      font-size:.82rem;
-      font-weight:800;
-      letter-spacing:.04em;
+      font-size:.78rem;
+      font-weight:700;
+      letter-spacing:.02em;
       text-transform:uppercase;
-      color:#0d6efd;
-      background:rgba(13,110,253,.08);
-      border:1px solid rgba(13,110,253,.14);
-      margin-bottom:.9rem;
+      color:#040677;
+      background:rgba(26,204,141,.10);
+      border:1px solid rgba(26,204,141,.28);
+      margin-bottom:.85rem;
     }
+    #pricing .lw-partner-eyebrow i{ color:#1acc8d; }
     #pricing .lw-partner-gate h3,
     #pricing .lw-partner-private h3,
     #pricing .lw-partner-quote-card h3{
-      color:#071739;
-      font-weight:900;
-      line-height:1.15;
+      color:#040677;
+      font-family: inherit;
+      font-weight:700;
+      line-height:1.22;
+      letter-spacing:0;
     }
-    #pricing .lw-partner-gate h3{ font-size:clamp(1.65rem, 3vw, 2.35rem); max-width:760px; }
+    #pricing .lw-partner-gate h3{
+      font-size:clamp(1.55rem, 2.2vw, 2.05rem);
+      max-width:720px;
+      margin-bottom:1rem;
+    }
     #pricing .lw-partner-gate p{
-      color:#526581;
-      font-size:1.05rem;
+      color:#465a7a;
+      font-size:1rem;
       line-height:1.65;
-      max-width:780px;
+      max-width:760px;
     }
     #pricing .lw-partner-actions{
       display:flex;
-      gap:.85rem;
+      gap:.75rem;
       flex-wrap:wrap;
-      margin-top:1.25rem;
+      margin-top:1.2rem;
     }
     #pricing .lw-partner-actions .btn,
     #pricing .lw-partner-quote-card .btn{
       border-radius:999px;
-      padding:.85rem 1.25rem;
-      font-weight:800;
+      padding:.78rem 1.15rem;
+      font-weight:700;
+      box-shadow:none !important;
+    }
+    #pricing .lw-partner-actions .btn-primary{
+      background:#1acc8d;
+      border-color:#1acc8d;
+      color:#fff;
+    }
+    #pricing .lw-partner-actions .btn-primary:hover{
+      background:#17b980;
+      border-color:#17b980;
+    }
+    #pricing .lw-partner-actions .btn-outline-primary{
+      color:#040677;
+      border-color:rgba(4,6,119,.28);
+      background:#fff;
+    }
+    #pricing .lw-partner-actions .btn-outline-primary:hover{
+      color:#fff;
+      background:#040677;
+      border-color:#040677;
     }
     #pricing .lw-partner-note{
-      margin-top:1rem;
-      color:#5b6f8f;
-      font-size:.95rem;
+      margin-top:.95rem;
+      color:#5f6f89;
+      font-size:.94rem;
+      line-height:1.5;
     }
     #pricing .lw-partner-panel,
     #pricing .lw-partner-quote-card{
       height:100%;
-      padding:1.35rem;
-      border-radius:22px;
+      padding:1.25rem;
+      border-radius:16px;
       background:#fff;
-      border:1px solid rgba(17,24,39,.08);
-      box-shadow:0 12px 30px rgba(17,24,39,.07);
+      border:1px solid rgba(4,6,119,.10);
+      box-shadow:0 10px 24px rgba(4,6,119,.05);
+    }
+    #pricing .lw-partner-panel{
+      background:#fbfcff;
     }
     #pricing .lw-partner-panel-icon{
-      width:56px;
-      height:56px;
+      width:48px;
+      height:48px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      border-radius:18px;
-      margin-bottom:1rem;
-      color:#fff;
-      background:linear-gradient(135deg,#0d6efd,#14b8a6);
-      box-shadow:0 12px 24px rgba(13,110,253,.20);
-      font-size:1.45rem;
+      border-radius:14px;
+      margin-bottom:.9rem;
+      color:#040677;
+      background:rgba(26,204,141,.13);
+      border:1px solid rgba(26,204,141,.24);
+      box-shadow:none;
+      font-size:1.2rem;
     }
     #pricing .lw-partner-panel h4{
-      font-weight:900;
-      margin-bottom:1rem;
-      color:#071739;
+      font-weight:700;
+      margin-bottom:.85rem;
+      color:#040677;
+      font-size:1.35rem;
+      line-height:1.25;
     }
     #pricing .lw-partner-feature{
       display:flex;
-      gap:.65rem;
+      gap:.6rem;
       align-items:flex-start;
-      padding:.58rem 0;
-      color:#526581;
-      font-weight:650;
+      padding:.48rem 0;
+      color:#465a7a;
+      font-weight:500;
+      line-height:1.45;
     }
-    #pricing .lw-partner-feature i{ color:#198754; margin-top:.15rem; }
+    #pricing .lw-partner-feature i{ color:#1acc8d; margin-top:.15rem; }
     #pricing .lw-partner-unlocked{
       display:flex;
       align-items:center;
@@ -1085,44 +1110,47 @@
       gap:1rem;
       flex-wrap:wrap;
       padding:1rem 1.1rem;
-      border-radius:20px;
-      background:#fff;
-      border:1px solid rgba(17,24,39,.08);
+      border-radius:16px;
+      background:#fbfcff;
+      border:1px solid rgba(4,6,119,.10);
     }
     #pricing .lw-partner-quote-card p{
-      color:#526581;
+      color:#465a7a;
       line-height:1.65;
     }
     .lw-partner-login-modal{
       border:0;
-      border-radius:22px;
+      border-radius:18px;
       overflow:hidden;
-      box-shadow:0 26px 80px rgba(0,0,0,.24);
+      box-shadow:0 24px 70px rgba(0,0,0,.20);
     }
     .lw-partner-login-modal .modal-header{
-      background:linear-gradient(135deg, rgba(13,110,253,.12), rgba(20,184,166,.08));
-      border-bottom:1px solid rgba(17,24,39,.08);
+      background:#fff;
+      border-bottom:1px solid rgba(4,6,119,.10);
     }
+    .lw-partner-login-modal .modal-title{ color:#040677; font-weight:700; }
     .lw-partner-login-modal .input-group-text,
     .lw-partner-login-modal .form-control,
     .lw-partner-login-modal .btn{
-      min-height:46px;
+      min-height:44px;
+      border-radius:10px;
     }
+    .lw-partner-login-modal .input-group .input-group-text:first-child{ border-top-right-radius:0; border-bottom-right-radius:0; }
+    .lw-partner-login-modal .input-group .form-control{ border-radius:0 10px 10px 0; }
+    .lw-partner-login-modal .input-group .form-control:not(:last-child){ border-radius:0; }
+    .lw-partner-login-modal .input-group .btn{ border-top-left-radius:0; border-bottom-left-radius:0; }
     .lw-partner-login-modal .form-control:focus{
-      box-shadow:0 0 0 .22rem rgba(13,110,253,.16);
-      border-color:rgba(13,110,253,.45);
+      box-shadow:0 0 0 .18rem rgba(26,204,141,.16);
+      border-color:rgba(26,204,141,.65);
     }
     [data-bs-theme="dark"] #pricing .lw-partner-gate,
-    [data-bs-theme="dark"] #pricing .lw-partner-private{
-      background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
-      border-color:rgba(255,255,255,.10);
-      box-shadow:0 18px 50px rgba(0,0,0,.22);
-    }
+    [data-bs-theme="dark"] #pricing .lw-partner-private,
     [data-bs-theme="dark"] #pricing .lw-partner-panel,
     [data-bs-theme="dark"] #pricing .lw-partner-quote-card,
     [data-bs-theme="dark"] #pricing .lw-partner-unlocked{
-      background:rgba(255,255,255,.045);
+      background:rgba(255,255,255,.04);
       border-color:rgba(255,255,255,.10);
+      box-shadow:0 14px 32px rgba(0,0,0,.18);
     }
     [data-bs-theme="dark"] #pricing .lw-partner-gate h3,
     [data-bs-theme="dark"] #pricing .lw-partner-private h3,
@@ -1132,12 +1160,15 @@
     [data-bs-theme="dark"] #pricing .lw-partner-quote-card p,
     [data-bs-theme="dark"] #pricing .lw-partner-note,
     [data-bs-theme="dark"] #pricing .lw-partner-feature{ color:rgba(255,255,255,.78); }
+    [data-bs-theme="dark"] #pricing .lw-partner-eyebrow{ color:#fff; background:rgba(26,204,141,.16); border-color:rgba(26,204,141,.28); }
     [data-bs-theme="dark"] .lw-partner-login-modal{ background:#0b1220; color:#fff; }
-    [data-bs-theme="dark"] .lw-partner-login-modal .modal-header{ border-bottom-color:rgba(255,255,255,.10); }
+    [data-bs-theme="dark"] .lw-partner-login-modal .modal-header{ background:#0b1220; border-bottom-color:rgba(255,255,255,.10); }
+    [data-bs-theme="dark"] .lw-partner-login-modal .modal-title{ color:#fff; }
     [data-bs-theme="dark"] .lw-partner-login-modal .btn-close{ filter:invert(1) grayscale(1); }
     @media (max-width: 575.98px){
       #pricing .lw-partner-gate,
-      #pricing .lw-partner-private{ border-radius:20px; }
+      #pricing .lw-partner-private{ border-radius:16px; padding:1.05rem; }
+      #pricing .lw-partner-gate h3{ font-size:1.45rem; }
       #pricing .lw-partner-actions{ flex-direction:column; }
       #pricing .lw-partner-actions .btn,
       #pricing .lw-partner-quote-card .btn{ width:100%; }
@@ -1169,7 +1200,6 @@
           <li><a href="#pricing"><i class="bi bi-tag-fill me-1"></i>Precios</a></li>
           <li><a href="#requirements"><i class="bi bi-pc-display-horizontal me-1"></i>Requisitos</a></li>
           <li><a href="#contact-cta"><i class="bi bi-telephone-fill me-1"></i>Contacto</a></li>
-          <li><a href="#demo-request"><i class="bi bi-play-circle-fill me-1"></i>Demo</a></li>
         </ul>
 
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -1641,7 +1671,7 @@
               </p>
             </div>
             <div class="col-lg-4 text-lg-end">
-              <a href="#demo-request" class="btn btn-primary"><i class="bi bi-send-check me-2"></i>Solicitar validación de marca</a>
+              <a href="#contact-cta" class="btn btn-primary"><i class="bi bi-send-check me-2"></i>Solicitar validación de marca</a>
             </div>
           </div>
         </div>
@@ -2427,12 +2457,11 @@
       <div class="container section-title" data-aos="fade-up">
         <h2>Partners</h2>
         <div>
-          <span>Programa para</span>
+          <span>Acceso comercial para</span>
           <span class="description-title">distribuidores</span>
         </div>
         <p class="text-center mt-3 small text-muted mx-auto" style="max-width:850px;">
-          ¿Eres integrador, consultor TI o proveedor de servicios administrados? Solicita acceso partner
-          para consultar precios, crear cotizaciones y distribuir LinkWich-Monitor con un modelo claro por nodo.
+          Los precios y el cotizador se muestran únicamente a integradores, canales y aliados autorizados.
         </p>
       </div>
 
@@ -2443,18 +2472,18 @@
           <div class="row align-items-center g-4">
             <div class="col-lg-7">
               <span class="lw-partner-eyebrow"><i class="bi bi-shield-lock-fill me-2"></i>Acceso privado para partners</span>
-              <h3>Distribuye LinkWich-Monitor sin mostrar precios públicos al usuario final.</h3>
+              <h3>Portal privado para partners e integradores.</h3>
               <p>
-                Protege tu estrategia comercial: los precios, paquetes y cotizador interno solo se muestran
-                a partners autorizados. Desde este acceso podrás revisar esquemas por nodo y preparar propuestas.
+                Consulta paquetes, precios por nodo y cotizador interno desde un acceso reservado para canales comerciales.
+                Así puedes preparar propuestas sin publicar precios al usuario final.
               </p>
 
               <div class="lw-partner-actions">
                 <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#lwPartnerLoginModal">
-                  <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar para ver precios
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar al portal comercial
                 </button>
-                <a href="#demo-request" class="btn btn-outline-primary btn-lg">
-                  <i class="bi bi-person-plus me-2"></i>Solicitar ser partner
+                <a href="#contact-cta" class="btn btn-outline-primary btn-lg">
+                  <i class="bi bi-person-plus me-2"></i>Solicitar acceso partner
                 </a>
               </div>
 
@@ -2467,11 +2496,11 @@
             <div class="col-lg-5">
               <div class="lw-partner-panel">
                 <div class="lw-partner-panel-icon"><i class="bi bi-building-check"></i></div>
-                <h4>Portal comercial protegido</h4>
+                <h4>Contenido privado</h4>
                 <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Lista de precios por nodo</span></div>
                 <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Cotizador interno para propuestas</span></div>
-                <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Modelos de licencia y demos comerciales</span></div>
-                <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Paquetes escalables para proyectos pequeños o corporativos</span></div>
+                <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Modelos de licencia comerciales</span></div>
+                <div class="lw-partner-feature"><i class="bi bi-check-circle-fill"></i><span>Paquetes escalables por proyecto</span></div>
               </div>
             </div>
           </div>
@@ -2941,8 +2970,8 @@
                   <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="btn btn-primary">
                     <i class="bi bi-send-fill me-2"></i>Solicitar dimensionamiento
                   </a>
-                  <a href="#demo-request" class="btn btn-outline-primary">
-                    <i class="bi bi-play-circle me-2"></i>Ver demo
+                  <a href="#contact-cta" class="btn btn-outline-primary">
+                    <i class="bi bi-send-fill me-2"></i>Contactar
                   </a>
                 </div>
 
@@ -2969,27 +2998,6 @@
       </div>
     </section>
     <!-- /Contact CTA Section -->
-
-    <!-- Demo Request Section -->
-    <section id="demo-request" class="demo-request section">
-      <div class="container" data-aos="fade-up">
-        <div class="section-title text-center">
-          <h2><i class="bi bi-display text-primary me-2"></i>Prueba una Demo Personalizada</h2>
-          <p><i class="bi bi-lightbulb text-warning me-2"></i>¿Quieres ver <strong>LinkWich-Monitor</strong> en acción sobre tu propia topología? Reserva una sesión guiada con uno de nuestros especialistas.</p>
-        </div>
-
-        <div class="row justify-content-center">
-          <div class="col-lg-6 text-center">
-            <p><i class="bi bi-clock-history text-info me-2"></i>Disponibilidad online. Para credenciales, contáctanos previamente al equipo de soporte de ventas.</p>
-            <a href="http://linkwich-monitor.ddns.net:5003" class="btn btn-outline-primary btn-lg mt-3">
-              <i class="bi bi-calendar-check me-2"></i>Ir a Demo
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- /Demo Request Section -->
-
   </main>
 
   <!-- Footer -->
@@ -3042,7 +3050,7 @@
 
         <div class="col-lg-4 col-md-12 footer-newsletter">
           <h4>Solicita información</h4>
-          <p>Déjanos tu correo para enviarte información comercial, demo o una validación rápida de compatibilidad por marca.</p>
+          <p>Déjanos tu correo para enviarte información comercial, acceso partner o una validación rápida de compatibilidad por marca.</p>
           <form action="forms/newsletter.php" method="post" class="php-email-form">
             <div class="newsletter-form d-flex">
               <input type="email" name="email" placeholder="Tu correo electrónico" required>
