@@ -928,6 +928,466 @@
 }
 </style>
 
+
+<style>
+/* ============================================================
+   SECCIÓN CATÁLOGO SYSCOM / COTIZACIÓN
+   LinkWich-IT | Bootstrap 5 + Swiper
+   Esta sección es frontend-ready. Para API real de Syscom,
+   sustituir el arreglo syscomProducts por un endpoint backend.
+   ============================================================ */
+.syscom-catalog{
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(13,110,253,.08), transparent 30%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-color,#fff) 98%, transparent), color-mix(in srgb, var(--surface-color,#fff) 93%, transparent));
+}
+
+.syscom-catalog .section-title p{
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.syscom-category-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:.6rem;
+  margin: 0 auto 1.8rem;
+}
+
+.syscom-category-filter{
+  border:1px solid color-mix(in srgb, var(--default-color,#1f2937) 12%, transparent);
+  background: color-mix(in srgb, var(--surface-color,#fff) 94%, transparent);
+  color: color-mix(in srgb, var(--default-color,#1f2937) 8%, #0b1730);
+  border-radius:999px;
+  padding:.62rem .95rem;
+  font-weight:700;
+  font-size:.92rem;
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  box-shadow:0 8px 18px rgba(15,23,42,.06);
+  transition:all .22s ease;
+}
+
+.syscom-category-filter:hover,
+.syscom-category-filter.active{
+  background: var(--accent-color,#0d6efd);
+  color:#fff;
+  border-color: var(--accent-color,#0d6efd);
+  transform:translateY(-2px);
+  box-shadow:0 14px 28px rgba(13,110,253,.22);
+}
+
+.syscom-catalog-panel{
+  position:relative;
+  border-radius:28px;
+  padding:1.25rem;
+  background:linear-gradient(135deg, rgba(11,23,48,.96), rgba(19,44,87,.94));
+  box-shadow:0 22px 58px rgba(2,6,23,.18);
+  overflow:hidden;
+}
+
+.syscom-catalog-panel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(124,192,255,.18), transparent 26%),
+    radial-gradient(circle at 90% 10%, rgba(13,110,253,.18), transparent 28%);
+  pointer-events:none;
+}
+
+.syscom-catalog-top{
+  position:relative;
+  z-index:1;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-bottom:1rem;
+}
+
+.syscom-catalog-top h3{
+  color:#fff;
+  margin:0;
+  font-size:1.3rem;
+  font-weight:800;
+}
+
+.syscom-catalog-top p{
+  color:rgba(255,255,255,.82);
+  margin:.25rem 0 0;
+}
+
+.syscom-live-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.55rem .8rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.12);
+  color:#fff;
+  font-size:.86rem;
+  font-weight:700;
+}
+
+.syscom-products-swiper{
+  position:relative;
+  z-index:1;
+  padding: .25rem .25rem 3rem;
+}
+
+.syscom-products-swiper .swiper-slide{
+  height:auto;
+}
+
+.syscom-product-card{
+  height:100%;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.96);
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 16px 38px rgba(2,6,23,.14);
+  transition: transform .22s ease, box-shadow .22s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+.syscom-product-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 24px 52px rgba(2,6,23,.22);
+}
+
+.syscom-product-media{
+  height:155px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at top right, rgba(13,110,253,.12), transparent 30%),
+    linear-gradient(135deg,#f8fbff,#eef5ff);
+  position:relative;
+  padding:1rem;
+}
+
+.syscom-product-image{
+  max-width:100%;
+  max-height:128px;
+  object-fit:contain;
+  display:block;
+  filter:none !important;
+  opacity:1 !important;
+}
+
+.syscom-product-image.is-remote{
+  mix-blend-mode: multiply;
+}
+
+.syscom-product-sku{
+  display:inline-flex;
+  width:max-content;
+  align-items:center;
+  gap:.35rem;
+  padding:.38rem .62rem;
+  border-radius:999px;
+  background:#eef4ff;
+  color:#163454;
+  border:1px solid rgba(13,110,253,.12);
+  font-size:.78rem;
+  font-weight:900;
+  margin-bottom:.65rem;
+}
+
+.syscom-product-source{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  color:var(--accent-color,#0d6efd);
+  text-decoration:none;
+  font-size:.82rem;
+  font-weight:800;
+  margin-bottom:.8rem;
+}
+
+.syscom-product-source:hover{
+  text-decoration:underline;
+}
+
+.syscom-product-footnote{
+  font-size:.76rem;
+  color:#7a879a;
+  margin:.25rem 0 .85rem;
+}
+
+.syscom-product-icon{
+  width:82px;
+  height:82px;
+  border-radius:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg, rgba(13,110,253,.14), rgba(11,23,48,.08));
+  color:var(--accent-color,#0d6efd);
+  font-size:2.25rem;
+}
+
+.syscom-product-brand{
+  position:absolute;
+  top:.85rem;
+  left:.85rem;
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  padding:.38rem .65rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(13,110,253,.12);
+  color:#163454;
+  font-size:.78rem;
+  font-weight:800;
+  box-shadow:0 8px 18px rgba(15,23,42,.08);
+}
+
+.syscom-product-body{
+  padding:1.05rem;
+  display:flex;
+  flex-direction:column;
+  flex:1;
+}
+
+.syscom-product-category{
+  display:inline-flex;
+  width:max-content;
+  align-items:center;
+  gap:.35rem;
+  padding:.35rem .58rem;
+  border-radius:999px;
+  background:rgba(13,110,253,.09);
+  color:var(--accent-color,#0d6efd);
+  font-size:.76rem;
+  font-weight:800;
+  margin-bottom:.65rem;
+}
+
+.syscom-product-body h4{
+  font-size:1.02rem;
+  line-height:1.35;
+  margin:0 0 .45rem;
+  color:#10213b;
+  font-weight:800;
+}
+
+.syscom-product-body p{
+  color:#61708a;
+  font-size:.9rem;
+  line-height:1.55;
+  margin:0 0 .8rem;
+}
+
+.syscom-product-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin-top:auto;
+  margin-bottom:.9rem;
+}
+
+.syscom-product-meta span{
+  display:inline-flex;
+  align-items:center;
+  gap:.3rem;
+  padding:.35rem .5rem;
+  border-radius:999px;
+  background:#f4f7fb;
+  color:#405371;
+  font-size:.76rem;
+  font-weight:700;
+}
+
+.syscom-quote-btn{
+  border-radius:14px;
+  padding:.75rem 1rem;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.45rem;
+}
+
+.syscom-products-pagination .swiper-pagination-bullet{
+  background:rgba(255,255,255,.75);
+  opacity:.55;
+}
+
+.syscom-products-pagination .swiper-pagination-bullet-active{
+  background:#fff;
+  opacity:1;
+}
+
+.syscom-swiper-actions{
+  position:relative;
+  z-index:2;
+  display:flex;
+  justify-content:center;
+  gap:.65rem;
+  margin-top:-1.85rem;
+}
+
+.syscom-swiper-btn{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .22s ease;
+}
+
+.syscom-swiper-btn:hover{
+  background:#fff;
+  color:#0b1730;
+}
+
+.syscom-empty{
+  position:relative;
+  z-index:1;
+  display:none;
+  text-align:center;
+  color:#fff;
+  padding:2rem;
+}
+
+.syscom-empty i{
+  font-size:2rem;
+  color:#7cc0ff;
+}
+
+.syscom-quote-modal .modal-content{
+  border:0;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 28px 70px rgba(2,6,23,.30);
+}
+
+.syscom-quote-modal .modal-header{
+  border:0;
+  color:#fff;
+  background:linear-gradient(135deg,#0b1730,#132c57);
+  padding:1.15rem 1.25rem;
+}
+
+.syscom-quote-modal .modal-title{
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+}
+
+.syscom-quote-modal .btn-close{
+  filter:invert(1);
+}
+
+.syscom-modal-product{
+  border-radius:18px;
+  padding:1rem;
+  background:#f8fbff;
+  border:1px solid #dfeaff;
+  margin-bottom:1rem;
+}
+
+.syscom-modal-product .badge{
+  border-radius:999px;
+}
+
+.syscom-modal-product h5{
+  margin:.55rem 0 .35rem;
+  font-weight:800;
+  color:#10213b;
+}
+
+.syscom-modal-product p{
+  margin:0;
+  color:#61708a;
+  line-height:1.55;
+}
+
+.syscom-quote-modal .form-label{
+  font-weight:700;
+  color:#263c5d;
+}
+
+.syscom-quote-modal .form-control,
+.syscom-quote-modal .form-select{
+  min-height:50px;
+  border-radius:14px;
+  border:1px solid #d7e3f3;
+  box-shadow:none;
+}
+
+.syscom-quote-modal textarea.form-control{
+  min-height:96px;
+}
+
+.syscom-quote-modal .form-control:focus,
+.syscom-quote-modal .form-select:focus{
+  border-color:#86b6fe;
+  box-shadow:0 0 0 .2rem rgba(13,110,253,.14);
+}
+
+.syscom-quote-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.75rem;
+  margin-top:1rem;
+}
+
+.syscom-quote-actions .btn{
+  border-radius:15px;
+  padding:.85rem 1rem;
+  font-weight:800;
+}
+
+.syscom-note{
+  font-size:.86rem;
+  color:#6b7a90;
+  margin-top:.75rem;
+}
+
+@media (max-width: 767px){
+  .syscom-catalog-panel{
+    padding:1rem;
+    border-radius:22px;
+  }
+
+  .syscom-catalog-top{
+    align-items:flex-start;
+  }
+
+  .syscom-live-badge{
+    width:100%;
+    justify-content:center;
+  }
+
+  .syscom-quote-actions{
+    grid-template-columns:1fr;
+  }
+
+  .syscom-product-media{
+    height:145px;
+  }
+}
+</style>
+
 </head>
 
 <body class="index-page">
@@ -945,6 +1405,7 @@
           <li><a href="#hero" class="active"><i class="bi bi-house-door-fill me-1"></i> Inicio</a></li>
           <li><a href="#about"><i class="bi bi-info-circle-fill me-1"></i> Acerca de</a></li>
           <li><a href="#services"><i class="bi bi-gear-fill me-1"></i> Servicios</a></li>
+          <li><a href="#syscom-catalog"><i class="bi bi-box-seam-fill me-1"></i> Catálogo</a></li>
           <li><a href="#portfolio"><i class="bi bi-images me-1"></i> Portafolio</a></li>
           <li><a href="#experiencia"><i class="bi bi-people-fill me-1"></i> Experiencia</a></li>
           <li><a href="#contact"><i class="bi bi-envelope-fill me-1"></i> Contacto</a></li>
@@ -1337,6 +1798,57 @@
                 <span class="stat-label">Años de experiencia</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="syscom-catalog" class="syscom-catalog section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Catálogo de Soluciones</h2>
+        <p>
+          Catálogo estático basado en productos disponibles en Syscom. Consulta por SKU/modelo y solicita suministro, instalación o integración personalizada con LinkWich-IT.
+        </p>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="syscom-category-toolbar" id="syscomCategoryToolbar" aria-label="Categorías del catálogo">
+          <button class="syscom-category-filter active" type="button" data-category="Todos"><i class="bi bi-grid-3x3-gap-fill"></i> Todos</button>
+          <button class="syscom-category-filter" type="button" data-category="Hikvision CCTV"><i class="bi bi-camera-video-fill"></i> Hikvision CCTV</button>
+          <button class="syscom-category-filter" type="button" data-category="Hikvision AX PRO / XPRO"><i class="bi bi-bell-fill"></i> Hikvision AX PRO</button>
+          <button class="syscom-category-filter" type="button" data-category="Ruijie / WiFi"><i class="bi bi-wifi"></i> Ruijie / WiFi</button>
+          <button class="syscom-category-filter" type="button" data-category="Panduit / Cableado"><i class="bi bi-ethernet"></i> Panduit / Cableado</button>
+          <button class="syscom-category-filter" type="button" data-category="Allied Telesis"><i class="bi bi-hdd-network-fill"></i> Allied Telesis</button>
+        </div>
+
+        <div class="syscom-catalog-panel">
+          <div class="syscom-catalog-top">
+            <div>
+              <h3>Productos para proyectos empresariales</h3>
+              <p>Catálogo sin API: imágenes remotas, SKU de búsqueda y cotización directa por WhatsApp o correo.</p>
+            </div>
+            <span class="syscom-live-badge"><i class="bi bi-box-seam-fill"></i> Estático con SKU Syscom</span>
+          </div>
+
+          <div class="swiper syscom-products-swiper">
+            <div class="swiper-wrapper" id="syscomProductsWrapper"></div>
+            <div class="swiper-pagination syscom-products-pagination"></div>
+          </div>
+
+          <div class="syscom-swiper-actions">
+            <button class="syscom-swiper-btn syscom-products-prev" type="button" aria-label="Producto anterior">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <button class="syscom-swiper-btn syscom-products-next" type="button" aria-label="Producto siguiente">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+
+          <div class="syscom-empty" id="syscomEmptyState">
+            <i class="bi bi-inboxes-fill d-block mb-2"></i>
+            <strong>No hay productos para esta categoría.</strong>
+            <div>Agrega productos al arreglo <code>syscomProducts</code> o cambia el filtro seleccionado.</div>
           </div>
         </div>
       </div>
@@ -2075,6 +2587,86 @@
   </div>
 </div>
 
+
+<div class="modal fade syscom-quote-modal" id="syscomQuoteModal" tabindex="-1" aria-labelledby="syscomQuoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="syscomQuoteModalLabel">
+          <i class="bi bi-send-check-fill"></i> Solicitar cotización
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="syscom-modal-product">
+          <span class="badge text-bg-primary" id="syscomModalCategory">Categoría</span>
+          <span class="badge text-bg-light text-dark ms-1" id="syscomModalSku">SKU / Modelo</span>
+          <h5 id="syscomModalTitle">Producto seleccionado</h5>
+          <p id="syscomModalDesc">Completa tus datos para solicitar una cotización.</p>
+        </div>
+
+        <form id="syscomQuoteForm" novalidate>
+          <input type="hidden" id="syscomQuoteProduct">
+          <input type="hidden" id="syscomQuoteSku">
+          <input type="hidden" id="syscomQuoteCategory">
+          <input type="hidden" id="syscomQuoteSourceUrl">
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="syscomClientName" class="form-label">Nombre</label>
+              <input type="text" class="form-control" id="syscomClientName" placeholder="Tu nombre">
+            </div>
+
+            <div class="col-md-6">
+              <label for="syscomClientCompany" class="form-label">Empresa / Proyecto</label>
+              <input type="text" class="form-control" id="syscomClientCompany" placeholder="Nombre de empresa o proyecto">
+            </div>
+
+            <div class="col-md-6">
+              <label for="syscomClientContact" class="form-label">Teléfono o correo</label>
+              <input type="text" class="form-control" id="syscomClientContact" placeholder="Ej. 624 000 0000 / correo@empresa.com">
+            </div>
+
+            <div class="col-md-6">
+              <label for="syscomProductQty" class="form-label">Cantidad estimada</label>
+              <input type="number" min="1" class="form-control" id="syscomProductQty" value="1">
+            </div>
+
+            <div class="col-md-6">
+              <label for="syscomQuoteScope" class="form-label">Tipo de cotización</label>
+              <select class="form-select" id="syscomQuoteScope">
+                <option value="Suministro únicamente">Deseo suministro únicamente</option>
+                <option value="Suministro e instalación">Deseo suministro e instalación</option>
+                <option value="Integración personalizada">Deseo integración personalizada</option>
+                <option value="Proyecto completo / visita técnica">Proyecto completo / visita técnica</option>
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label for="syscomQuoteComments" class="form-label">Comentarios</label>
+              <textarea class="form-control" id="syscomQuoteComments" placeholder="Ej. ubicación del proyecto, cantidad de cámaras, switches, cableado, póliza, configuración especial, visita técnica, etc."></textarea>
+            </div>
+          </div>
+
+          <div class="syscom-quote-actions">
+            <button type="button" class="btn btn-success" id="sendSyscomWhatsApp">
+              <i class="bi bi-whatsapp me-1"></i> Enviar por WhatsApp
+            </button>
+            <button type="button" class="btn btn-primary" id="sendSyscomEmail">
+              <i class="bi bi-envelope-fill me-1"></i> Enviar por correo
+            </button>
+          </div>
+
+          <div class="syscom-note">
+            Nota: el correo abre el cliente de correo del visitante. Para envío automático desde la web se requiere un endpoint backend o servicio SMTP.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
   <div id="preloader"></div>
 
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -2190,6 +2782,513 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+});
+</script>
+
+
+<script>
+/* ============================================================
+   CATÁLOGO SYSCOM FRONTEND
+   - Actualmente usa productos de ejemplo/listado local.
+   - Para conexión real: reemplazar syscomProducts por fetch('/api/syscom/productos')
+     desde tu backend Flask/PHP/Node, nunca directo al navegador.
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", function () {
+  const LINKWICH_WHATSAPP = "526241586134";
+  const LINKWICH_EMAIL = "ventas@linkwich-it.com";
+
+  const syscomProducts = [
+      {
+          "id": "hik-cctv-2mp-wifi-bullet",
+          "category": "Hikvision CCTV",
+          "brand": "Hikvision",
+          "title": "Cámara WiFi Bullet 2 MP Dual Light",
+          "sku": "DS-2CV1023G2-LIDWF(B)",
+          "desc": "Cámara IP WiFi para exterior con 2 MP, iluminación Dual Light y enfoque para proyectos residenciales o comerciales.",
+          "tags": [
+              "2 MP",
+              "WiFi",
+              "Exterior"
+          ],
+          "icon": "bi-camera-video-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS2CV1023G2LIDWF%28B%29/DS2CV1023G2LIDWF%28B%29-l.PNG",
+          "url": "https://www.syscom.mx/products/230184"
+      },
+      {
+          "id": "hik-cctv-4mp-poe-bullet",
+          "category": "Hikvision CCTV",
+          "brand": "Hikvision",
+          "title": "Cámara Bullet IP 4 MP PoE Dual Light",
+          "sku": "DS-2CD1043G2-LIU(F)",
+          "desc": "Cámara IP 4 MP con PoE, lente 2.8 mm, Dual Light y micrófono integrado para videovigilancia profesional.",
+          "tags": [
+              "4 MP",
+              "PoE",
+              "Micrófono"
+          ],
+          "icon": "bi-camera-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS2CD1043G2LIU%28F%29/DS2CD1043G2LIU%28F%29-l.PNG",
+          "url": "https://www.syscom.mx/products/221903"
+      },
+      {
+          "id": "hik-cctv-kit-nks424w0h",
+          "category": "Hikvision CCTV",
+          "brand": "Hikvision",
+          "title": "Kit IP inalámbrico 4 MP con NVS y 2 cámaras",
+          "sku": "NKS424W0H",
+          "desc": "Kit de videovigilancia inalámbrico de 4 MP con grabador de 4 canales y 2 cámaras para instalación rápida.",
+          "tags": [
+              "Kit",
+              "4 MP",
+              "2 cámaras"
+          ],
+          "icon": "bi-camera-reels-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/NKS424W0H/NKS424W0H-l.PNG",
+          "url": "https://www.syscom.mx/products/233659"
+      },
+      {
+          "id": "hik-axpro-kit-48",
+          "category": "Hikvision AX PRO / XPRO",
+          "brand": "Hikvision AX PRO",
+          "title": "Kit de alarma AX PRO 48 zonas",
+          "sku": "DS-PWA48-K",
+          "desc": "Kit inalámbrico AX PRO para intrusión, pensado para casas, oficinas y pequeños negocios con crecimiento modular.",
+          "tags": [
+              "AX PRO",
+              "48 zonas",
+              "Kit"
+          ],
+          "icon": "bi-bell-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSPWA48K/DSPWA48K-l.PNG",
+          "url": "https://www.syscom.mx/products/195227"
+      },
+      {
+          "id": "hik-axpro-panel-96",
+          "category": "Hikvision AX PRO / XPRO",
+          "brand": "Hikvision AX PRO",
+          "title": "Panel AX PRO 96 zonas WiFi/Ethernet/4G",
+          "sku": "DS-PWA96-M-WB",
+          "desc": "Panel AX PRO para proyectos de intrusión con hasta 96 zonas, comunicación WiFi/Ethernet y respaldo celular.",
+          "tags": [
+              "96 zonas",
+              "4G",
+              "Ethernet"
+          ],
+          "icon": "bi-shield-lock-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSPWA96MWB/DSPWA96MWB-l.PNG",
+          "url": "https://www.syscom.mx/products/208472"
+      },
+      {
+          "id": "hik-axpro-procam",
+          "category": "Hikvision AX PRO / XPRO",
+          "brand": "Hikvision AX PRO",
+          "title": "Kit AX PRO con cámara IP incluida",
+          "sku": "DS-PWA48-PROCAM",
+          "desc": "Kit de alarma AX PRO con hub, sensores y cámara IP para una solución de intrusión con verificación visual.",
+          "tags": [
+              "Kit",
+              "Cámara IP",
+              "Sensores"
+          ],
+          "icon": "bi-house-lock-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSPWA48PROCAM/DSPWA48PROCAM-l.PNG",
+          "url": "https://www.syscom.mx/products/210211"
+      },
+      {
+          "id": "ruijie-ap-wifi6-rap2260",
+          "category": "Ruijie / WiFi",
+          "brand": "Ruijie Reyee",
+          "title": "Access Point WiFi 6 Mesh empresarial",
+          "sku": "RG-RAP2260(G)",
+          "desc": "AP WiFi 6 para alta densidad, oficinas, hoteles, comercios y redes de invitados administrables en la nube.",
+          "tags": [
+              "WiFi 6",
+              "Mesh",
+              "Empresarial"
+          ],
+          "icon": "bi-wifi",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2260%28G%29/RGRAP2260%28G%29-l.PNG",
+          "url": "https://www.syscom.mx/products/203964"
+      },
+      {
+          "id": "ruijie-switch-poe-5",
+          "category": "Ruijie / WiFi",
+          "brand": "Ruijie Reyee",
+          "title": "Switch PoE administrable 5 puertos Gigabit",
+          "sku": "RG-ES205GC-P",
+          "desc": "Switch compacto con 4 puertos PoE y administración Cloud ideal para cámaras, APs y pequeños despliegues.",
+          "tags": [
+              "PoE",
+              "5 puertos",
+              "Cloud"
+          ],
+          "icon": "bi-hdd-network-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGES205GCP/RGES205GCP-l.PNG",
+          "url": "https://www.syscom.mx/products/203990"
+      },
+      {
+          "id": "ruijie-switch-poe-16",
+          "category": "Ruijie / WiFi",
+          "brand": "Ruijie Reyee",
+          "title": "Switch administrable PoE 16 puertos + SFP",
+          "sku": "RG-ES218GC-P",
+          "desc": "Switch L2 administrable con 16 puertos PoE Gigabit y uplinks SFP para CCTV, WiFi y segmentación por VLAN.",
+          "tags": [
+              "16 PoE",
+              "SFP",
+              "240 W"
+          ],
+          "icon": "bi-diagram-3-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGES218GCP/RGES218GCP-l.PNG",
+          "url": "https://www.syscom.mx/products/203993"
+      },
+      {
+          "id": "ruijie-kit-router-wifi",
+          "category": "Ruijie / WiFi",
+          "brand": "Ruijie Reyee",
+          "title": "Pack router PoE + Access Points WiFi",
+          "sku": "RG-EG105G-P-V3-KITWIFI",
+          "desc": "Pack para redes pequeñas con router PoE y puntos de acceso, ideal para oficinas, comercios o red de invitados.",
+          "tags": [
+              "Router",
+              "APs",
+              "Kit WiFi"
+          ],
+          "icon": "bi-router-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGEG105GPV3KITWIFI/portada_0S1000.PNG",
+          "url": "https://www.syscom.mx/products/249166"
+      },
+      {
+          "id": "panduit-cable-cat6",
+          "category": "Panduit / Cableado",
+          "brand": "Panduit NetKey",
+          "title": "Cable UTP Cat6 azul 305 m",
+          "sku": "NUR6C04BU-C",
+          "desc": "Bobina de cable Cat6 UTP para proyectos de voz, datos, cámaras IP, puntos de acceso y cableado estructurado.",
+          "tags": [
+              "Cat6",
+              "305 m",
+              "UTP"
+          ],
+          "icon": "bi-ethernet",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-l.PNG",
+          "url": "https://www.syscom.mx/products/74374"
+      },
+      {
+          "id": "panduit-patch-panel-24",
+          "category": "Panduit / Cableado",
+          "brand": "Panduit NetKey",
+          "title": "Patch panel Cat6 de 24 puertos",
+          "sku": "NK6PPG24Y",
+          "desc": "Panel de parcheo Cat6 para rack, ideal para organizar y profesionalizar cableado de voz y datos.",
+          "tags": [
+              "24 puertos",
+              "Cat6",
+              "Rack"
+          ],
+          "icon": "bi-grid-3x3-gap-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NK6PPG24Y/NK6PPG24Y-FRENTE-l.PNG",
+          "url": "https://www.syscom.mx/products/74263"
+      },
+      {
+          "id": "panduit-jack-cat6",
+          "category": "Panduit / Cableado",
+          "brand": "Panduit Mini-Com",
+          "title": "Jack RJ45 Cat6 blanco",
+          "sku": "CJ688TGWH",
+          "desc": "Conector RJ45 Mini-Com Cat6 para salidas de datos, voz y puntos de red en oficina o rack.",
+          "tags": [
+              "RJ45",
+              "Cat6",
+              "Mini-Com"
+          ],
+          "icon": "bi-plugin-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/CJ688TGWH/CJ688TGWH-l.PNG",
+          "url": "https://www.syscom.mx/products/177991"
+      },
+      {
+          "id": "panduit-patch-cord",
+          "category": "Panduit / Cableado",
+          "brand": "Panduit",
+          "title": "Patch cord Cat6 azul 10 ft",
+          "sku": "UTPSP10BUY",
+          "desc": "Patch cord Cat6 para rack, switches, patch panel y conexiones de usuario final con estándar profesional.",
+          "tags": [
+              "Cat6",
+              "10 ft",
+              "Azul"
+          ],
+          "icon": "bi-usb-plug-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/UTPSP10BUY/UTPSP10BUY-l.PNG",
+          "url": "https://www.syscom.mx/products/181409"
+      },
+      {
+          "id": "panduit-faceplate",
+          "category": "Panduit / Cableado",
+          "brand": "Panduit Mini-Com",
+          "title": "Faceplate ejecutivo 2 puertos",
+          "sku": "CFPE2IWY",
+          "desc": "Placa ejecutiva vertical de 2 puertos compatible con módulos Mini-Com para salidas de red profesionales.",
+          "tags": [
+              "2 puertos",
+              "Mini-Com",
+              "Oficina"
+          ],
+          "icon": "bi-columns-gap",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/CFPE2IWY/CFPE2IWY-l.PNG",
+          "url": "https://www.syscom.mx/products/178240"
+      },
+      {
+          "id": "allied-gs950-8",
+          "category": "Allied Telesis",
+          "brand": "Allied Telesis",
+          "title": "Switch WebSmart 8 puertos + 2 SFP",
+          "sku": "AT-GS950/8-10",
+          "desc": "Switch WebSmart Gigabit con 8 puertos y 2 SFP para redes empresariales pequeñas y administración básica.",
+          "tags": [
+              "8 puertos",
+              "2 SFP",
+              "WebSmart"
+          ],
+          "icon": "bi-hdd-network-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATGS950_810/ATGS950_810-l.PNG",
+          "url": "https://www.syscom.mx/products/212370"
+      },
+      {
+          "id": "allied-gs950-10poe",
+          "category": "Allied Telesis",
+          "brand": "Allied Telesis",
+          "title": "Switch PoE+ WebSmart 10 puertos",
+          "sku": "AT-GS950/10PS-V2-10",
+          "desc": "Switch Gigabit WebSmart con PoE+ y uplinks SFP combo para cámaras IP, APs y redes de acceso.",
+          "tags": [
+              "PoE+",
+              "10 puertos",
+              "75 W"
+          ],
+          "icon": "bi-lightning-charge-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATGS950_10PSV210/ATGS950_10PSV210-l.PNG",
+          "url": "https://www.syscom.mx/products/205648"
+      },
+      {
+          "id": "allied-gs970m-28ps",
+          "category": "Allied Telesis",
+          "brand": "Allied Telesis",
+          "title": "Switch PoE+ administrable Capa 3 24 puertos",
+          "sku": "AT-GS970M/28PS-10",
+          "desc": "Switch administrable con 24 puertos Gigabit, 4 SFP y potencia PoE+ para redes empresariales robustas.",
+          "tags": [
+              "24 puertos",
+              "4 SFP",
+              "370 W"
+          ],
+          "icon": "bi-diagram-3-fill",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATGS970M_28PS10/ATGS970M_28PS10-l.PNG",
+          "url": "https://www.syscom.mx/products/141159"
+      },
+      {
+          "id": "allied-x230-28gp",
+          "category": "Allied Telesis",
+          "brand": "Allied Telesis",
+          "title": "Switch PoE+ administrable Capa 3 x230",
+          "sku": "AT-X230-28GP-10",
+          "desc": "Switch PoE+ Capa 3 con 24 puertos Gigabit y 4 SFP para redes con VLANs, monitoreo y administración avanzada.",
+          "tags": [
+              "Capa 3",
+              "PoE+",
+              "4 SFP"
+          ],
+          "icon": "bi-server",
+          "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX23028GP10/ATX23028GP10-l.png",
+          "url": "https://www.syscom.mx/products/137055"
+      }
+  ];
+
+  const wrapper = document.getElementById("syscomProductsWrapper");
+  const emptyState = document.getElementById("syscomEmptyState");
+  const categoryButtons = document.querySelectorAll(".syscom-category-filter");
+  const quoteModalEl = document.getElementById("syscomQuoteModal");
+  const quoteModal = quoteModalEl ? new bootstrap.Modal(quoteModalEl) : null;
+
+  let syscomSwiper = null;
+  let activeCategory = "Todos";
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function renderProductCard(product) {
+    const tags = (product.tags || []).map(tag => `<span><i class="bi bi-check2-circle"></i>${escapeHtml(tag)}</span>`).join("");
+    const media = product.image
+      ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.title)}" class="syscom-product-image is-remote" loading="lazy" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<div class=&quot;syscom-product-icon&quot;><i class=&quot;bi ${escapeHtml(product.icon || "bi-box-seam-fill")}&quot;></i></div>');">`
+      : `<div class="syscom-product-icon"><i class="bi ${escapeHtml(product.icon || "bi-box-seam-fill")}"></i></div>`;
+    const sourceLink = product.url
+      ? `<a class="syscom-product-source" href="${escapeHtml(product.url)}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Ver referencia Syscom</a>`
+      : "";
+
+    return `
+      <div class="swiper-slide">
+        <article class="syscom-product-card">
+          <div class="syscom-product-media">
+            <span class="syscom-product-brand"><i class="bi bi-patch-check-fill"></i>${escapeHtml(product.brand)}</span>
+            ${media}
+          </div>
+          <div class="syscom-product-body">
+            <span class="syscom-product-category"><i class="bi bi-tag-fill"></i>${escapeHtml(product.category)}</span>
+            <span class="syscom-product-sku"><i class="bi bi-upc-scan"></i> SKU: ${escapeHtml(product.sku)}</span>
+            <h4>${escapeHtml(product.title)}</h4>
+            <p>${escapeHtml(product.desc)}</p>
+            ${sourceLink}
+            <div class="syscom-product-meta">${tags}</div>
+            <button class="btn btn-primary syscom-quote-btn" type="button" data-product-id="${escapeHtml(product.id)}">
+              <i class="bi bi-send-fill"></i> Cotizar producto
+            </button>
+          </div>
+        </article>
+      </div>
+    `;
+  }
+
+  function getFilteredProducts  function getFilteredProducts() {
+    if (activeCategory === "Todos") return syscomProducts;
+    return syscomProducts.filter(product => product.category === activeCategory);
+  }
+
+  function renderProducts() {
+    if (!wrapper) return;
+
+    const products = getFilteredProducts();
+    wrapper.innerHTML = products.map(renderProductCard).join("");
+
+    if (emptyState) {
+      emptyState.style.display = products.length ? "none" : "block";
+    }
+
+    if (syscomSwiper) {
+      syscomSwiper.destroy(true, true);
+      syscomSwiper = null;
+    }
+
+    if (products.length) {
+      syscomSwiper = new Swiper(".syscom-products-swiper", {
+        slidesPerView: 1,
+        spaceBetween: 18,
+        loop: products.length > 3,
+        grabCursor: true,
+        autoHeight: false,
+        pagination: {
+          el: ".syscom-products-pagination",
+          clickable: true
+        },
+        navigation: {
+          nextEl: ".syscom-products-next",
+          prevEl: ".syscom-products-prev"
+        },
+        breakpoints: {
+          576: { slidesPerView: 1.25 },
+          768: { slidesPerView: 2 },
+          1200: { slidesPerView: 3 }
+        }
+      });
+    }
+  }
+
+  function openQuoteModal(product) {
+    if (!product || !quoteModal) return;
+
+    document.getElementById("syscomModalCategory").textContent = product.category || "Categoría";
+    document.getElementById("syscomModalSku").textContent = product.sku || "SKU / Modelo";
+    document.getElementById("syscomModalTitle").textContent = product.title || "Producto seleccionado";
+    document.getElementById("syscomModalDesc").textContent = product.desc || "Completa tus datos para solicitar una cotización.";
+
+    document.getElementById("syscomQuoteProduct").value = product.title || "";
+    document.getElementById("syscomQuoteSku").value = product.sku || "";
+    document.getElementById("syscomQuoteCategory").value = product.category || "";
+    document.getElementById("syscomQuoteSourceUrl").value = product.url || "";
+
+    const qty = document.getElementById("syscomProductQty");
+    if (qty && (!qty.value || Number(qty.value) < 1)) qty.value = 1;
+
+    quoteModal.show();
+  }
+
+  function buildQuoteMessage() {
+    const product = document.getElementById("syscomQuoteProduct").value || "Producto no especificado";
+    const sku = document.getElementById("syscomQuoteSku").value || "Sin SKU";
+    const category = document.getElementById("syscomQuoteCategory").value || "Sin categoría";
+    const name = document.getElementById("syscomClientName").value.trim() || "No especificado";
+    const company = document.getElementById("syscomClientCompany").value.trim() || "No especificado";
+    const contact = document.getElementById("syscomClientContact").value.trim() || "No especificado";
+    const qty = document.getElementById("syscomProductQty").value || "1";
+    const scope = document.getElementById("syscomQuoteScope").value || "No especificado";
+    const sourceUrl = document.getElementById("syscomQuoteSourceUrl").value || "Sin enlace de referencia";
+    const comments = document.getElementById("syscomQuoteComments").value.trim() || "Sin comentarios adicionales";
+
+    return [
+      "Hola LinkWich-IT, me gustaría solicitar una cotización.",
+      "",
+      "Producto: " + product,
+      "Modelo/SKU: " + sku,
+      "Categoría: " + category,
+      "Cantidad estimada: " + qty,
+      "Tipo de solicitud: " + scope,
+      "Referencia Syscom: " + sourceUrl,
+      "",
+      "Nombre: " + name,
+      "Empresa/Proyecto: " + company,
+      "Contacto: " + contact,
+      "",
+      "Comentarios: " + comments,
+      "",
+      "Favor de confirmar disponibilidad, precio final y tiempos de entrega."
+    ].join("\n");
+  }
+
+  categoryButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      categoryButtons.forEach(btn => btn.classList.remove("active"));
+      this.classList.add("active");
+      activeCategory = this.getAttribute("data-category") || "Todos";
+      renderProducts();
+    });
+  });
+
+  if (wrapper) {
+    wrapper.addEventListener("click", function (event) {
+      const button = event.target.closest(".syscom-quote-btn");
+      if (!button) return;
+
+      const productId = button.getAttribute("data-product-id");
+      const product = syscomProducts.find(item => item.id === productId);
+      openQuoteModal(product);
+    });
+  }
+
+  const sendWhatsApp = document.getElementById("sendSyscomWhatsApp");
+  if (sendWhatsApp) {
+    sendWhatsApp.addEventListener("click", function () {
+      const message = buildQuoteMessage();
+      const url = "https://api.whatsapp.com/send?phone=" + LINKWICH_WHATSAPP + "&text=" + encodeURIComponent(message);
+      window.open(url, "_blank", "noopener");
+    });
+  }
+
+  const sendEmail = document.getElementById("sendSyscomEmail");
+  if (sendEmail) {
+    sendEmail.addEventListener("click", function () {
+      const product = document.getElementById("syscomQuoteProduct").value || "producto";
+      const subject = "Solicitud de cotización - " + product;
+      const body = buildQuoteMessage();
+      window.location.href = "mailto:" + LINKWICH_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    });
+  }
+
+  renderProducts();
 });
 </script>
 
