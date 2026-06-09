@@ -1949,6 +1949,268 @@
     [data-bs-theme="dark"] .lw-demo-modal .btn-close{ filter:invert(1) grayscale(1); }
   </style>
 
+
+  <style id="lw-mobile-header-fix-v17">
+/* =========================================================
+   FIX DEFINITIVO HEADER / MENÚ MÓVIL LINKWICH
+   Pegar al final del <head>, después de main.css y tus estilos.
+   ========================================================= */
+
+#header.header{
+  z-index: 997;
+}
+
+/* ===== DESKTOP / LAPTOP ===== */
+@media (min-width: 1200px){
+  #header .navmenu{
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    inset: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+  }
+
+  #header .navmenu ul{
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    position: static !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: .25rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+
+  #header .mobile-nav-toggle{
+    display: none !important;
+  }
+}
+
+/* ===== TABLET / CELULAR ===== */
+@media (max-width: 1199.98px){
+
+  #header.header{
+    min-height: 70px;
+    padding: 8px 0;
+  }
+
+  #header .container-xl,
+  #header .container-fluid{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: .75rem !important;
+    width: 100%;
+  }
+
+  #header .logo{
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: calc(100% - 62px) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: .55rem !important;
+    overflow: hidden !important;
+    position: relative !important;
+    z-index: 10002 !important;
+  }
+
+  #header .logo img{
+    max-height: 34px !important;
+    width: auto !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+  }
+
+  #header .logo .sitename{
+    font-size: clamp(.95rem, 4vw, 1.12rem) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  #header .navmenu{
+    flex: 0 0 auto !important;
+    width: auto !important;
+    margin-left: auto !important;
+    position: static !important;
+    z-index: 10000 !important;
+  }
+
+  /* Oculta completamente el menú en celular */
+  #header .navmenu ul{
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* Quita líneas/underlines que causan la raya blanca */
+  #header .navmenu a::before,
+  #header .navmenu a::after{
+    display: none !important;
+    content: none !important;
+  }
+
+  #header .mobile-nav-toggle{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 44px !important;
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 14px !important;
+    color: #fff !important;
+    font-size: 30px !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    background: rgba(255,255,255,.08) !important;
+    border: 1px solid rgba(255,255,255,.16) !important;
+    position: relative !important;
+    z-index: 10003 !important;
+  }
+
+  body.mobile-nav-active{
+    overflow: hidden !important;
+  }
+
+  body.mobile-nav-active #header .mobile-nav-toggle{
+    position: fixed !important;
+    top: 14px !important;
+    right: 14px !important;
+    background: rgba(255,255,255,.14) !important;
+    border-color: rgba(255,255,255,.24) !important;
+    color: #fff !important;
+  }
+
+  body.mobile-nav-active #header .navmenu{
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    background: rgba(5, 8, 44, .78) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    z-index: 10000 !important;
+  }
+
+  body.mobile-nav-active #header .navmenu ul{
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+
+    position: absolute !important;
+    top: 76px !important;
+    left: 14px !important;
+    right: 14px !important;
+    bottom: 16px !important;
+
+    width: auto !important;
+    height: auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+
+    margin: 0 !important;
+    padding: 14px !important;
+    list-style: none !important;
+    overflow-y: auto !important;
+
+    border-radius: 22px !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%) !important;
+    border: 1px solid rgba(255,255,255,.35) !important;
+    box-shadow: 0 24px 70px rgba(0,0,0,.35) !important;
+  }
+
+  body.mobile-nav-active #header .navmenu ul li{
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  body.mobile-nav-active #header .navmenu a,
+  body.mobile-nav-active #header .navmenu a:focus{
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    padding: 13px 14px !important;
+    border-radius: 15px !important;
+
+    color: #08113f !important;
+    background: transparent !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    text-decoration: none !important;
+    white-space: normal !important;
+  }
+
+  body.mobile-nav-active #header .navmenu a i{
+    font-size: 1.08rem !important;
+    margin-right: .55rem !important;
+    color: #1acc8d !important;
+    flex: 0 0 auto !important;
+  }
+
+  body.mobile-nav-active #header .navmenu a:hover,
+  body.mobile-nav-active #header .navmenu a.active{
+    background: rgba(26,204,141,.12) !important;
+    color: #040677 !important;
+  }
+
+  html[data-bs-theme="dark"] body.mobile-nav-active #header .navmenu ul,
+  body[data-bs-theme="dark"].mobile-nav-active #header .navmenu ul{
+    background: linear-gradient(180deg, #0b1220 0%, #111a2f 100%) !important;
+    border-color: rgba(255,255,255,.12) !important;
+  }
+
+  html[data-bs-theme="dark"] body.mobile-nav-active #header .navmenu a,
+  body[data-bs-theme="dark"].mobile-nav-active #header .navmenu a{
+    color: rgba(255,255,255,.92) !important;
+  }
+
+  html[data-bs-theme="dark"] body.mobile-nav-active #header .navmenu a:hover,
+  html[data-bs-theme="dark"] body.mobile-nav-active #header .navmenu a.active,
+  body[data-bs-theme="dark"].mobile-nav-active #header .navmenu a:hover,
+  body[data-bs-theme="dark"].mobile-nav-active #header .navmenu a.active{
+    background: rgba(26,204,141,.16) !important;
+    color: #fff !important;
+  }
+}
+
+/* Celulares muy angostos */
+@media (max-width: 380px){
+  #header .logo img{
+    max-height: 30px !important;
+  }
+
+  #header .logo .sitename{
+    font-size: .92rem !important;
+  }
+
+  #header .mobile-nav-toggle{
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 28px !important;
+  }
+}
+</style>
+
 </head>
 
 <body class="index-page">
