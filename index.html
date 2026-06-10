@@ -2252,46 +2252,31 @@
 }
 </style>
 
-<style>
+<style id="lw-final-header-and-catalog-fix">
 /* ============================================================
-   HEADER RESPONSIVE FINAL REAL - LinkWich-IT
-   Objetivo:
-   - PC / laptop normal desde 1200px: menú completo visible y compacto.
-   - Tablet: logo + Monitor + hamburguesa.
-   - Celular: logo + hamburguesa; Monitor dentro del menú.
-   - Evita que Inicio se encime con el logo y que el menú se vea amontonado.
-   Pegar este bloque ANTES de 
-
-<style>
-/* ============================================================
-   FIX IMÁGENES CATÁLOGO
-   - Intenta varias rutas del banco fotográfico de Syscom.
-   - Si una imagen remota no existe, usa imagen de categoría.
-   - Si todo falla, muestra una tarjeta visual con SKU para no dejar espacios vacíos.
-   ============================================================ */
-.syscom-product-media{
-  background:
-    radial-gradient(circle at top right, rgba(13,110,253,.16), transparent 32%),
-    linear-gradient(135deg,#f9fbff,#eef5ff) !important;
-}
-.syscom-product-image{
-  background: transparent !important;
-  mix-blend-mode: multiply;
-}
-.syscom-product-fallback{
-  box-shadow: inset 0 0 0 1px rgba(13,110,253,.08), 0 12px 26px rgba(15,23,42,.08);
-}
-</style>
-
-</head>, al final de todos los estilos.
+   LINKWICH-IT - HEADER RESPONSIVE + FIX CATÁLOGO
+   Mantener completo dentro de <style> y antes del cierre de HEAD.
    ============================================================ */
 
 #header{
   z-index: 9999 !important;
+  padding: 10px 0 !important;
 }
 
 #header .header-container{
+  width: min(96%, 1500px) !important;
+  max-width: 1500px !important;
+  min-height: 66px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: .55rem .9rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+  gap: .65rem !important;
   overflow: visible !important;
+  border-radius: 999px !important;
 }
 
 #header .logo,
@@ -2301,97 +2286,98 @@
   min-width: 0 !important;
 }
 
-#header .logo img{
-  width: auto !important;
-  object-fit: contain !important;
+#header .logo{
+  order: 1 !important;
   flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .45rem !important;
+  width: auto !important;
+  max-width: 205px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+#header .logo img{
+  flex: 0 0 auto !important;
+  width: 42px !important;
+  height: 42px !important;
+  max-width: 42px !important;
+  max-height: 42px !important;
+  object-fit: contain !important;
 }
 
 #header .logo .sitename{
-  white-space: nowrap !important;
-  line-height: 1 !important;
   margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  font-size: 1.24rem !important;
+  letter-spacing: -.03em !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
-/* =========================
-   DESKTOP / PC NORMAL
-   ========================= */
+#navmenu{
+  order: 2 !important;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+}
+
+#header .lw-header-monitor{
+  order: 3 !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+  border-radius: 999px !important;
+  line-height: 1 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+#header .lw-header-monitor .lw-monitor-short{
+  display: none !important;
+}
+
 @media (min-width: 1200px){
-  #header .header-container{
-    width: calc(100% - 32px) !important;
-    max-width: 1320px !important;
-    min-height: 66px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding: .52rem 1rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    flex-wrap: nowrap !important;
-    gap: .55rem !important;
-    border-radius: 999px !important;
-  }
-
-  #header .logo{
-    order: 1 !important;
-    flex: 0 0 auto !important;
-    max-width: 175px !important;
-    margin: 0 !important;
-  }
-
-  #header .logo img{
-    max-height: 38px !important;
-  }
-
-  #header .logo .sitename{
-    font-size: 1.12rem !important;
-    letter-spacing: -.03em !important;
-    overflow: visible !important;
-    text-overflow: clip !important;
-  }
-
-  #navmenu{
-    order: 2 !important;
-    flex: 1 1 auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: static !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    min-width: 0 !important;
-  }
-
   #navmenu > ul{
     display: flex !important;
-    position: static !important;
-    inset: auto !important;
-    width: auto !important;
-    max-width: 100% !important;
-    max-height: none !important;
-    overflow: visible !important;
-    flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
+    flex-direction: row !important;
     flex-wrap: nowrap !important;
-    gap: .08rem !important;
-    padding: 0 !important;
+    gap: .22rem !important;
+    width: auto !important;
+    max-width: 100% !important;
     margin: 0 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: none !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    overflow: visible !important;
     background: transparent !important;
     border: 0 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
   }
 
   #navmenu li{
-    width: auto !important;
     flex: 0 0 auto !important;
+    width: auto !important;
   }
 
   #navmenu li.d-xl-none{
@@ -2404,18 +2390,21 @@
     justify-content: center !important;
     width: auto !important;
     white-space: nowrap !important;
-    font-size: .84rem !important;
     line-height: 1 !important;
-    padding: .58rem .38rem !important;
+    font-size: .88rem !important;
+    padding: .58rem .45rem !important;
     border-radius: 999px !important;
   }
 
   #navmenu a i{
     display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: auto !important;
     min-width: auto !important;
-    font-size: .78rem !important;
-    margin-right: .16rem !important;
+    margin-right: .20rem !important;
+    font-size: .85rem !important;
+    line-height: 1 !important;
   }
 
   #navmenu a::before,
@@ -2424,33 +2413,10 @@
   }
 
   #header .lw-header-monitor{
-    order: 3 !important;
     display: inline-flex !important;
-    flex: 0 0 auto !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: auto !important;
-    min-width: auto !important;
-    margin: 0 !important;
-    padding: .72rem .86rem !important;
-    border-radius: 999px !important;
-    white-space: nowrap !important;
-    font-size: .82rem !important;
-    line-height: 1 !important;
+    padding: .78rem 1rem !important;
+    font-size: .88rem !important;
     gap: .25rem !important;
-  }
-
-  #header .lw-header-monitor i{
-    margin: 0 !important;
-    font-size: .95rem !important;
-  }
-
-  #header .lw-header-monitor .lw-monitor-full{
-    display: none !important;
-  }
-
-  #header .lw-header-monitor .lw-monitor-short{
-    display: inline !important;
   }
 
   .mobile-nav-toggle{
@@ -2458,47 +2424,61 @@
   }
 }
 
-/* Desktop ancho: menú un poco más cómodo */
-@media (min-width: 1500px){
+@media (min-width: 1200px) and (max-width: 1450px){
   #header .header-container{
-    max-width: 1420px !important;
-    padding-left: 1.25rem !important;
-    padding-right: 1.25rem !important;
-    gap: .75rem !important;
+    width: calc(100% - 24px) !important;
+    max-width: calc(100% - 24px) !important;
+    padding-left: .75rem !important;
+    padding-right: .75rem !important;
+    gap: .42rem !important;
   }
 
   #header .logo{
-    max-width: 210px !important;
+    max-width: 168px !important;
+    gap: .35rem !important;
   }
 
   #header .logo img{
-    max-height: 42px !important;
+    width: 38px !important;
+    height: 38px !important;
+    max-width: 38px !important;
+    max-height: 38px !important;
   }
 
   #header .logo .sitename{
-    font-size: 1.25rem !important;
+    font-size: 1.08rem !important;
   }
 
   #navmenu > ul{
-    gap: .20rem !important;
+    gap: .06rem !important;
   }
 
   #navmenu a{
-    font-size: .91rem !important;
-    padding-left: .50rem !important;
-    padding-right: .50rem !important;
+    font-size: .80rem !important;
+    padding-left: .30rem !important;
+    padding-right: .30rem !important;
   }
 
   #navmenu a i{
-    font-size: .86rem !important;
-    margin-right: .20rem !important;
+    display: none !important;
   }
 
   #header .lw-header-monitor{
-    font-size: .88rem !important;
-    padding: .78rem 1rem !important;
+    padding-left: .74rem !important;
+    padding-right: .74rem !important;
+    font-size: .80rem !important;
   }
 
+  #header .lw-header-monitor .lw-monitor-full{
+    display: none !important;
+  }
+
+  #header .lw-header-monitor .lw-monitor-short{
+    display: inline !important;
+  }
+}
+
+@media (min-width: 1451px){
   #header .lw-header-monitor .lw-monitor-full{
     display: inline !important;
   }
@@ -2508,92 +2488,37 @@
   }
 }
 
-/* Desktop justo 1200-1320: quitamos iconos del menú para que respire */
-@media (min-width: 1200px) and (max-width: 1320px){
-  #header .header-container{
-    width: calc(100% - 20px) !important;
-    padding-left: .70rem !important;
-    padding-right: .70rem !important;
-    gap: .35rem !important;
-  }
-
-  #header .logo{
-    max-width: 158px !important;
-  }
-
-  #header .logo img{
-    max-height: 34px !important;
-  }
-
-  #header .logo .sitename{
-    font-size: 1rem !important;
-  }
-
-  #navmenu a{
-    font-size: .78rem !important;
-    padding-left: .32rem !important;
-    padding-right: .32rem !important;
-  }
-
-  #navmenu a i{
-    display: none !important;
-  }
-
-  #header .lw-header-monitor{
-    padding-left: .70rem !important;
-    padding-right: .70rem !important;
-    font-size: .78rem !important;
-  }
-}
-
-/* =========================
-   TABLET / LAPTOP ANGOSTA
-   ========================= */
-@media (min-width: 992px) and (max-width: 1199.98px){
+@media (max-width: 1199.98px){
   #header .header-container{
     width: calc(100% - 26px) !important;
     max-width: calc(100% - 26px) !important;
     min-height: 64px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
     padding: .50rem .75rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    flex-wrap: nowrap !important;
     gap: .55rem !important;
-    border-radius: 999px !important;
   }
 
   #header .logo{
-    order: 1 !important;
     flex: 1 1 auto !important;
-    max-width: 220px !important;
-    margin: 0 !important;
+    max-width: 230px !important;
   }
 
   #header .logo img{
+    width: 38px !important;
+    height: 38px !important;
+    max-width: 38px !important;
     max-height: 38px !important;
   }
 
   #header .logo .sitename{
-    font-size: 1.14rem !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    font-size: 1.15rem !important;
   }
 
   #header .lw-header-monitor{
-    order: 2 !important;
     display: inline-flex !important;
     flex: 0 0 auto !important;
-    align-items: center !important;
-    justify-content: center !important;
     margin-left: auto !important;
-    padding: .70rem .88rem !important;
-    border-radius: 999px !important;
-    white-space: nowrap !important;
-    font-size: .82rem !important;
-    line-height: 1 !important;
+    padding: .72rem .92rem !important;
+    font-size: .84rem !important;
   }
 
   #header .lw-header-monitor .lw-monitor-full{
@@ -2605,17 +2530,10 @@
   }
 
   #navmenu{
-    order: 3 !important;
     flex: 0 0 auto !important;
     position: static !important;
-    margin: 0 !important;
   }
-}
 
-/* =========================
-   MENÚ MÓVIL / HAMBURGUESA
-   ========================= */
-@media (max-width: 1199.98px){
   #navmenu > ul{
     display: none !important;
     position: fixed !important;
@@ -2629,11 +2547,10 @@
     flex-direction: column !important;
     align-items: stretch !important;
     justify-content: flex-start !important;
-    flex-wrap: nowrap !important;
     gap: .30rem !important;
     padding: .75rem !important;
     margin: 0 !important;
-    background: rgba(18, 18, 45, .98) !important;
+    background: rgba(18,18,45,.98) !important;
     border: 1px solid rgba(255,255,255,.12) !important;
     border-radius: 22px !important;
     box-shadow: 0 24px 70px rgba(0,0,0,.35) !important;
@@ -2676,7 +2593,7 @@
   #navmenu a:hover,
   #navmenu a.active{
     color: #fff !important;
-    background: rgba(99, 102, 241, .20) !important;
+    background: rgba(99,102,241,.20) !important;
   }
 
   #navmenu a::before,
@@ -2685,7 +2602,6 @@
   }
 
   .mobile-nav-toggle{
-    order: 3 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -2704,49 +2620,32 @@
   }
 }
 
-/* Celular: solo logo + hamburguesa */
-@media (max-width: 991.98px){
+@media (max-width: 767.98px){
   #header .header-container{
     width: calc(100% - 16px) !important;
     max-width: calc(100% - 16px) !important;
     min-height: 58px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
     padding: .46rem .58rem !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    flex-wrap: nowrap !important;
     gap: .35rem !important;
-    border-radius: 999px !important;
   }
 
   #header .logo{
-    order: 1 !important;
-    flex: 1 1 auto !important;
     max-width: calc(100% - 58px) !important;
-    margin: 0 !important;
   }
 
   #header .logo img{
+    width: 34px !important;
+    height: 34px !important;
+    max-width: 34px !important;
     max-height: 34px !important;
   }
 
   #header .logo .sitename{
     font-size: 1.02rem !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
   }
 
   #header .lw-header-monitor{
     display: none !important;
-  }
-
-  #navmenu{
-    order: 3 !important;
-    flex: 0 0 auto !important;
-    position: static !important;
-    margin: 0 !important;
   }
 
   #navmenu > ul{
@@ -2761,6 +2660,21 @@
     height: 42px !important;
     font-size: 1.35rem !important;
   }
+}
+
+.syscom-product-media{
+  background:
+    radial-gradient(circle at top right, rgba(13,110,253,.16), transparent 32%),
+    linear-gradient(135deg,#f9fbff,#eef5ff) !important;
+}
+
+.syscom-product-image{
+  background: transparent !important;
+  mix-blend-mode: multiply;
+}
+
+.syscom-product-fallback{
+  box-shadow: inset 0 0 0 1px rgba(13,110,253,.08), 0 12px 26px rgba(15,23,42,.08);
 }
 </style>
 
