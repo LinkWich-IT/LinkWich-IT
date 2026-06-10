@@ -2678,6 +2678,45 @@
 }
 </style>
 
+
+
+<style id="lw-modal-zindex-fix">
+/* ============================================================
+   FIX MODAL CATALOGO SOBRE HEADER
+   LinkWich-IT
+   Evita que el header quede encima del modal de cotización.
+   ============================================================ */
+body.modal-open #header,
+body.modal-open .header,
+body.modal-open .header-container {
+  z-index: 1000 !important;
+}
+
+.modal-backdrop {
+  z-index: 20000 !important;
+}
+
+.modal {
+  z-index: 20010 !important;
+}
+
+.modal-dialog {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+@media (max-width: 767px) {
+  .modal-dialog {
+    margin: 1rem !important;
+  }
+
+  .modal-content {
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+}
+</style>
+
 </head>
 
 <body class="index-page">
@@ -6741,6 +6780,28 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
   <script src="assets/js/main.js"></script>
+
+
+
+<script id="lw-modal-header-zindex-script">
+document.addEventListener('DOMContentLoaded', function () {
+  const header = document.getElementById('header');
+
+  document.querySelectorAll('.modal').forEach(function (modal) {
+    modal.addEventListener('show.bs.modal', function () {
+      if (header) {
+        header.style.zIndex = '1000';
+      }
+    });
+
+    modal.addEventListener('hidden.bs.modal', function () {
+      if (header) {
+        header.style.zIndex = '';
+      }
+    });
+  });
+});
+</script>
 
 </body>
 </html>
