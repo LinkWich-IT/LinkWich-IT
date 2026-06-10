@@ -2260,7 +2260,30 @@
    - Tablet: logo + Monitor + hamburguesa.
    - Celular: logo + hamburguesa; Monitor dentro del menú.
    - Evita que Inicio se encime con el logo y que el menú se vea amontonado.
-   Pegar este bloque ANTES de </head>, al final de todos los estilos.
+   Pegar este bloque ANTES de 
+
+<style>
+/* ============================================================
+   FIX IMÁGENES CATÁLOGO
+   - Intenta varias rutas del banco fotográfico de Syscom.
+   - Si una imagen remota no existe, usa imagen de categoría.
+   - Si todo falla, muestra una tarjeta visual con SKU para no dejar espacios vacíos.
+   ============================================================ */
+.syscom-product-media{
+  background:
+    radial-gradient(circle at top right, rgba(13,110,253,.16), transparent 32%),
+    linear-gradient(135deg,#f9fbff,#eef5ff) !important;
+}
+.syscom-product-image{
+  background: transparent !important;
+  mix-blend-mode: multiply;
+}
+.syscom-product-fallback{
+  box-shadow: inset 0 0 0 1px rgba(13,110,253,.08), 0 12px 26px rgba(15,23,42,.08);
+}
+</style>
+
+</head>, al final de todos los estilos.
    ============================================================ */
 
 #header{
@@ -6418,15 +6441,229 @@ document.addEventListener("DOMContentLoaded", function () {
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
+      .replace(/\"/g, "&quot;")
       .replace(/'/g, "&#039;");
   }
+
+  const SYSCOM_IMAGE_BASE = "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom";
+
+  const categoryFallbackImages = {
+    "Hikvision CCTV": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS2CV1023G2LIDWF(B)/DS2CV1023G2LIDWF(B)-h.PNG`
+    ],
+    "Hikvision AX PRO / XPRO": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/AXPROKIT/AXPROKIT-h.PNG`
+    ],
+    "NVR / Grabación": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS9664NIM16/DS9664NIM16-h.PNG`
+    ],
+    "Ruijie / WiFi": [
+      `${SYSCOM_IMAGE_BASE}/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/RUIJIE/RGRAP2260(G)/RGRAP2260(G)-h.PNG`
+    ],
+    "Ubiquiti / WiFi": [
+      `${SYSCOM_IMAGE_BASE}/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG`
+    ],
+    "Panduit / Cableado": [
+      `${SYSCOM_IMAGE_BASE}/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG`
+    ],
+    "Fibra Óptica": [
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "Allied Telesis": [
+      `${SYSCOM_IMAGE_BASE}/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/ALLIEDTELESIS/ATAR4050S10/ATAR4050S10-h.PNG`
+    ],
+    "Racks / Energía": [
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG`
+    ],
+    "UPS / Energía": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG`
+    ],
+    "Telefonía IP": [
+      `${SYSCOM_IMAGE_BASE}/GRANDSTREAM/GRP2650/GRP2650-h.PNG`
+    ],
+    "NAS / Servidores": [
+      `${SYSCOM_IMAGE_BASE}/SYNOLOGY/DS224PLUS/DS224PLUS-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/QNAP/TS464/TS464-h.PNG`
+    ],
+    "Antenas / Telecomunicaciones": [
+      `${SYSCOM_IMAGE_BASE}/UBIQUITINETWORKS/LBE5ACGEN2/LBE5ACGEN2-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/ANTSECTOR5G/ANTSECTOR5G-h.PNG`
+    ]
+  };
+
+  const imageOverridesBySku = {
+    "DS-2CD1043G2-LIU": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS2CD1043G2LIU/DS2CD1043G2LIU-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS-2CD1043G2-LIU/DS-2CD1043G2-LIU-h.PNG`
+    ],
+    "DS-2CD1143G2-LIU": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS2CD1143G2LIU/DS2CD1143G2LIU-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS-2CD1143G2-LIU/DS-2CD1143G2-LIU-h.PNG`
+    ],
+    "DS-2CD1343G2-LIU": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS2CD1343G2LIU/DS2CD1343G2LIU-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS-2CD1343G2-LIU/DS-2CD1343G2-LIU-h.PNG`
+    ],
+    "DS-2DE2C400MW-DE": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS2DE2C400MWDE/DS2DE2C400MWDE-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS-2DE2C400MW-DE/DS-2DE2C400MW-DE-h.PNG`
+    ],
+    "DS-PS1-E-WB": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DSPS1EWB/DSPS1EWB-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/AXPROKIT/AXPROKIT-h.PNG`
+    ],
+    "DS-PS1-E-WE": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DSPS1EWE/DSPS1EWE-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/AXPROKIT/AXPROKIT-h.PNG`
+    ],
+    "DS-7604NI-Q1/4P": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS7604NIQ1_4P/DS7604NIQ1_4P-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS7604NIQ1_4P(D)/DS7604NIQ1_4P(D)-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS7604NIQ14P/DS7604NIQ14P-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG`
+    ],
+    "DS-7616NI-Q2/16P": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS7616NIQ2_16P/DS7616NIQ2_16P-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS7616NIQ2_16P(D)/DS7616NIQ2_16P(D)-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS7616NIQ216P/DS7616NIQ216P-h.PNG`
+    ],
+    "DS-3E0310P-E/M": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS3E0310PE_M/DS3E0310PE_M-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS3E0310PEM/DS3E0310PEM-h.PNG`
+    ],
+    "DS-3E0326P-E/M": [
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS3E0326PE_M/DS3E0326PE_M-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/HIKVISION/DS3E0326PEM/DS3E0326PEM-h.PNG`
+    ],
+    "UXG-LITE": [
+      `${SYSCOM_IMAGE_BASE}/UBIQUITINETWORKS/UXGLITE/UXGLITE-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG`
+    ],
+    "ICFOSC-24": [
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICFOSC24/ICFOSC24-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "IC-FDP-8": [
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICFDP8/ICFDP8-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "SC-APC-FAST": [
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/SCAPCFAST/SCAPCFAST-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "JUMP-LC-LC-3M": [
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/JUMPLCLC3M/JUMPLCLC3M-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "JUMP-SC-APC-3M": [
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/JUMPSCAPC3M/JUMPSCAPC3M-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "SFP-1G-LX": [
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/SFP1GLX/SFP1GLX-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "SFP-10G-SR": [
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/SFP10GSR/SFP10GSR-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "ODF-12FO": [
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/ODF12FO/ODF12FO-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ],
+    "ODF-24FO": [
+      `${SYSCOM_IMAGE_BASE}/LINKEDPROBYEPCOM/ODF24FO/ODF24FO-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG`
+    ]
+  };
+
+  function getBrandFolder(product) {
+    const value = `${product.brand || ""} ${product.category || ""}`.toUpperCase();
+    if (value.includes("HIKVISION")) return "HIKVISION";
+    if (value.includes("PANDUIT")) return "PANDUIT";
+    if (value.includes("RUIJIE")) return "RUIJIE";
+    if (value.includes("UBIQUITI")) return "UBIQUITINETWORKS";
+    if (value.includes("FIBERHOME")) return "FIBERHOME";
+    if (value.includes("ALLIED")) return "ALLIEDTELESIS";
+    if (value.includes("GRANDSTREAM")) return "GRANDSTREAM";
+    if (value.includes("LINKEDPRO")) return "LINKEDPROBYEPCOM";
+    if (value.includes("WESTERN")) return "WESTERNDIGITAL";
+    if (value.includes("SEAGATE")) return "SEAGATE";
+    if (value.includes("SYNOLOGY")) return "SYNOLOGY";
+    if (value.includes("QNAP")) return "QNAP";
+    if (value.includes("CYBERPOWER")) return "CYBERPOWER";
+    if (value.includes("APC")) return "APC";
+    if (value.includes("FORZA")) return "FORZA";
+    if (value.includes("CAMBIUM")) return "CAMBIUMNETWORKS";
+    if (value.includes("MIMOSA")) return "MIMOSA";
+    if (value.includes("MIKROTIK")) return "MIKROTIK";
+    if (value.includes("TP-LINK") || value.includes("TPLINK")) return "TPLINK";
+    if (value.includes("KINGSTON")) return "KINGSTON";
+    if (value.includes("INTEL")) return "INTEL";
+    return "";
+  }
+
+  function getSkuVariants(sku) {
+    const raw = String(sku || "").trim().toUpperCase().replace(/\s+/g, "");
+    const plus = raw.replace(/\+/g, "PLUS");
+    return [...new Set([
+      plus.replace(/-/g, "").replace(/\//g, "_"),
+      plus.replace(/[\-\/]/g, ""),
+      plus.replace(/-/g, ""),
+      plus.replace(/\//g, "_"),
+      plus.replace(/[^A-Z0-9()_]/g, "")
+    ].filter(Boolean))];
+  }
+
+  function getSyscomImageCandidates(product) {
+    const folder = getBrandFolder(product);
+    const variants = getSkuVariants(product.sku);
+    const generated = folder ? variants.flatMap(code => [
+      `${SYSCOM_IMAGE_BASE}/${folder}/${code}/${code}-h.PNG`,
+      `${SYSCOM_IMAGE_BASE}/${folder}/${code}/${code}.PNG`,
+      `${SYSCOM_IMAGE_BASE}/${folder}/${code}/${code}-p.PNG`
+    ]) : [];
+
+    return [...new Set([
+      ...(imageOverridesBySku[product.sku] || []),
+      product.image || "",
+      ...generated,
+      ...(categoryFallbackImages[product.category] || [])
+    ].filter(Boolean))];
+  }
+
+  window.lwSyscomImageFallback = function(img) {
+    const fallbackBox = img.nextElementSibling;
+    let fallbacks = [];
+    try {
+      fallbacks = JSON.parse(img.getAttribute("data-image-fallbacks") || "[]");
+    } catch (error) {
+      fallbacks = [];
+    }
+
+    const index = Number(img.getAttribute("data-fallback-index") || "0");
+    if (index < fallbacks.length) {
+      img.setAttribute("data-fallback-index", String(index + 1));
+      img.src = fallbacks[index];
+      return;
+    }
+
+    img.style.display = "none";
+    if (fallbackBox) fallbackBox.style.display = "flex";
+  };
 
   function renderProductCard(product) {
     const tags = (product.tags || []).map(tag => `<span><i class="bi bi-check2-circle"></i>${escapeHtml(tag)}</span>`).join("");
     const fallback = `<div class="syscom-product-fallback"><i class="bi ${escapeHtml(product.icon || "bi-box-seam-fill")}"></i><span>${escapeHtml(product.sku || product.category || "Producto")}</span></div>`;
-    const media = product.image
-      ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.title)}" class="syscom-product-image is-remote" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling){this.nextElementSibling.style.display='flex';}">${fallback}`
+    const imageCandidates = getSyscomImageCandidates(product);
+    const firstImage = imageCandidates[0] || "";
+    const imageFallbacks = imageCandidates.slice(1);
+    const media = firstImage
+      ? `<img src="${escapeHtml(firstImage)}" alt="${escapeHtml(product.title)}" class="syscom-product-image is-remote" loading="lazy" decoding="async" data-image-fallbacks='${escapeHtml(JSON.stringify(imageFallbacks))}' data-fallback-index="0" onerror="window.lwSyscomImageFallback && window.lwSyscomImageFallback(this)">${fallback}`
       : fallback.replace('display:none;', 'display:flex;');
     const sourceLink = product.url
       ? `<a class="syscom-product-source" href="${escapeHtml(product.url)}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> ${escapeHtml(product.sourceLabel || "Ver referencia / disponibilidad")}</a>`
