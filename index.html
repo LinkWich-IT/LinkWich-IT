@@ -2717,6 +2717,451 @@ body.modal-open .header-container {
 }
 </style>
 
+
+<style id="lw-no-zoom-layout-fix">
+/* ============================================================
+   LINKWICH-IT - FIX FINAL SIN EFECTO "ZOOM"
+   Corrige:
+   - Header demasiado ancho/alto por parches duplicados.
+   - Menú amontonado sin tener que bajar zoom del navegador.
+   - Catálogo con cards/imágenes demasiado grandes.
+   - Modal por encima del header.
+   ============================================================ */
+
+html,
+body{
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  zoom: 1 !important;
+}
+
+/* ---------- HEADER BASE ---------- */
+#header{
+  padding: 8px 0 !important;
+  z-index: 9997 !important;
+}
+
+#header .header-container{
+  width: min(94%, 1320px) !important;
+  max-width: 1320px !important;
+  min-height: 58px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: .42rem .65rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+  gap: .42rem !important;
+  overflow: visible !important;
+  border-radius: 999px !important;
+}
+
+#header .logo{
+  order: 1 !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: .40rem !important;
+  width: auto !important;
+  max-width: 170px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+#header .logo img{
+  flex: 0 0 auto !important;
+  width: 38px !important;
+  height: 38px !important;
+  max-width: 38px !important;
+  max-height: 38px !important;
+  object-fit: contain !important;
+}
+
+#header .logo .sitename{
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  font-size: 1.08rem !important;
+  letter-spacing: -.03em !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+#navmenu{
+  order: 2 !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+}
+
+#header .lw-header-monitor{
+  order: 3 !important;
+  flex: 0 0 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: auto !important;
+  margin: 0 !important;
+  padding: .66rem .78rem !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  font-size: .80rem !important;
+  gap: .24rem !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+#header .lw-header-monitor i{
+  margin: 0 !important;
+  font-size: .92rem !important;
+}
+
+#header .lw-header-monitor .lw-monitor-short{
+  display: none !important;
+}
+
+/* ---------- DESKTOP: MENÚ COMPLETO COMPACTO ---------- */
+@media (min-width: 1200px){
+  #navmenu > ul{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: .05rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    inset: auto !important;
+    overflow: visible !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transform: none !important;
+  }
+
+  #navmenu li{
+    flex: 0 0 auto !important;
+    width: auto !important;
+  }
+
+  #navmenu li.d-xl-none{
+    display: none !important;
+  }
+
+  #navmenu a{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    font-size: .80rem !important;
+    padding: .50rem .34rem !important;
+    border-radius: 999px !important;
+  }
+
+  #navmenu a i{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    min-width: auto !important;
+    margin-right: .14rem !important;
+    font-size: .78rem !important;
+    line-height: 1 !important;
+  }
+
+  #navmenu a::before,
+  #navmenu a::after{
+    max-width: 100% !important;
+  }
+
+  .mobile-nav-toggle{
+    display: none !important;
+  }
+}
+
+/* Desktop/laptop justo: aún cabe sin bajar zoom */
+@media (min-width: 1200px) and (max-width: 1360px){
+  #header .header-container{
+    width: calc(100% - 18px) !important;
+    max-width: calc(100% - 18px) !important;
+    padding-left: .55rem !important;
+    padding-right: .55rem !important;
+    gap: .28rem !important;
+  }
+
+  #header .logo{
+    max-width: 148px !important;
+    gap: .30rem !important;
+  }
+
+  #header .logo img{
+    width: 34px !important;
+    height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+  }
+
+  #header .logo .sitename{
+    font-size: .98rem !important;
+  }
+
+  #navmenu a{
+    font-size: .74rem !important;
+    padding-left: .24rem !important;
+    padding-right: .24rem !important;
+  }
+
+  #navmenu a i{
+    display: none !important;
+  }
+
+  #header .lw-header-monitor{
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    font-size: 0 !important;
+  }
+
+  #header .lw-header-monitor .lw-monitor-full,
+  #header .lw-header-monitor .lw-monitor-short{
+    display: none !important;
+  }
+
+  #header .lw-header-monitor i{
+    font-size: 1rem !important;
+  }
+}
+
+/* ---------- TABLET Y MÓVIL: HAMBURGUESA LIMPIA ---------- */
+@media (max-width: 1199px){
+  #header .header-container{
+    width: calc(100% - 20px) !important;
+    max-width: calc(100% - 20px) !important;
+    min-height: 58px !important;
+    padding: .46rem .58rem !important;
+    gap: .40rem !important;
+  }
+
+  #header .logo{
+    flex: 1 1 auto !important;
+    max-width: calc(100% - 64px) !important;
+  }
+
+  #header .logo img{
+    width: 36px !important;
+    height: 36px !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+  }
+
+  #header .logo .sitename{
+    font-size: 1.06rem !important;
+  }
+
+  #navmenu{
+    flex: 0 0 auto !important;
+    margin-left: auto !important;
+  }
+
+  #navmenu > ul{
+    display: none !important;
+    position: fixed !important;
+    top: 70px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-height: calc(100vh - 86px) !important;
+    overflow-y: auto !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+    gap: .28rem !important;
+    padding: .75rem !important;
+    margin: 0 !important;
+    background: rgba(18, 18, 45, .98) !important;
+    border: 1px solid rgba(255,255,255,.12) !important;
+    border-radius: 22px !important;
+    box-shadow: 0 24px 70px rgba(0,0,0,.35) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    z-index: 9998 !important;
+  }
+
+  body.mobile-nav-active #navmenu > ul,
+  #navmenu.mobile-nav-open > ul{
+    display: flex !important;
+  }
+
+  #navmenu li{
+    width: 100% !important;
+  }
+
+  #navmenu a{
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    white-space: normal !important;
+    font-size: .96rem !important;
+    color: rgba(255,255,255,.92) !important;
+    padding: .82rem .92rem !important;
+    border-radius: 14px !important;
+    line-height: 1.15 !important;
+  }
+
+  #navmenu a i{
+    display: inline-flex !important;
+    width: 20px !important;
+    min-width: 20px !important;
+    margin-right: .55rem !important;
+    justify-content: center !important;
+    color: rgba(255,255,255,.86) !important;
+  }
+
+  #navmenu a:hover,
+  #navmenu a.active{
+    color: #fff !important;
+    background: rgba(99, 102, 241, .20) !important;
+  }
+
+  #navmenu a::before,
+  #navmenu a::after{
+    display: none !important;
+  }
+
+  .mobile-nav-toggle{
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    width: 42px !important;
+    height: 42px !important;
+    margin-left: .10rem !important;
+    border-radius: 15px !important;
+    color: #fff !important;
+    background: rgba(255,255,255,.08) !important;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    font-size: 1.35rem !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    z-index: 9999 !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px){
+  #header .logo{
+    max-width: 210px !important;
+  }
+
+  #header .lw-header-monitor{
+    display: inline-flex !important;
+    padding: .66rem .78rem !important;
+    font-size: .80rem !important;
+    margin-left: auto !important;
+  }
+}
+
+@media (max-width: 767px){
+  #header .lw-header-monitor{
+    display: none !important;
+  }
+}
+
+/* ---------- CATÁLOGO: EVITA SENSACIÓN DE ZOOM ---------- */
+.syscom-catalog.section{
+  padding-top: 60px !important;
+  padding-bottom: 66px !important;
+}
+
+.syscom-products-swiper{
+  min-height: auto !important;
+  padding: .20rem .20rem .85rem !important;
+}
+
+.syscom-products-swiper .swiper-wrapper{
+  align-items: stretch !important;
+}
+
+.syscom-product-card{
+  min-height: 410px !important;
+}
+
+.syscom-product-media{
+  height: 138px !important;
+  padding: .75rem !important;
+}
+
+.syscom-product-image{
+  height: 112px !important;
+  max-height: 112px !important;
+  transform: none !important;
+  object-fit: contain !important;
+}
+
+.syscom-product-body{
+  padding: .92rem !important;
+}
+
+.syscom-product-body h4{
+  min-height: auto !important;
+  font-size: .96rem !important;
+}
+
+.syscom-product-body p{
+  min-height: 58px !important;
+  font-size: .84rem !important;
+  line-height: 1.48 !important;
+}
+
+.syscom-product-meta span{
+  font-size: .70rem !important;
+}
+
+.syscom-quote-btn{
+  padding: .68rem .85rem !important;
+}
+
+/* Modal siempre encima del header */
+body.modal-open #header,
+body.modal-open .header,
+body.modal-open .header-container{
+  z-index: 1000 !important;
+}
+
+.modal-backdrop{
+  z-index: 20000 !important;
+}
+
+.modal{
+  z-index: 20010 !important;
+}
+</style>
+
+
 </head>
 
 <body class="index-page">
