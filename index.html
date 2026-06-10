@@ -1691,6 +1691,129 @@
 }
 </style>
 
+<style>
+/* ============================================================
+   CATÁLOGO COMERCIAL AMPLIADO - LinkWich-IT
+   ============================================================ */
+.syscom-commercial-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1rem;
+  margin:0 0 1.35rem;
+}
+
+.syscom-commercial-card{
+  height:100%;
+  padding:1.1rem 1rem;
+  border-radius:22px;
+  background:color-mix(in srgb,var(--surface-color,#fff) 94%, transparent);
+  border:1px solid color-mix(in srgb,var(--default-color,#1f2937) 10%, transparent);
+  box-shadow:0 14px 34px rgba(15,23,42,.08);
+  transition:transform .22s ease, box-shadow .22s ease;
+}
+
+.syscom-commercial-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 42px rgba(15,23,42,.13);
+}
+
+.syscom-commercial-card i{
+  width:46px;
+  height:46px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:16px;
+  background:rgba(13,110,253,.10);
+  color:var(--accent-color,#0d6efd);
+  font-size:1.25rem;
+  margin-bottom:.75rem;
+}
+
+.syscom-commercial-card h4{
+  font-size:1rem;
+  margin:0 0 .45rem;
+  font-weight:800;
+}
+
+.syscom-commercial-card p{
+  margin:0;
+  font-size:.92rem;
+  line-height:1.65;
+  color:color-mix(in srgb,var(--default-color,#1f2937) 78%, transparent);
+}
+
+.syscom-catalog-open{
+  position:relative;
+  z-index:2;
+  margin-top:1.1rem;
+  padding:1.05rem;
+  border-radius:22px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+.syscom-catalog-open h4{
+  color:#fff;
+  margin:0 0 .35rem;
+  font-size:1.05rem;
+  font-weight:800;
+}
+
+.syscom-catalog-open p{
+  margin:0;
+  color:rgba(255,255,255,.82);
+  line-height:1.65;
+  max-width:850px;
+}
+
+.syscom-catalog-open-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.65rem;
+}
+
+.syscom-product-card{
+  min-height:470px;
+}
+
+.syscom-product-body h4{
+  min-height:52px;
+}
+
+.syscom-product-body p{
+  min-height:78px;
+}
+
+@media (max-width: 991px){
+  .syscom-commercial-grid{
+    grid-template-columns:1fr;
+  }
+  .syscom-catalog-open{
+    align-items:flex-start;
+  }
+  .syscom-catalog-open-actions{
+    width:100%;
+  }
+  .syscom-catalog-open-actions .btn{
+    flex:1 1 220px;
+  }
+}
+
+@media (max-width: 575px){
+  .syscom-catalog-open-actions .btn{
+    width:100%;
+    flex:1 1 100%;
+  }
+}
+</style>
+
 </head>
 
 <body class="index-page">
@@ -2113,33 +2236,54 @@
       <div class="container section-title" data-aos="fade-up">
         <h2>Catálogo de Productos y Soluciones</h2>
         <p>
-          Catálogo estático con productos y soluciones para proyectos empresariales. Trabajamos con Syscom como proveedor mayorista preferencial para ayudarte con suministro, instalación e integración personalizada.
+          Integramos soluciones empresariales de videovigilancia, alarmas, redes, WiFi, cableado, fibra óptica, energía, telefonía IP y seguridad. Trabajamos con mayoristas de primer nivel y canales comerciales de marcas líderes como Syscom, Fortinet, Axis, Aruba, Cisco y muchas marcas más para ofrecerte una propuesta a la medida con precio preferencial.
         </p>
       </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="syscom-commercial-grid">
+          <div class="syscom-commercial-card">
+            <i class="bi bi-patch-check-fill"></i>
+            <h4>Mayoristas de primer nivel</h4>
+            <p>Acceso a soluciones profesionales para proyectos empresariales, hotelería, residenciales, oficinas, comercios y sucursales.</p>
+          </div>
+          <div class="syscom-commercial-card">
+            <i class="bi bi-box-seam-fill"></i>
+            <h4>Suministro, instalación e integración</h4>
+            <p>Puedes solicitar solo suministro, suministro con instalación o una integración completa con diseño, configuración y puesta en marcha.</p>
+          </div>
+          <div class="syscom-commercial-card">
+            <i class="bi bi-person-workspace"></i>
+            <h4>Primer contacto técnico-comercial</h4>
+            <p>Para marcas con canales privados como Fortinet, Axis, Aruba o Cisco, nosotros somos tu punto de contacto para dimensionar la solución correcta.</p>
+          </div>
+        </div>
+
         <div class="syscom-category-toolbar" id="syscomCategoryToolbar" aria-label="Categorías del catálogo">
           <button class="syscom-category-filter active" type="button" data-category="Todos"><i class="bi bi-grid-3x3-gap-fill"></i> Todos</button>
-          <button class="syscom-category-filter" type="button" data-category="Hikvision CCTV"><i class="bi bi-camera-video-fill"></i> Hikvision CCTV</button>
-          <button class="syscom-category-filter" type="button" data-category="Hikvision AX PRO / XPRO"><i class="bi bi-bell-fill"></i> Hikvision AX PRO</button>
-          <button class="syscom-category-filter" type="button" data-category="NVR / Grabación"><i class="bi bi-device-hdd-fill"></i> NVR / Grabación</button>
-          <button class="syscom-category-filter" type="button" data-category="Ruijie / WiFi"><i class="bi bi-wifi"></i> Ruijie / WiFi</button>
-          <button class="syscom-category-filter" type="button" data-category="Ubiquiti / WiFi"><i class="bi bi-wifi"></i> Ubiquiti / WiFi</button>
-          <button class="syscom-category-filter" type="button" data-category="Panduit / Cableado"><i class="bi bi-ethernet"></i> Panduit / Cableado</button>
-          <button class="syscom-category-filter" type="button" data-category="Fibra Óptica"><i class="bi bi-bezier2"></i> Fibra Óptica</button>
-          <button class="syscom-category-filter" type="button" data-category="Allied Telesis"><i class="bi bi-hdd-network-fill"></i> Allied Telesis</button>
-          <button class="syscom-category-filter" type="button" data-category="Racks / Energía"><i class="bi bi-server"></i> Racks / Energía</button>
-          <button class="syscom-category-filter" type="button" data-category="UPS / Energía"><i class="bi bi-battery-charging"></i> UPS / Energía</button>
-          <button class="syscom-category-filter" type="button" data-category="Telefonía IP"><i class="bi bi-telephone-fill"></i> Telefonía IP</button>
+          <button class="syscom-category-filter " type="button" data-category="Hikvision CCTV"><i class="bi bi-camera-video-fill"></i> Hikvision CCTV</button>
+          <button class="syscom-category-filter " type="button" data-category="Hikvision AX PRO / XPRO"><i class="bi bi-bell-fill"></i> Hikvision AX PRO</button>
+          <button class="syscom-category-filter " type="button" data-category="NVR / Grabación"><i class="bi bi-device-hdd-fill"></i> NVR / Grabación</button>
+          <button class="syscom-category-filter " type="button" data-category="Ruijie / WiFi"><i class="bi bi-wifi"></i> Ruijie / WiFi</button>
+          <button class="syscom-category-filter " type="button" data-category="Ubiquiti / WiFi"><i class="bi bi-wifi"></i> Ubiquiti / WiFi</button>
+          <button class="syscom-category-filter " type="button" data-category="Panduit / Cableado"><i class="bi bi-ethernet"></i> Panduit / Cableado</button>
+          <button class="syscom-category-filter " type="button" data-category="Fibra Óptica"><i class="bi bi-bezier2"></i> Fibra Óptica</button>
+          <button class="syscom-category-filter " type="button" data-category="Allied Telesis"><i class="bi bi-hdd-network-fill"></i> Allied Telesis</button>
+          <button class="syscom-category-filter " type="button" data-category="Racks / Energía"><i class="bi bi-server"></i> Racks / Energía</button>
+          <button class="syscom-category-filter " type="button" data-category="UPS / Energía"><i class="bi bi-battery-charging"></i> UPS / Energía</button>
+          <button class="syscom-category-filter " type="button" data-category="Telefonía IP"><i class="bi bi-telephone-fill"></i> Telefonía IP</button>
+          <button class="syscom-category-filter " type="button" data-category="Firewalls / Seguridad"><i class="bi bi-shield-lock-fill"></i> Firewalls</button>
+          <button class="syscom-category-filter " type="button" data-category="Axis / Video IP"><i class="bi bi-camera-reels-fill"></i> Axis Video IP</button>
+          <button class="syscom-category-filter " type="button" data-category="Aruba / Cisco"><i class="bi bi-diagram-3-fill"></i> Aruba / Cisco</button>
         </div>
 
         <div class="syscom-catalog-panel">
           <div class="syscom-catalog-top">
             <div>
               <h3>Productos para proyectos empresariales y mucho más</h3>
-              <p>Catálogo sin API con SKU/modelo de referencia Syscom. Cotiza suministro únicamente, suministro e instalación o una integración personalizada con LinkWich-IT.</p>
+              <p>Consulta por SKU/modelo y solicita cotización para suministro, instalación o integración personalizada con LinkWich-IT.</p>
             </div>
-            <span class="syscom-live-badge"><i class="bi bi-patch-check-fill"></i> Mayorista preferencial Syscom</span>
+            <span class="syscom-live-badge"><i class="bi bi-award-fill"></i> Mayoristas y canales preferenciales</span>
           </div>
 
           <div class="swiper syscom-products-swiper">
@@ -2159,7 +2303,22 @@
           <div class="syscom-empty" id="syscomEmptyState">
             <i class="bi bi-inboxes-fill d-block mb-2"></i>
             <strong>No hay productos para esta categoría.</strong>
-            <div>Agrega productos al arreglo <code>syscomProducts</code> o cambia el filtro seleccionado.</div>
+            <div>Selecciona otra categoría o solicita una solución personalizada.</div>
+          </div>
+
+          <div class="syscom-catalog-open">
+            <div>
+              <h4>¿Deseas revisar un catálogo más amplio?</h4>
+              <p>Podemos ayudarte a buscar en el catálogo completo de Syscom y, para marcas como Fortinet, Axis, Aruba, Cisco y otras líneas especializadas, trabajamos mediante canales comerciales privados para brindarte una solución a medida con precio preferencial.</p>
+            </div>
+            <div class="syscom-catalog-open-actions">
+              <a class="btn btn-light" href="https://www.syscom.mx/" target="_blank" rel="noopener">
+                <i class="bi bi-box-arrow-up-right me-1"></i> Abrir catálogo Syscom
+              </a>
+              <a class="btn btn-primary" href="#contact">
+                <i class="bi bi-chat-dots-fill me-1"></i> Solicitar asesoría
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -2970,7 +3129,7 @@
           </div>
 
           <div class="syscom-note">
-            Nota: el correo abre el cliente de correo del visitante. Para envío automático desde la web se requiere un endpoint backend o servicio SMTP.
+            Nota: al enviar por correo se abrirá el cliente de correo del visitante con el mensaje ya preparado. También puedes solicitar la cotización directamente por WhatsApp.
           </div>
         </form>
       </div>
@@ -3099,10 +3258,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <script>
 /* ============================================================
-   CATÁLOGO SYSCOM FRONTEND
-   - Actualmente usa productos de ejemplo/listado local.
-   - Para conexión real: reemplazar syscomProducts por fetch('/api/syscom/productos')
-     desde tu backend Flask/PHP/Node, nunca directo al navegador.
+   CATÁLOGO COMERCIAL LINKWICH-IT
+   Productos y modelos de referencia para solicitud de cotización.
    ============================================================ */
 document.addEventListener("DOMContentLoaded", function () {
   const LINKWICH_WHATSAPP = "526241586134";
@@ -3110,76 +3267,352 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const syscomProducts = [
       {
-            "id": "hik-cctv-kit-4mp-4b-1tb",
+            "id": "hik-cctv-kit4mp-4b-1tb",
             "category": "Hikvision CCTV",
             "brand": "Hikvision",
             "title": "Kit CCTV 4 MP con 4 cámaras y 1 TB",
             "sku": "KIT4MP/4B/1TB",
-            "desc": "Kit de videovigilancia para negocios, casas u oficinas. Ideal para proyectos que requieren suministro e instalación rápida.",
+            "desc": "Solución de videovigilancia para negocio, oficina, casa o pequeña empresa con almacenamiento incluido.",
             "tags": [
                   "4 MP",
                   "4 cámaras",
                   "1 TB"
             ],
-            "icon": "bi-camera-reels-fill",
+            "icon": "bi-camera-video-fill",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-cctv-2mp-wifi-bullet",
+            "id": "hik-cctv-kit4mp-8b-2tb",
+            "category": "Hikvision CCTV",
+            "brand": "Hikvision",
+            "title": "Kit CCTV 4 MP para 8 cámaras",
+            "sku": "KIT4MP/8B/2TB",
+            "desc": "Paquete para crecer cobertura en accesos, pasillos, estacionamiento y áreas comunes.",
+            "tags": [
+                  "4 MP",
+                  "8 cámaras",
+                  "2 TB"
+            ],
+            "icon": "bi-camera-video-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "hik-ds2cv1023",
             "category": "Hikvision CCTV",
             "brand": "Hikvision",
             "title": "Cámara WiFi Bullet 2 MP Dual Light",
             "sku": "DS-2CV1023G2-LIDWF(B)",
-            "desc": "Cámara IP WiFi para exterior con 2 MP, iluminación Dual Light y enfoque para proyectos residenciales o comerciales.",
+            "desc": "Cámara tipo bullet para exterior con WiFi, audio y luz inteligente para proyectos residenciales y comercio.",
             "tags": [
                   "2 MP",
                   "WiFi",
                   "Exterior"
             ],
             "icon": "bi-camera-video-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS2CV1023G2LIDWF%28B%29/DS2CV1023G2LIDWF%28B%29-l.PNG",
-            "url": "https://www.syscom.mx/products/230184"
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-cctv-4mp-poe-bullet",
+            "id": "hik-ds2cv1043",
             "category": "Hikvision CCTV",
             "brand": "Hikvision",
-            "title": "Cámara Bullet IP 4 MP PoE Dual Light",
+            "title": "Cámara WiFi Bullet 4 MP Dual Light",
+            "sku": "DS-2CV1043G2-LIDWF(B)",
+            "desc": "Cámara WiFi de mayor resolución para accesos, fachadas, patios y zonas exteriores.",
+            "tags": [
+                  "4 MP",
+                  "WiFi",
+                  "Dual Light"
+            ],
+            "icon": "bi-camera-video-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "hik-ds2cv1f23",
+            "category": "Hikvision CCTV",
+            "brand": "Hikvision",
+            "title": "Cámara WiFi Domo 2 MP",
+            "sku": "DS-2CV1F23G2-LIDWF(B)",
+            "desc": "Cámara domo compacta para interiores o zonas protegidas con instalación limpia.",
+            "tags": [
+                  "2 MP",
+                  "Domo",
+                  "WiFi"
+            ],
+            "icon": "bi-camera-video-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "hik-ds2cv1f43",
+            "category": "Hikvision CCTV",
+            "brand": "Hikvision",
+            "title": "Cámara WiFi Domo 4 MP",
+            "sku": "DS-2CV1F43G2-LIDWF(B)",
+            "desc": "Cámara domo 4 MP para oficinas, recepción, pasillos y áreas comunes.",
+            "tags": [
+                  "4 MP",
+                  "Domo",
+                  "WiFi"
+            ],
+            "icon": "bi-camera-video-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "hik-ds2cd1043",
+            "category": "Hikvision CCTV",
+            "brand": "Hikvision",
+            "title": "Cámara Bullet IP 4 MP PoE",
             "sku": "DS-2CD1043G2-LIU(F)",
-            "desc": "Cámara IP 4 MP con PoE, lente 2.8 mm, Dual Light y micrófono integrado para videovigilancia profesional.",
+            "desc": "Cámara IP PoE para proyectos cableados con mejor estabilidad y administración centralizada.",
             "tags": [
                   "4 MP",
                   "PoE",
-                  "Micrófono"
+                  "IP"
             ],
-            "icon": "bi-camera-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS2CD1043G2LIU%28F%29/DS2CD1043G2LIU%28F%29-l.PNG",
-            "url": "https://www.syscom.mx/products/221903"
+            "icon": "bi-camera-video-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-cctv-kit-nks424w0h",
+            "id": "hik-ds2cd1143",
             "category": "Hikvision CCTV",
             "brand": "Hikvision",
-            "title": "Kit IP inalámbrico 4 MP con NVS y 2 cámaras",
-            "sku": "NKS424W0H",
-            "desc": "Kit de videovigilancia inalámbrico de 4 MP con grabador de 4 canales y 2 cámaras para instalación rápida.",
+            "title": "Cámara Domo IP 4 MP PoE",
+            "sku": "DS-2CD1143G2-LIU(F)",
+            "desc": "Cámara domo IP para interiores con alimentación PoE y buena calidad de imagen.",
             "tags": [
-                  "Kit",
                   "4 MP",
-                  "2 cámaras"
+                  "PoE",
+                  "Domo"
             ],
-            "icon": "bi-camera-reels-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/NKS424W0H/NKS424W0H-l.PNG",
-            "url": "https://www.syscom.mx/products/233659"
+            "icon": "bi-camera-video-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-nvr-8poe",
+            "id": "hik-colorvu-4mp",
+            "category": "Hikvision CCTV",
+            "brand": "Hikvision",
+            "title": "Cámara ColorVu 4 MP para exterior",
+            "sku": "DS-2CD1047G2H-LIU",
+            "desc": "Cámara para escenarios donde se requiere imagen a color y mayor detalle en baja iluminación.",
+            "tags": [
+                  "ColorVu",
+                  "4 MP",
+                  "Exterior"
+            ],
+            "icon": "bi-camera-video-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "hik-varifocal-4mp",
+            "category": "Hikvision CCTV",
+            "brand": "Hikvision",
+            "title": "Cámara varifocal 4 MP para perímetro",
+            "sku": "DS-2CD2643G2-IZS",
+            "desc": "Equipo para proyectos que requieren ajuste de lente, mayor control de cobertura y mejor precisión.",
+            "tags": [
+                  "Varifocal",
+                  "4 MP",
+                  "Perímetro"
+            ],
+            "icon": "bi-camera-video-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/KIT4MP/4B/1TB/portada_0S1000.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-kit",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Kit de alarma AX PRO inalámbrico",
+            "sku": "AXPROKIT",
+            "desc": "Kit base de alarma inalámbrica para casa, oficina, negocio o bodega.",
+            "tags": [
+                  "Alarma",
+                  "Inalámbrico",
+                  "App"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-dspwa48k",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Panel AX PRO 48 zonas",
+            "sku": "DS-PWA48-K",
+            "desc": "Panel para proyectos de intrusión con crecimiento modular y administración desde aplicación.",
+            "tags": [
+                  "48 zonas",
+                  "WiFi",
+                  "Ethernet"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-dspwa96m",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Panel AX PRO 96 zonas",
+            "sku": "DS-PWA96-M-WB",
+            "desc": "Panel para instalaciones con más sensores, áreas y requerimientos de seguridad avanzados.",
+            "tags": [
+                  "96 zonas",
+                  "Escalable",
+                  "Profesional"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-motion",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Sensor de movimiento inalámbrico",
+            "sku": "DS-PDP15P-EG2-WB",
+            "desc": "Detector PIR para protección interior de oficinas, habitaciones, almacenes o accesos.",
+            "tags": [
+                  "PIR",
+                  "Interior",
+                  "Inalámbrico"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-door",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Contacto magnético inalámbrico",
+            "sku": "DS-PDMC-EG2-WB",
+            "desc": "Sensor para puertas y ventanas, ideal para accesos principales o zonas sensibles.",
+            "tags": [
+                  "Puerta",
+                  "Ventana",
+                  "Sensor"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-keyfob",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Control remoto para armado/desarmado",
+            "sku": "DS-PKF1-WB",
+            "desc": "Control para usuarios que requieren armado rápido y operación sencilla del sistema.",
+            "tags": [
+                  "Control",
+                  "Usuarios",
+                  "Alarma"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-keypad",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Teclado inalámbrico AX PRO",
+            "sku": "DS-PK1-E-WB",
+            "desc": "Teclado para operar el sistema sin depender únicamente de la aplicación móvil.",
+            "tags": [
+                  "Teclado",
+                  "Operación",
+                  "Inalámbrico"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-siren",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Sirena inalámbrica interior/exterior",
+            "sku": "DS-PS1-E-WB",
+            "desc": "Sirena para señalización sonora de eventos de intrusión y alertas del sistema.",
+            "tags": [
+                  "Sirena",
+                  "Alerta",
+                  "Inalámbrico"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-smoke",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Detector de humo inalámbrico",
+            "sku": "DS-PDSMK-S-WB",
+            "desc": "Sensor complementario para seguridad preventiva en oficinas, bodegas o áreas críticas.",
+            "tags": [
+                  "Humo",
+                  "Prevención",
+                  "Sensor"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "axpro-repeater",
+            "category": "Hikvision AX PRO / XPRO",
+            "brand": "Hikvision AX PRO",
+            "title": "Repetidor inalámbrico AX PRO",
+            "sku": "DS-PR1-WB",
+            "desc": "Equipo para extender cobertura inalámbrica en instalaciones amplias o con muros densos.",
+            "tags": [
+                  "Repetidor",
+                  "Cobertura",
+                  "AX PRO"
+            ],
+            "icon": "bi-bell-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "nvr-ds7608niq18p",
             "category": "NVR / Grabación",
             "brand": "Hikvision",
             "title": "NVR 8 canales con PoE integrado",
             "sku": "DS-7608NI-Q1/8P(D)",
-            "desc": "Grabador NVR para cámaras IP con puertos PoE integrados, ideal para proyectos de CCTV con instalación ordenada.",
+            "desc": "Grabador para cámaras IP con puertos PoE integrados para instalación más limpia.",
             "tags": [
                   "8 canales",
                   "PoE",
@@ -3187,175 +3620,509 @@ document.addEventListener("DOMContentLoaded", function () {
             ],
             "icon": "bi-device-hdd-fill",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-axpro-kit",
-            "category": "Hikvision AX PRO / XPRO",
-            "brand": "Hikvision AX PRO",
-            "title": "Kit de alarma AX PRO inalámbrico",
-            "sku": "AXPROKIT",
-            "desc": "Kit de alarma inalámbrico para casa, oficina o negocio. Se puede cotizar como suministro o con instalación completa.",
+            "id": "nvr-ds7616niq2",
+            "category": "NVR / Grabación",
+            "brand": "Hikvision",
+            "title": "NVR 16 canales para videovigilancia IP",
+            "sku": "DS-7616NI-Q2",
+            "desc": "Grabador para proyectos medianos con capacidad de crecimiento y almacenamiento profesional.",
             "tags": [
-                  "AX PRO",
-                  "Inalámbrico",
-                  "Kit"
+                  "16 canales",
+                  "IP",
+                  "Grabación"
             ],
-            "icon": "bi-bell-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/AXPROKIT/AXPROKIT-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-axpro-kit-48",
-            "category": "Hikvision AX PRO / XPRO",
-            "brand": "Hikvision AX PRO",
-            "title": "Kit de alarma AX PRO 48 zonas",
-            "sku": "DS-PWA48-K",
-            "desc": "Kit inalámbrico AX PRO para intrusión, pensado para casas, oficinas y pequeños negocios con crecimiento modular.",
+            "id": "nvr-ds7732ni",
+            "category": "NVR / Grabación",
+            "brand": "Hikvision",
+            "title": "NVR 32 canales empresarial",
+            "sku": "DS-7732NI-K4",
+            "desc": "Solución para proyectos con múltiples cámaras, almacenamiento dedicado y administración centralizada.",
             "tags": [
-                  "AX PRO",
-                  "48 zonas",
-                  "Kit"
+                  "32 canales",
+                  "Empresarial",
+                  "Storage"
             ],
-            "icon": "bi-bell-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSPWA48K/DSPWA48K-l.PNG",
-            "url": "https://www.syscom.mx/products/195227"
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-axpro-panel-96",
-            "category": "Hikvision AX PRO / XPRO",
-            "brand": "Hikvision AX PRO",
-            "title": "Panel AX PRO 96 zonas WiFi/Ethernet/4G",
-            "sku": "DS-PWA96-M-WB",
-            "desc": "Panel AX PRO para proyectos de intrusión con hasta 96 zonas, comunicación WiFi/Ethernet y respaldo celular.",
+            "id": "nvr-ds9664ni",
+            "category": "NVR / Grabación",
+            "brand": "Hikvision",
+            "title": "NVR 64 canales para proyectos críticos",
+            "sku": "DS-9664NI-M16",
+            "desc": "Grabador para hoteles, residenciales y empresas con gran cantidad de cámaras IP.",
             "tags": [
-                  "96 zonas",
-                  "4G",
-                  "Ethernet"
+                  "64 canales",
+                  "Alta capacidad",
+                  "NVR"
             ],
-            "icon": "bi-shield-lock-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSPWA96MWB/DSPWA96MWB-l.PNG",
-            "url": "https://www.syscom.mx/products/208472"
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-axpro-procam",
-            "category": "Hikvision AX PRO / XPRO",
-            "brand": "Hikvision AX PRO",
-            "title": "Kit AX PRO con cámara IP incluida",
-            "sku": "DS-PWA48-PROCAM",
-            "desc": "Kit de alarma AX PRO con hub, sensores y cámara IP para una solución de intrusión con verificación visual.",
+            "id": "nvr-ds7604ni",
+            "category": "NVR / Grabación",
+            "brand": "Hikvision",
+            "title": "NVR compacto 4 canales",
+            "sku": "DS-7604NI-K1/4P",
+            "desc": "Opción compacta para proyectos pequeños con cámaras IP y alimentación PoE.",
             "tags": [
-                  "Kit",
-                  "Cámara IP",
-                  "Sensores"
+                  "4 canales",
+                  "PoE",
+                  "Compacto"
             ],
-            "icon": "bi-house-lock-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSPWA48PROCAM/DSPWA48PROCAM-l.PNG",
-            "url": "https://www.syscom.mx/products/210211"
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "ruijie-ap-rap2200e",
+            "id": "nvr-hdd-1tb",
+            "category": "NVR / Grabación",
+            "brand": "Western Digital / Seagate",
+            "title": "Disco duro para videovigilancia 1 TB",
+            "sku": "WD10PURZ / SkyHawk 1TB",
+            "desc": "Almacenamiento diseñado para grabación continua en sistemas CCTV/NVR.",
+            "tags": [
+                  "1 TB",
+                  "CCTV",
+                  "24/7"
+            ],
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "nvr-hdd-2tb",
+            "category": "NVR / Grabación",
+            "brand": "Western Digital / Seagate",
+            "title": "Disco duro para videovigilancia 2 TB",
+            "sku": "WD20PURZ / SkyHawk 2TB",
+            "desc": "Mayor capacidad para retención de video en comercios y oficinas.",
+            "tags": [
+                  "2 TB",
+                  "CCTV",
+                  "Video"
+            ],
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "nvr-hdd-4tb",
+            "category": "NVR / Grabación",
+            "brand": "Western Digital / Seagate",
+            "title": "Disco duro para videovigilancia 4 TB",
+            "sku": "WD40PURZ / SkyHawk 4TB",
+            "desc": "Almacenamiento para proyectos con más cámaras o más días de retención.",
+            "tags": [
+                  "4 TB",
+                  "Retención",
+                  "NVR"
+            ],
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "nvr-monitor",
+            "category": "NVR / Grabación",
+            "brand": "Hikvision / Monitor",
+            "title": "Monitor para centro de monitoreo",
+            "sku": "DS-D5022FN-C",
+            "desc": "Pantalla para visualización local de cámaras, NVR y estaciones de monitoreo.",
+            "tags": [
+                  "Monitor",
+                  "CCTV",
+                  "Operación"
+            ],
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "nvr-decodificador",
+            "category": "NVR / Grabación",
+            "brand": "Hikvision",
+            "title": "Decodificador / estación de video",
+            "sku": "DS-6904UDI(B)",
+            "desc": "Equipo para proyectos que requieren visualización avanzada, videowall o salas de control.",
+            "tags": [
+                  "Videowall",
+                  "Control",
+                  "Video"
+            ],
+            "icon": "bi-device-hdd-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DS7608NIQ1_8P(D)/DS7608NIQ1_8P(D)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ruijie-rap2200e",
             "category": "Ruijie / WiFi",
             "brand": "Ruijie Reyee",
-            "title": "Access Point Ruijie Reyee WiFi empresarial",
+            "title": "Access Point WiFi empresarial",
             "sku": "RG-RAP2200(E)",
-            "desc": "Punto de acceso para oficinas, comercios, restaurantes, hoteles y redes de invitados con administración sencilla.",
+            "desc": "AP para oficinas, comercios y espacios con múltiples usuarios conectados.",
             "tags": [
                   "WiFi",
-                  "Reyee",
+                  "Empresarial",
+                  "Reyee"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ruijie-rap2260g",
+            "category": "Ruijie / WiFi",
+            "brand": "Ruijie Reyee",
+            "title": "Access Point WiFi 6 techo",
+            "sku": "RG-RAP2260(G)",
+            "desc": "AP WiFi 6 para mejor rendimiento, densidad y administración centralizada.",
+            "tags": [
+                  "WiFi 6",
+                  "Techo",
+                  "Mesh"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ruijie-rap6260g",
+            "category": "Ruijie / WiFi",
+            "brand": "Ruijie Reyee",
+            "title": "Access Point exterior WiFi 6",
+            "sku": "RG-RAP6260(G)",
+            "desc": "AP para terrazas, patios, exteriores, hoteles y zonas abiertas.",
+            "tags": [
+                  "Exterior",
+                  "WiFi 6",
+                  "IP65"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ruijie-eg105g",
+            "category": "Ruijie / WiFi",
+            "brand": "Ruijie Reyee",
+            "title": "Router VPN empresarial",
+            "sku": "RG-EG105G",
+            "desc": "Router para negocios con administración cloud, control de acceso y redes segmentadas.",
+            "tags": [
+                  "Router",
+                  "VPN",
                   "Cloud"
             ],
             "icon": "bi-wifi",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "ruijie-ap-wifi6-rap2260",
+            "id": "ruijie-eg105gp",
             "category": "Ruijie / WiFi",
             "brand": "Ruijie Reyee",
-            "title": "Access Point WiFi 6 Mesh empresarial",
-            "sku": "RG-RAP2260(G)",
-            "desc": "AP WiFi 6 para alta densidad, oficinas, hoteles, comercios y redes de invitados administrables en la nube.",
+            "title": "Router PoE para soluciones WiFi",
+            "sku": "RG-EG105G-P",
+            "desc": "Router con PoE para alimentar APs y simplificar instalaciones pequeñas.",
             "tags": [
-                  "WiFi 6",
-                  "Mesh",
+                  "PoE",
+                  "Router",
+                  "WiFi"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ruijie-es205gcp",
+            "category": "Ruijie / WiFi",
+            "brand": "Ruijie Reyee",
+            "title": "Switch PoE 5 puertos Gigabit",
+            "sku": "RG-ES205GC-P",
+            "desc": "Switch compacto para cámaras, APs y puntos de red en proyectos pequeños.",
+            "tags": [
+                  "5 puertos",
+                  "PoE",
+                  "Gigabit"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ruijie-es218gcp",
+            "category": "Ruijie / WiFi",
+            "brand": "Ruijie Reyee",
+            "title": "Switch PoE 16 puertos + SFP",
+            "sku": "RG-ES218GC-P",
+            "desc": "Switch PoE para cámaras, APs y equipos de acceso con uplinks de fibra.",
+            "tags": [
+                  "16 puertos",
+                  "PoE",
+                  "SFP"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ruijie-es226gcp",
+            "category": "Ruijie / WiFi",
+            "brand": "Ruijie Reyee",
+            "title": "Switch PoE 24 puertos administrable",
+            "sku": "RG-ES226GC-P",
+            "desc": "Switch para redes empresariales con mayor cantidad de cámaras o access points.",
+            "tags": [
+                  "24 puertos",
+                  "PoE",
+                  "Administrable"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ruijie-nbr6205e",
+            "category": "Ruijie / WiFi",
+            "brand": "Ruijie",
+            "title": "Gateway empresarial para sucursales",
+            "sku": "RG-NBR6205-E",
+            "desc": "Gateway para control de tráfico, sucursales, políticas y administración avanzada.",
+            "tags": [
+                  "Gateway",
+                  "Sucursales",
                   "Empresarial"
             ],
             "icon": "bi-wifi",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2260%28G%29/RGRAP2260%28G%29-l.PNG",
-            "url": "https://www.syscom.mx/products/203964"
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "ruijie-switch-poe-5",
+            "id": "ruijie-cloud",
             "category": "Ruijie / WiFi",
-            "brand": "Ruijie Reyee",
-            "title": "Switch PoE administrable 5 puertos Gigabit",
-            "sku": "RG-ES205GC-P",
-            "desc": "Switch compacto con 4 puertos PoE y administración Cloud ideal para cámaras, APs y pequeños despliegues.",
+            "brand": "Ruijie Cloud",
+            "title": "Solución WiFi administrada en la nube",
+            "sku": "RUIJIE-CLOUD-WIFI",
+            "desc": "Diseño, suministro, adopción y administración de red inalámbrica desde cloud.",
             "tags": [
-                  "PoE",
-                  "5 puertos",
-                  "Cloud"
+                  "Cloud",
+                  "Administración",
+                  "WiFi"
             ],
-            "icon": "bi-hdd-network-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGES205GCP/RGES205GCP-l.PNG",
-            "url": "https://www.syscom.mx/products/203990"
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGRAP2200(E)/RGRAP2200(E)-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "ruijie-switch-poe-16",
-            "category": "Ruijie / WiFi",
-            "brand": "Ruijie Reyee",
-            "title": "Switch administrable PoE 16 puertos + SFP",
-            "sku": "RG-ES218GC-P",
-            "desc": "Switch L2 administrable con 16 puertos PoE Gigabit y uplinks SFP para CCTV, WiFi y segmentación por VLAN.",
-            "tags": [
-                  "16 PoE",
-                  "SFP",
-                  "240 W"
-            ],
-            "icon": "bi-diagram-3-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGES218GCP/RGES218GCP-l.PNG",
-            "url": "https://www.syscom.mx/products/203993"
-      },
-      {
-            "id": "ruijie-kit-router-wifi",
-            "category": "Ruijie / WiFi",
-            "brand": "Ruijie Reyee",
-            "title": "Pack router PoE + Access Points WiFi",
-            "sku": "RG-EG105G-P-V3-KITWIFI",
-            "desc": "Pack para redes pequeñas con router PoE y puntos de acceso, ideal para oficinas, comercios o red de invitados.",
-            "tags": [
-                  "Router",
-                  "APs",
-                  "Kit WiFi"
-            ],
-            "icon": "bi-router-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/RUIJIE/RGEG105GPV3KITWIFI/portada_0S1000.PNG",
-            "url": "https://www.syscom.mx/products/249166"
-      },
-      {
-            "id": "ubiquiti-u7pro",
+            "id": "ubnt-u7pro",
             "category": "Ubiquiti / WiFi",
-            "brand": "Ubiquiti Networks",
+            "brand": "Ubiquiti UniFi",
             "title": "Access Point UniFi U7 Pro",
             "sku": "U7PRO",
-            "desc": "Punto de acceso UniFi para proyectos WiFi de alto desempeño, ideal para oficinas, residencias y entornos empresariales.",
+            "desc": "AP WiFi 7 para proyectos de alto desempeño en oficinas, residenciales y negocios.",
             "tags": [
+                  "WiFi 7",
                   "UniFi",
-                  "WiFi",
-                  "Empresarial"
+                  "PoE"
             ],
             "icon": "bi-wifi",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "panduit-cable-cat6",
+            "id": "ubnt-u6pro",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti UniFi",
+            "title": "Access Point UniFi U6 Pro",
+            "sku": "U6-PRO",
+            "desc": "AP WiFi 6 para interiores con excelente rendimiento y administración UniFi.",
+            "tags": [
+                  "WiFi 6",
+                  "Interior",
+                  "UniFi"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ubnt-u6lr",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti UniFi",
+            "title": "Access Point UniFi U6 Long Range",
+            "sku": "U6-LR",
+            "desc": "AP para mayor cobertura en oficinas, áreas comunes y proyectos residenciales.",
+            "tags": [
+                  "WiFi 6",
+                  "Long Range",
+                  "PoE"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ubnt-u6mesh",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti UniFi",
+            "title": "Access Point UniFi Mesh",
+            "sku": "U6-MESH",
+            "desc": "AP compacto para interiores/exteriores protegidos y redes mesh.",
+            "tags": [
+                  "Mesh",
+                  "WiFi 6",
+                  "Flexible"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ubnt-udmpro",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti UniFi",
+            "title": "Gateway UniFi Dream Machine Pro",
+            "sku": "UDM-PRO",
+            "desc": "Gateway/controlador para redes UniFi con administración centralizada y seguridad básica.",
+            "tags": [
+                  "Gateway",
+                  "Controller",
+                  "UniFi"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ubnt-usw24poe",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti UniFi",
+            "title": "Switch UniFi 24 PoE",
+            "sku": "USW-24-POE",
+            "desc": "Switch PoE para APs, cámaras y red empresarial con administración UniFi.",
+            "tags": [
+                  "24 puertos",
+                  "PoE",
+                  "UniFi"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ubnt-usw48poe",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti UniFi",
+            "title": "Switch UniFi 48 PoE",
+            "sku": "USW-48-POE",
+            "desc": "Switch para proyectos con mayor cantidad de nodos, APs o cámaras IP.",
+            "tags": [
+                  "48 puertos",
+                  "PoE",
+                  "Rack"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ubnt-uswflex",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti UniFi",
+            "title": "Switch UniFi Flex PoE",
+            "sku": "USW-FLEX",
+            "desc": "Switch compacto PoE para cámaras o APs en zonas distribuidas.",
+            "tags": [
+                  "Compacto",
+                  "PoE",
+                  "Exterior"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ubnt-g5bullet",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti Protect",
+            "title": "Cámara UniFi Protect G5 Bullet",
+            "sku": "UVC-G5-BULLET",
+            "desc": "Cámara IP para ecosistemas UniFi Protect con administración centralizada.",
+            "tags": [
+                  "Protect",
+                  "Cámara",
+                  "IP"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ubnt-cloudkey",
+            "category": "Ubiquiti / WiFi",
+            "brand": "Ubiquiti UniFi",
+            "title": "Controlador UniFi Cloud Key",
+            "sku": "UCK-G2-PLUS",
+            "desc": "Controlador para administrar red UniFi y video Protect en instalaciones compactas.",
+            "tags": [
+                  "Controller",
+                  "Protect",
+                  "UniFi"
+            ],
+            "icon": "bi-wifi",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/UBIQUITINETWORKS/U7PRO/U7PRO-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "panduit-nur6c04buc",
             "category": "Panduit / Cableado",
-            "brand": "Panduit NetKey",
+            "brand": "Panduit",
             "title": "Cable UTP Cat6 azul 305 m",
             "sku": "NUR6C04BU-C",
-            "desc": "Bobina de cable Cat6 UTP para proyectos de voz, datos, cámaras IP, puntos de acceso y cableado estructurado.",
+            "desc": "Bobina Cat6 para cableado estructurado profesional en oficinas, hoteles y empresas.",
             "tags": [
                   "Cat6",
                   "305 m",
@@ -3363,191 +4130,509 @@ document.addEventListener("DOMContentLoaded", function () {
             ],
             "icon": "bi-ethernet",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
-            "url": "https://www.syscom.mx/products/74374"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "panduit-patch-panel-24",
+            "id": "panduit-nk6ppg24y",
             "category": "Panduit / Cableado",
             "brand": "Panduit NetKey",
-            "title": "Patch panel Cat6 de 24 puertos",
+            "title": "Patch panel Cat6 24 puertos",
             "sku": "NK6PPG24Y",
-            "desc": "Panel de parcheo Cat6 para rack, ideal para organizar y profesionalizar cableado de voz y datos.",
+            "desc": "Patch panel para organización de puntos de red en rack de comunicaciones.",
             "tags": [
                   "24 puertos",
                   "Cat6",
                   "Rack"
             ],
-            "icon": "bi-grid-3x3-gap-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NK6PPG24Y/NK6PPG24Y-FRENTE-l.PNG",
-            "url": "https://www.syscom.mx/products/74263"
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "panduit-jack-cat6",
+            "id": "panduit-cj688tgwh",
             "category": "Panduit / Cableado",
             "brand": "Panduit Mini-Com",
             "title": "Jack RJ45 Cat6 blanco",
             "sku": "CJ688TGWH",
-            "desc": "Conector RJ45 Mini-Com Cat6 para salidas de datos, voz y puntos de red en oficina o rack.",
+            "desc": "Conector RJ45 para placas Mini-Com en instalaciones limpias y certificables.",
             "tags": [
                   "RJ45",
                   "Cat6",
-                  "Mini-Com"
+                  "Jack"
             ],
-            "icon": "bi-plugin-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/CJ688TGWH/CJ688TGWH-l.PNG",
-            "url": "https://www.syscom.mx/products/177991"
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "panduit-patch-cord",
+            "id": "panduit-utpsp10buy",
             "category": "Panduit / Cableado",
             "brand": "Panduit",
             "title": "Patch cord Cat6 azul 10 ft",
             "sku": "UTPSP10BUY",
-            "desc": "Patch cord Cat6 para rack, switches, patch panel y conexiones de usuario final con estándar profesional.",
+            "desc": "Cordón de parcheo para rack, estaciones de trabajo y equipos de red.",
             "tags": [
+                  "Patch cord",
                   "Cat6",
-                  "10 ft",
-                  "Azul"
+                  "10 ft"
             ],
-            "icon": "bi-usb-plug-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/UTPSP10BUY/UTPSP10BUY-l.PNG",
-            "url": "https://www.syscom.mx/products/181409"
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "panduit-faceplate",
+            "id": "panduit-cfpe2iwy",
             "category": "Panduit / Cableado",
-            "brand": "Panduit Mini-Com",
+            "brand": "Panduit",
             "title": "Faceplate ejecutivo 2 puertos",
             "sku": "CFPE2IWY",
-            "desc": "Placa ejecutiva vertical de 2 puertos compatible con módulos Mini-Com para salidas de red profesionales.",
+            "desc": "Placa de pared para dos servicios de red/voz con presentación profesional.",
             "tags": [
+                  "Faceplate",
                   "2 puertos",
-                  "Mini-Com",
-                  "Oficina"
+                  "Blanco"
             ],
-            "icon": "bi-columns-gap",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/CFPE2IWY/CFPE2IWY-l.PNG",
-            "url": "https://www.syscom.mx/products/178240"
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "fiberhome-drop-a21c",
+            "id": "panduit-cmwh",
+            "category": "Panduit / Cableado",
+            "brand": "Panduit",
+            "title": "Módulo ciego Mini-Com",
+            "sku": "CMWH-X",
+            "desc": "Accesorio para cerrar espacios no utilizados en placas y mantener estética.",
+            "tags": [
+                  "Mini-Com",
+                  "Accesorio",
+                  "Orden"
+            ],
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "panduit-pv14",
+            "category": "Panduit / Cableado",
+            "brand": "Panduit",
+            "title": "Velcro / organizador para rack",
+            "sku": "HLSP3S-X0",
+            "desc": "Organización de cableado en rack para evitar tensión y mejorar mantenimiento.",
+            "tags": [
+                  "Organización",
+                  "Rack",
+                  "Cableado"
+            ],
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "panduit-fce1u",
+            "category": "Panduit / Cableado",
+            "brand": "Panduit",
+            "title": "Organizador horizontal 1U",
+            "sku": "WMP1E",
+            "desc": "Organizador para patch cords y administración frontal de cableado.",
+            "tags": [
+                  "1U",
+                  "Rack",
+                  "Orden"
+            ],
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "panduit-canaleta",
+            "category": "Panduit / Cableado",
+            "brand": "Panduit",
+            "title": "Canaleta para cableado estructurado",
+            "sku": "T70IW10",
+            "desc": "Canalización profesional para rutas visibles de datos, voz y CCTV.",
+            "tags": [
+                  "Canaleta",
+                  "Datos",
+                  "Instalación"
+            ],
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "panduit-certificacion",
+            "category": "Panduit / Cableado",
+            "brand": "Panduit",
+            "title": "Servicio de cableado estructurado certificable",
+            "sku": "PANDUIT-CAT6-SERVICIO",
+            "desc": "Suministro, instalación, peinado, etiquetado y pruebas de cableado estructurado.",
+            "tags": [
+                  "Servicio",
+                  "Certificable",
+                  "Proyecto"
+            ],
+            "icon": "bi-ethernet",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/PANDUIT/NUR6C04BUC/NUR6C04BUC-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-icdropa21c",
             "category": "Fibra Óptica",
             "brand": "FiberHome",
             "title": "Cable drop de fibra óptica",
             "sku": "ICDROPA21C",
-            "desc": "Solución para tendidos de fibra óptica en proyectos de conectividad, enlaces, CCTV o telecomunicaciones.",
+            "desc": "Cable para acometidas de fibra en proyectos de conectividad y enlaces dedicados.",
             "tags": [
                   "Fibra",
                   "Drop",
-                  "FTTx"
+                  "Exterior"
             ],
             "icon": "bi-bezier2",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "allied-x540-28xs",
+            "id": "fiber-caja-nap",
+            "category": "Fibra Óptica",
+            "brand": "FiberHome / LinkedPro",
+            "title": "Caja terminal óptica NAP",
+            "sku": "NAP-8/16",
+            "desc": "Caja para distribución de fibra óptica en edificios, residenciales o campus.",
+            "tags": [
+                  "NAP",
+                  "Distribución",
+                  "Fibra"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-pigtail-sc",
+            "category": "Fibra Óptica",
+            "brand": "LinkedPro",
+            "title": "Pigtail SC/APC monomodo",
+            "sku": "SC/APC-PIGTAIL",
+            "desc": "Pigtail para terminación de fibra óptica y fusiones profesionales.",
+            "tags": [
+                  "SC/APC",
+                  "Monomodo",
+                  "Fusión"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-patchcord-sc",
+            "category": "Fibra Óptica",
+            "brand": "LinkedPro",
+            "title": "Patch cord fibra SC/APC",
+            "sku": "SCAPC-SCAPC-3M",
+            "desc": "Patch cord para conexión entre ODF, equipos ópticos y transceptores.",
+            "tags": [
+                  "Patch cord",
+                  "SC/APC",
+                  "3 m"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-odf-12",
+            "category": "Fibra Óptica",
+            "brand": "LinkedPro",
+            "title": "ODF 12 puertos para rack",
+            "sku": "ODF-12-SC",
+            "desc": "Organizador óptico para rack de telecomunicaciones y terminación de fibra.",
+            "tags": [
+                  "ODF",
+                  "12 puertos",
+                  "Rack"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-odf-24",
+            "category": "Fibra Óptica",
+            "brand": "LinkedPro",
+            "title": "ODF 24 puertos para rack",
+            "sku": "ODF-24-SC",
+            "desc": "Distribuidor óptico para proyectos con mayor cantidad de fibras terminadas.",
+            "tags": [
+                  "ODF",
+                  "24 puertos",
+                  "Fibra"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-sfp-1g",
+            "category": "Fibra Óptica",
+            "brand": "Allied / Compatible",
+            "title": "Transceptor SFP 1G monomodo",
+            "sku": "SFP-1G-LX",
+            "desc": "Módulo SFP para enlaces de fibra entre switches, routers o equipos de red.",
+            "tags": [
+                  "SFP",
+                  "1G",
+                  "LX"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-sfp-10g",
+            "category": "Fibra Óptica",
+            "brand": "Allied / Compatible",
+            "title": "Transceptor SFP+ 10G",
+            "sku": "SFP-10G-LR",
+            "desc": "Módulo 10G para enlaces de backbone, distribución o agregación.",
+            "tags": [
+                  "SFP+",
+                  "10G",
+                  "Backbone"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-bandeja",
+            "category": "Fibra Óptica",
+            "brand": "LinkedPro",
+            "title": "Bandeja para empalme de fibra",
+            "sku": "FIBER-SPLICE-TRAY",
+            "desc": "Accesorio para proteger fusiones y mantener orden dentro de cajas u ODF.",
+            "tags": [
+                  "Empalme",
+                  "Protección",
+                  "Fibra"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fiber-servicio-fusion",
+            "category": "Fibra Óptica",
+            "brand": "LinkWich-IT",
+            "title": "Servicio de fusión y pruebas de fibra",
+            "sku": "SERVICIO-FIBRA-OTDR",
+            "desc": "Servicio de fusión, etiquetado, pruebas y documentación para enlaces de fibra.",
+            "tags": [
+                  "Servicio",
+                  "OTDR",
+                  "Fusión"
+            ],
+            "icon": "bi-bezier2",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/FIBERHOME/ICDROPA21C/ICDROPA21C-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "allied-atx540",
             "category": "Allied Telesis",
             "brand": "Allied Telesis",
-            "title": "Switch de agregación Allied Telesis 10G",
+            "title": "Switch de agregación 10G",
             "sku": "AT-X540L-28XS-10",
-            "desc": "Switch para proyectos de core/agregación, redes empresariales y enlaces de alto desempeño.",
+            "desc": "Switch de agregación con puertos 10G para backbone, core o distribución.",
             "tags": [
                   "10G",
                   "Core",
-                  "Agregación"
+                  "SFP+"
             ],
             "icon": "bi-hdd-network-fill",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "allied-router-ar4050s",
+            "id": "allied-atar4050s",
             "category": "Allied Telesis",
             "brand": "Allied Telesis",
-            "title": "Router / Firewall Allied Telesis",
+            "title": "Router / Firewall empresarial",
             "sku": "AT-AR4050S-10",
-            "desc": "Equipo para routing, seguridad y conectividad empresarial en redes que requieren control y administración avanzada.",
+            "desc": "Router para sucursales, seguridad, VPN y conectividad empresarial.",
             "tags": [
                   "Router",
-                  "Firewall",
-                  "Empresarial"
+                  "VPN",
+                  "Firewall"
             ],
-            "icon": "bi-shield-check",
+            "icon": "bi-hdd-network-fill",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATAR4050S10/ATAR4050S10-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "allied-gs950-8",
+            "id": "allied-gs9508",
             "category": "Allied Telesis",
             "brand": "Allied Telesis",
             "title": "Switch WebSmart 8 puertos + 2 SFP",
             "sku": "AT-GS950/8-10",
-            "desc": "Switch WebSmart Gigabit con 8 puertos y 2 SFP para redes empresariales pequeñas y administración básica.",
+            "desc": "Switch compacto administrable para pequeñas redes empresariales.",
             "tags": [
                   "8 puertos",
                   "2 SFP",
                   "WebSmart"
             ],
             "icon": "bi-hdd-network-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATGS950_810/ATGS950_810-l.PNG",
-            "url": "https://www.syscom.mx/products/212370"
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "allied-gs950-10poe",
+            "id": "allied-gs95010ps",
             "category": "Allied Telesis",
             "brand": "Allied Telesis",
             "title": "Switch PoE+ WebSmart 10 puertos",
             "sku": "AT-GS950/10PS-V2-10",
-            "desc": "Switch Gigabit WebSmart con PoE+ y uplinks SFP combo para cámaras IP, APs y redes de acceso.",
+            "desc": "Switch PoE+ para APs, cámaras y equipos de acceso.",
             "tags": [
                   "PoE+",
                   "10 puertos",
-                  "75 W"
+                  "Acceso"
             ],
-            "icon": "bi-lightning-charge-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATGS950_10PSV210/ATGS950_10PSV210-l.PNG",
-            "url": "https://www.syscom.mx/products/205648"
+            "icon": "bi-hdd-network-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "allied-gs970m-28ps",
+            "id": "allied-gs970m28ps",
             "category": "Allied Telesis",
             "brand": "Allied Telesis",
-            "title": "Switch PoE+ administrable Capa 3 24 puertos",
+            "title": "Switch PoE+ administrable 24 puertos",
             "sku": "AT-GS970M/28PS-10",
-            "desc": "Switch administrable con 24 puertos Gigabit, 4 SFP y potencia PoE+ para redes empresariales robustas.",
+            "desc": "Switch administrable para redes empresariales con PoE y uplinks SFP.",
             "tags": [
                   "24 puertos",
-                  "4 SFP",
-                  "370 W"
+                  "PoE+",
+                  "SFP"
             ],
-            "icon": "bi-diagram-3-fill",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATGS970M_28PS10/ATGS970M_28PS10-l.PNG",
-            "url": "https://www.syscom.mx/products/141159"
+            "icon": "bi-hdd-network-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "allied-x230-28gp",
+            "id": "allied-x23028gp",
             "category": "Allied Telesis",
             "brand": "Allied Telesis",
-            "title": "Switch PoE+ administrable Capa 3 x230",
+            "title": "Switch Capa 3 PoE+ x230",
             "sku": "AT-X230-28GP-10",
-            "desc": "Switch PoE+ Capa 3 con 24 puertos Gigabit y 4 SFP para redes con VLANs, monitoreo y administración avanzada.",
+            "desc": "Switch Capa 3 para redes con VLANs, monitoreo y administración avanzada.",
             "tags": [
                   "Capa 3",
                   "PoE+",
-                  "4 SFP"
+                  "VLAN"
             ],
-            "icon": "bi-server",
-            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format%3Dauto%2Cquality%3D80%2Cwidth%3D600/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX23028GP10/ATX23028GP10-l.png",
-            "url": "https://www.syscom.mx/products/137055"
+            "icon": "bi-hdd-network-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "linkedpro-rack-lp3krt",
+            "id": "allied-x51028gp",
+            "category": "Allied Telesis",
+            "brand": "Allied Telesis",
+            "title": "Switch apilable PoE+ x510",
+            "sku": "AT-X510-28GPX-10",
+            "desc": "Switch apilable para distribución con alto rendimiento y puertos PoE+.",
+            "tags": [
+                  "Stack",
+                  "PoE+",
+                  "Distribución"
+            ],
+            "icon": "bi-hdd-network-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "allied-x53028gtxm",
+            "category": "Allied Telesis",
+            "brand": "Allied Telesis",
+            "title": "Switch multi-gigabit para acceso",
+            "sku": "AT-X530-28GTXM-10",
+            "desc": "Switch para APs WiFi 6/7, redes de alta demanda y enlaces multi-gigabit.",
+            "tags": [
+                  "Multi-Gig",
+                  "WiFi 6",
+                  "Acceso"
+            ],
+            "icon": "bi-hdd-network-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "allied-ie200",
+            "category": "Allied Telesis",
+            "brand": "Allied Telesis",
+            "title": "Switch industrial Allied Telesis",
+            "sku": "AT-IE200-6GT-80",
+            "desc": "Equipo para ambientes industriales, gabinetes, CCTV o condiciones exigentes.",
+            "tags": [
+                  "Industrial",
+                  "DIN Rail",
+                  "Robusto"
+            ],
+            "icon": "bi-hdd-network-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "allied-awplus",
+            "category": "Allied Telesis",
+            "brand": "Allied Telesis",
+            "title": "Integración y configuración AlliedWare Plus",
+            "sku": "ALLIED-AWPLUS-SERVICIO",
+            "desc": "Configuración de VLANs, STP, LLDP, respaldos, SNMP y monitoreo con LinkWich-Monitor.",
+            "tags": [
+                  "Servicio",
+                  "AW+",
+                  "Monitoreo"
+            ],
+            "icon": "bi-hdd-network-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/ALLIEDTELESIS/ATX540L28XS10/ATX540L28XS10-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-lp3krt",
             "category": "Racks / Energía",
             "brand": "LinkedPro by EPCOM",
             "title": "Gabinete / rack para telecomunicaciones",
             "sku": "LP3KRT",
-            "desc": "Gabinete para organizar switches, patch panels, NVR, UPS y equipo de telecomunicaciones en proyectos profesionales.",
+            "desc": "Gabinete para organizar switches, patch panels, NVR, UPS y equipos de red.",
             "tags": [
                   "Rack",
                   "Telecom",
@@ -3555,31 +4640,339 @@ document.addEventListener("DOMContentLoaded", function () {
             ],
             "icon": "bi-server",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "hik-ups-2000x",
+            "id": "rack-6u",
+            "category": "Racks / Energía",
+            "brand": "LinkedPro",
+            "title": "Gabinete mural 6U",
+            "sku": "LP-RACK-6U",
+            "desc": "Rack compacto para cámaras, router, switch pequeño o punto de distribución.",
+            "tags": [
+                  "6U",
+                  "Mural",
+                  "Compacto"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-9u",
+            "category": "Racks / Energía",
+            "brand": "LinkedPro",
+            "title": "Gabinete mural 9U",
+            "sku": "LP-RACK-9U",
+            "desc": "Gabinete para pequeños cuartos de comunicaciones y proyectos de CCTV/red.",
+            "tags": [
+                  "9U",
+                  "Mural",
+                  "Red"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-12u",
+            "category": "Racks / Energía",
+            "brand": "LinkedPro",
+            "title": "Gabinete mural 12U",
+            "sku": "LP-RACK-12U",
+            "desc": "Mayor capacidad para patch panel, switch PoE, NVR y UPS compacto.",
+            "tags": [
+                  "12U",
+                  "Mural",
+                  "CCTV"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-22u",
+            "category": "Racks / Energía",
+            "brand": "LinkedPro",
+            "title": "Rack cerrado 22U",
+            "sku": "LP-RACK-22U",
+            "desc": "Rack para salas de comunicaciones medianas con orden y seguridad física.",
+            "tags": [
+                  "22U",
+                  "Cerrado",
+                  "Telecom"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-42u",
+            "category": "Racks / Energía",
+            "brand": "LinkedPro",
+            "title": "Rack cerrado 42U",
+            "sku": "LP-RACK-42U",
+            "desc": "Rack de piso para infraestructura empresarial, servidores, switches core y distribución.",
+            "tags": [
+                  "42U",
+                  "Piso",
+                  "Empresarial"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-pdu",
+            "category": "Racks / Energía",
+            "brand": "LinkedPro",
+            "title": "PDU para rack",
+            "sku": "PDU-RACK-8",
+            "desc": "Barra de contactos para alimentar equipos dentro del gabinete de telecomunicaciones.",
+            "tags": [
+                  "PDU",
+                  "Rack",
+                  "Energía"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-charola",
+            "category": "Racks / Energía",
+            "brand": "LinkedPro",
+            "title": "Charola fija para rack",
+            "sku": "CHAROLA-RACK-1U",
+            "desc": "Accesorio para montar equipos que no cuentan con orejas de rack.",
+            "tags": [
+                  "Charola",
+                  "1U",
+                  "Accesorio"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-ventilacion",
+            "category": "Racks / Energía",
+            "brand": "LinkedPro",
+            "title": "Ventilador / extractor para rack",
+            "sku": "FAN-RACK",
+            "desc": "Sistema de ventilación para gabinetes con switches PoE, NVR y UPS.",
+            "tags": [
+                  "Ventilación",
+                  "Rack",
+                  "Temperatura"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "rack-organizacion",
+            "category": "Racks / Energía",
+            "brand": "LinkWich-IT",
+            "title": "Servicio de organización y etiquetado de rack",
+            "sku": "SERVICIO-RACK-CLEANUP",
+            "desc": "Peinado, etiquetado, documentación y mejora visual/operativa de racks existentes.",
+            "tags": [
+                  "Servicio",
+                  "Etiquetado",
+                  "Orden"
+            ],
+            "icon": "bi-server",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/LINKEDPROBYEPCOM/LP3KRT/LP3KRT-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-ds2000x",
             "category": "UPS / Energía",
             "brand": "Hikvision",
             "title": "UPS para protección de energía",
             "sku": "DS-UPS2000-X",
-            "desc": "UPS para proteger NVR, cámaras, switches, routers y equipo crítico ante variaciones o cortes eléctricos.",
+            "desc": "UPS para proteger NVR, switches, routers y equipos críticos.",
             "tags": [
                   "UPS",
-                  "Energía",
+                  "2000 VA",
                   "Respaldo"
             ],
             "icon": "bi-battery-charging",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
       },
       {
-            "id": "grandstream-grp2650",
+            "id": "ups-ds1000x",
+            "category": "UPS / Energía",
+            "brand": "Hikvision",
+            "title": "UPS compacto para CCTV",
+            "sku": "DS-UPS1000-X",
+            "desc": "Opción para proyectos pequeños de cámaras, router o NVR compacto.",
+            "tags": [
+                  "UPS",
+                  "CCTV",
+                  "Compacto"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-ds3000x",
+            "category": "UPS / Energía",
+            "brand": "Hikvision",
+            "title": "UPS de mayor capacidad",
+            "sku": "DS-UPS3000-X",
+            "desc": "UPS para racks con mayor carga, switches PoE y grabadores de video.",
+            "tags": [
+                  "UPS",
+                  "3000 VA",
+                  "Rack"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-apc-1500",
+            "category": "UPS / Energía",
+            "brand": "APC / Compatible",
+            "title": "UPS 1500 VA para equipos críticos",
+            "sku": "APC-1500VA",
+            "desc": "Respaldo de energía para router, firewall, NVR y switch principal.",
+            "tags": [
+                  "1500 VA",
+                  "Red",
+                  "Protección"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-apc-2200",
+            "category": "UPS / Energía",
+            "brand": "APC / Compatible",
+            "title": "UPS 2200 VA para rack",
+            "sku": "APC-2200VA-RACK",
+            "desc": "Solución para racks de comunicaciones con mayor demanda energética.",
+            "tags": [
+                  "Rack",
+                  "2200 VA",
+                  "Protección"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-cyberpower-1500",
+            "category": "UPS / Energía",
+            "brand": "CyberPower",
+            "title": "UPS CyberPower 1500 VA",
+            "sku": "CP1500AVRLCD",
+            "desc": "Protección de energía para equipos de red, cómputo y videovigilancia.",
+            "tags": [
+                  "CyberPower",
+                  "1500 VA",
+                  "LCD"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-cyberpower-rack",
+            "category": "UPS / Energía",
+            "brand": "CyberPower",
+            "title": "UPS rackmount CyberPower",
+            "sku": "OR1500LCDRM1U",
+            "desc": "UPS formato rack para gabinetes de comunicaciones empresariales.",
+            "tags": [
+                  "Rack",
+                  "1U",
+                  "CyberPower"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-bateria",
+            "category": "UPS / Energía",
+            "brand": "Compatible",
+            "title": "Batería de reemplazo para UPS",
+            "sku": "UPS-BATTERY-12V",
+            "desc": "Reemplazo de baterías para mantener autonomía y continuidad operativa.",
+            "tags": [
+                  "Batería",
+                  "Mantenimiento",
+                  "UPS"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-pdu",
+            "category": "UPS / Energía",
+            "brand": "LinkedPro",
+            "title": "PDU para distribución eléctrica",
+            "sku": "PDU-8TOMAS",
+            "desc": "Distribución eléctrica ordenada dentro de rack o gabinete.",
+            "tags": [
+                  "PDU",
+                  "Rack",
+                  "Energía"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "ups-mantenimiento",
+            "category": "UPS / Energía",
+            "brand": "LinkWich-IT",
+            "title": "Servicio de revisión de energía en rack",
+            "sku": "SERVICIO-ENERGIA-RACK",
+            "desc": "Validación de carga, organización eléctrica y recomendaciones de respaldo energético.",
+            "tags": [
+                  "Servicio",
+                  "Energía",
+                  "Rack"
+            ],
+            "icon": "bi-battery-charging",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/HIKVISION/DSUPS2000X/DSUPS2000X-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-grp2650",
             "category": "Telefonía IP",
             "brand": "Grandstream",
-            "title": "Teléfono IP empresarial Grandstream",
+            "title": "Teléfono IP empresarial",
             "sku": "GRP2650",
-            "desc": "Teléfono IP para recepción, oficinas, administración y extensiones empresariales con integración VoIP.",
+            "desc": "Teléfono IP para recepción, oficinas, administración y extensiones empresariales.",
             "tags": [
                   "VoIP",
                   "SIP",
@@ -3587,7 +4980,671 @@ document.addEventListener("DOMContentLoaded", function () {
             ],
             "icon": "bi-telephone-fill",
             "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
-            "url": "https://www.syscom.mx/"
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-grp2612",
+            "category": "Telefonía IP",
+            "brand": "Grandstream",
+            "title": "Teléfono IP básico empresarial",
+            "sku": "GRP2612",
+            "desc": "Terminal IP para extensiones de oficina, usuarios administrativos y operación diaria.",
+            "tags": [
+                  "SIP",
+                  "Oficina",
+                  "VoIP"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-grp2614",
+            "category": "Telefonía IP",
+            "brand": "Grandstream",
+            "title": "Teléfono IP ejecutivo",
+            "sku": "GRP2614",
+            "desc": "Terminal IP con más teclas y funciones para usuarios administrativos o gerencia.",
+            "tags": [
+                  "Ejecutivo",
+                  "SIP",
+                  "HD"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-grp2624",
+            "category": "Telefonía IP",
+            "brand": "Grandstream",
+            "title": "Teléfono IP profesional",
+            "sku": "GRP2624",
+            "desc": "Teléfono para alta productividad, recepción o usuarios con varias líneas.",
+            "tags": [
+                  "Multi-línea",
+                  "Recepción",
+                  "VoIP"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-ht801",
+            "category": "Telefonía IP",
+            "brand": "Grandstream",
+            "title": "Adaptador ATA para línea analógica",
+            "sku": "HT801",
+            "desc": "Adaptador para integrar equipos analógicos con telefonía IP.",
+            "tags": [
+                  "ATA",
+                  "SIP",
+                  "Analógico"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-ht812",
+            "category": "Telefonía IP",
+            "brand": "Grandstream",
+            "title": "Adaptador ATA 2 puertos",
+            "sku": "HT812",
+            "desc": "ATA para migración gradual de telefonía analógica a VoIP.",
+            "tags": [
+                  "2 FXS",
+                  "ATA",
+                  "VoIP"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-ucm6301",
+            "category": "Telefonía IP",
+            "brand": "Grandstream",
+            "title": "Conmutador IP UCM6301",
+            "sku": "UCM6301",
+            "desc": "PBX IP para pequeñas empresas con extensiones SIP y troncales.",
+            "tags": [
+                  "PBX",
+                  "SIP",
+                  "Empresa"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-ucm6302",
+            "category": "Telefonía IP",
+            "brand": "Grandstream",
+            "title": "Conmutador IP UCM6302",
+            "sku": "UCM6302",
+            "desc": "PBX para empresas con mayor número de extensiones y servicios de voz.",
+            "tags": [
+                  "PBX",
+                  "Extensiones",
+                  "SIP"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-gxp2170",
+            "category": "Telefonía IP",
+            "brand": "Grandstream",
+            "title": "Teléfono IP de alto rendimiento",
+            "sku": "GXP2170",
+            "desc": "Terminal IP con múltiples líneas para operación intensiva.",
+            "tags": [
+                  "Multi-línea",
+                  "HD",
+                  "VoIP"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "phone-servicio-voip",
+            "category": "Telefonía IP",
+            "brand": "LinkWich-IT",
+            "title": "Implementación de telefonía IP",
+            "sku": "SERVICIO-VOIP",
+            "desc": "Diseño, instalación, VLAN de voz, QoS, extensiones y pruebas de llamadas.",
+            "tags": [
+                  "Servicio",
+                  "QoS",
+                  "Voz"
+            ],
+            "icon": "bi-telephone-fill",
+            "image": "https://ftp3.syscom.mx/cdn-cgi/image/format=avif,quality=90/usuarios/fotos/BancoFotografiasSyscom/GRANDSTREAM/GRP2650/GRP2650-h.PNG",
+            "url": "https://www.syscom.mx/",
+            "sourceLabel": "Consultar referencia"
+      },
+      {
+            "id": "fortigate-40f",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Firewall FortiGate para pequeña empresa",
+            "sku": "FG-40F",
+            "desc": "Seguridad perimetral para oficinas pequeñas con VPN, filtrado y políticas de seguridad.",
+            "tags": [
+                  "Firewall",
+                  "VPN",
+                  "UTM"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortigate-60f",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Firewall FortiGate para oficinas",
+            "sku": "FG-60F",
+            "desc": "Equipo para empresas con mayor número de usuarios, sucursales y políticas de seguridad.",
+            "tags": [
+                  "NGFW",
+                  "VPN",
+                  "SD-WAN"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortigate-70f",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Firewall FortiGate para sucursal",
+            "sku": "FG-70F",
+            "desc": "Solución de seguridad y conectividad para sucursales y oficinas medianas.",
+            "tags": [
+                  "Sucursal",
+                  "SD-WAN",
+                  "Seguridad"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortigate-80f",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Firewall FortiGate empresarial",
+            "sku": "FG-80F",
+            "desc": "Firewall para empresas con mayor tráfico, segmentación y servicios de seguridad.",
+            "tags": [
+                  "NGFW",
+                  "Empresarial",
+                  "VPN"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortigate-100f",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Firewall FortiGate alto desempeño",
+            "sku": "FG-100F",
+            "desc": "Equipo para redes con mayor demanda de throughput, usuarios y servicios críticos.",
+            "tags": [
+                  "Alto desempeño",
+                  "NGFW",
+                  "UTM"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortiswitch-124f",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Switch administrable FortiSwitch",
+            "sku": "FS-124F",
+            "desc": "Switch para integración con FortiGate, VLANs, seguridad y administración centralizada.",
+            "tags": [
+                  "Switch",
+                  "FortiLink",
+                  "VLAN"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortiswitch-148fpoe",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Switch PoE FortiSwitch",
+            "sku": "FS-148F-FPOE",
+            "desc": "Switch PoE para APs, cámaras y redes integradas con seguridad Fortinet.",
+            "tags": [
+                  "PoE",
+                  "FortiLink",
+                  "48 puertos"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortiap-231f",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Access Point FortiAP",
+            "sku": "FAP-231F",
+            "desc": "AP empresarial para ambientes integrados con FortiGate y políticas de seguridad.",
+            "tags": [
+                  "WiFi",
+                  "FortiGate",
+                  "AP"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortiap-431f",
+            "category": "Firewalls / Seguridad",
+            "brand": "Fortinet",
+            "title": "Access Point FortiAP alto desempeño",
+            "sku": "FAP-431F",
+            "desc": "AP para mayor densidad de usuarios, hoteles, oficinas y áreas comunes.",
+            "tags": [
+                  "WiFi",
+                  "Densidad",
+                  "Fortinet"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "fortinet-servicio",
+            "category": "Firewalls / Seguridad",
+            "brand": "LinkWich-IT",
+            "title": "Configuración Fortinet y seguridad perimetral",
+            "sku": "SERVICIO-FORTINET",
+            "desc": "Diseño de políticas, VPN, SD-WAN, segmentación, hardening y buenas prácticas.",
+            "tags": [
+                  "Servicio",
+                  "VPN",
+                  "SD-WAN"
+            ],
+            "icon": "bi-shield-lock-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Solicitar integración"
+      },
+      {
+            "id": "axis-m3085",
+            "category": "Axis / Video IP",
+            "brand": "Axis",
+            "title": "Cámara domo Axis compacta",
+            "sku": "M3085-V",
+            "desc": "Cámara IP para interiores con calidad profesional y administración empresarial.",
+            "tags": [
+                  "Domo",
+                  "IP",
+                  "Axis"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-m3086",
+            "category": "Axis / Video IP",
+            "brand": "Axis",
+            "title": "Cámara domo Axis 4 MP",
+            "sku": "M3086-V",
+            "desc": "Solución para oficinas, recepción, pasillos y áreas interiores críticas.",
+            "tags": [
+                  "4 MP",
+                  "Interior",
+                  "Axis"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-p3265",
+            "category": "Axis / Video IP",
+            "brand": "Axis",
+            "title": "Cámara domo exterior Axis",
+            "sku": "P3265-LVE",
+            "desc": "Cámara IP robusta para exteriores con calidad profesional y analíticos.",
+            "tags": [
+                  "Exterior",
+                  "Domo",
+                  "IP"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-p3267",
+            "category": "Axis / Video IP",
+            "brand": "Axis",
+            "title": "Cámara domo Axis alta resolución",
+            "sku": "P3267-LVE",
+            "desc": "Cámara para proyectos con mayor detalle y cobertura en áreas sensibles.",
+            "tags": [
+                  "Alta resolución",
+                  "Exterior",
+                  "Axis"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-p1465",
+            "category": "Axis / Video IP",
+            "brand": "Axis",
+            "title": "Cámara bullet Axis exterior",
+            "sku": "P1465-LE",
+            "desc": "Cámara tipo bullet para perímetro, estacionamiento y accesos.",
+            "tags": [
+                  "Bullet",
+                  "Exterior",
+                  "IR"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-p1455",
+            "category": "Axis / Video IP",
+            "brand": "Axis",
+            "title": "Cámara bullet Axis profesional",
+            "sku": "P1455-LE",
+            "desc": "Solución para videovigilancia profesional en exteriores.",
+            "tags": [
+                  "IP",
+                  "Exterior",
+                  "Axis"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-m4216",
+            "category": "Axis / Video IP",
+            "brand": "Axis",
+            "title": "Mini domo Axis para interiores",
+            "sku": "M4216-LV",
+            "desc": "Cámara compacta para interiores con buena calidad y diseño discreto.",
+            "tags": [
+                  "Mini domo",
+                  "Interior",
+                  "IP"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-m5525",
+            "category": "Axis / Video IP",
+            "brand": "Axis",
+            "title": "Cámara PTZ compacta Axis",
+            "sku": "M5525-E",
+            "desc": "Cámara PTZ para vigilancia activa, áreas abiertas y seguimiento visual.",
+            "tags": [
+                  "PTZ",
+                  "Exterior",
+                  "Axis"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-vms",
+            "category": "Axis / Video IP",
+            "brand": "Axis / Compatible",
+            "title": "Solución VMS y grabación profesional",
+            "sku": "AXIS-CAMERA-STATION",
+            "desc": "Integración de cámaras Axis con plataforma de administración y grabación.",
+            "tags": [
+                  "VMS",
+                  "Grabación",
+                  "Axis"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "axis-servicio",
+            "category": "Axis / Video IP",
+            "brand": "LinkWich-IT",
+            "title": "Integración Axis para proyectos empresariales",
+            "sku": "SERVICIO-AXIS",
+            "desc": "Diseño, suministro, configuración, red, almacenamiento y puesta en marcha de video IP.",
+            "tags": [
+                  "Servicio",
+                  "Video IP",
+                  "Integración"
+            ],
+            "icon": "bi-camera-reels-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Solicitar integración"
+      },
+      {
+            "id": "aruba-ap515",
+            "category": "Aruba / Cisco",
+            "brand": "Aruba / HPE",
+            "title": "Access Point Aruba empresarial",
+            "sku": "AP-515",
+            "desc": "AP WiFi empresarial para alta estabilidad, seguridad y administración centralizada.",
+            "tags": [
+                  "WiFi",
+                  "Aruba",
+                  "Empresarial"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "aruba-ap535",
+            "category": "Aruba / Cisco",
+            "brand": "Aruba / HPE",
+            "title": "Access Point Aruba alto desempeño",
+            "sku": "AP-535",
+            "desc": "AP para alta densidad de usuarios en hoteles, oficinas o áreas comunes.",
+            "tags": [
+                  "Alta densidad",
+                  "WiFi",
+                  "Aruba"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "aruba-6100-24g",
+            "category": "Aruba / Cisco",
+            "brand": "Aruba / HPE",
+            "title": "Switch Aruba 6100 24 puertos",
+            "sku": "JL678A",
+            "desc": "Switch de acceso para redes empresariales con VLANs y administración profesional.",
+            "tags": [
+                  "24 puertos",
+                  "Aruba",
+                  "Acceso"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "aruba-6100-48g",
+            "category": "Aruba / Cisco",
+            "brand": "Aruba / HPE",
+            "title": "Switch Aruba 6100 48 puertos",
+            "sku": "JL676A",
+            "desc": "Switch para mayores densidades de usuarios y puntos de red.",
+            "tags": [
+                  "48 puertos",
+                  "Acceso",
+                  "Aruba"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "aruba-6200f",
+            "category": "Aruba / Cisco",
+            "brand": "Aruba / HPE",
+            "title": "Switch Aruba 6200F",
+            "sku": "JL725A",
+            "desc": "Switch para acceso/distribución con administración avanzada y crecimiento.",
+            "tags": [
+                  "Aruba",
+                  "Distribución",
+                  "Switch"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "cisco-c100024p",
+            "category": "Aruba / Cisco",
+            "brand": "Cisco",
+            "title": "Switch Cisco Catalyst 1000 PoE",
+            "sku": "C1000-24P-4G-L",
+            "desc": "Switch empresarial para acceso, VLANs, PoE y operación estable.",
+            "tags": [
+                  "Catalyst",
+                  "PoE",
+                  "Cisco"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "cisco-cbs35024p",
+            "category": "Aruba / Cisco",
+            "brand": "Cisco",
+            "title": "Switch Cisco Business PoE",
+            "sku": "CBS350-24P-4G",
+            "desc": "Switch administrable para negocios con puertos PoE y uplinks.",
+            "tags": [
+                  "Cisco",
+                  "PoE",
+                  "Business"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "cisco-c9200l",
+            "category": "Aruba / Cisco",
+            "brand": "Cisco",
+            "title": "Switch Cisco Catalyst 9200L",
+            "sku": "C9200L-24P-4G",
+            "desc": "Switch empresarial para redes con requerimientos avanzados y alta disponibilidad.",
+            "tags": [
+                  "Catalyst",
+                  "Enterprise",
+                  "PoE"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "cisco-isr",
+            "category": "Aruba / Cisco",
+            "brand": "Cisco",
+            "title": "Router Cisco ISR para sucursales",
+            "sku": "ISR-1100",
+            "desc": "Router para WAN, sucursales, VPN y conectividad empresarial.",
+            "tags": [
+                  "Router",
+                  "Sucursal",
+                  "VPN"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Cotizar por canal privado"
+      },
+      {
+            "id": "aruba-cisco-servicio",
+            "category": "Aruba / Cisco",
+            "brand": "LinkWich-IT",
+            "title": "Implementación Aruba / Cisco",
+            "sku": "SERVICIO-ARUBA-CISCO",
+            "desc": "Diseño de VLANs, WiFi empresarial, switching, troubleshooting y documentación.",
+            "tags": [
+                  "Servicio",
+                  "Switching",
+                  "WiFi"
+            ],
+            "icon": "bi-diagram-3-fill",
+            "image": "",
+            "url": "",
+            "sourceLabel": "Solicitar integración"
       }
 ];
 
@@ -3615,7 +5672,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.title)}" class="syscom-product-image is-remote" loading="lazy" onerror="this.style.display='none'; this.insertAdjacentHTML('afterend','<div class=&quot;syscom-product-icon&quot;><i class=&quot;bi ${escapeHtml(product.icon || "bi-box-seam-fill")}&quot;></i></div>');">`
       : `<div class="syscom-product-icon"><i class="bi ${escapeHtml(product.icon || "bi-box-seam-fill")}"></i></div>`;
     const sourceLink = product.url
-      ? `<a class="syscom-product-source" href="${escapeHtml(product.url)}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Ver referencia Syscom</a>`
+      ? `<a class="syscom-product-source" href="${escapeHtml(product.url)}" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> ${escapeHtml(product.sourceLabel || "Ver referencia / disponibilidad")}</a>`
       : "";
 
     return `
@@ -3724,7 +5781,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "Categoría: " + category,
       "Cantidad estimada: " + qty,
       "Tipo de solicitud: " + scope,
-      "Referencia Syscom: " + sourceUrl,
+      "Referencia / canal: " + sourceUrl,
       "",
       "Nombre: " + name,
       "Empresa/Proyecto: " + company,
@@ -3732,7 +5789,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "",
       "Comentarios: " + comments,
       "",
-      "Favor de confirmar disponibilidad, precio final y tiempos de entrega."
+      "Favor de confirmar disponibilidad, precio preferencial, alcance de instalación/integración y tiempos de entrega."
     ].join("\n");
   }
 
