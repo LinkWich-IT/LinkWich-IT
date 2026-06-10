@@ -1388,6 +1388,144 @@
 }
 </style>
 
+
+<style>
+/* ============================================================
+   AJUSTES FINALES CATÁLOGO SYSCOM + HEADER
+   Corrige: carrusel vacío por error JS, pestañas oscuras y header saturado.
+   ============================================================ */
+#syscom-catalog{
+  scroll-margin-top: 105px;
+}
+
+.syscom-catalog.section{
+  padding-top: 78px;
+  padding-bottom: 82px;
+}
+
+.syscom-category-filter{
+  background: rgba(255,255,255,.08) !important;
+  color: rgba(255,255,255,.88) !important;
+  border-color: rgba(255,255,255,.16) !important;
+  box-shadow: 0 10px 24px rgba(2,6,23,.12) !important;
+}
+
+.syscom-category-filter i{
+  color: #7cc0ff !important;
+  opacity: 1 !important;
+}
+
+.syscom-category-filter:hover,
+.syscom-category-filter.active{
+  background: var(--accent-color,#0d6efd) !important;
+  color:#fff !important;
+  border-color: var(--accent-color,#0d6efd) !important;
+  box-shadow:0 14px 28px rgba(13,110,253,.28) !important;
+}
+
+.syscom-category-filter:hover i,
+.syscom-category-filter.active i{
+  color:#fff !important;
+}
+
+.syscom-products-swiper{
+  min-height: 505px;
+}
+
+.syscom-products-swiper .swiper-wrapper{
+  align-items: stretch !important;
+}
+
+.syscom-products-swiper .swiper-slide{
+  display: flex !important;
+  height: auto !important;
+}
+
+.syscom-product-card{
+  width: 100%;
+}
+
+.syscom-empty code{
+  color: #fff;
+  background: rgba(255,255,255,.10);
+  padding: .15rem .35rem;
+  border-radius: .4rem;
+}
+
+/* Evita que el menú se encime cuando agregamos Catálogo */
+@media (min-width: 1200px) and (max-width: 1499px){
+  #header .header-container{
+    gap: .35rem !important;
+  }
+
+  #header .logo{
+    margin-right: .25rem !important;
+  }
+
+  #header .logo img{
+    max-height: 40px !important;
+  }
+
+  #header .logo .sitename{
+    font-size: 1.22rem !important;
+    letter-spacing: -.02em;
+  }
+
+  #navmenu ul{
+    gap: .05rem !important;
+  }
+
+  #navmenu a{
+    font-size: .82rem !important;
+    padding-left: .34rem !important;
+    padding-right: .34rem !important;
+  }
+
+  #navmenu a i{
+    margin-right: .18rem !important;
+  }
+
+  #header .lw-header-monitor{
+    width: 48px !important;
+    min-width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    margin-left: .25rem !important;
+    font-size: 0 !important;
+  }
+
+  #header .lw-header-monitor i{
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 767px){
+  .syscom-catalog.section{
+    padding-top: 58px;
+    padding-bottom: 62px;
+  }
+
+  .syscom-category-toolbar{
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: .4rem;
+    scrollbar-width: thin;
+  }
+
+  .syscom-category-filter{
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+
+  .syscom-products-swiper{
+    min-height: 545px;
+  }
+}
+</style>
+
 </head>
 
 <body class="index-page">
@@ -3154,7 +3292,7 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 
-  function getFilteredProducts  function getFilteredProducts() {
+  function getFilteredProducts() {
     if (activeCategory === "Todos") return syscomProducts;
     return syscomProducts.filter(product => product.category === activeCategory);
   }
