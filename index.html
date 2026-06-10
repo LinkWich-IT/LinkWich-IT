@@ -2718,449 +2718,141 @@ body.modal-open .header-container {
 </style>
 
 
-<style id="lw-no-zoom-layout-fix">
-/* ============================================================
-   LINKWICH-IT - FIX FINAL SIN EFECTO "ZOOM"
-   Corrige:
-   - Header demasiado ancho/alto por parches duplicados.
-   - Menú amontonado sin tener que bajar zoom del navegador.
-   - Catálogo con cards/imágenes demasiado grandes.
-   - Modal por encima del header.
-   ============================================================ */
 
+<style id="lw-catalog-performance-mobile-fix">
+/* ============================================================
+   LINKWICH-IT - PERFORMANCE CATÁLOGO / CARRUSEL MÓVIL
+   - No cambia estructura ni funcionalidad.
+   - Reduce sensación de zoom.
+   - Mejora deslizamiento del carrusel en celular.
+   - Evita trabajo visual innecesario del navegador.
+   ============================================================ */
 html,
 body{
-  width: 100% !important;
-  max-width: 100% !important;
-  overflow-x: hidden !important;
-  zoom: 1 !important;
+  max-width:100% !important;
+  overflow-x:hidden !important;
 }
 
-/* ---------- HEADER BASE ---------- */
-#header{
-  padding: 8px 0 !important;
-  z-index: 9997 !important;
-}
-
-#header .header-container{
-  width: min(94%, 1320px) !important;
-  max-width: 1320px !important;
-  min-height: 58px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding: .42rem .65rem !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  flex-wrap: nowrap !important;
-  gap: .42rem !important;
-  overflow: visible !important;
-  border-radius: 999px !important;
-}
-
-#header .logo{
-  order: 1 !important;
-  flex: 0 0 auto !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: .40rem !important;
-  width: auto !important;
-  max-width: 170px !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-#header .logo img{
-  flex: 0 0 auto !important;
-  width: 38px !important;
-  height: 38px !important;
-  max-width: 38px !important;
-  max-height: 38px !important;
-  object-fit: contain !important;
-}
-
-#header .logo .sitename{
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-  font-size: 1.08rem !important;
-  letter-spacing: -.03em !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-#navmenu{
-  order: 2 !important;
-  flex: 1 1 auto !important;
-  min-width: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  position: static !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  width: auto !important;
-}
-
-#header .lw-header-monitor{
-  order: 3 !important;
-  flex: 0 0 auto !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: auto !important;
-  min-width: auto !important;
-  margin: 0 !important;
-  padding: .66rem .78rem !important;
-  border-radius: 999px !important;
-  white-space: nowrap !important;
-  line-height: 1 !important;
-  font-size: .80rem !important;
-  gap: .24rem !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-
-#header .lw-header-monitor i{
-  margin: 0 !important;
-  font-size: .92rem !important;
-}
-
-#header .lw-header-monitor .lw-monitor-short{
-  display: none !important;
-}
-
-/* ---------- DESKTOP: MENÚ COMPLETO COMPACTO ---------- */
-@media (min-width: 1200px){
-  #navmenu > ul{
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    gap: .05rem !important;
-    width: auto !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    position: static !important;
-    inset: auto !important;
-    overflow: visible !important;
-    background: transparent !important;
-    border: 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transform: none !important;
-  }
-
-  #navmenu li{
-    flex: 0 0 auto !important;
-    width: auto !important;
-  }
-
-  #navmenu li.d-xl-none{
-    display: none !important;
-  }
-
-  #navmenu a{
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: auto !important;
-    white-space: nowrap !important;
-    line-height: 1 !important;
-    font-size: .80rem !important;
-    padding: .50rem .34rem !important;
-    border-radius: 999px !important;
-  }
-
-  #navmenu a i{
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: auto !important;
-    min-width: auto !important;
-    margin-right: .14rem !important;
-    font-size: .78rem !important;
-    line-height: 1 !important;
-  }
-
-  #navmenu a::before,
-  #navmenu a::after{
-    max-width: 100% !important;
-  }
-
-  .mobile-nav-toggle{
-    display: none !important;
-  }
-}
-
-/* Desktop/laptop justo: aún cabe sin bajar zoom */
-@media (min-width: 1200px) and (max-width: 1360px){
-  #header .header-container{
-    width: calc(100% - 18px) !important;
-    max-width: calc(100% - 18px) !important;
-    padding-left: .55rem !important;
-    padding-right: .55rem !important;
-    gap: .28rem !important;
-  }
-
-  #header .logo{
-    max-width: 148px !important;
-    gap: .30rem !important;
-  }
-
-  #header .logo img{
-    width: 34px !important;
-    height: 34px !important;
-    max-width: 34px !important;
-    max-height: 34px !important;
-  }
-
-  #header .logo .sitename{
-    font-size: .98rem !important;
-  }
-
-  #navmenu a{
-    font-size: .74rem !important;
-    padding-left: .24rem !important;
-    padding-right: .24rem !important;
-  }
-
-  #navmenu a i{
-    display: none !important;
-  }
-
-  #header .lw-header-monitor{
-    width: 40px !important;
-    height: 40px !important;
-    padding: 0 !important;
-    font-size: 0 !important;
-  }
-
-  #header .lw-header-monitor .lw-monitor-full,
-  #header .lw-header-monitor .lw-monitor-short{
-    display: none !important;
-  }
-
-  #header .lw-header-monitor i{
-    font-size: 1rem !important;
-  }
-}
-
-/* ---------- TABLET Y MÓVIL: HAMBURGUESA LIMPIA ---------- */
-@media (max-width: 1199px){
-  #header .header-container{
-    width: calc(100% - 20px) !important;
-    max-width: calc(100% - 20px) !important;
-    min-height: 58px !important;
-    padding: .46rem .58rem !important;
-    gap: .40rem !important;
-  }
-
-  #header .logo{
-    flex: 1 1 auto !important;
-    max-width: calc(100% - 64px) !important;
-  }
-
-  #header .logo img{
-    width: 36px !important;
-    height: 36px !important;
-    max-width: 36px !important;
-    max-height: 36px !important;
-  }
-
-  #header .logo .sitename{
-    font-size: 1.06rem !important;
-  }
-
-  #navmenu{
-    flex: 0 0 auto !important;
-    margin-left: auto !important;
-  }
-
-  #navmenu > ul{
-    display: none !important;
-    position: fixed !important;
-    top: 70px !important;
-    left: 10px !important;
-    right: 10px !important;
-    width: auto !important;
-    max-height: calc(100vh - 86px) !important;
-    overflow-y: auto !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    justify-content: flex-start !important;
-    flex-wrap: nowrap !important;
-    gap: .28rem !important;
-    padding: .75rem !important;
-    margin: 0 !important;
-    background: rgba(18, 18, 45, .98) !important;
-    border: 1px solid rgba(255,255,255,.12) !important;
-    border-radius: 22px !important;
-    box-shadow: 0 24px 70px rgba(0,0,0,.35) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    z-index: 9998 !important;
-  }
-
-  body.mobile-nav-active #navmenu > ul,
-  #navmenu.mobile-nav-open > ul{
-    display: flex !important;
-  }
-
-  #navmenu li{
-    width: 100% !important;
-  }
-
-  #navmenu a{
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    width: 100% !important;
-    white-space: normal !important;
-    font-size: .96rem !important;
-    color: rgba(255,255,255,.92) !important;
-    padding: .82rem .92rem !important;
-    border-radius: 14px !important;
-    line-height: 1.15 !important;
-  }
-
-  #navmenu a i{
-    display: inline-flex !important;
-    width: 20px !important;
-    min-width: 20px !important;
-    margin-right: .55rem !important;
-    justify-content: center !important;
-    color: rgba(255,255,255,.86) !important;
-  }
-
-  #navmenu a:hover,
-  #navmenu a.active{
-    color: #fff !important;
-    background: rgba(99, 102, 241, .20) !important;
-  }
-
-  #navmenu a::before,
-  #navmenu a::after{
-    display: none !important;
-  }
-
-  .mobile-nav-toggle{
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    flex: 0 0 auto !important;
-    width: 42px !important;
-    height: 42px !important;
-    margin-left: .10rem !important;
-    border-radius: 15px !important;
-    color: #fff !important;
-    background: rgba(255,255,255,.08) !important;
-    border: 1px solid rgba(255,255,255,.10) !important;
-    font-size: 1.35rem !important;
-    line-height: 1 !important;
-    cursor: pointer !important;
-    z-index: 9999 !important;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1199px){
-  #header .logo{
-    max-width: 210px !important;
-  }
-
-  #header .lw-header-monitor{
-    display: inline-flex !important;
-    padding: .66rem .78rem !important;
-    font-size: .80rem !important;
-    margin-left: auto !important;
-  }
-}
-
-@media (max-width: 767px){
-  #header .lw-header-monitor{
-    display: none !important;
-  }
-}
-
-/* ---------- CATÁLOGO: EVITA SENSACIÓN DE ZOOM ---------- */
-.syscom-catalog.section{
-  padding-top: 60px !important;
-  padding-bottom: 66px !important;
+#syscom-catalog,
+.syscom-catalog-panel,
+.syscom-products-swiper,
+.syscom-products-swiper .swiper-wrapper,
+.syscom-products-swiper .swiper-slide{
+  box-sizing:border-box !important;
 }
 
 .syscom-products-swiper{
+  overflow:hidden !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch;
   min-height: auto !important;
-  padding: .20rem .20rem .85rem !important;
+  padding: .25rem .25rem .75rem !important;
 }
 
 .syscom-products-swiper .swiper-wrapper{
+  will-change: transform;
   align-items: stretch !important;
 }
 
+.syscom-products-swiper .swiper-slide{
+  height:auto !important;
+  display:flex !important;
+  contain: layout paint style;
+}
+
 .syscom-product-card{
-  min-height: 410px !important;
+  width:100% !important;
+  min-height: 440px !important;
+  contain: content;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.syscom-product-card:hover{
+  transform:none !important;
 }
 
 .syscom-product-media{
-  height: 138px !important;
-  padding: .75rem !important;
+  height:148px !important;
+  padding:.85rem !important;
 }
 
 .syscom-product-image{
-  height: 112px !important;
-  max-height: 112px !important;
-  transform: none !important;
-  object-fit: contain !important;
+  width:100% !important;
+  height:122px !important;
+  max-height:122px !important;
+  object-fit:contain !important;
+  transform:none !important;
+  filter:none !important;
 }
 
 .syscom-product-body{
-  padding: .92rem !important;
+  padding:.95rem !important;
 }
 
 .syscom-product-body h4{
-  min-height: auto !important;
-  font-size: .96rem !important;
+  min-height:unset !important;
+  font-size:.98rem !important;
 }
 
 .syscom-product-body p{
-  min-height: 58px !important;
-  font-size: .84rem !important;
-  line-height: 1.48 !important;
+  min-height:unset !important;
+  font-size:.86rem !important;
+  line-height:1.5 !important;
 }
 
-.syscom-product-meta span{
-  font-size: .70rem !important;
+.syscom-product-meta{
+  margin-bottom:.75rem !important;
 }
 
-.syscom-quote-btn{
-  padding: .68rem .85rem !important;
+.syscom-swiper-actions{
+  margin-top:.65rem !important;
 }
 
-/* Modal siempre encima del header */
-body.modal-open #header,
-body.modal-open .header,
-body.modal-open .header-container{
-  z-index: 1000 !important;
+.syscom-products-pagination{
+  display:none !important;
 }
 
-.modal-backdrop{
-  z-index: 20000 !important;
-}
+@media (max-width: 767px){
+  .syscom-catalog.section{
+    padding-top:48px !important;
+    padding-bottom:56px !important;
+  }
 
-.modal{
-  z-index: 20010 !important;
+  .syscom-catalog-panel{
+    padding:.85rem !important;
+    border-radius:20px !important;
+  }
+
+  .syscom-product-card{
+    min-height:420px !important;
+    border-radius:20px !important;
+  }
+
+  .syscom-product-media{
+    height:138px !important;
+  }
+
+  .syscom-product-image{
+    height:112px !important;
+    max-height:112px !important;
+  }
+
+  .syscom-product-brand{
+    font-size:.70rem !important;
+    padding:.32rem .55rem !important;
+  }
+
+  .syscom-category-toolbar{
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type:x proximity;
+  }
+
+  .syscom-category-filter{
+    scroll-snap-align:start;
+  }
 }
 </style>
-
 
 </head>
 
@@ -3608,7 +3300,7 @@ body.modal-open .header-container{
         </div>
 
         <div class="syscom-category-toolbar" id="syscomCategoryToolbar" aria-label="Categorías del catálogo">
-          <button class="syscom-category-filter active" type="button" data-category="Todos"><i class="bi bi-grid-3x3-gap-fill"></i> Todos</button>
+          <button class="syscom-category-filter active" type="button" data-category="Destacados"><i class="bi bi-stars"></i> Destacados</button>
           <button class="syscom-category-filter " type="button" data-category="Hikvision CCTV"><i class="bi bi-camera-video-fill"></i> Hikvision CCTV</button>
           <button class="syscom-category-filter " type="button" data-category="Hikvision AX PRO / XPRO"><i class="bi bi-bell-fill"></i> Hikvision AX PRO</button>
           <button class="syscom-category-filter " type="button" data-category="NVR / Grabación"><i class="bi bi-device-hdd-fill"></i> NVR / Grabación</button>
@@ -6832,7 +6524,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const quoteModal = quoteModalEl ? new bootstrap.Modal(quoteModalEl) : null;
 
   let syscomSwiper = null;
-  let activeCategory = "Todos";
+  let activeCategory = "Destacados";
 
   function escapeHtml(value) {
     return String(value || "")
@@ -7059,7 +6751,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fallback = `<div class="syscom-product-fallback"><i class="bi ${escapeHtml(product.icon || "bi-box-seam-fill")}"></i><span>${escapeHtml(product.sku || product.category || "Producto")}</span></div>`;
     const imageCandidates = getSyscomImageCandidates(product);
     const firstImage = imageCandidates[0] || "";
-    const imageFallbacks = imageCandidates.slice(1);
+    const imageFallbacks = imageCandidates.slice(1, 2);
     const media = firstImage
       ? `<img src="${escapeHtml(firstImage)}" alt="${escapeHtml(product.title)}" class="syscom-product-image is-remote" loading="lazy" decoding="async" data-image-fallbacks='${escapeHtml(JSON.stringify(imageFallbacks))}' data-fallback-index="0" onerror="window.lwSyscomImageFallback && window.lwSyscomImageFallback(this)">${fallback}`
       : fallback.replace('display:none;', 'display:flex;');
@@ -7090,9 +6782,45 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 
+  function getFeaturedProducts() {
+    /*
+      Rendimiento: en lugar de cargar todo el catálogo al abrir la página,
+      mostramos una selección de productos destacados. Esto evita cargar más
+      de 100 imágenes remotas y hace que el carrusel sea más fluido en móvil.
+    */
+    const preferredSkus = [
+      "KIT4MP/4B/1TB",
+      "AXPROKIT",
+      "DS-7608NI-Q1/8P(D)",
+      "RG-RAP2200(E)",
+      "U7PRO",
+      "NUR6C04BU-C",
+      "ICDROPA21C",
+      "AT-X540L-28XS-10",
+      "LP-3KRT",
+      "DS-UPS2000X",
+      "GRP2650",
+      "DS224+",
+      "LBE-5AC-GEN2"
+    ];
+
+    const bySku = preferredSkus
+      .map(sku => syscomProducts.find(product => String(product.sku || "").toUpperCase() === sku.toUpperCase()))
+      .filter(Boolean);
+
+    if (bySku.length >= 8) return bySku;
+
+    const seenCategories = new Set();
+    return syscomProducts.filter(product => {
+      if (seenCategories.has(product.category)) return false;
+      seenCategories.add(product.category);
+      return true;
+    }).slice(0, 13);
+  }
+
   function getFilteredProducts() {
-    if (activeCategory === "Todos") return syscomProducts;
-    return syscomProducts.filter(product => product.category === activeCategory);
+    if (activeCategory === "Destacados" || activeCategory === "Todos") return getFeaturedProducts();
+    return syscomProducts.filter(product => product.category === activeCategory).slice(0, 14);
   }
 
   function renderProducts() {
@@ -7113,18 +6841,29 @@ document.addEventListener("DOMContentLoaded", function () {
     if (products.length) {
       syscomSwiper = new Swiper(".syscom-products-swiper", {
         slidesPerView: 1,
-        spaceBetween: 18,
-        loop: products.length > 3,
+        spaceBetween: 14,
+        loop: false,
+        rewind: true,
+        speed: 320,
         grabCursor: true,
         autoHeight: false,
+        roundLengths: true,
+        threshold: 8,
+        touchRatio: 1,
+        resistanceRatio: 0.65,
+        watchSlidesProgress: false,
+        observer: false,
+        observeParents: false,
+        updateOnWindowResize: true,
+        passiveListeners: true,
         navigation: {
           nextEl: ".syscom-products-next",
           prevEl: ".syscom-products-prev"
         },
         breakpoints: {
-          576: { slidesPerView: 1.25 },
-          768: { slidesPerView: 2 },
-          1200: { slidesPerView: 3 }
+          576: { slidesPerView: 1.08, spaceBetween: 14 },
+          768: { slidesPerView: 2, spaceBetween: 16 },
+          1200: { slidesPerView: 3, spaceBetween: 18 }
         }
       });
     }
@@ -7185,7 +6924,7 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function () {
       categoryButtons.forEach(btn => btn.classList.remove("active"));
       this.classList.add("active");
-      activeCategory = this.getAttribute("data-category") || "Todos";
+      activeCategory = this.getAttribute("data-category") || "Destacados";
       renderProducts();
     });
   });
