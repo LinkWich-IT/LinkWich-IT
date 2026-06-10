@@ -1526,6 +1526,171 @@
 }
 </style>
 
+
+
+<style>
+/* ============================================================
+   FIX FINAL HEADER RESPONSIVE - LinkWich-IT
+   Ajuste para evitar menú amontonado en pantallas laptop/desktop.
+   ============================================================ */
+#header .header-container{
+  flex-wrap: nowrap !important;
+  max-width: min(1320px, calc(100% - 28px));
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+}
+
+#header .logo{
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+  margin-right: .35rem !important;
+}
+
+#header .logo img{
+  max-height: 42px !important;
+}
+
+#header .logo .sitename{
+  white-space: nowrap !important;
+  font-size: clamp(1.05rem, 1.35vw, 1.38rem) !important;
+  letter-spacing: -.03em;
+}
+
+#navmenu{
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+#navmenu ul{
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-wrap: nowrap !important;
+  gap: .08rem !important;
+}
+
+#navmenu a{
+  white-space: nowrap !important;
+  font-size: .88rem !important;
+  padding-left: .42rem !important;
+  padding-right: .42rem !important;
+}
+
+#navmenu a i{
+  margin-right: .18rem !important;
+}
+
+#header .lw-header-monitor{
+  flex: 0 0 auto !important;
+  min-width: auto !important;
+  width: auto !important;
+  margin-left: .25rem !important;
+  padding: .74rem .92rem !important;
+  border-radius: 999px !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: .28rem !important;
+  line-height: 1 !important;
+}
+
+#header .lw-header-monitor i{
+  margin: 0 !important;
+  font-size: .95rem !important;
+}
+
+#header .lw-header-monitor .lw-monitor-short{
+  display: none;
+}
+
+/* Laptop / pantallas medianas: botón compacto y menú más limpio */
+@media (min-width: 1200px) and (max-width: 1699px){
+  #header .header-container{
+    max-width: calc(100% - 24px) !important;
+    gap: .22rem !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  #header .logo{
+    margin-right: .18rem !important;
+  }
+
+  #header .logo img{
+    max-height: 36px !important;
+  }
+
+  #header .logo .sitename{
+    font-size: 1.08rem !important;
+  }
+
+  #navmenu ul{
+    gap: 0 !important;
+  }
+
+  #navmenu a{
+    font-size: .79rem !important;
+    padding-left: .28rem !important;
+    padding-right: .28rem !important;
+  }
+
+  #navmenu a i{
+    font-size: .8rem !important;
+    margin-right: .10rem !important;
+  }
+
+  #header .lw-header-monitor{
+    padding: .67rem .75rem !important;
+    font-size: .78rem !important;
+    margin-left: .12rem !important;
+  }
+
+  #header .lw-header-monitor .lw-monitor-full{
+    display: none !important;
+  }
+
+  #header .lw-header-monitor .lw-monitor-short{
+    display: inline !important;
+  }
+}
+
+/* Pantallas muy justas pero todavía escritorio: ocultamos iconos para ganar espacio */
+@media (min-width: 1200px) and (max-width: 1360px){
+  #navmenu a i{
+    display: none !important;
+  }
+
+  #navmenu a{
+    font-size: .78rem !important;
+    padding-left: .25rem !important;
+    padding-right: .25rem !important;
+  }
+
+  #header .logo .sitename{
+    font-size: 1rem !important;
+  }
+}
+
+/* Último respaldo para laptops pequeñas: dejamos solo el ícono del CTA */
+@media (min-width: 1200px) and (max-width: 1260px){
+  #header .lw-header-monitor{
+    width: 42px !important;
+    height: 42px !important;
+    padding: 0 !important;
+  }
+
+  #header .lw-header-monitor .lw-monitor-short,
+  #header .lw-header-monitor .lw-monitor-full{
+    display: none !important;
+  }
+
+  #header .lw-header-monitor i{
+    font-size: 1rem !important;
+  }
+}
+</style>
+
 </head>
 
 <body class="index-page">
@@ -1554,7 +1719,9 @@
       </nav>
 
       <a class="btn-getstarted lw-header-monitor d-none d-xl-inline-flex" href="https://www.linkwich-it.com/LinkWich-Monitor/index.html">
-        <i class="bi bi-rocket-fill me-1"></i> Ver LinkWich-Monitor
+        <i class="bi bi-rocket-fill me-1"></i>
+        <span class="lw-monitor-full">Ver LinkWich-Monitor</span>
+        <span class="lw-monitor-short">Monitor</span>
       </a>
 
     </div>
