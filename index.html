@@ -2854,6 +2854,80 @@ body{
 }
 </style>
 
+
+<style id="lw-fixed-header-follow-scroll-final">
+/* ============================================================
+   LINKWICH-IT - FIX HEADER SIEMPRE VISIBLE AL HACER SCROLL
+   Objetivo:
+   - El header vuelve a acompañar el scroll como antes.
+   - No toca productos, catálogo, Swiper ni modal de cotización.
+   - Compensa automáticamente la altura del header para no tapar el hero.
+   ============================================================ */
+
+:root{
+  --lw-header-sticky-height: 86px;
+}
+
+html{
+  scroll-padding-top: calc(var(--lw-header-sticky-height) + 18px) !important;
+}
+
+/* Usamos fixed para garantizar que siempre baje con la página,
+   aunque Bootstrap sticky-top sea sobrescrito por otros parches CSS. */
+body.index-page{
+  padding-top: var(--lw-header-sticky-height) !important;
+}
+
+#header.header,
+header#header{
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 9999 !important;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Evita que los anchors queden tapados por el header */
+section[id],
+#hero,
+#about,
+#services,
+#syscom-catalog,
+#portfolio,
+#experiencia,
+#contact{
+  scroll-margin-top: calc(var(--lw-header-sticky-height) + 18px) !important;
+}
+
+/* Menú móvil: que el desplegable aparezca debajo del header real */
+@media (max-width: 1199.98px){
+  #navmenu > ul,
+  #navmenu ul{
+    top: calc(var(--lw-header-sticky-height) + 8px) !important;
+    max-height: calc(100vh - var(--lw-header-sticky-height) - 24px) !important;
+  }
+}
+
+/* Cuando se abre un modal, el modal debe quedar arriba del header */
+body.modal-open #header,
+body.modal-open .header,
+body.modal-open .header-container{
+  z-index: 1000 !important;
+}
+
+.modal-backdrop{
+  z-index: 20000 !important;
+}
+
+.modal{
+  z-index: 20010 !important;
+}
+</style>
+
 </head>
 
 <body class="index-page">
@@ -6984,6 +7058,32 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   });
+});
+</script>
+
+
+<script id="lw-fixed-header-follow-scroll-script">
+document.addEventListener('DOMContentLoaded', function () {
+  const header = document.getElementById('header');
+
+  function updateHeaderHeight() {
+    if (!header) return;
+    const height = Math.ceil(header.getBoundingClientRect().height || header.offsetHeight || 86);
+    document.documentElement.style.setProperty('--lw-header-sticky-height', height + 'px');
+  }
+
+  updateHeaderHeight();
+  window.addEventListener('resize', updateHeaderHeight, { passive: true });
+  window.addEventListener('orientationchange', function () {
+    setTimeout(updateHeaderHeight, 250);
+  }, { passive: true });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(updateHeaderHeight).catch(function () {});
+  }
+
+  setTimeout(updateHeaderHeight, 300);
+  setTimeout(updateHeaderHeight, 1000);
 });
 </script>
 
