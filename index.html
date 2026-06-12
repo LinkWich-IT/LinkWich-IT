@@ -2928,6 +2928,300 @@ body.modal-open .header-container{
 }
 </style>
 
+
+<style id="lw-monitor-showcase-styles">
+/* ============================================================
+   LINKWICH-MONITOR SHOWCASE
+   Sección comercial con imagen explicativa. Estilos aislados.
+   ============================================================ */
+.lw-monitor-showcase{
+  position:relative;
+  overflow:hidden;
+  border-radius:30px;
+  padding:1.35rem;
+  background:linear-gradient(135deg, rgba(11,23,48,.97), rgba(19,44,87,.94));
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 24px 65px rgba(2,6,23,.22);
+}
+
+.lw-monitor-showcase::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(124,192,255,.20), transparent 30%),
+    radial-gradient(circle at 92% 8%, rgba(13,110,253,.18), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,.04), transparent 45%);
+  pointer-events:none;
+}
+
+.lw-monitor-bg-orb{
+  position:absolute;
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  filter:blur(18px);
+  opacity:.23;
+  pointer-events:none;
+}
+
+.lw-monitor-bg-orb-1{
+  left:-90px;
+  bottom:-90px;
+  background:#0d6efd;
+}
+
+.lw-monitor-bg-orb-2{
+  right:-100px;
+  top:-90px;
+  background:#7cc0ff;
+}
+
+.lw-monitor-content{
+  position:relative;
+  z-index:1;
+  padding:1.1rem .6rem 1.1rem 1rem;
+}
+
+.lw-monitor-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.48rem .78rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.92);
+  font-size:.82rem;
+  font-weight:800;
+  letter-spacing:.02em;
+  margin-bottom:.9rem;
+}
+
+.lw-monitor-eyebrow i{
+  color:#7cc0ff;
+}
+
+.lw-monitor-content h4{
+  color:#fff;
+  font-size:clamp(1.7rem, 3vw, 2.55rem);
+  line-height:1.08;
+  font-weight:900;
+  letter-spacing:-.04em;
+  margin:0 0 .9rem;
+}
+
+.lw-monitor-lead{
+  color:rgba(255,255,255,.84);
+  font-size:1.02rem;
+  line-height:1.75;
+  margin:0 0 1.1rem;
+}
+
+.lw-monitor-feature-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:.68rem;
+  margin:1.15rem 0;
+}
+
+.lw-monitor-feature{
+  display:flex;
+  align-items:flex-start;
+  gap:.55rem;
+  min-height:64px;
+  padding:.78rem .82rem;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  color:rgba(255,255,255,.90);
+  font-weight:700;
+  font-size:.91rem;
+  line-height:1.35;
+}
+
+.lw-monitor-feature i{
+  flex:0 0 auto;
+  width:30px;
+  height:30px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:rgba(124,192,255,.14);
+  color:#7cc0ff;
+  font-size:1rem;
+}
+
+.lw-monitor-requirements{
+  margin-top:1rem;
+  padding:1rem;
+  border-radius:22px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.13);
+}
+
+.lw-monitor-req-title{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  color:#fff;
+  font-weight:900;
+  margin-bottom:.75rem;
+}
+
+.lw-monitor-req-title i{
+  color:#7cc0ff;
+}
+
+.lw-monitor-req-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+}
+
+.lw-monitor-req-list span{
+  display:inline-flex;
+  align-items:center;
+  gap:.38rem;
+  padding:.48rem .65rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.10);
+  color:rgba(255,255,255,.86);
+  font-size:.82rem;
+  font-weight:700;
+}
+
+.lw-monitor-req-list i{
+  color:#7cc0ff;
+}
+
+.lw-monitor-requirements p{
+  color:rgba(255,255,255,.78);
+  line-height:1.65;
+  margin:.8rem 0 0;
+  font-size:.92rem;
+}
+
+.lw-monitor-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.75rem;
+  margin-top:1.15rem;
+}
+
+.lw-monitor-actions .btn{
+  border-radius:16px;
+  padding:.9rem 1.1rem;
+  font-weight:900;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.lw-monitor-actions .btn-outline{
+  color:#fff;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.08);
+}
+
+.lw-monitor-actions .btn-outline:hover{
+  color:#0b1730;
+  background:#fff;
+  border-color:#fff;
+}
+
+.lw-monitor-visual{
+  position:relative;
+  z-index:1;
+  display:block;
+  padding:.75rem;
+  border-radius:28px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 22px 55px rgba(2,6,23,.22);
+  text-decoration:none;
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.lw-monitor-visual:hover{
+  transform:translateY(-6px);
+  box-shadow:0 30px 72px rgba(2,6,23,.30);
+  border-color:rgba(124,192,255,.35);
+}
+
+.lw-monitor-visual img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:22px;
+  background:#fff;
+  object-fit:contain;
+}
+
+.lw-monitor-visual-badge{
+  position:absolute;
+  top:1.1rem;
+  left:1.1rem;
+  z-index:2;
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.52rem .72rem;
+  border-radius:999px;
+  background:rgba(11,23,48,.82);
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+  font-size:.82rem;
+  font-weight:900;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.lw-monitor-visual-badge i{
+  color:#7cc0ff;
+}
+
+@media (max-width: 991px){
+  .lw-monitor-showcase{
+    padding:1rem;
+    border-radius:26px;
+  }
+
+  .lw-monitor-content{
+    padding:.75rem .35rem .2rem;
+  }
+}
+
+@media (max-width: 767px){
+  .lw-monitor-feature-grid{
+    grid-template-columns:1fr;
+  }
+
+  .lw-monitor-feature{
+    min-height:auto;
+  }
+
+  .lw-monitor-actions .btn{
+    width:100%;
+  }
+
+  .lw-monitor-visual{
+    padding:.55rem;
+    border-radius:22px;
+  }
+
+  .lw-monitor-visual img{
+    border-radius:18px;
+  }
+
+  .lw-monitor-visual-badge{
+    top:.9rem;
+    left:.9rem;
+  }
+}
+</style>
 </head>
 
 <body class="index-page">
@@ -3746,73 +4040,87 @@ body.modal-open .header-container{
         </br>
 
         <div class="row mt-4">
-          <div class="col-lg-8 offset-lg-2">
-            <div class="join-team-cta" data-aos="fade-up" data-aos-delay="300">
-              <div class="cta-icon">
-                <img src="./assets/img/misc/LOGO-SIN-CIRCULO2.png" alt="LinkWich-Monitor" style="width:60px; height:auto;">
-              </div>
+          <div class="col-lg-11 mx-auto">
+            <div class="lw-monitor-showcase" data-aos="fade-up" data-aos-delay="300">
+              <div class="lw-monitor-bg-orb lw-monitor-bg-orb-1"></div>
+              <div class="lw-monitor-bg-orb lw-monitor-bg-orb-2"></div>
 
-              <div class="cta-content">
-                <h4>Monitorea, Automatiza y Protege tu Red con LinkWich-Monitor</h4>
-                <p>
-                  LinkWich-Monitor es nuestra plataforma para supervisar, automatizar y dar visibilidad a la infraestructura TI. Pensada para empresas que necesitan <strong>control, seguimiento y reacción oportuna</strong>, ofrece:
-                </p>
-                <ul class="list-unstyled">
-                  <li><i class="bi bi-wifi me-2 text-primary"></i> <strong>Monitoreo en tiempo real</strong> de dispositivos y servicios.</li>
-                  <li><i class="bi bi-bell-fill me-2 text-danger"></i> <strong>Alertas inteligentes</strong> vía correo y WhatsApp.</li>
-                  <li><i class="bi bi-cpu-fill me-2 text-success"></i> <strong>Automatización en red</strong> con tareas programadas.</li>
-                  <li><i class="bi bi-hdd-network-fill me-2 text-info"></i> <strong>Respaldos automáticos</strong> de configuración de switches y routers.</li>
-                  <li><i class="bi bi-diagram-3-fill me-2 text-warning"></i> <strong>Descubrimiento automático de mapas LLDP</strong> de tu red.</li>
-                  <li><i class="bi bi-graph-up-arrow me-2 text-primary"></i> <strong>Métricas y reportes</strong> de disponibilidad y rendimiento.</li>
-                </ul>
-                <p>
-                  Con LinkWich-Monitor puedes mejorar la visibilidad operativa, reducir tiempos de reacción y fortalecer la administración diaria de tu red.
-                </p>
+              <div class="row g-4 align-items-center position-relative">
+                <div class="col-lg-6">
+                  <div class="lw-monitor-content">
+                    <span class="lw-monitor-eyebrow">
+                      <i class="bi bi-activity"></i>
+                      Plataforma de monitoreo y automatización TI
+                    </span>
 
-                <div class="mt-4 p-3 border rounded ">
-                  <h5 class="mb-3"><i class="bi bi-gear-fill text-primary me-2"></i> Requerimientos para instalación On-Premise</h5>
+                    <h4>Monitorea, automatiza y protege tu red con LinkWich-Monitor</h4>
 
-                  <div class="table-responsive">
-                    <table class="table table-dark table-hover  align-middle table-responsive">
-                      <tbody>
-                        <tr>
-                          <td width="40"><i class="bi bi-windows text-primary fs-4"></i></td>
-                          <td><strong>Sistemas operativos compatibles:</strong><br>Windows 10, 11 Pro y Windows Server 2016 – 2022.</td>
-                        </tr>
-                        <tr>
-                          <td><i class="bi bi-memory text-success fs-4"></i></td>
-                          <td><strong>Memoria RAM mínima:</strong> 8 GB<br><strong>Recomendada:</strong> 16 a 32 GB (según paquete de nodos).</td>
-                        </tr>
-                        <tr>
-                          <td><i class="bi bi-gpu-card text-info fs-4"></i></td>
-                          <td><strong>Procesamiento IA (opcional):</strong> Tarjeta de video Nvidia Quadro o equivalente con al menos 1 GB de VRAM.</td>
-                        </tr>
-                        <tr>
-                          <td><i class="bi bi-hdd text-warning fs-4"></i></td>
-                          <td><strong>Espacio en disco:</strong> 50 GB mínimo (100 GB recomendado) para históricos y respaldos.</td>
-                        </tr>
-                        <tr>
-                          <td><i class="bi bi-diagram-3 fs-4 text-secondary"></i></td>
-                          <td><strong>Capacidad de monitoreo:</strong> desde 30 nodos (básico) hasta más de 150 (corporativo).</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                    <p class="lw-monitor-lead">
+                      LinkWich-Monitor centraliza la supervisión de tu infraestructura tecnológica para que tu equipo pueda visualizar dispositivos, detectar incidencias, automatizar tareas y responder con mayor rapidez desde una sola plataforma.
+                    </p>
 
-                  <div class="alert alert-info d-flex align-items-center mt-3" role="alert">
-                    <i class="bi bi-cloud-arrow-down-fill me-2 fs-5"></i>
-                    <div>
-                      ¿No cuentas con infraestructura local? <strong>Solicita tu servidor dedicado con nosotros</strong> y te entregamos la solución completamente implementada.
+                    <div class="lw-monitor-feature-grid">
+                      <div class="lw-monitor-feature">
+                        <i class="bi bi-router-fill"></i>
+                        <span>Dispositivos y servicios en tiempo real</span>
+                      </div>
+                      <div class="lw-monitor-feature">
+                        <i class="bi bi-whatsapp"></i>
+                        <span>Alertas por correo y WhatsApp</span>
+                      </div>
+                      <div class="lw-monitor-feature">
+                        <i class="bi bi-hdd-network-fill"></i>
+                        <span>Respaldos automáticos de switches y routers</span>
+                      </div>
+                      <div class="lw-monitor-feature">
+                        <i class="bi bi-diagram-3-fill"></i>
+                        <span>Mapa LLDP y visibilidad de topología</span>
+                      </div>
+                      <div class="lw-monitor-feature">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <span>Reportes de disponibilidad y rendimiento</span>
+                      </div>
+                      <div class="lw-monitor-feature">
+                        <i class="bi bi-shield-check"></i>
+                        <span>Soporte para operación, auditoría y continuidad</span>
+                      </div>
+                    </div>
+
+                    <div class="lw-monitor-requirements" aria-label="Requerimientos de instalación on-premise">
+                      <div class="lw-monitor-req-title">
+                        <i class="bi bi-server"></i>
+                        Implementación On-Premise flexible
+                      </div>
+                      <div class="lw-monitor-req-list">
+                        <span><i class="bi bi-windows"></i> Windows 10/11 Pro o Windows Server</span>
+                        <span><i class="bi bi-memory"></i> 8 GB RAM mínimo, 16 GB recomendado</span>
+                        <span><i class="bi bi-hdd"></i> Desde 50 GB para históricos y respaldos</span>
+                        <span><i class="bi bi-cpu"></i> IA local opcional según alcance</span>
+                      </div>
+                      <p>
+                        ¿No cuentas con infraestructura local? Podemos apoyarte con un servidor dedicado y entregar la solución completamente implementada.
+                      </p>
+                    </div>
+
+                    <div class="lw-monitor-actions">
+                      <a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html" target="_blank" rel="noopener" class="btn btn-primary">
+                        <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio oficial
+                      </a>
+                      <a href="#contact" class="btn btn-outline">
+                        <i class="bi bi-chat-dots me-2"></i>Solicitar una demo
+                      </a>
                     </div>
                   </div>
                 </div>
 
-                <div class="cta-actions mt-4">
-                  <a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html" target="_blank" class="btn btn-primary bi bi-rocket-takeoff">
-                    Conoce LinkWich-Monitor
+                <div class="col-lg-6">
+                  <a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html" target="_blank" rel="noopener" class="lw-monitor-visual" aria-label="Ver sitio oficial de LinkWich-Monitor">
+                    <span class="lw-monitor-visual-badge">
+                      <i class="bi bi-eye-fill"></i>
+                      Cómo funciona
+                    </span>
+                    <img src="assets/img/LINKWICH-MONITOR-COMO-FUNCIONA.png" onerror="this.onerror=null;this.src='static/assets/img/LINKWICH-MONITOR-COMO-FUNCIONA.png';" alt="Diagrama visual de cómo funciona LinkWich-Monitor" loading="lazy">
                   </a>
-
-                  <a href="https://www.linkwich-it.com/LinkWich-Tutorial" target="_blank"  class="btn btn-outline bi bi-journal-code"> Ver Tutorial Completo</a>
                 </div>
               </div>
             </div>
