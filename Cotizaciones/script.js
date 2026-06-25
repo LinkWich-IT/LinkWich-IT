@@ -21,6 +21,11 @@ const btnImportarExcel = document.getElementById("btnImportarExcel");
 const inputImportarExcel = document.getElementById("inputImportarExcel");
 
 const subtotalEl = document.getElementById("subtotal");
+const subtotalBrutoEl = document.getElementById("subtotalBruto");
+const descuentoConceptosMontoEl = document.getElementById("descuentoConceptosMonto");
+const descuentoConceptosPorcentajeEl = document.getElementById("descuentoConceptosPorcentaje");
+const descuentoTotalMontoEl = document.getElementById("descuentoTotalMonto");
+const descuentoTotalPorcentajeEl = document.getElementById("descuentoTotalPorcentaje");
 const descuentoMontoEl = document.getElementById("descuentoMonto");
 const ivaMontoEl = document.getElementById("ivaMonto");
 const totalEl = document.getElementById("total");
@@ -31,6 +36,7 @@ const netoResicoEl = document.getElementById("netoResico");
 
 const resConceptos = document.getElementById("resConceptos");
 const resSubtotal = document.getElementById("resSubtotal");
+const resDescuentoConceptos = document.getElementById("resDescuentoConceptos");
 const resIVA = document.getElementById("resIVA");
 const resTotal = document.getElementById("resTotal");
 
@@ -298,10 +304,12 @@ function leerConceptosDesdeTabla() {
   return rows.map((row, i) => {
     const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
     const precio = parseFloat(row.querySelector(".precio").value) || 0;
-    const descuento = parseFloat(row.querySelector(".descuento").value) || 0;
+    const descuentoCapturado = parseFloat(row.querySelector(".descuento").value) || 0;
+    const descuento = Math.max(0, Math.min(100, descuentoCapturado));
 
-    let importe = cantidad * precio;
-    importe -= importe * (descuento / 100);
+    const importeBruto = cantidad * precio;
+    const descuentoMonto = importeBruto * (descuento / 100);
+    const importe = importeBruto - descuentoMonto;
 
     return {
       no: i + 1,
@@ -309,9 +317,36 @@ function leerConceptosDesdeTabla() {
       cantidad,
       precio,
       descuento,
+      importeBruto,
+      descuentoMonto,
       importe
     };
   });
+}
+
+function calcularResumenDescuentosPorConcepto(conceptos) {
+  const subtotalBruto = conceptos.reduce((acc, item) => {
+    const cantidad = Number(item.cantidad) || 0;
+    const precio = Number(item.precio) || 0;
+    return acc + (cantidad * precio);
+  }, 0);
+
+  const descuentoMonto = conceptos.reduce((acc, item) => {
+    const cantidad = Number(item.cantidad) || 0;
+    const precio = Number(item.precio) || 0;
+    const descuento = Math.max(0, Math.min(100, Number(item.descuento) || 0));
+    return acc + ((cantidad * precio) * (descuento / 100));
+  }, 0);
+
+  const subtotalNeto = subtotalBruto - descuentoMonto;
+  const porcentaje = subtotalBruto > 0 ? (descuentoMonto / subtotalBruto) * 100 : 0;
+
+  return {
+    subtotalBruto,
+    descuentoMonto,
+    subtotalNeto,
+    porcentaje
+  };
 }
 
 function actualizarSelectorConceptoResico(conceptos) {
@@ -374,9 +409,14 @@ function aplicarCargoResicoAConceptos(conceptos, cargoAntesDescuentoGeneral, sel
   item.cantidad = cantidadSegura;
   item.precio = (Number(item.precio) || 0) + incrementoPrecioUnitario;
 
-  let importe = item.cantidad * item.precio;
-  importe -= importe * ((Number(item.descuento) || 0) / 100);
-  item.importe = importe;
+  const importeBruto = item.cantidad * item.precio;
+  const descuentoSeguro = Math.max(0, Math.min(100, Number(item.descuento) || 0));
+  const descuentoMonto = importeBruto * (descuentoSeguro / 100);
+
+  item.descuento = descuentoSeguro;
+  item.importeBruto = importeBruto;
+  item.descuentoMonto = descuentoMonto;
+  item.importe = importeBruto - descuentoMonto;
 
   adjusted[index] = item;
   return adjusted;
@@ -395,10 +435,15 @@ function calcularDatosFinancieros(options = {}) {
     });
   }
 
-  const selectedIndex = actualizarSelectorConceptoResico(conceptosBase);
+  actualizarSelectorConceptoResico(conceptosBase);
   const resicoConceptoIndex = getSelectedResicoConceptIndex(conceptosBase.length || 0);
 
-  const subtotalBase = conceptosBase.reduce((acc, item) => acc + item.importe, 0);
+  const resumenConceptosBase = calcularResumenDescuentosPorConcepto(conceptosBase);
+  const subtotalBrutoBase = resumenConceptosBase.subtotalBruto;
+  const descuentoConceptosBase = resumenConceptosBase.descuentoMonto;
+  const descuentoConceptosPorcentajeBase = resumenConceptosBase.porcentaje;
+  const subtotalBase = resumenConceptosBase.subtotalNeto;
+
   const descuentoGeneral = parseFloat(descuentoGeneralInput.value) || 0;
   const iva = parseFloat(ivaInput.value) || 0;
   const anticipo = parseFloat(anticipoInput.value) || 0;
@@ -406,6 +451,10 @@ function calcularDatosFinancieros(options = {}) {
   const factorDescuentoGeneral = Math.max(0, 1 - (descuentoGeneral / 100));
   const descuentoMontoBase = subtotalBase * (descuentoGeneral / 100);
   const subtotalConDescuentoBase = subtotalBase - descuentoMontoBase;
+  const descuentoTotalBase = descuentoConceptosBase + descuentoMontoBase;
+  const descuentoTotalPorcentajeBase = subtotalBrutoBase > 0
+    ? (descuentoTotalBase / subtotalBrutoBase) * 100
+    : 0;
 
   const resicoInfo = getResicoRateInfo(subtotalConDescuentoBase);
 
@@ -430,9 +479,19 @@ function calcularDatosFinancieros(options = {}) {
     resicoConceptoIndex
   );
 
-  const subtotal = conceptosCliente.reduce((acc, item) => acc + item.importe, 0);
+  const resumenConceptosCliente = calcularResumenDescuentosPorConcepto(conceptosCliente);
+  const subtotalBruto = resumenConceptosCliente.subtotalBruto;
+  const descuentoConceptosMonto = resumenConceptosCliente.descuentoMonto;
+  const descuentoConceptosPorcentaje = resumenConceptosCliente.porcentaje;
+  const subtotal = resumenConceptosCliente.subtotalNeto;
+
   const descuentoMonto = subtotal * (descuentoGeneral / 100);
   const subtotalConDescuento = subtotal - descuentoMonto;
+  const descuentoTotalMonto = descuentoConceptosMonto + descuentoMonto;
+  const descuentoTotalPorcentaje = subtotalBruto > 0
+    ? (descuentoTotalMonto / subtotalBruto) * 100
+    : 0;
+
   const ivaMonto = subtotalConDescuento * (iva / 100);
   const total = subtotalConDescuento + ivaMonto;
   const netoEstimadoResico = total - isrResicoMonto;
@@ -469,13 +528,25 @@ function calcularDatosFinancieros(options = {}) {
     resicoTasa: resicoInfo.tasa,
     resicoEtiqueta: resicoInfo.etiqueta,
     resicoExcedeLimite: resicoInfo.excedeLimite,
+
+    subtotalBrutoBase,
+    descuentoConceptosBase,
+    descuentoConceptosPorcentajeBase,
     subtotalBase,
     descuentoMontoBase,
     subtotalConDescuentoBase,
+    descuentoTotalBase,
+    descuentoTotalPorcentajeBase,
     cargoResicoAntesDescuentoGeneral,
+
+    subtotalBruto,
+    descuentoConceptosMonto,
+    descuentoConceptosPorcentaje,
     subtotal,
     descuentoGeneral,
     descuentoMonto,
+    descuentoTotalMonto,
+    descuentoTotalPorcentaje,
     iva,
     ivaMonto,
     isrResico: resicoInfo.tasa,
@@ -532,7 +603,28 @@ function crearFila(data = {}) {
 function recalcularTodo() {
   const financieros = calcularDatosFinancieros({ actualizarUI: true });
 
+  if (subtotalBrutoEl) {
+    subtotalBrutoEl.textContent = formatMoney(financieros.subtotalBruto);
+  }
+
   subtotalEl.textContent = formatMoney(financieros.subtotal);
+
+  if (descuentoConceptosMontoEl) {
+    descuentoConceptosMontoEl.textContent = formatMoney(financieros.descuentoConceptosMonto);
+  }
+
+  if (descuentoConceptosPorcentajeEl) {
+    descuentoConceptosPorcentajeEl.textContent = `equivale aprox. al ${formatPercent(financieros.descuentoConceptosPorcentaje)}% del subtotal`;
+  }
+
+  if (descuentoTotalMontoEl) {
+    descuentoTotalMontoEl.textContent = formatMoney(financieros.descuentoTotalMonto);
+  }
+
+  if (descuentoTotalPorcentajeEl) {
+    descuentoTotalPorcentajeEl.textContent = `aprox. ${formatPercent(financieros.descuentoTotalPorcentaje)}% global`;
+  }
+
   descuentoMontoEl.textContent = formatMoney(financieros.descuentoMonto);
   ivaMontoEl.textContent = formatMoney(financieros.ivaMonto);
   totalEl.textContent = formatMoney(financieros.total);
@@ -548,6 +640,11 @@ function recalcularTodo() {
 
   resConceptos.textContent = financieros.conceptosBase.length;
   resSubtotal.textContent = formatMoney(financieros.subtotal);
+
+  if (resDescuentoConceptos) {
+    resDescuentoConceptos.textContent = formatMoney(financieros.descuentoConceptosMonto);
+  }
+
   resIVA.textContent = formatMoney(financieros.ivaMonto);
   resTotal.textContent = formatMoney(financieros.total);
 }
@@ -606,12 +703,22 @@ function obtenerDatosFormulario() {
 
     conceptosBase: financieros.conceptosBase,
     conceptos: financieros.conceptos,
+    subtotalBrutoBase: financieros.subtotalBrutoBase,
+    descuentoConceptosBase: financieros.descuentoConceptosBase,
+    descuentoConceptosPorcentajeBase: financieros.descuentoConceptosPorcentajeBase,
     subtotalBase: financieros.subtotalBase,
     descuentoMontoBase: financieros.descuentoMontoBase,
     subtotalConDescuentoBase: financieros.subtotalConDescuentoBase,
+    descuentoTotalBase: financieros.descuentoTotalBase,
+    descuentoTotalPorcentajeBase: financieros.descuentoTotalPorcentajeBase,
     cargoResicoAntesDescuentoGeneral: financieros.cargoResicoAntesDescuentoGeneral,
+    subtotalBruto: financieros.subtotalBruto,
+    descuentoConceptosMonto: financieros.descuentoConceptosMonto,
+    descuentoConceptosPorcentaje: financieros.descuentoConceptosPorcentaje,
     subtotal: financieros.subtotal,
     descuentoMonto: financieros.descuentoMonto,
+    descuentoTotalMonto: financieros.descuentoTotalMonto,
+    descuentoTotalPorcentaje: financieros.descuentoTotalPorcentaje,
     ivaMonto: financieros.ivaMonto,
     isrResicoMonto: financieros.isrResicoMonto,
     total: financieros.total,
@@ -1235,15 +1342,15 @@ async function exportarPDF() {
 
     function drawFinancialSummary(y) {
       const leftBoxW = 92;
-      const rightBoxW = 74;
-      const gap = 12;
+      const rightBoxW = 82;
+      const gap = 8;
 
       const leftX = margin;
       const rightX = margin + leftBoxW + gap;
 
-      // Misma altura visual del resumen financiero para no desajustar el PDF.
-      const leftH = 38;
-      const rightH = 38;
+      // Altura ampliada para mostrar descuentos por concepto sin duplicar el descuento en el total.
+      const leftH = 50;
+      const rightH = 50;
       const rowH = Math.max(leftH, rightH);
 
       let currentY = ensureSpace(y, rowH + 10);
@@ -1274,22 +1381,22 @@ async function exportarPDF() {
       doc.setFontSize(12);
       doc.text(formatMoney(data.anticipoMonto), leftX + 4, currentY + 18.5);
 
-      // Método de pago en tamaño pequeño dentro del mismo bloque de anticipo.
       doc.setFillColor(255, 255, 255);
       doc.setDrawColor(205, 223, 245);
-      doc.roundedRect(leftX + 4, currentY + 21.5, leftBoxW - 8, 7, 2, 2, "FD");
+      doc.roundedRect(leftX + 4, currentY + 22, leftBoxW - 8, 7, 2, 2, "FD");
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.1);
       doc.setTextColor(...textGray);
       const metodoPagoText = `Método: ${metodoPagoPdf}`;
       const metodoPagoLines = doc.splitTextToSize(metodoPagoText, leftBoxW - 12);
-      doc.text(metodoPagoLines.slice(0, 1), leftX + 6, currentY + 26.1);
+      doc.text(metodoPagoLines.slice(0, 1), leftX + 6, currentY + 26.6);
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(...textGray);
-      doc.text(saldoTextoPdf, leftX + 4, currentY + 34.2);
+      const saldoLines = doc.splitTextToSize(saldoTextoPdf, leftBoxW - 8);
+      doc.text(saldoLines.slice(0, 2), leftX + 4, currentY + 35);
 
       doc.setFillColor(...softGray);
       doc.roundedRect(rightX, currentY, rightBoxW, rightH, 3, 3, "F");
@@ -1298,28 +1405,36 @@ async function exportarPDF() {
 
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...accentBlue);
-      doc.setFontSize(10);
-      doc.text("RESUMEN FINANCIERO", rightX + rightBoxW / 2, currentY + 7, { align: "center" });
+      doc.setFontSize(9.4);
+      doc.text("RESUMEN FINANCIERO", rightX + rightBoxW / 2, currentY + 6.5, { align: "center" });
+
+      const descuentoConceptosLabel = `Desc. conceptos (${formatPercent(data.descuentoConceptosPorcentaje)}%):`;
+      const descuentoTotalLabel = `Desc. total (${formatPercent(data.descuentoTotalPorcentaje)}%):`;
 
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
+      doc.setFontSize(7.8);
       doc.setTextColor(...textGray);
-      doc.text("Subtotal:", rightX + 4, currentY + 15);
-      doc.text("Descuento:", rightX + 4, currentY + 21);
-      doc.text("IVA:", rightX + 4, currentY + 27);
-
-      doc.setFont("helvetica", "bold");
-      doc.text("Total:", rightX + 4, currentY + 35);
+      doc.text("Subtotal bruto:", rightX + 4, currentY + 14);
+      doc.text(descuentoConceptosLabel, rightX + 4, currentY + 20);
+      doc.text("Subtotal neto:", rightX + 4, currentY + 26);
+      doc.text("Desc. general:", rightX + 4, currentY + 32);
+      doc.text(descuentoTotalLabel, rightX + 4, currentY + 38);
+      doc.text("IVA:", rightX + 4, currentY + 44);
 
       doc.setFont("helvetica", "normal");
       doc.setTextColor(...darkText);
-      doc.text(formatMoney(data.subtotal), rightX + rightBoxW - 4, currentY + 15, { align: "right" });
-      doc.text(formatMoney(data.descuentoMonto), rightX + rightBoxW - 4, currentY + 21, { align: "right" });
-      doc.text(formatMoney(data.ivaMonto), rightX + rightBoxW - 4, currentY + 27, { align: "right" });
+      doc.text(formatMoney(data.subtotalBruto), rightX + rightBoxW - 4, currentY + 14, { align: "right" });
+      doc.text(formatMoney(data.descuentoConceptosMonto), rightX + rightBoxW - 4, currentY + 20, { align: "right" });
+      doc.text(formatMoney(data.subtotal), rightX + rightBoxW - 4, currentY + 26, { align: "right" });
+      doc.text(formatMoney(data.descuentoMonto), rightX + rightBoxW - 4, currentY + 32, { align: "right" });
+      doc.text(formatMoney(data.descuentoTotalMonto), rightX + rightBoxW - 4, currentY + 38, { align: "right" });
+      doc.text(formatMoney(data.ivaMonto), rightX + rightBoxW - 4, currentY + 44, { align: "right" });
 
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryBlue);
-      doc.text(formatMoney(data.total), rightX + rightBoxW - 4, currentY + 35, { align: "right" });
+      doc.setFontSize(9.2);
+      doc.text("Total:", rightX + 4, currentY + 49);
+      doc.text(formatMoney(data.total), rightX + rightBoxW - 4, currentY + 49, { align: "right" });
 
       return currentY + rowH + 8;
     }
@@ -1538,11 +1653,19 @@ function exportarExcel() {
     ["MONEDA", data.moneda],
     ["DESCRIPCIÓN MONEDA", data.monedaDescripcion],
     [],
+    ["SUBTOTAL BRUTO BASE", data.subtotalBrutoBase],
+    ["DESCUENTO POR CONCEPTOS BASE", data.descuentoConceptosBase],
+    ["DESCUENTO POR CONCEPTOS BASE (%)", data.descuentoConceptosPorcentajeBase],
     ["SUBTOTAL BASE ORIGINAL", data.subtotalBase],
     ["BASE ORIGINAL SIN IVA", data.subtotalConDescuentoBase],
     ["RESICO INTEGRADO AL PRECIO", data.isrResicoMonto],
+    ["SUBTOTAL BRUTO CLIENTE", data.subtotalBruto],
+    ["DESCUENTO POR CONCEPTOS CLIENTE", data.descuentoConceptosMonto],
+    ["DESCUENTO POR CONCEPTOS CLIENTE (%)", data.descuentoConceptosPorcentaje],
     ["SUBTOTAL CLIENTE", data.subtotal],
     ["DESCUENTO GENERAL", data.descuentoMonto],
+    ["DESCUENTO TOTAL", data.descuentoTotalMonto],
+    ["DESCUENTO TOTAL (%)", data.descuentoTotalPorcentaje],
     ["IVA", data.ivaMonto],
     ["TOTAL", data.total],
     ["NETO ESTIMADO RESICO", data.netoEstimadoResico],
