@@ -79,7 +79,8 @@
         <h2>Resumen</h2>
         <div class="mini-summary">
           <div><span>Conceptos</span><strong id="resConceptos">0</strong></div>
-          <div><span>Subtotal</span><strong id="resSubtotal">$0.00</strong></div>
+          <div><span>Subtotal neto</span><strong id="resSubtotal">$0.00</strong></div>
+          <div><span>Desc. conceptos</span><strong id="resDescuentoConceptos">$0.00</strong></div>
           <div><span>IVA</span><strong id="resIVA">$0.00</strong></div>
           <div><span>Total</span><strong id="resTotal">$0.00</strong></div>
         </div>
@@ -286,12 +287,24 @@
       <section class="card totals-card">
         <div class="totals-box">
           <div class="total-row">
-            <span>Subtotal</span>
+            <span>Subtotal antes de descuentos</span>
+            <strong id="subtotalBruto">$0.00</strong>
+          </div>
+          <div class="total-row">
+            <span>Descuento por conceptos <small id="descuentoConceptosPorcentaje" class="field-help" style="display:inline; margin-left:6px;">equivale aprox. al 0% del subtotal</small></span>
+            <strong id="descuentoConceptosMonto">$0.00</strong>
+          </div>
+          <div class="total-row">
+            <span>Subtotal neto</span>
             <strong id="subtotal">$0.00</strong>
           </div>
           <div class="total-row">
             <span>Descuento general</span>
             <strong id="descuentoMonto">$0.00</strong>
+          </div>
+          <div class="total-row">
+            <span>Descuento total estimado <small id="descuentoTotalPorcentaje" class="field-help" style="display:inline; margin-left:6px;">aprox. 0% global</small></span>
+            <strong id="descuentoTotalMonto">$0.00</strong>
           </div>
           <div class="total-row">
             <span>IVA</span>
