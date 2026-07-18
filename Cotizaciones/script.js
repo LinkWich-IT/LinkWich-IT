@@ -14,7 +14,9 @@ const I18N = {
     pageTitle: "LinkWich-IT | Cotizador Profesional",
     actions: "Acciones", new: "Nuevo", addItem: "Agregar concepto", generatePdf: "Generar PDF",
     pdfLanguage: "Idioma del PDF", pdfCurrent: "Igual que la interfaz", pdfSpanish: "Español",
-    pdfEnglish: "English", pdfBoth: "Ambos (2 archivos)",
+    pdfEnglish: "Solo English", pdfBoth: "Español + English (2 PDF)",
+    pdfChooseFormat: "Selecciona una opción",
+    pdfBothHelp: "Para descargar ambos, selecciona Español + English y después pulsa Generar PDF.",
     exportExcel: "Exportar Excel", saveDraft: "Guardar borrador", loadDraft: "Cargar borrador",
     importExcel: "Importar Excel", summary: "Resumen", items: "Conceptos", netSubtotal: "Subtotal neto",
     itemDiscountShort: "Desc. conceptos", vat: "IVA", total: "Total", professionalQuoter: "Cotizador Profesional",
@@ -84,7 +86,9 @@ const I18N = {
     pageTitle: "LinkWich-IT | Professional Quoter",
     actions: "Actions", new: "New", addItem: "Add item", generatePdf: "Generate PDF",
     pdfLanguage: "PDF language", pdfCurrent: "Same as interface", pdfSpanish: "Spanish",
-    pdfEnglish: "English", pdfBoth: "Both (2 files)",
+    pdfEnglish: "English only", pdfBoth: "Spanish + English (2 PDFs)",
+    pdfChooseFormat: "Choose an option",
+    pdfBothHelp: "To download both versions, select Spanish + English and then click Generate PDF.",
     exportExcel: "Export Excel", saveDraft: "Save draft", loadDraft: "Load draft",
     importExcel: "Import Excel", summary: "Summary", items: "Items", netSubtotal: "Net subtotal",
     itemDiscountShort: "Item discounts", vat: "VAT", total: "Total", professionalQuoter: "Professional Quoter",
@@ -266,13 +270,50 @@ const conceptosBody = document.getElementById("conceptosBody");
 const btnAgregarFila = document.getElementById("btnAgregarFila");
 const btnAgregarFilaTop = document.getElementById("btnAgregarFilaTop");
 const btnPDF = document.getElementById("btnPDF");
-const idiomaPDFSelect = document.getElementById("idiomaPDF");
+let idiomaPDFSelect = document.getElementById("idiomaPDF");
 const btnExcel = document.getElementById("btnExcel");
 const btnNuevo = document.getElementById("btnNuevo");
 const btnGuardar = document.getElementById("btnGuardar");
 const btnCargar = document.getElementById("btnCargar");
 const btnImportarExcel = document.getElementById("btnImportarExcel");
+
 const inputImportarExcel = document.getElementById("inputImportarExcel");
+
+/*
+  Respaldo visual:
+  Si el navegador carga un HTML anterior pero sí carga este script actualizado,
+  este bloque inserta automáticamente el selector de idioma del PDF.
+*/
+function asegurarSelectorIdiomaPDF() {
+  idiomaPDFSelect = document.getElementById("idiomaPDF");
+  if (idiomaPDFSelect) return idiomaPDFSelect;
+
+  const targetButton = document.getElementById("btnPDF");
+  if (!targetButton) return null;
+
+  const wrapper = document.createElement("div");
+  wrapper.id = "pdfExportCard";
+  wrapper.className = "pdf-export-card";
+  wrapper.innerHTML = `
+    <label for="idiomaPDF">
+      <span data-i18n="pdfLanguage">${t("pdfLanguage")}</span>
+      <strong data-i18n="pdfChooseFormat">${t("pdfChooseFormat")}</strong>
+    </label>
+    <select id="idiomaPDF" aria-label="${t("pdfLanguage")}">
+      <option value="current" data-i18n="pdfCurrent">${t("pdfCurrent")}</option>
+      <option value="es" data-i18n="pdfSpanish">${t("pdfSpanish")}</option>
+      <option value="en" data-i18n="pdfEnglish">${t("pdfEnglish")}</option>
+      <option value="both" data-i18n="pdfBoth">${t("pdfBoth")}</option>
+    </select>
+    <small data-i18n="pdfBothHelp">${t("pdfBothHelp")}</small>
+  `;
+
+  targetButton.parentNode.insertBefore(wrapper, targetButton);
+  idiomaPDFSelect = wrapper.querySelector("#idiomaPDF");
+  return idiomaPDFSelect;
+}
+
+asegurarSelectorIdiomaPDF();
 
 const subtotalEl = document.getElementById("subtotal");
 const subtotalBrutoEl = document.getElementById("subtotalBruto");
@@ -1843,7 +1884,9 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
 async function exportarPDF() {
   if (!confirmarExportacionPDF()) return;
 
-  const selectedMode = idiomaPDFSelect?.value || "current";
+  const selectorPDF = asegurarSelectorIdiomaPDF();
+  const selectedMode = selectorPDF?.value || "current";
+  localStorage.setItem("linkwich_pdf_output_language", selectedMode);
   const interfaceLanguage = currentLanguage;
   const languages = selectedMode === "both"
     ? ["es", "en"]
@@ -2023,6 +2066,17 @@ if (idiomaSelect) {
   });
 
 aplicarDatosEmpresaPorDefecto({ overwrite: false });
+
+const selectorPDFInicial = asegurarSelectorIdiomaPDF();
+if (selectorPDFInicial) {
+  const savedPdfMode = localStorage.getItem("linkwich_pdf_output_language");
+  if (["current", "es", "en", "both"].includes(savedPdfMode)) {
+    selectorPDFInicial.value = savedPdfMode;
+  }
+  selectorPDFInicial.addEventListener("change", () => {
+    localStorage.setItem("linkwich_pdf_output_language", selectorPDFInicial.value);
+  });
+}
 
 if (anticipoInput && !String(anticipoInput.value || "").trim()) {
   anticipoInput.value = DEFAULT_ANTICIPO;
