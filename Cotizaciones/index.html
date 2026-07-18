@@ -64,25 +64,25 @@
       </div>
 
       <div class="sidebar-card">
-        <h2>Acciones</h2>
-        <button id="btnNuevo" class="btn btn-secondary">Nuevo</button>
-        <button id="btnAgregarFila" class="btn btn-primary">Agregar concepto</button>
-        <button id="btnPDF" class="btn btn-success">Generar PDF</button>
-        <button id="btnExcel" class="btn btn-info">Exportar Excel</button>
-        <button id="btnGuardar" class="btn btn-warning">Guardar borrador</button>
-        <button id="btnCargar" class="btn btn-dark">Cargar borrador</button>
-        <button id="btnImportarExcel" class="btn btn-secondary">Importar Excel</button>
+        <h2 data-i18n="actions">Acciones</h2>
+        <button id="btnNuevo" class="btn btn-secondary" data-i18n="new">Nuevo</button>
+        <button id="btnAgregarFila" class="btn btn-primary" data-i18n="addItem">Agregar concepto</button>
+        <button id="btnPDF" class="btn btn-success" data-i18n="generatePdf">Generar PDF</button>
+        <button id="btnExcel" class="btn btn-info" data-i18n="exportExcel">Exportar Excel</button>
+        <button id="btnGuardar" class="btn btn-warning" data-i18n="saveDraft">Guardar borrador</button>
+        <button id="btnCargar" class="btn btn-dark" data-i18n="loadDraft">Cargar borrador</button>
+        <button id="btnImportarExcel" class="btn btn-secondary" data-i18n="importExcel">Importar Excel</button>
         <input type="file" id="inputImportarExcel" accept=".xlsx,.xls" hidden>
       </div>
 
       <div class="sidebar-card">
-        <h2>Resumen</h2>
+        <h2 data-i18n="summary">Resumen</h2>
         <div class="mini-summary">
-          <div><span>Conceptos</span><strong id="resConceptos">0</strong></div>
-          <div><span>Subtotal neto</span><strong id="resSubtotal">$0.00</strong></div>
-          <div><span>Desc. conceptos</span><strong id="resDescuentoConceptos">$0.00</strong></div>
-          <div><span>IVA</span><strong id="resIVA">$0.00</strong></div>
-          <div><span>Total</span><strong id="resTotal">$0.00</strong></div>
+          <div><span data-i18n="items">Conceptos</span><strong id="resConceptos">0</strong></div>
+          <div><span data-i18n="netSubtotal">Subtotal neto</span><strong id="resSubtotal">$0.00</strong></div>
+          <div><span data-i18n="itemDiscountShort">Desc. conceptos</span><strong id="resDescuentoConceptos">$0.00</strong></div>
+          <div><span data-i18n="vat">IVA</span><strong id="resIVA">$0.00</strong></div>
+          <div><span data-i18n="total">Total</span><strong id="resTotal">$0.00</strong></div>
         </div>
       </div>
     </aside>
@@ -90,39 +90,48 @@
     <main class="main-content">
       <header class="topbar">
         <div>
-          <h2>Cotizador Profesional</h2>
-          <p>Genera cotizaciones ejecutivas para tus clientes</p>
+          <h2 data-i18n="professionalQuoter">Cotizador Profesional</h2>
+          <p data-i18n="subtitle">Genera cotizaciones ejecutivas para tus clientes</p>
         </div>
-        <div class="badge">Versión Web</div>
+        <div class="topbar-actions">
+          <label class="language-switcher" for="idioma">
+            <span data-i18n="language">Idioma</span>
+            <select id="idioma" aria-label="Idioma / Language">
+              <option value="es">Español</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+          <div class="badge" data-i18n="webVersion">Versión Web</div>
+        </div>
       </header>
 
       <section class="card">
         <div class="card-header">
-          <h3>Datos de la empresa</h3>
+          <h3 data-i18n="companyData">Datos de la empresa</h3>
         </div>
         <div class="grid grid-3">
           <div class="field">
-            <label>Empresa</label>
+            <label data-i18n="company">Empresa</label>
             <input type="text" id="empresa" value="LinkWich-IT System & Networking Solution" />
           </div>
           <div class="field">
-            <label>Correo</label>
+            <label data-i18n="email">Correo</label>
             <input type="email" id="correoEmpresa" value="jhernandez@linkwich-it.com" />
           </div>
           <div class="field">
-            <label>Teléfono</label>
+            <label data-i18n="phone">Teléfono</label>
             <input type="text" id="telefonoEmpresa" value="+52 624 185 6134" />
           </div>
           <div class="field">
-            <label>Sitio web</label>
+            <label data-i18n="website">Sitio web</label>
             <input type="text" id="sitioEmpresa" value="www.linkwich-it.com" />
           </div>
           <div class="field">
-            <label>Ciudad</label>
+            <label data-i18n="city">Ciudad</label>
             <input type="text" id="ciudadEmpresa" value="San José del Cabo, B.C.S." />
           </div>
           <div class="field">
-            <label>Moneda</label>
+            <label data-i18n="currency">Moneda</label>
             <select id="moneda">
               <option value="MXN" selected>MXN</option>
               <option value="USD">USD</option>
@@ -133,31 +142,31 @@
 
       <section class="card">
         <div class="card-header">
-          <h3>Datos de la cotización</h3>
+          <h3 data-i18n="quoteData">Datos de la cotización</h3>
         </div>
         <div class="grid grid-4">
           <div class="field">
-            <label>Folio</label>
+            <label data-i18n="folio">Folio</label>
             <input type="text" id="folio" placeholder="COT-2026.1015" />
           </div>
           <div class="field">
-            <label>Fecha</label>
+            <label data-i18n="date">Fecha</label>
             <input type="date" id="fecha" />
           </div>
           <div class="field">
-            <label>Vigencia (días)</label>
+            <label data-i18n="validityDays">Vigencia (días)</label>
             <input type="number" id="vigencia" value="15" min="1" />
           </div>
           <div class="field">
-            <label>Tipo de servicio</label>
+            <label data-i18n="serviceType">Tipo de servicio</label>
             <select id="tipoServicio">
-              <option>Monitoreo de red</option>
-              <option>Videovigilancia</option>
-              <option>Networking</option>
-              <option>Implementación</option>
-              <option>Soporte técnico</option>
-              <option>Consultoría</option>
-              <option>Otro</option>
+              <option value="Monitoreo de red" data-i18n="serviceNetworkMonitoring">Monitoreo de red</option>
+              <option value="Videovigilancia" data-i18n="serviceVideoSurveillance">Videovigilancia</option>
+              <option value="Networking" data-i18n="serviceNetworking">Networking</option>
+              <option value="Implementación" data-i18n="serviceImplementation">Implementación</option>
+              <option value="Soporte técnico" data-i18n="serviceTechnicalSupport">Soporte técnico</option>
+              <option value="Consultoría" data-i18n="serviceConsulting">Consultoría</option>
+              <option value="Otro" data-i18n="serviceOther">Otro</option>
             </select>
           </div>
         </div>
@@ -165,43 +174,43 @@
 
       <section class="card">
         <div class="card-header">
-          <h3>Datos del cliente</h3>
+          <h3 data-i18n="clientData">Datos del cliente</h3>
         </div>
         <div class="grid grid-4">
           <div class="field">
-            <label>Cliente / Empresa</label>
-            <input type="text" id="cliente" placeholder="Nombre del cliente o empresa" />
+            <label data-i18n="clientCompany">Cliente / Empresa</label>
+            <input type="text" id="cliente" placeholder="Nombre del cliente o empresa" data-i18n-placeholder="clientCompanyPlaceholder" />
           </div>
           <div class="field">
-            <label>Contacto</label>
-            <input type="text" id="contacto" placeholder="Nombre del contacto" />
+            <label data-i18n="contact">Contacto</label>
+            <input type="text" id="contacto" placeholder="Nombre del contacto" data-i18n-placeholder="contactPlaceholder" />
           </div>
           <div class="field">
-            <label>Correo</label>
-            <input type="email" id="correoCliente" placeholder="correo@cliente.com" />
+            <label data-i18n="email">Correo</label>
+            <input type="email" id="correoCliente" placeholder="correo@cliente.com" data-i18n-placeholder="clientEmailPlaceholder" />
           </div>
           <div class="field">
-            <label>Teléfono</label>
-            <input type="text" id="telefonoCliente" placeholder="+52 ..." />
+            <label data-i18n="phone">Teléfono</label>
+            <input type="text" id="telefonoCliente" placeholder="+52 ..." data-i18n-placeholder="phonePlaceholder" />
           </div>
         </div>
 
         <div class="grid grid-2">
           <div class="field">
-            <label>Proyecto / Asunto</label>
-            <input type="text" id="proyecto" placeholder="Ej. Implementación de videovigilancia" />
+            <label data-i18n="projectSubject">Proyecto / Asunto</label>
+            <input type="text" id="proyecto" placeholder="Ej. Implementación de videovigilancia" data-i18n-placeholder="projectPlaceholder" />
           </div>
           <div class="field">
-            <label>Ubicación del proyecto</label>
-            <input type="text" id="ubicacionProyecto" placeholder="Ej. Los Cabos, B.C.S." />
+            <label data-i18n="projectLocation">Ubicación del proyecto</label>
+            <input type="text" id="ubicacionProyecto" placeholder="Ej. Los Cabos, B.C.S." data-i18n-placeholder="locationPlaceholder" />
           </div>
         </div>
       </section>
 
       <section class="card">
         <div class="card-header between">
-          <h3>Conceptos</h3>
-          <button id="btnAgregarFilaTop" class="btn btn-primary">Agregar concepto</button>
+          <h3 data-i18n="items">Conceptos</h3>
+          <button id="btnAgregarFilaTop" class="btn btn-primary" data-i18n="addItem">Agregar concepto</button>
         </div>
 
         <div class="table-wrap">
@@ -209,12 +218,12 @@
             <thead>
               <tr>
                 <th style="width: 70px;">#</th>
-                <th>Concepto</th>
-                <th style="width: 120px;">Cantidad</th>
-                <th style="width: 160px;">Precio Unitario</th>
-                <th style="width: 120px;">Desc. %</th>
-                <th style="width: 170px;">Importe</th>
-                <th style="width: 90px;">Acción</th>
+                <th data-i18n="item">Concepto</th>
+                <th style="width: 120px;" data-i18n="quantity">Cantidad</th>
+                <th style="width: 160px;" data-i18n="unitPrice">Precio Unitario</th>
+                <th style="width: 120px;" data-i18n="discountShortPct">Desc. %</th>
+                <th style="width: 170px;" data-i18n="amount">Importe</th>
+                <th style="width: 90px;" data-i18n="action">Acción</th>
               </tr>
             </thead>
             <tbody id="conceptosBody"></tbody>
@@ -224,45 +233,45 @@
 
       <section class="card">
         <div class="card-header">
-          <h3>Condiciones comerciales</h3>
+          <h3 data-i18n="commercialTerms">Condiciones comerciales</h3>
         </div>
 
         <div class="grid grid-4">
           <div class="field">
-            <label>IVA (%)</label>
+            <label data-i18n="vatPct">IVA (%)</label>
             <input type="number" id="iva" value="16" min="0" step="0.01" />
           </div>
           <div class="field">
-            <label>Descuento general (%)</label>
+            <label data-i18n="generalDiscountPct">Descuento general (%)</label>
             <input type="number" id="descuentoGeneral" value="0" min="0" step="0.01" />
           </div>
           <div class="field">
-            <label>RESICO automático (%)</label>
+            <label data-i18n="automaticResicoPct">RESICO automático (%)</label>
             <input type="number" id="isrResico" value="0" min="0" step="0.01" readonly />
-            <small class="field-help">Se calcula sobre la base antes de IVA y se integra al precio. No aparece como impuesto en el PDF.</small>
+            <small class="field-help" data-i18n="resicoHelp">Se calcula sobre la base antes de IVA y se integra al precio. No aparece como impuesto en el PDF.</small>
           </div>
           <div class="field">
-            <label>Tabla RESICO</label>
+            <label data-i18n="resicoTable">Tabla RESICO</label>
             <select id="resicoTabla">
-              <option value="mensual" selected>Mensual</option>
-              <option value="anual">Anual</option>
+              <option value="mensual" selected data-i18n="monthly">Mensual</option>
+              <option value="anual" data-i18n="annual">Anual</option>
             </select>
             <small class="field-help" id="resicoDetalle">Base sin IVA: $0.00 | tabla mensual | tasa 0%.</small>
           </div>
           <div class="field">
-            <label>Cargar RESICO en concepto</label>
+            <label data-i18n="applyResicoToItem">Cargar RESICO en concepto</label>
             <select id="resicoConceptoIndex">
               <option value="0">Concepto #1</option>
             </select>
-            <small class="field-help">Si hay varios conceptos, aquí eliges dónde se integrará internamente antes de imprimir.</small>
+            <small class="field-help" data-i18n="resicoItemHelp">Si hay varios conceptos, aquí eliges dónde se integrará internamente antes de imprimir.</small>
           </div>
           <div class="field">
-            <label>Anticipo sugerido (%)</label>
+            <label data-i18n="suggestedDepositPct">Anticipo sugerido (%)</label>
             <input type="number" id="anticipo" value="60" min="0" max="100" step="0.01" />
-            <small class="field-help">Por defecto 60%. Si colocas 100%, se considera pago único.</small>
+            <small class="field-help" data-i18n="depositHelp">Por defecto 60%. Si colocas 100%, se considera pago único.</small>
           </div>
           <div class="field">
-            <label>Método de pago</label>
+            <label data-i18n="paymentMethod">Método de pago</label>
             <input type="text" id="metodoPago" value="PPD" readonly />
             <small class="field-help" id="metodoPagoDetalle">Anticipo del 60%; saldo pendiente estimado.</small>
           </div>
@@ -270,15 +279,15 @@
 
         <div class="grid grid-3">
           <div class="field">
-            <label>Forma de pago</label>
+            <label data-i18n="paymentTerms">Forma de pago</label>
             <textarea id="formaPago" rows="5">Únicamente mediante transferencia bancaria.</textarea>
           </div>
           <div class="field">
-            <label>Notas</label>
-            <textarea id="notas" rows="5" placeholder="Escribe observaciones, alcances, restricciones o notas importantes."></textarea>
+            <label data-i18n="notes">Notas</label>
+            <textarea id="notas" rows="5" placeholder="Escribe observaciones, alcances, restricciones o notas importantes." data-i18n-placeholder="notesPlaceholder"></textarea>
           </div>
           <div class="field">
-            <label>Términos y condiciones</label>
+            <label data-i18n="termsConditions">Términos y condiciones</label>
             <textarea id="terminos" rows="5">La presente cotización tiene vigencia conforme al periodo indicado. Los tiempos de entrega pueden variar según disponibilidad. No incluye trabajos adicionales no especificados.</textarea>
           </div>
         </div>
@@ -287,43 +296,43 @@
       <section class="card totals-card">
         <div class="totals-box">
           <div class="total-row">
-            <span>Subtotal antes de descuentos</span>
+            <span data-i18n="subtotalBeforeDiscounts">Subtotal antes de descuentos</span>
             <strong id="subtotalBruto">$0.00</strong>
           </div>
           <div class="total-row">
-            <span>Descuento por conceptos <small id="descuentoConceptosPorcentaje" class="field-help" style="display:inline; margin-left:6px;">equivale aprox. al 0% del subtotal</small></span>
+            <span><span data-i18n="itemDiscount">Descuento por conceptos</span> <small id="descuentoConceptosPorcentaje" class="field-help" style="display:inline; margin-left:6px;">equivale aprox. al 0% del subtotal</small></span>
             <strong id="descuentoConceptosMonto">$0.00</strong>
           </div>
           <div class="total-row">
-            <span>Subtotal neto</span>
+            <span data-i18n="netSubtotal">Subtotal neto</span>
             <strong id="subtotal">$0.00</strong>
           </div>
           <div class="total-row">
-            <span>Descuento general</span>
+            <span data-i18n="generalDiscount">Descuento general</span>
             <strong id="descuentoMonto">$0.00</strong>
           </div>
           <div class="total-row">
-            <span>Descuento total estimado <small id="descuentoTotalPorcentaje" class="field-help" style="display:inline; margin-left:6px;">aprox. 0% global</small></span>
+            <span><span data-i18n="estimatedTotalDiscount">Descuento total estimado</span> <small id="descuentoTotalPorcentaje" class="field-help" style="display:inline; margin-left:6px;">aprox. 0% global</small></span>
             <strong id="descuentoTotalMonto">$0.00</strong>
           </div>
           <div class="total-row">
-            <span>IVA</span>
+            <span data-i18n="vat">IVA</span>
             <strong id="ivaMonto">$0.00</strong>
           </div>
           <div class="total-row internal-row">
-            <span>RESICO estimado integrado</span>
+            <span data-i18n="integratedResico">RESICO estimado integrado</span>
             <strong id="isrResicoMonto">$0.00</strong>
           </div>
           <div class="total-row internal-row">
-            <span>Cargado en</span>
+            <span data-i18n="appliedTo">Cargado en</span>
             <strong id="resicoConceptoResumen">Concepto #1</strong>
           </div>
           <div class="total-row grand-total">
-            <span>Total cliente</span>
+            <span data-i18n="clientTotal">Total cliente</span>
             <strong id="total">$0.00</strong>
           </div>
           <div class="total-row internal-row neto-row">
-            <span>Neto estimado después RESICO</span>
+            <span data-i18n="estimatedNetAfterResico">Neto estimado después RESICO</span>
             <strong id="netoResico">$0.00</strong>
           </div>
           <div class="total-row anticipo-row">
