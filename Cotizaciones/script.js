@@ -13,6 +13,8 @@ const I18N = {
   es: {
     pageTitle: "LinkWich-IT | Cotizador Profesional",
     actions: "Acciones", new: "Nuevo", addItem: "Agregar concepto", generatePdf: "Generar PDF",
+    pdfLanguage: "Idioma del PDF", pdfCurrent: "Igual que la interfaz", pdfSpanish: "Español",
+    pdfEnglish: "English", pdfBoth: "Ambos (2 archivos)",
     exportExcel: "Exportar Excel", saveDraft: "Guardar borrador", loadDraft: "Cargar borrador",
     importExcel: "Importar Excel", summary: "Resumen", items: "Conceptos", netSubtotal: "Subtotal neto",
     itemDiscountShort: "Desc. conceptos", vat: "IVA", total: "Total", professionalQuoter: "Cotizador Profesional",
@@ -81,6 +83,8 @@ const I18N = {
   en: {
     pageTitle: "LinkWich-IT | Professional Quoter",
     actions: "Actions", new: "New", addItem: "Add item", generatePdf: "Generate PDF",
+    pdfLanguage: "PDF language", pdfCurrent: "Same as interface", pdfSpanish: "Spanish",
+    pdfEnglish: "English", pdfBoth: "Both (2 files)",
     exportExcel: "Export Excel", saveDraft: "Save draft", loadDraft: "Load draft",
     importExcel: "Import Excel", summary: "Summary", items: "Items", netSubtotal: "Net subtotal",
     itemDiscountShort: "Item discounts", vat: "VAT", total: "Total", professionalQuoter: "Professional Quoter",
@@ -262,6 +266,7 @@ const conceptosBody = document.getElementById("conceptosBody");
 const btnAgregarFila = document.getElementById("btnAgregarFila");
 const btnAgregarFilaTop = document.getElementById("btnAgregarFilaTop");
 const btnPDF = document.getElementById("btnPDF");
+const idiomaPDFSelect = document.getElementById("idiomaPDF");
 const btnExcel = document.getElementById("btnExcel");
 const btnNuevo = document.getElementById("btnNuevo");
 const btnGuardar = document.getElementById("btnGuardar");
@@ -1261,26 +1266,81 @@ function importarExcel(file) {
   reader.readAsArrayBuffer(file);
 }
 
-async function exportarPDF() {
+function traducirValorPredeterminadoParaExportar(value, key, targetLanguage) {
+  const currentValue = String(value || "").trim();
+  if (!currentValue) return value;
+
+  const isKnownDefault = ["es", "en"].some(language =>
+    currentValue === String(t(key, {}, language) || "").trim()
+  );
+
+  return isKnownDefault ? t(key, {}, targetLanguage) : value;
+}
+
+function prepararDatosParaIdiomaPDF(data, targetLanguage) {
+  const result = { ...data };
+  result.formaPago = traducirValorPredeterminadoParaExportar(
+    data.formaPago,
+    "defaultPaymentTerms",
+    targetLanguage
+  );
+  result.terminos = traducirValorPredeterminadoParaExportar(
+    data.terminos,
+    "defaultTerms",
+    targetLanguage
+  );
+
+  const translateItems = items => (items || []).map(item => ({
+    ...item,
+    concepto: traducirValorPredeterminadoParaExportar(
+      item.concepto,
+      "defaultProfessionalService",
+      targetLanguage
+    )
+  }));
+
+  result.conceptosBase = translateItems(data.conceptosBase);
+  result.conceptos = translateItems(data.conceptos);
+  return result;
+}
+
+function confirmarExportacionPDF() {
+  const data = obtenerDatosFormulario();
+
+  if (data.conceptosBase.length > 1 && data.isrResicoMonto > 0) {
+    const conceptoSeleccionado =
+      data.conceptosBase[data.resicoConceptoIndex]?.concepto ||
+      t("itemN", { n: data.resicoConceptoIndex + 1 });
+
+    return confirm(
+      `${t("beforePrint")}
+
+` +
+      `${t("resicoWillIntegrate", {
+        amount: formatMoney(data.isrResicoMonto),
+        number: data.resicoConceptoIndex + 1
+      })}
+` +
+      `"${conceptoSeleccionado}"
+
+` +
+      t("resicoNotSeparate")
+    );
+  }
+
+  return true;
+}
+
+async function generarPDFEnIdioma(languageOverride = currentLanguage) {
+  const previousLanguage = currentLanguage;
+  const targetLanguage = languageOverride === "en" ? "en" : "es";
+  currentLanguage = targetLanguage;
+
   try {
-    const data = obtenerDatosFormulario();
-
-    if (data.conceptosBase.length > 1 && data.isrResicoMonto > 0) {
-      const conceptoSeleccionado = data.conceptosBase[data.resicoConceptoIndex]?.concepto || t("itemN", { n: data.resicoConceptoIndex + 1 });
-      const continuar = confirm(
-        `${t("beforePrint")}
-
-` +
-        `${t("resicoWillIntegrate", { amount: formatMoney(data.isrResicoMonto), number: data.resicoConceptoIndex + 1 })}
-` +
-        `"${conceptoSeleccionado}"
-
-` +
-        t("resicoNotSeparate")
-      );
-
-      if (!continuar) return;
-    }
+    const data = prepararDatosParaIdiomaPDF(
+      obtenerDatosFormulario(),
+      targetLanguage
+    );
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF("p", "mm", "a4");
@@ -1765,12 +1825,43 @@ async function exportarPDF() {
 
     addFooterToAllPages();
 
-    const nombreArchivo = `${t("quoteFilePrefix")}_${(data.folio || t("noFolio")).replace(/\s+/g, "_")}.pdf`;
+    const languageSuffix = targetLanguage === "en" ? "EN" : "ES";
+    const nombreArchivo = `${t("quoteFilePrefix")}_${(data.folio || t("noFolio")).replace(/\s+/g, "_")}_${languageSuffix}.pdf`;
     doc.save(nombreArchivo);
+    return true;
 
   } catch (error) {
     console.error(error);
-    alert(t("pdfError"));
+    alert(t("pdfError", {}, previousLanguage));
+    return false;
+  } finally {
+    currentLanguage = previousLanguage;
+    recalcularTodo();
+  }
+}
+
+async function exportarPDF() {
+  if (!confirmarExportacionPDF()) return;
+
+  const selectedMode = idiomaPDFSelect?.value || "current";
+  const interfaceLanguage = currentLanguage;
+  const languages = selectedMode === "both"
+    ? ["es", "en"]
+    : [selectedMode === "current" ? interfaceLanguage : selectedMode];
+
+  const originalButtonText = btnPDF.textContent;
+  btnPDF.disabled = true;
+
+  try {
+    for (const language of languages) {
+      const generated = await generarPDFEnIdioma(language);
+      if (!generated) break;
+    }
+  } finally {
+    currentLanguage = interfaceLanguage;
+    btnPDF.disabled = false;
+    btnPDF.textContent = t("generatePdf", {}, interfaceLanguage) || originalButtonText;
+    recalcularTodo();
   }
 }
 
