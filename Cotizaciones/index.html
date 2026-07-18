@@ -68,6 +68,15 @@
         <button id="btnNuevo" class="btn btn-secondary" data-i18n="new">Nuevo</button>
         <button id="btnAgregarFila" class="btn btn-primary" data-i18n="addItem">Agregar concepto</button>
         <button id="btnPDF" class="btn btn-success" data-i18n="generatePdf">Generar PDF</button>
+        <div class="pdf-language-control">
+          <label for="idiomaPDF" data-i18n="pdfLanguage">Idioma del PDF</label>
+          <select id="idiomaPDF">
+            <option value="current" data-i18n="pdfCurrent">Igual que la interfaz</option>
+            <option value="es" data-i18n="pdfSpanish">Español</option>
+            <option value="en" data-i18n="pdfEnglish">English</option>
+            <option value="both" data-i18n="pdfBoth">Ambos (2 archivos)</option>
+          </select>
+        </div>
         <button id="btnExcel" class="btn btn-info" data-i18n="exportExcel">Exportar Excel</button>
         <button id="btnGuardar" class="btn btn-warning" data-i18n="saveDraft">Guardar borrador</button>
         <button id="btnCargar" class="btn btn-dark" data-i18n="loadDraft">Cargar borrador</button>
