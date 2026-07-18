@@ -8,6 +8,255 @@ const DEFAULT_ANTICIPO = 60;
 const DEFAULT_METODO_PAGO_PARCIALIDADES = "PPD";
 const DEFAULT_METODO_PAGO_UNICO = "PUE";
 
+
+const I18N = {
+  es: {
+    pageTitle: "LinkWich-IT | Cotizador Profesional",
+    actions: "Acciones", new: "Nuevo", addItem: "Agregar concepto", generatePdf: "Generar PDF",
+    exportExcel: "Exportar Excel", saveDraft: "Guardar borrador", loadDraft: "Cargar borrador",
+    importExcel: "Importar Excel", summary: "Resumen", items: "Conceptos", netSubtotal: "Subtotal neto",
+    itemDiscountShort: "Desc. conceptos", vat: "IVA", total: "Total", professionalQuoter: "Cotizador Profesional",
+    subtitle: "Genera cotizaciones ejecutivas para tus clientes", language: "Idioma", webVersion: "Versión Web",
+    companyData: "Datos de la empresa", company: "Empresa", email: "Correo", phone: "Teléfono",
+    website: "Sitio web", city: "Ciudad", currency: "Moneda", quoteData: "Datos de la cotización",
+    folio: "Folio", date: "Fecha", validityDays: "Vigencia (días)", serviceType: "Tipo de servicio",
+    serviceNetworkMonitoring: "Monitoreo de red", serviceVideoSurveillance: "Videovigilancia",
+    serviceNetworking: "Networking", serviceImplementation: "Implementación",
+    serviceTechnicalSupport: "Soporte técnico", serviceConsulting: "Consultoría", serviceOther: "Otro",
+    clientData: "Datos del cliente", clientCompany: "Cliente / Empresa", contact: "Contacto",
+    clientCompanyPlaceholder: "Nombre del cliente o empresa", contactPlaceholder: "Nombre del contacto",
+    clientEmailPlaceholder: "correo@cliente.com", phonePlaceholder: "+52 ...",
+    projectSubject: "Proyecto / Asunto", projectPlaceholder: "Ej. Implementación de videovigilancia",
+    projectLocation: "Ubicación del proyecto", locationPlaceholder: "Ej. Los Cabos, B.C.S.",
+    item: "Concepto", quantity: "Cantidad", unitPrice: "Precio Unitario", discountShortPct: "Desc. %",
+    amount: "Importe", action: "Acción", commercialTerms: "Condiciones comerciales", vatPct: "IVA (%)",
+    generalDiscountPct: "Descuento general (%)", automaticResicoPct: "RESICO automático (%)",
+    resicoHelp: "Se calcula sobre la base antes de IVA y se integra al precio. No aparece como impuesto en el PDF.",
+    resicoTable: "Tabla RESICO", monthly: "Mensual", annual: "Anual",
+    applyResicoToItem: "Cargar RESICO en concepto",
+    resicoItemHelp: "Si hay varios conceptos, aquí eliges dónde se integrará internamente antes de imprimir.",
+    suggestedDepositPct: "Anticipo sugerido (%)",
+    depositHelp: "Por defecto 60%. Si colocas 100%, se considera pago único.",
+    paymentMethod: "Método de pago", paymentTerms: "Forma de pago", notes: "Notas",
+    notesPlaceholder: "Escribe observaciones, alcances, restricciones o notas importantes.",
+    termsConditions: "Términos y condiciones", subtotalBeforeDiscounts: "Subtotal antes de descuentos",
+    itemDiscount: "Descuento por conceptos", generalDiscount: "Descuento general",
+    estimatedTotalDiscount: "Descuento total estimado", integratedResico: "RESICO estimado integrado",
+    appliedTo: "Cargado en", clientTotal: "Total cliente", estimatedNetAfterResico: "Neto estimado después RESICO",
+    defaultPaymentTerms: "Únicamente mediante transferencia bancaria.",
+    defaultTerms: "La presente cotización tiene vigencia conforme al periodo indicado. Los tiempos de entrega pueden variar según disponibilidad. No incluye trabajos adicionales no especificados.",
+    defaultProfessionalService: "Servicio profesional", descriptionPlaceholder: "Descripción del concepto o servicio",
+    delete: "Eliminar", itemN: "Concepto #{n}", noItems: "Sin conceptos", noDescription: "Sin descripción",
+    currencyUSD: "dólares estadounidenses (USD)", currencyMXN: "pesos mexicanos (MXN)",
+    singlePayment100: "Pago único 100%", depositOf: "Anticipo del {percent}%",
+    paymentSingleDescription: "Pago en una sola exhibición", paymentInstallmentsDescription: "Pago en parcialidades o diferido",
+    with100Single: "Con 100%, se considera pago único por {total}.",
+    depositBalanceDetail: "{deposit}; saldo pendiente estimado: {balance}.",
+    monthlyTable: "tabla mensual", annualTable: "tabla anual", baseBeforeVat: "Base sin IVA",
+    rate: "tasa", integratedInto: "se integra en", importantResico: " Importante: el monto excede el límite de RESICO; valida con tu contador.",
+    approxItemDiscount: "equivale aprox. al {percent}% del subtotal", approxGlobalDiscount: "aprox. {percent}% global",
+    draftSaved: "Borrador guardado correctamente.", noDraft: "No hay borrador guardado.", draftLoaded: "Borrador cargado correctamente.",
+    importMissingSheets: "El archivo no contiene hojas 'Resumen'/'Summary' o 'Conceptos'/'Items'. Usa el mismo formato exportado por el cotizador.",
+    importSuccess: "Excel importado correctamente. Los datos existentes se conservaron y los conceptos se agregaron a la cotización actual.",
+    excelReadError: "No se pudo leer el archivo Excel.", logoLoadError: "No se pudo cargar la imagen del logo: {src}",
+    beforePrint: "Antes de imprimir:", resicoWillIntegrate: "El RESICO estimado de {amount} se integrará internamente al concepto #{number}:",
+    resicoNotSeparate: "No aparecerá como impuesto separado en el PDF. ¿Deseas continuar?",
+    pdfError: "Ocurrió un error al generar el PDF. Revisa que exista assets/logo-pdf.png",
+    clearConfirm: "¿Deseas limpiar la cotización actual?", page: "Página", of: "de",
+    quoteTitle: "COTIZACIÓN", expires: "Expira", days: "días", clientInfoTitle: "DATOS DEL CLIENTE",
+    client: "Cliente", project: "Proyecto", location: "Ubicación", serviceTypePdf: "Tipo de servicio",
+    suggestedDeposit: "ANTICIPO SUGERIDO", balanceDue: "Saldo pendiente", fullQuotePayment: "Pago total de la cotización",
+    method: "Método", financialSummary: "RESUMEN FINANCIERO", grossSubtotal: "Subtotal bruto",
+    itemDiscountPdf: "Desc. conceptos", generalDiscountShort: "Desc. general", totalDiscountPdf: "Desc. total",
+    paymentTermsTitle: "FORMA DE PAGO", termsTitle: "TÉRMINOS Y CONDICIONES", notesTitle: "NOTAS",
+    allPricesClause: "Todos los precios están expresados en {currency} e incluyen IVA, salvo que se indique lo contrario.",
+    quoteFilePrefix: "Cotizacion", noFolio: "sin_folio", summarySheet: "Resumen", itemsSheet: "Conceptos",
+    taxableNone: "Sin base gravable", resicoExceeds: "Excede $3,500,000; validar RESICO con contador",
+    limitMonthly25: "Hasta $25,000 mensual", limitMonthly50: "Hasta $50,000 mensual",
+    limitMonthly83333: "Hasta $83,333.33 mensual", limitMonthly208333: "Hasta $208,333.33 mensual",
+    limitMonthly3500000: "Hasta $3,500,000 mensual", limitAnnual300: "Hasta $300,000 anual",
+    limitAnnual600: "Hasta $600,000 anual", limitAnnual1000: "Hasta $1,000,000 anual",
+    limitAnnual2500: "Hasta $2,500,000 anual", limitAnnual3500: "Hasta $3,500,000 anual"
+  },
+  en: {
+    pageTitle: "LinkWich-IT | Professional Quoter",
+    actions: "Actions", new: "New", addItem: "Add item", generatePdf: "Generate PDF",
+    exportExcel: "Export Excel", saveDraft: "Save draft", loadDraft: "Load draft",
+    importExcel: "Import Excel", summary: "Summary", items: "Items", netSubtotal: "Net subtotal",
+    itemDiscountShort: "Item discounts", vat: "VAT", total: "Total", professionalQuoter: "Professional Quoter",
+    subtitle: "Create professional quotations for your clients", language: "Language", webVersion: "Web Version",
+    companyData: "Company information", company: "Company", email: "Email", phone: "Phone",
+    website: "Website", city: "City", currency: "Currency", quoteData: "Quotation information",
+    folio: "Quote No.", date: "Date", validityDays: "Validity (days)", serviceType: "Service type",
+    serviceNetworkMonitoring: "Network monitoring", serviceVideoSurveillance: "Video surveillance",
+    serviceNetworking: "Networking", serviceImplementation: "Implementation",
+    serviceTechnicalSupport: "Technical support", serviceConsulting: "Consulting", serviceOther: "Other",
+    clientData: "Client information", clientCompany: "Client / Company", contact: "Contact",
+    clientCompanyPlaceholder: "Client or company name", contactPlaceholder: "Contact name",
+    clientEmailPlaceholder: "email@client.com", phonePlaceholder: "+1 ...",
+    projectSubject: "Project / Subject", projectPlaceholder: "E.g. Video surveillance implementation",
+    projectLocation: "Project location", locationPlaceholder: "E.g. Los Cabos, B.C.S.",
+    item: "Item", quantity: "Quantity", unitPrice: "Unit Price", discountShortPct: "Disc. %",
+    amount: "Amount", action: "Action", commercialTerms: "Commercial terms", vatPct: "VAT (%)",
+    generalDiscountPct: "General discount (%)", automaticResicoPct: "Automatic RESICO (%)",
+    resicoHelp: "Calculated on the amount before VAT and included in the price. It is not shown as a separate tax in the PDF.",
+    resicoTable: "RESICO table", monthly: "Monthly", annual: "Annual",
+    applyResicoToItem: "Apply RESICO to item",
+    resicoItemHelp: "When there are multiple items, select where RESICO will be included internally before printing.",
+    suggestedDepositPct: "Suggested deposit (%)",
+    depositHelp: "Default is 60%. If set to 100%, it is treated as a single payment.",
+    paymentMethod: "Payment method", paymentTerms: "Payment terms", notes: "Notes",
+    notesPlaceholder: "Enter observations, scope, restrictions, or important notes.",
+    termsConditions: "Terms and conditions", subtotalBeforeDiscounts: "Subtotal before discounts",
+    itemDiscount: "Item discounts", generalDiscount: "General discount",
+    estimatedTotalDiscount: "Estimated total discount", integratedResico: "Estimated RESICO included",
+    appliedTo: "Applied to", clientTotal: "Client total", estimatedNetAfterResico: "Estimated net after RESICO",
+    defaultPaymentTerms: "Bank transfer only.",
+    defaultTerms: "This quotation is valid for the indicated period. Delivery times may vary depending on availability. Additional work not specifically listed is not included.",
+    defaultProfessionalService: "Professional service", descriptionPlaceholder: "Description of the item or service",
+    delete: "Delete", itemN: "Item #{n}", noItems: "No items", noDescription: "No description",
+    currencyUSD: "U.S. dollars (USD)", currencyMXN: "Mexican pesos (MXN)",
+    singlePayment100: "Single payment 100%", depositOf: "{percent}% deposit",
+    paymentSingleDescription: "Payment in a single installment", paymentInstallmentsDescription: "Payment in installments or deferred",
+    with100Single: "At 100%, this is treated as a single payment of {total}.",
+    depositBalanceDetail: "{deposit}; estimated outstanding balance: {balance}.",
+    monthlyTable: "monthly table", annualTable: "annual table", baseBeforeVat: "Base before VAT",
+    rate: "rate", integratedInto: "included in", importantResico: " Important: the amount exceeds the RESICO limit; confirm it with your accountant.",
+    approxItemDiscount: "approximately {percent}% of the subtotal", approxGlobalDiscount: "approximately {percent}% overall",
+    draftSaved: "Draft saved successfully.", noDraft: "There is no saved draft.", draftLoaded: "Draft loaded successfully.",
+    importMissingSheets: "The file does not contain 'Resumen'/'Summary' or 'Conceptos'/'Items' sheets. Use the format exported by this quoter.",
+    importSuccess: "Excel imported successfully. Existing data was preserved and the imported items were added to the current quotation.",
+    excelReadError: "The Excel file could not be read.", logoLoadError: "The logo image could not be loaded: {src}",
+    beforePrint: "Before printing:", resicoWillIntegrate: "The estimated RESICO of {amount} will be included internally in item #{number}:",
+    resicoNotSeparate: "It will not appear as a separate tax in the PDF. Do you want to continue?",
+    pdfError: "An error occurred while generating the PDF. Confirm that assets/logo-pdf.png exists.",
+    clearConfirm: "Do you want to clear the current quotation?", page: "Page", of: "of",
+    quoteTitle: "QUOTATION", expires: "Expires", days: "days", clientInfoTitle: "CLIENT INFORMATION",
+    client: "Client", project: "Project", location: "Location", serviceTypePdf: "Service type",
+    suggestedDeposit: "SUGGESTED DEPOSIT", balanceDue: "Outstanding balance", fullQuotePayment: "Full quotation payment",
+    method: "Method", financialSummary: "FINANCIAL SUMMARY", grossSubtotal: "Gross subtotal",
+    itemDiscountPdf: "Item discounts", generalDiscountShort: "General discount", totalDiscountPdf: "Total discount",
+    paymentTermsTitle: "PAYMENT TERMS", termsTitle: "TERMS AND CONDITIONS", notesTitle: "NOTES",
+    allPricesClause: "All prices are stated in {currency} and include VAT unless otherwise indicated.",
+    quoteFilePrefix: "Quotation", noFolio: "no_number", summarySheet: "Summary", itemsSheet: "Items",
+    taxableNone: "No taxable base", resicoExceeds: "Exceeds $3,500,000; confirm RESICO with an accountant",
+    limitMonthly25: "Up to $25,000 monthly", limitMonthly50: "Up to $50,000 monthly",
+    limitMonthly83333: "Up to $83,333.33 monthly", limitMonthly208333: "Up to $208,333.33 monthly",
+    limitMonthly3500000: "Up to $3,500,000 monthly", limitAnnual300: "Up to $300,000 annually",
+    limitAnnual600: "Up to $600,000 annually", limitAnnual1000: "Up to $1,000,000 annually",
+    limitAnnual2500: "Up to $2,500,000 annually", limitAnnual3500: "Up to $3,500,000 annually"
+  }
+};
+
+const SERVICE_TYPE_KEYS = {
+  "Monitoreo de red": "serviceNetworkMonitoring",
+  "Videovigilancia": "serviceVideoSurveillance",
+  "Networking": "serviceNetworking",
+  "Implementación": "serviceImplementation",
+  "Soporte técnico": "serviceTechnicalSupport",
+  "Consultoría": "serviceConsulting",
+  "Otro": "serviceOther"
+};
+
+let currentLanguage = localStorage.getItem("linkwich_cotizador_idioma") === "en" ? "en" : "es";
+
+function t(key, vars = {}, lang = currentLanguage) {
+  const dictionary = I18N[lang] || I18N.es;
+  let value = dictionary[key] ?? I18N.es[key] ?? key;
+  Object.entries(vars).forEach(([name, replacement]) => {
+    value = value.replaceAll(`{${name}}`, String(replacement));
+  });
+  return value;
+}
+
+function getCurrentLocale() {
+  return currentLanguage === "en" ? "en-US" : "es-MX";
+}
+
+function getServiceTypeLabel(value) {
+  return t(SERVICE_TYPE_KEYS[value] || "serviceOther");
+}
+
+function normalizeServiceType(value) {
+  const normalized = String(value || "").trim().toLowerCase();
+  const aliases = {
+    "monitoreo de red": "Monitoreo de red", "network monitoring": "Monitoreo de red",
+    "videovigilancia": "Videovigilancia", "video surveillance": "Videovigilancia",
+    "networking": "Networking", "implementación": "Implementación", "implementacion": "Implementación",
+    "implementation": "Implementación", "soporte técnico": "Soporte técnico", "soporte tecnico": "Soporte técnico",
+    "technical support": "Soporte técnico", "consultoría": "Consultoría", "consultoria": "Consultoría",
+    "consulting": "Consultoría", "otro": "Otro", "other": "Otro"
+  };
+  return aliases[normalized] || value || "Monitoreo de red";
+}
+
+function translateUntouchedDefault(id, key, oldLanguage, newLanguage) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const oldDefault = t(key, {}, oldLanguage);
+  if (String(el.value || "").trim() === oldDefault) {
+    el.value = t(key, {}, newLanguage);
+  }
+}
+
+function refreshDynamicTranslations() {
+  document.querySelectorAll("#conceptosBody .concepto").forEach(input => {
+    input.placeholder = t("descriptionPlaceholder");
+  });
+  document.querySelectorAll("#conceptosBody .btn-delete").forEach(button => {
+    button.textContent = t("delete");
+  });
+}
+
+function applyLanguage(language, options = {}) {
+  const nextLanguage = language === "en" ? "en" : "es";
+  const previousLanguage = currentLanguage;
+  const translateDefaults = options.translateDefaults !== false;
+  const persist = options.persist !== false;
+  const recalculate = options.recalculate !== false;
+
+  if (translateDefaults) {
+    const sourceLanguages = [...new Set([previousLanguage, nextLanguage === "en" ? "es" : "en"])];
+
+    [
+      ["formaPago", "defaultPaymentTerms"],
+      ["terminos", "defaultTerms"]
+    ].forEach(([id, key]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const currentValue = String(el.value || "").trim();
+      if (sourceLanguages.some(lang => currentValue === t(key, {}, lang))) {
+        el.value = t(key, {}, nextLanguage);
+      }
+    });
+
+    document.querySelectorAll("#conceptosBody .concepto").forEach(input => {
+      const currentValue = String(input.value || "").trim();
+      if (sourceLanguages.some(lang => currentValue === t("defaultProfessionalService", {}, lang))) {
+        input.value = t("defaultProfessionalService", {}, nextLanguage);
+      }
+    });
+  }
+
+  currentLanguage = nextLanguage;
+  document.documentElement.lang = nextLanguage;
+  document.title = t("pageTitle");
+
+  document.querySelectorAll("[data-i18n]").forEach(element => {
+    element.textContent = t(element.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+    element.placeholder = t(element.dataset.i18nPlaceholder);
+  });
+
+  const languageSelect = document.getElementById("idioma");
+  if (languageSelect) languageSelect.value = nextLanguage;
+
+  refreshDynamicTranslations();
+  if (persist) localStorage.setItem("linkwich_cotizador_idioma", nextLanguage);
+  if (recalculate && typeof recalcularTodo === "function") recalcularTodo();
+}
+
 const conceptosBody = document.getElementById("conceptosBody");
 
 const btnAgregarFila = document.getElementById("btnAgregarFila");
@@ -71,7 +320,7 @@ function aplicarDatosEmpresaPorDefecto(options = {}) {
 
 function formatMoney(value) {
   const moneda = document.getElementById("moneda").value || "MXN";
-  return new Intl.NumberFormat("es-MX", {
+  return new Intl.NumberFormat(getCurrentLocale(), {
     style: "currency",
     currency: moneda,
     minimumFractionDigits: 2,
@@ -81,11 +330,8 @@ function formatMoney(value) {
 
 function getCurrencyLabel() {
   const moneda = document.getElementById("moneda").value || "MXN";
-  return moneda === "USD"
-    ? "dólares estadounidenses (USD)"
-    : "pesos mexicanos (MXN)";
+  return moneda === "USD" ? t("currencyUSD") : t("currencyMXN");
 }
-
 
 function formatPercent(value) {
   const numero = parseFloat(value);
@@ -102,10 +348,10 @@ function getAnticipoComercialLabel(anticipo) {
   const porcentaje = Math.max(0, Math.min(100, parseFloat(anticipo) || 0));
 
   if (porcentaje >= 100) {
-    return "Pago único 100%";
+    return t("singlePayment100");
   }
 
-  return `Anticipo del ${formatPercent(porcentaje)}%`;
+  return t("depositOf", { percent: formatPercent(porcentaje) });
 }
 
 function getMetodoPagoInfo(anticipo) {
@@ -114,14 +360,14 @@ function getMetodoPagoInfo(anticipo) {
   if (porcentaje >= 100) {
     return {
       clave: "PUE",
-      descripcion: "Pago en una sola exhibición",
+      descripcion: t("paymentSingleDescription"),
       label: DEFAULT_METODO_PAGO_UNICO
     };
   }
 
   return {
     clave: "PPD",
-    descripcion: "Pago en parcialidades o diferido",
+    descripcion: t("paymentInstallmentsDescription"),
     label: DEFAULT_METODO_PAGO_PARCIALIDADES
   };
 }
@@ -135,22 +381,13 @@ function actualizarResumenPago(anticipo, total, anticipoMonto) {
   const metodoPagoEl = document.getElementById("metodoPago");
   const metodoPagoDetalleEl = document.getElementById("metodoPagoDetalle");
 
-  if (anticipoLabelEl) {
-    anticipoLabelEl.textContent = anticipoLabel;
-  }
-
-  if (metodoPagoEl) {
-    metodoPagoEl.value = pagoInfo.label;
-  }
+  if (anticipoLabelEl) anticipoLabelEl.textContent = anticipoLabel;
+  if (metodoPagoEl) metodoPagoEl.value = pagoInfo.label;
 
   if (metodoPagoDetalleEl) {
-    if (pagoInfo.clave === "PUE") {
-      metodoPagoDetalleEl.textContent =
-        `Con 100%, se considera pago único por ${formatMoney(total)}.`;
-    } else {
-      metodoPagoDetalleEl.textContent =
-        `${anticipoLabel}; saldo pendiente estimado: ${formatMoney(saldoPendiente)}.`;
-    }
+    metodoPagoDetalleEl.textContent = pagoInfo.clave === "PUE"
+      ? t("with100Single", { total: formatMoney(total) })
+      : t("depositBalanceDetail", { deposit: anticipoLabel, balance: formatMoney(saldoPendiente) });
   }
 
   return {
@@ -215,7 +452,7 @@ function formatearFechaVisual(fechaStr) {
   if (partes.length !== 3) return fechaStr;
 
   const [yyyy, mm, dd] = partes;
-  return `${dd}/${mm}/${yyyy}`;
+  return currentLanguage === "en" ? `${mm}/${dd}/${yyyy}` : `${dd}/${mm}/${yyyy}`;
 }
 
 function calcularFechaExpiracion(fechaStr, vigenciaDias) {
@@ -238,7 +475,7 @@ function calcularFechaExpiracion(fechaStr, vigenciaDias) {
   const mm = String(fecha.getMonth() + 1).padStart(2, "0");
   const yyyy = fecha.getFullYear();
 
-  return `${dd}/${mm}/${yyyy}`;
+  return currentLanguage === "en" ? `${mm}/${dd}/${yyyy}` : `${dd}/${mm}/${yyyy}`;
 }
 
 function getResicoTablaMode() {
@@ -251,42 +488,30 @@ function getResicoRateInfo(baseAntesIVA, mode = getResicoTablaMode()) {
 
   const tablas = {
     mensual: [
-      { limite: 25000.00, tasa: 1.00, etiqueta: "Hasta $25,000 mensual" },
-      { limite: 50000.00, tasa: 1.10, etiqueta: "Hasta $50,000 mensual" },
-      { limite: 83333.33, tasa: 1.50, etiqueta: "Hasta $83,333.33 mensual" },
-      { limite: 208333.33, tasa: 2.00, etiqueta: "Hasta $208,333.33 mensual" },
-      { limite: 3500000.00, tasa: 2.50, etiqueta: "Hasta $3,500,000 mensual" }
+      { limite: 25000.00, tasa: 1.00, etiqueta: t("limitMonthly25") },
+      { limite: 50000.00, tasa: 1.10, etiqueta: t("limitMonthly50") },
+      { limite: 83333.33, tasa: 1.50, etiqueta: t("limitMonthly83333") },
+      { limite: 208333.33, tasa: 2.00, etiqueta: t("limitMonthly208333") },
+      { limite: 3500000.00, tasa: 2.50, etiqueta: t("limitMonthly3500000") }
     ],
     anual: [
-      { limite: 300000.00, tasa: 1.00, etiqueta: "Hasta $300,000 anual" },
-      { limite: 600000.00, tasa: 1.10, etiqueta: "Hasta $600,000 anual" },
-      { limite: 1000000.00, tasa: 1.50, etiqueta: "Hasta $1,000,000 anual" },
-      { limite: 2500000.00, tasa: 2.00, etiqueta: "Hasta $2,500,000 anual" },
-      { limite: 3500000.00, tasa: 2.50, etiqueta: "Hasta $3,500,000 anual" }
+      { limite: 300000.00, tasa: 1.00, etiqueta: t("limitAnnual300") },
+      { limite: 600000.00, tasa: 1.10, etiqueta: t("limitAnnual600") },
+      { limite: 1000000.00, tasa: 1.50, etiqueta: t("limitAnnual1000") },
+      { limite: 2500000.00, tasa: 2.00, etiqueta: t("limitAnnual2500") },
+      { limite: 3500000.00, tasa: 2.50, etiqueta: t("limitAnnual3500") }
     ]
   };
 
   if (base <= 0) {
-    return {
-      mode,
-      tasa: 0,
-      tasaDecimal: 0,
-      etiqueta: "Sin base gravable",
-      excedeLimite: false
-    };
+    return { mode, tasa: 0, tasaDecimal: 0, etiqueta: t("taxableNone"), excedeLimite: false };
   }
 
   const tabla = tablas[mode] || tablas.mensual;
   const tramo = tabla.find(item => base <= item.limite);
 
   if (!tramo) {
-    return {
-      mode,
-      tasa: 2.50,
-      tasaDecimal: 0.025,
-      etiqueta: "Excede $3,500,000; validar RESICO con contador",
-      excedeLimite: true
-    };
+    return { mode, tasa: 2.50, tasaDecimal: 0.025, etiqueta: t("resicoExceeds"), excedeLimite: true };
   }
 
   return {
@@ -359,7 +584,7 @@ function actualizarSelectorConceptoResico(conceptos) {
   conceptos.forEach((item, index) => {
     const opt = document.createElement("option");
     opt.value = String(index);
-    const nombre = item.concepto || `Concepto ${index + 1}`;
+    const nombre = item.concepto || t("itemN", { n: index + 1 });
     opt.textContent = `#${index + 1} - ${nombre.substring(0, 55)}${nombre.length > 55 ? "..." : ""}`;
     select.appendChild(opt);
   });
@@ -367,7 +592,7 @@ function actualizarSelectorConceptoResico(conceptos) {
   if (!conceptos.length) {
     const opt = document.createElement("option");
     opt.value = "0";
-    opt.textContent = "Sin conceptos";
+    opt.textContent = t("noItems");
     select.appendChild(opt);
     select.disabled = true;
     return 0;
@@ -506,17 +731,17 @@ function calcularDatosFinancieros(options = {}) {
 
     const resicoDetalleEl = document.getElementById("resicoDetalle");
     if (resicoDetalleEl) {
-      const modoLabel = resicoInfo.mode === "anual" ? "tabla anual" : "tabla mensual";
-      const concepto = conceptosBase[resicoConceptoIndex]?.concepto || `Concepto ${resicoConceptoIndex + 1}`;
-      const extra = resicoInfo.excedeLimite ? " Importante: el monto excede el límite de RESICO; valida con tu contador." : "";
-      resicoDetalleEl.textContent = `Base sin IVA: ${formatMoney(subtotalConDescuentoBase)} | ${modoLabel} | tasa ${formatPercent(resicoInfo.tasa)}% | se integra en #${resicoConceptoIndex + 1}: ${concepto || "Sin descripción"}.${extra}`;
+      const modoLabel = resicoInfo.mode === "anual" ? t("annualTable") : t("monthlyTable");
+      const concepto = conceptosBase[resicoConceptoIndex]?.concepto || t("itemN", { n: resicoConceptoIndex + 1 });
+      const extra = resicoInfo.excedeLimite ? t("importantResico") : "";
+      resicoDetalleEl.textContent = `${t("baseBeforeVat")}: ${formatMoney(subtotalConDescuentoBase)} | ${modoLabel} | ${t("rate")} ${formatPercent(resicoInfo.tasa)}% | ${t("integratedInto")} #${resicoConceptoIndex + 1}: ${concepto || t("noDescription")}.${extra}`;
     }
 
     const resicoConceptoResumenEl = document.getElementById("resicoConceptoResumen");
     if (resicoConceptoResumenEl) {
       resicoConceptoResumenEl.textContent = conceptosBase.length
-        ? `Concepto #${resicoConceptoIndex + 1}`
-        : "Sin conceptos";
+        ? t("itemN", { n: resicoConceptoIndex + 1 })
+        : t("noItems");
     }
   }
 
@@ -569,7 +794,7 @@ function crearFila(data = {}) {
   tr.innerHTML = `
     <td class="row-number"></td>
     <td>
-      <input class="concept-input concepto" type="text" placeholder="Descripción del concepto o servicio" value="${data.concepto || ""}">
+      <input class="concept-input concepto" type="text" placeholder="${t("descriptionPlaceholder")}" value="${data.concepto || ""}">
     </td>
     <td>
       <input class="concept-input cantidad" type="number" min="0" step="0.01" value="${data.cantidad ?? 1}">
@@ -582,14 +807,12 @@ function crearFila(data = {}) {
     </td>
     <td class="importe-cell">$0.00</td>
     <td>
-      <button class="btn-delete" type="button">Eliminar</button>
+      <button class="btn-delete" type="button">${t("delete")}</button>
     </td>
   `;
 
   const inputs = tr.querySelectorAll("input");
-  inputs.forEach(input => {
-    input.addEventListener("input", recalcularTodo);
-  });
+  inputs.forEach(input => input.addEventListener("input", recalcularTodo));
 
   tr.querySelector(".btn-delete").addEventListener("click", () => {
     tr.remove();
@@ -603,26 +826,21 @@ function crearFila(data = {}) {
 function recalcularTodo() {
   const financieros = calcularDatosFinancieros({ actualizarUI: true });
 
-  if (subtotalBrutoEl) {
-    subtotalBrutoEl.textContent = formatMoney(financieros.subtotalBruto);
-  }
-
+  if (subtotalBrutoEl) subtotalBrutoEl.textContent = formatMoney(financieros.subtotalBruto);
   subtotalEl.textContent = formatMoney(financieros.subtotal);
 
-  if (descuentoConceptosMontoEl) {
-    descuentoConceptosMontoEl.textContent = formatMoney(financieros.descuentoConceptosMonto);
-  }
-
+  if (descuentoConceptosMontoEl) descuentoConceptosMontoEl.textContent = formatMoney(financieros.descuentoConceptosMonto);
   if (descuentoConceptosPorcentajeEl) {
-    descuentoConceptosPorcentajeEl.textContent = `equivale aprox. al ${formatPercent(financieros.descuentoConceptosPorcentaje)}% del subtotal`;
+    descuentoConceptosPorcentajeEl.textContent = t("approxItemDiscount", {
+      percent: formatPercent(financieros.descuentoConceptosPorcentaje)
+    });
   }
 
-  if (descuentoTotalMontoEl) {
-    descuentoTotalMontoEl.textContent = formatMoney(financieros.descuentoTotalMonto);
-  }
-
+  if (descuentoTotalMontoEl) descuentoTotalMontoEl.textContent = formatMoney(financieros.descuentoTotalMonto);
   if (descuentoTotalPorcentajeEl) {
-    descuentoTotalPorcentajeEl.textContent = `aprox. ${formatPercent(financieros.descuentoTotalPorcentaje)}% global`;
+    descuentoTotalPorcentajeEl.textContent = t("approxGlobalDiscount", {
+      percent: formatPercent(financieros.descuentoTotalPorcentaje)
+    });
   }
 
   descuentoMontoEl.textContent = formatMoney(financieros.descuentoMonto);
@@ -630,21 +848,12 @@ function recalcularTodo() {
   totalEl.textContent = formatMoney(financieros.total);
   anticipoMontoEl.textContent = formatMoney(financieros.anticipoMonto);
 
-  if (isrResicoMontoEl) {
-    isrResicoMontoEl.textContent = formatMoney(financieros.isrResicoMonto);
-  }
-
-  if (netoResicoEl) {
-    netoResicoEl.textContent = formatMoney(financieros.netoEstimadoResico);
-  }
+  if (isrResicoMontoEl) isrResicoMontoEl.textContent = formatMoney(financieros.isrResicoMonto);
+  if (netoResicoEl) netoResicoEl.textContent = formatMoney(financieros.netoEstimadoResico);
 
   resConceptos.textContent = financieros.conceptosBase.length;
   resSubtotal.textContent = formatMoney(financieros.subtotal);
-
-  if (resDescuentoConceptos) {
-    resDescuentoConceptos.textContent = formatMoney(financieros.descuentoConceptosMonto);
-  }
-
+  if (resDescuentoConceptos) resDescuentoConceptos.textContent = formatMoney(financieros.descuentoConceptosMonto);
   resIVA.textContent = formatMoney(financieros.ivaMonto);
   resTotal.textContent = formatMoney(financieros.total);
 }
@@ -668,7 +877,9 @@ function obtenerDatosFormulario() {
       document.getElementById("vigencia").value
     ),
     vigencia: document.getElementById("vigencia").value,
+    idioma: currentLanguage,
     tipoServicio: document.getElementById("tipoServicio").value,
+    tipoServicioLabel: getServiceTypeLabel(document.getElementById("tipoServicio").value),
 
     cliente: document.getElementById("cliente").value,
     contacto: document.getElementById("contacto").value,
@@ -689,7 +900,7 @@ function obtenerDatosFormulario() {
 
     formaPago: document.getElementById("formaPago")
       ? document.getElementById("formaPago").value
-      : "Únicamente mediante transferencia bancaria.",
+      : t("defaultPaymentTerms"),
 
     metodoPagoClave: financieros.metodoPagoClave,
     metodoPagoDescripcion: financieros.metodoPagoDescripcion,
@@ -729,13 +940,8 @@ function obtenerDatosFormulario() {
 
 function limpiarFormulario() {
   const ids = [
-    "cliente",
-    "contacto",
-    "correoCliente",
-    "telefonoCliente",
-    "proyecto",
-    "ubicacionProyecto",
-    "notas"
+    "cliente", "contacto", "correoCliente", "telefonoCliente",
+    "proyecto", "ubicacionProyecto", "notas"
   ];
 
   ids.forEach(id => {
@@ -746,59 +952,50 @@ function limpiarFormulario() {
   aplicarDatosEmpresaPorDefecto({ overwrite: true });
 
   if (document.getElementById("formaPago")) {
-    document.getElementById("formaPago").value = "Únicamente mediante transferencia bancaria.";
+    document.getElementById("formaPago").value = t("defaultPaymentTerms");
   }
 
-  document.getElementById("terminos").value =
-    "La presente cotización tiene vigencia conforme al periodo indicado. Los tiempos de entrega pueden variar según disponibilidad. No incluye trabajos adicionales no especificados.";
-
+  document.getElementById("terminos").value = t("defaultTerms");
   document.getElementById("vigencia").value = 15;
-  document.getElementById("tipoServicio").selectedIndex = 0;
+  document.getElementById("tipoServicio").value = "Monitoreo de red";
   document.getElementById("iva").value = 16;
   document.getElementById("descuentoGeneral").value = 0;
 
-  if (document.getElementById("resicoTabla")) {
-    document.getElementById("resicoTabla").value = "mensual";
-  }
-
-  if (document.getElementById("isrResico")) {
-    document.getElementById("isrResico").value = 0;
-  }
+  if (document.getElementById("resicoTabla")) document.getElementById("resicoTabla").value = "mensual";
+  if (document.getElementById("isrResico")) document.getElementById("isrResico").value = 0;
 
   document.getElementById("anticipo").value = DEFAULT_ANTICIPO;
   document.getElementById("fecha").valueAsDate = new Date();
 
   generarNuevoFolio();
-
   conceptosBody.innerHTML = "";
-  crearFila();
+  crearFila({ concepto: t("defaultProfessionalService"), cantidad: 1, precio: 0, descuento: 0 });
 }
 
 function guardarBorrador() {
   const data = obtenerDatosFormulario();
 
-  /*
-    IMPORTANTE:
-    El PDF y Excel usan conceptos con RESICO integrado al precio.
-    Para borrador guardamos los conceptos originales capturados para evitar duplicar el cargo al cargarlo después.
-  */
   const borrador = {
     ...data,
+    idioma: currentLanguage,
     conceptos: data.conceptosBase
   };
 
   localStorage.setItem("linkwich_cotizador_borrador", JSON.stringify(borrador));
-  alert("Borrador guardado correctamente.");
+  alert(t("draftSaved"));
 }
 
 function cargarBorrador() {
   const raw = localStorage.getItem("linkwich_cotizador_borrador");
   if (!raw) {
-    alert("No hay borrador guardado.");
+    alert(t("noDraft"));
     return;
   }
 
   const data = JSON.parse(raw);
+  if (data.idioma === "en" || data.idioma === "es") {
+    applyLanguage(data.idioma, { translateDefaults: false, recalculate: false });
+  }
 
   document.getElementById("empresa").value = data.empresa || DEFAULT_EMPRESA;
   document.getElementById("correoEmpresa").value = data.correoEmpresa || DEFAULT_CORREO_EMPRESA;
@@ -810,7 +1007,7 @@ function cargarBorrador() {
   document.getElementById("folio").value = data.folio || "";
   document.getElementById("fecha").value = data.fecha || "";
   document.getElementById("vigencia").value = data.vigencia || 15;
-  document.getElementById("tipoServicio").value = data.tipoServicio || "Monitoreo de red";
+  document.getElementById("tipoServicio").value = normalizeServiceType(data.tipoServicio || "Monitoreo de red");
 
   document.getElementById("cliente").value = data.cliente || "";
   document.getElementById("contacto").value = data.contacto || "";
@@ -822,31 +1019,22 @@ function cargarBorrador() {
   document.getElementById("iva").value = data.iva ?? 16;
   document.getElementById("descuentoGeneral").value = data.descuentoGeneral ?? 0;
 
-  if (document.getElementById("resicoTabla")) {
-    document.getElementById("resicoTabla").value = data.resicoTabla || "mensual";
-  }
-
-  if (document.getElementById("isrResico")) {
-    document.getElementById("isrResico").value = data.isrResico ?? 0;
-  }
+  if (document.getElementById("resicoTabla")) document.getElementById("resicoTabla").value = data.resicoTabla || "mensual";
+  if (document.getElementById("isrResico")) document.getElementById("isrResico").value = data.isrResico ?? 0;
 
   document.getElementById("anticipo").value = data.anticipo ?? DEFAULT_ANTICIPO;
-
   if (document.getElementById("formaPago")) {
-    document.getElementById("formaPago").value =
-      data.formaPago || "Únicamente mediante transferencia bancaria.";
+    document.getElementById("formaPago").value = data.formaPago || t("defaultPaymentTerms");
   }
 
   document.getElementById("notas").value = data.notas || "";
-  document.getElementById("terminos").value = data.terminos || "";
+  document.getElementById("terminos").value = data.terminos || t("defaultTerms");
 
   conceptosBody.innerHTML = "";
   const conceptosBorrador = data.conceptosBase || data.conceptos || [];
   conceptosBorrador.forEach(item => crearFila(item));
 
-  if (!conceptosBorrador.length) {
-    crearFila();
-  }
+  if (!conceptosBorrador.length) crearFila();
 
   const resicoSelect = document.getElementById("resicoConceptoIndex");
   if (resicoSelect && data.resicoConceptoIndex !== undefined && data.resicoConceptoIndex !== null) {
@@ -854,7 +1042,7 @@ function cargarBorrador() {
   }
 
   recalcularTodo();
-  alert("Borrador cargado correctamente.");
+  alert(t("draftLoaded"));
 }
 
 function loadImageAsDataURL(src) {
@@ -878,7 +1066,7 @@ function loadImageAsDataURL(src) {
     };
 
     img.onerror = function () {
-      reject(new Error("No se pudo cargar la imagen del logo: " + src));
+      reject(new Error(t("logoLoadError", { src })));
     };
 
     img.src = src;
@@ -915,182 +1103,150 @@ function setFieldIfExists(id, value, options = {}) {
   - Agrega conceptos del Excel debajo de los existentes.
 */
 function importarDesdeWorkbook(workbook) {
-  const resumenSheet = workbook.Sheets["Resumen"];
-  const conceptosSheet = workbook.Sheets["Conceptos"];
+  const findSheet = names => {
+    const target = workbook.SheetNames.find(sheetName =>
+      names.some(name => sheetName.trim().toLowerCase() === name.toLowerCase())
+    );
+    return target ? workbook.Sheets[target] : null;
+  };
+
+  const normalizeKey = value => String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toUpperCase();
+
+  const resumenSheet = findSheet(["Resumen", "Summary"]);
+  const conceptosSheet = findSheet(["Conceptos", "Items"]);
 
   if (!resumenSheet && !conceptosSheet) {
-    alert("El archivo no contiene hojas 'Resumen' o 'Conceptos'. Usa el mismo formato exportado por el cotizador.");
+    alert(t("importMissingSheets"));
     return;
   }
 
   if (resumenSheet) {
-    const resumenRows = XLSX.utils.sheet_to_json(resumenSheet, {
-      header: 1,
-      defval: ""
-    });
-
+    const resumenRows = XLSX.utils.sheet_to_json(resumenSheet, { header: 1, defval: "" });
     const mapa = {};
 
     resumenRows.forEach(row => {
-      const key = String(row[0] || "").trim().toUpperCase();
-      const value = row[1];
-      if (key) mapa[key] = value;
+      const key = normalizeKey(row[0]);
+      if (key) mapa[key] = row[1];
     });
 
-    setFieldIfExists("empresa", mapa["EMPRESA"]);
-    setFieldIfExists("correoEmpresa", mapa["CORREO EMPRESA"]);
-    setFieldIfExists("telefonoEmpresa", mapa["TELÉFONO EMPRESA"]);
-    setFieldIfExists("sitioEmpresa", mapa["SITIO WEB"]);
-    setFieldIfExists("ciudadEmpresa", mapa["CIUDAD"]);
+    const getValue = (...keys) => {
+      for (const key of keys) {
+        const normalized = normalizeKey(key);
+        if (Object.prototype.hasOwnProperty.call(mapa, normalized)) return mapa[normalized];
+      }
+      return undefined;
+    };
 
-    setFieldIfExists("folio", mapa["FOLIO"]);
-    setFieldIfExists("fecha", mapa["FECHA"]);
-    setFieldIfExists("tipoServicio", mapa["TIPO DE SERVICIO"]);
+    setFieldIfExists("empresa", getValue("EMPRESA", "COMPANY"));
+    setFieldIfExists("correoEmpresa", getValue("CORREO EMPRESA", "COMPANY EMAIL"));
+    setFieldIfExists("telefonoEmpresa", getValue("TELÉFONO EMPRESA", "COMPANY PHONE"));
+    setFieldIfExists("sitioEmpresa", getValue("SITIO WEB", "WEBSITE"));
+    setFieldIfExists("ciudadEmpresa", getValue("CIUDAD", "CITY"));
 
-    setFieldIfExists("cliente", mapa["CLIENTE"]);
-    setFieldIfExists("contacto", mapa["CONTACTO"]);
-    setFieldIfExists("correoCliente", mapa["CORREO CLIENTE"]);
-    setFieldIfExists("telefonoCliente", mapa["TELÉFONO CLIENTE"]);
-    setFieldIfExists("proyecto", mapa["PROYECTO"]);
-    setFieldIfExists("ubicacionProyecto", mapa["UBICACIÓN"]);
+    setFieldIfExists("folio", getValue("FOLIO", "QUOTE NUMBER"));
+    setFieldIfExists("fecha", getValue("FECHA", "DATE"));
 
-    setFieldIfExists("notas", mapa["NOTAS"]);
-    setFieldIfExists("terminos", mapa["TÉRMINOS"]);
-    setFieldIfExists("formaPago", mapa["FORMA DE PAGO"]);
-
-    if (mapa["MONEDA"] === "MXN" || mapa["MONEDA"] === "USD") {
-      setFieldIfExists("moneda", mapa["MONEDA"]);
+    const tipoServicioImportado = getValue("TIPO DE SERVICIO", "SERVICE TYPE");
+    if (tipoServicioImportado !== undefined) {
+      setFieldIfExists("tipoServicio", normalizeServiceType(tipoServicioImportado));
     }
 
-    if (mapa["RESICO TABLA"] !== undefined) {
-      const modoResico = String(mapa["RESICO TABLA"] || "").trim().toLowerCase();
+    setFieldIfExists("cliente", getValue("CLIENTE", "CLIENT"));
+    setFieldIfExists("contacto", getValue("CONTACTO", "CONTACT"));
+    setFieldIfExists("correoCliente", getValue("CORREO CLIENTE", "CLIENT EMAIL"));
+    setFieldIfExists("telefonoCliente", getValue("TELÉFONO CLIENTE", "CLIENT PHONE"));
+    setFieldIfExists("proyecto", getValue("PROYECTO", "PROJECT"));
+    setFieldIfExists("ubicacionProyecto", getValue("UBICACIÓN", "LOCATION"));
+
+    setFieldIfExists("notas", getValue("NOTAS", "NOTES"));
+    setFieldIfExists("terminos", getValue("TÉRMINOS", "TERMS"));
+    setFieldIfExists("formaPago", getValue("FORMA DE PAGO", "PAYMENT TERMS"));
+
+    const moneda = getValue("MONEDA", "CURRENCY");
+    if (moneda === "MXN" || moneda === "USD") setFieldIfExists("moneda", moneda);
+
+    const modoResicoRaw = getValue("RESICO TABLA", "RESICO TABLE");
+    if (modoResicoRaw !== undefined) {
+      const modo = String(modoResicoRaw || "").trim().toLowerCase();
+      const modoResico = modo === "annual" ? "anual" : modo === "monthly" ? "mensual" : modo;
       if (modoResico === "mensual" || modoResico === "anual") {
         setFieldIfExists("resicoTabla", modoResico, { overwrite: true });
       }
     }
 
-    if (mapa["ANTICIPO (%)"] !== undefined) {
-      setPercentFieldIfExists("anticipo", mapa["ANTICIPO (%)"]);
-    } else if (mapa["ANTICIPO PORCENTAJE"] !== undefined) {
-      setPercentFieldIfExists("anticipo", mapa["ANTICIPO PORCENTAJE"]);
-    } else if (mapa["PORCENTAJE ANTICIPO"] !== undefined) {
-      setPercentFieldIfExists("anticipo", mapa["PORCENTAJE ANTICIPO"]);
-    } else if (mapa["ANTICIPO SUGERIDO"] !== undefined) {
-      /*
-        Compatibilidad con versiones anteriores:
-        - Si "ANTICIPO SUGERIDO" viene como porcentaje entre 0 y 100, se importa.
-        - Si viene como monto de dinero, se ignora para no poner un porcentaje incorrecto.
-      */
-      setPercentFieldIfExists("anticipo", mapa["ANTICIPO SUGERIDO"]);
-    }
+    const anticipoImportado = getValue(
+      "ANTICIPO (%)", "ANTICIPO PORCENTAJE", "PORCENTAJE ANTICIPO", "ANTICIPO SUGERIDO",
+      "DEPOSIT (%)", "DEPOSIT PERCENTAGE", "SUGGESTED DEPOSIT"
+    );
+    if (anticipoImportado !== undefined) setPercentFieldIfExists("anticipo", anticipoImportado);
 
-    if (typeof mapa["VIGENCIA"] === "string") {
-      const m = mapa["VIGENCIA"].match(/\d+/);
-      if (m) setFieldIfExists("vigencia", m[0]);
-    } else if (typeof mapa["VIGENCIA"] === "number") {
-      setFieldIfExists("vigencia", mapa["VIGENCIA"]);
+    const vigenciaImportada = getValue("VIGENCIA", "VALIDITY");
+    if (typeof vigenciaImportada === "string") {
+      const match = vigenciaImportada.match(/\d+/);
+      if (match) setFieldIfExists("vigencia", match[0]);
+    } else if (typeof vigenciaImportada === "number") {
+      setFieldIfExists("vigencia", vigenciaImportada);
     }
   }
 
   if (conceptosSheet) {
-    const conceptos = XLSX.utils.sheet_to_json(conceptosSheet, {
-      defval: ""
-    });
-
-    /*
-      Antes aquí se hacía:
-      conceptosBody.innerHTML = "";
-
-      Eso borraba toda la tabla.
-      Ahora NO se borra. Solo se agregan los conceptos importados.
-    */
-
+    const conceptos = XLSX.utils.sheet_to_json(conceptosSheet, { defval: "" });
     const filasActuales = [...conceptosBody.querySelectorAll("tr")];
 
-    /*
-      Si solo existe la fila inicial automática "Servicio profesional"
-      con precio 0, la quitamos para que no quede como basura.
-      Pero si ya capturaste algo real, no se toca.
-    */
     if (filasActuales.length === 1) {
       const row = filasActuales[0];
-
       const concepto = row.querySelector(".concepto")?.value.trim() || "";
       const cantidad = parseFloat(row.querySelector(".cantidad")?.value) || 0;
       const precio = parseFloat(row.querySelector(".precio")?.value) || 0;
       const descuento = parseFloat(row.querySelector(".descuento")?.value) || 0;
+      const defaultConcepts = [I18N.es.defaultProfessionalService, I18N.en.defaultProfessionalService];
 
-      const esFilaInicialVacia =
-        concepto === "Servicio profesional" &&
-        cantidad === 1 &&
-        precio === 0 &&
-        descuento === 0;
-
-      if (esFilaInicialVacia) {
+      if (defaultConcepts.includes(concepto) && cantidad === 1 && precio === 0 && descuento === 0) {
         row.remove();
       }
     }
 
     conceptos.forEach(item => {
-      const concepto =
-        item.Concepto ||
-        item.CONCEPTO ||
-        item.concepto ||
-        "";
+      const normalizedItem = {};
+      Object.entries(item).forEach(([key, value]) => {
+        normalizedItem[normalizeKey(key)] = value;
+      });
 
-      const cantidad =
-        item.Cantidad ||
-        item.CANTIDAD ||
-        item.cantidad ||
-        1;
+      const getItemValue = (...keys) => {
+        for (const key of keys) {
+          const normalized = normalizeKey(key);
+          if (Object.prototype.hasOwnProperty.call(normalizedItem, normalized)) return normalizedItem[normalized];
+        }
+        return undefined;
+      };
 
-      const precio =
-        item.Precio_Unitario ||
-        item.PRECIO_UNITARIO ||
-        item["Precio Unitario"] ||
-        item["PRECIO UNITARIO"] ||
-        item.precio ||
-        0;
-
-      const descuento =
-        item.Descuento_Porcentaje ||
-        item.DESCUENTO_PORCENTAJE ||
-        item["Desc. %"] ||
-        item["DESC. %"] ||
-        item.descuento ||
-        0;
+      const concepto = getItemValue("CONCEPTO", "ITEM", "DESCRIPTION") || "";
+      const cantidad = getItemValue("CANTIDAD", "QUANTITY") ?? 1;
+      const precio = getItemValue("PRECIO_UNITARIO", "PRECIO UNITARIO", "UNIT_PRICE", "UNIT PRICE") ?? 0;
+      const descuento = getItemValue("DESCUENTO_PORCENTAJE", "DESC. %", "DISCOUNT_PERCENTAGE", "DISC. %") ?? 0;
 
       const conceptoLimpio = String(concepto || "").trim();
       const precioNumerico = parseFloat(precio) || 0;
-
-      /*
-        Evita agregar filas completamente vacías del Excel.
-      */
       if (!conceptoLimpio && !precioNumerico) return;
 
-      crearFila({
-        concepto: conceptoLimpio,
-        cantidad,
-        precio,
-        descuento
-      });
+      crearFila({ concepto: conceptoLimpio, cantidad, precio, descuento });
     });
 
-    if (!conceptosBody.querySelectorAll("tr").length) {
-      crearFila();
-    }
+    if (!conceptosBody.querySelectorAll("tr").length) crearFila();
   }
 
   recalcularTodo();
-
-  alert("Excel importado correctamente. Los datos existentes se conservaron y los conceptos se agregaron a la cotización actual.");
+  alert(t("importSuccess"));
 }
 
 function importarExcel(file) {
   if (!file) return;
 
   const reader = new FileReader();
-
   reader.onload = function (e) {
     try {
       const data = new Uint8Array(e.target.result);
@@ -1098,7 +1254,7 @@ function importarExcel(file) {
       importarDesdeWorkbook(workbook);
     } catch (error) {
       console.error(error);
-      alert("No se pudo leer el archivo Excel.");
+      alert(t("excelReadError"));
     }
   };
 
@@ -1110,17 +1266,17 @@ async function exportarPDF() {
     const data = obtenerDatosFormulario();
 
     if (data.conceptosBase.length > 1 && data.isrResicoMonto > 0) {
-      const conceptoSeleccionado = data.conceptosBase[data.resicoConceptoIndex]?.concepto || `Concepto ${data.resicoConceptoIndex + 1}`;
+      const conceptoSeleccionado = data.conceptosBase[data.resicoConceptoIndex]?.concepto || t("itemN", { n: data.resicoConceptoIndex + 1 });
       const continuar = confirm(
-        `Antes de imprimir:
+        `${t("beforePrint")}
 
 ` +
-        `El RESICO estimado de ${formatMoney(data.isrResicoMonto)} se integrará internamente al concepto #${data.resicoConceptoIndex + 1}:
+        `${t("resicoWillIntegrate", { amount: formatMoney(data.isrResicoMonto), number: data.resicoConceptoIndex + 1 })}
 ` +
         `"${conceptoSeleccionado}"
 
 ` +
-        `No aparecerá como impuesto separado en el PDF. ¿Deseas continuar?`
+        t("resicoNotSeparate")
       );
 
       if (!continuar) return;
@@ -1158,7 +1314,7 @@ async function exportarPDF() {
       doc.setFontSize(8);
       doc.setTextColor(120, 120, 120);
       doc.text(`${data.empresa || DEFAULT_EMPRESA} | ${data.sitioEmpresa || DEFAULT_SITIO_EMPRESA}`, margin, footerY);
-      doc.text(`Página ${pageNumber} de ${doc.getNumberOfPages()}`, pageWidth - margin, footerY, { align: "right" });
+      doc.text(`${t("page")} ${pageNumber} ${t("of")} ${doc.getNumberOfPages()}`, pageWidth - margin, footerY, { align: "right" });
     }
 
     function addFooterToAllPages() {
@@ -1268,15 +1424,15 @@ async function exportarPDF() {
       const colWidth = (boxW / 2) - innerPadding - 6;
 
       const leftHeights = [
-        drawInfoLineMeasure("Cliente", data.cliente, colWidth),
-        drawInfoLineMeasure("Contacto", data.contacto, colWidth),
-        drawInfoLineMeasure("Correo", data.correoCliente, colWidth)
+        drawInfoLineMeasure(t("client"), data.cliente, colWidth),
+        drawInfoLineMeasure(t("contact"), data.contacto, colWidth),
+        drawInfoLineMeasure(t("email"), data.correoCliente, colWidth)
       ];
 
       const rightHeights = [
-        drawInfoLineMeasure("Teléfono", data.telefonoCliente, colWidth),
-        drawInfoLineMeasure("Proyecto", data.proyecto, colWidth),
-        drawInfoLineMeasure("Ubicación", data.ubicacionProyecto, colWidth)
+        drawInfoLineMeasure(t("phone"), data.telefonoCliente, colWidth),
+        drawInfoLineMeasure(t("project"), data.proyecto, colWidth),
+        drawInfoLineMeasure(t("location"), data.ubicacionProyecto, colWidth)
       ];
 
       const leftTotal = leftHeights.reduce((a, b) => a + b, 0);
@@ -1294,30 +1450,30 @@ async function exportarPDF() {
       doc.setTextColor(...accentBlue);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
-      doc.text("DATOS DEL CLIENTE", boxX + innerPadding, currentY + 7);
+      doc.text(t("clientInfoTitle"), boxX + innerPadding, currentY + 7);
 
       let leftY = currentY + 14;
       let rightY = currentY + 14;
 
-      leftY += drawInfoLine("Cliente", data.cliente || "-", leftX, leftY, colWidth);
-      leftY += drawInfoLine("Contacto", data.contacto || "-", leftX, leftY, colWidth);
-      leftY += drawInfoLine("Correo", data.correoCliente || "-", leftX, leftY, colWidth);
+      leftY += drawInfoLine(t("client"), data.cliente || "-", leftX, leftY, colWidth);
+      leftY += drawInfoLine(t("contact"), data.contacto || "-", leftX, leftY, colWidth);
+      leftY += drawInfoLine(t("email"), data.correoCliente || "-", leftX, leftY, colWidth);
 
-      rightY += drawInfoLine("Teléfono", data.telefonoCliente || "-", rightX, rightY, colWidth);
-      rightY += drawInfoLine("Proyecto", data.proyecto || "-", rightX, rightY, colWidth);
-      rightY += drawInfoLine("Ubicación", data.ubicacionProyecto || "-", rightX, rightY, colWidth);
+      rightY += drawInfoLine(t("phone"), data.telefonoCliente || "-", rightX, rightY, colWidth);
+      rightY += drawInfoLine(t("project"), data.proyecto || "-", rightX, rightY, colWidth);
+      rightY += drawInfoLine(t("location"), data.ubicacionProyecto || "-", rightX, rightY, colWidth);
 
       return currentY + boxH + 6;
     }
 
     function drawServiceTypeBox(y) {
-      const label = "Tipo de servicio:";
+      const label = `${t("serviceTypePdf")}:`;
       const labelWidth = 34;
       const textWidth = contentWidth - 8 - labelWidth;
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9.5);
-      const valueLines = doc.splitTextToSize(data.tipoServicio || "-", textWidth);
+      const valueLines = doc.splitTextToSize(data.tipoServicioLabel || getServiceTypeLabel(data.tipoServicio) || "-", textWidth);
       const boxH = Math.max(12, 8 + (valueLines.length * 4.5));
 
       let currentY = ensureSpace(y, boxH + 6);
@@ -1363,13 +1519,13 @@ async function exportarPDF() {
       const anticipoLabelPdf = data.anticipoLabel || getAnticipoComercialLabel(data.anticipo);
       const metodoPagoPdf = data.metodoPagoClave || getMetodoPagoInfo(data.anticipo).clave;
       const saldoTextoPdf = (data.saldoPendiente || 0) > 0
-        ? `Saldo pendiente: ${formatMoney(data.saldoPendiente)}`
-        : "Pago total de la cotización";
+        ? `${t("balanceDue")}: ${formatMoney(data.saldoPendiente)}`
+        : t("fullQuotePayment");
 
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...accentBlue);
       doc.setFontSize(8.2);
-      doc.text("ANTICIPO SUGERIDO", leftX + 4, currentY + 6);
+      doc.text(t("suggestedDeposit"), leftX + 4, currentY + 6);
 
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryBlue);
@@ -1388,7 +1544,7 @@ async function exportarPDF() {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.1);
       doc.setTextColor(...textGray);
-      const metodoPagoText = `Método: ${metodoPagoPdf}`;
+      const metodoPagoText = `${t("method")}: ${metodoPagoPdf}`;
       const metodoPagoLines = doc.splitTextToSize(metodoPagoText, leftBoxW - 12);
       doc.text(metodoPagoLines.slice(0, 1), leftX + 6, currentY + 26.6);
 
@@ -1406,20 +1562,20 @@ async function exportarPDF() {
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...accentBlue);
       doc.setFontSize(9.4);
-      doc.text("RESUMEN FINANCIERO", rightX + rightBoxW / 2, currentY + 6.5, { align: "center" });
+      doc.text(t("financialSummary"), rightX + rightBoxW / 2, currentY + 6.5, { align: "center" });
 
-      const descuentoConceptosLabel = `Desc. conceptos (${formatPercent(data.descuentoConceptosPorcentaje)}%):`;
-      const descuentoTotalLabel = `Desc. total (${formatPercent(data.descuentoTotalPorcentaje)}%):`;
+      const descuentoConceptosLabel = `${t("itemDiscountPdf")} (${formatPercent(data.descuentoConceptosPorcentaje)}%):`;
+      const descuentoTotalLabel = `${t("totalDiscountPdf")} (${formatPercent(data.descuentoTotalPorcentaje)}%):`;
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.8);
       doc.setTextColor(...textGray);
-      doc.text("Subtotal bruto:", rightX + 4, currentY + 14);
+      doc.text(`${t("grossSubtotal")}:`, rightX + 4, currentY + 14);
       doc.text(descuentoConceptosLabel, rightX + 4, currentY + 20);
-      doc.text("Subtotal neto:", rightX + 4, currentY + 26);
-      doc.text("Desc. general:", rightX + 4, currentY + 32);
+      doc.text(`${t("netSubtotal")}:`, rightX + 4, currentY + 26);
+      doc.text(`${t("generalDiscountShort")}:`, rightX + 4, currentY + 32);
       doc.text(descuentoTotalLabel, rightX + 4, currentY + 38);
-      doc.text("IVA:", rightX + 4, currentY + 44);
+      doc.text(`${t("vat")}:`, rightX + 4, currentY + 44);
 
       doc.setFont("helvetica", "normal");
       doc.setTextColor(...darkText);
@@ -1433,7 +1589,7 @@ async function exportarPDF() {
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryBlue);
       doc.setFontSize(9.2);
-      doc.text("Total:", rightX + 4, currentY + 49);
+      doc.text(`${t("total")}:`, rightX + 4, currentY + 49);
       doc.text(formatMoney(data.total), rightX + rightBoxW - 4, currentY + 49, { align: "right" });
 
       return currentY + rowH + 8;
@@ -1517,14 +1673,14 @@ async function exportarPDF() {
     doc.setTextColor(...primaryBlue);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(14);
-    doc.text("COTIZACIÓN", quoteBoxX + quoteBoxW / 2, quoteBoxY + 6.8, { align: "center" });
+    doc.text(t("quoteTitle"), quoteBoxX + quoteBoxW / 2, quoteBoxY + 6.8, { align: "center" });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.2);
-    doc.text(`Folio: ${data.folio || "-"}`, quoteBoxX + 4, quoteBoxY + 12);
-    doc.text(`Fecha: ${fechaCotizacionVisual || "-"}`, quoteBoxX + 4, quoteBoxY + 17);
-    doc.text(`Vigencia: ${data.vigencia || "-"} días`, quoteBoxX + 4, quoteBoxY + 22);
-    doc.text(`Expira: ${fechaExpiracion || "-"}`, quoteBoxX + 4, quoteBoxY + 27);
+    doc.text(`${t("folio")}: ${data.folio || "-"}`, quoteBoxX + 4, quoteBoxY + 12);
+    doc.text(`${t("date")}: ${fechaCotizacionVisual || "-"}`, quoteBoxX + 4, quoteBoxY + 17);
+    doc.text(`${t("validityDays").replace(" (días)", "").replace(" (days)", "")}: ${data.vigencia || "-"} ${t("days")}`, quoteBoxX + 4, quoteBoxY + 22);
+    doc.text(`${t("expires")}: ${fechaExpiracion || "-"}`, quoteBoxX + 4, quoteBoxY + 27);
 
     let y = headerY + headerH + 8;
 
@@ -1542,7 +1698,7 @@ async function exportarPDF() {
 
     doc.autoTable({
       startY: y,
-      head: [["#", "Concepto", "Cantidad", "P. Unitario", "Desc.", "Importe"]],
+      head: [["#", t("item"), t("quantity"), t("unitPrice"), t("discountShortPct"), t("amount")]],
       body: tableData,
       theme: "grid",
       margin: { left: margin, right: margin, bottom: footerHeight + 4 },
@@ -1578,9 +1734,9 @@ async function exportarPDF() {
 
     y = drawFinancialSummary(finalY);
 
-    const formaPagoTexto = data.formaPago || "Únicamente mediante transferencia bancaria.";
+    const formaPagoTexto = data.formaPago || t("defaultPaymentTerms");
     y = drawWrappedTextBlock({
-      title: "FORMA DE PAGO",
+      title: t("paymentTermsTitle"),
       text: formaPagoTexto,
       y: y,
       width: contentWidth
@@ -1588,10 +1744,10 @@ async function exportarPDF() {
 
     if (data.terminos && data.terminos.trim()) {
       const terminosCompletos =
-        `Todos los precios están expresados en ${data.monedaDescripcion} e incluyen IVA, salvo que se indique lo contrario. ${data.terminos.trim()}`;
+        `${t("allPricesClause", { currency: data.monedaDescripcion })} ${data.terminos.trim()}`;
 
       y = drawWrappedTextBlock({
-        title: "TÉRMINOS Y CONDICIONES",
+        title: t("termsTitle"),
         text: terminosCompletos,
         y: y,
         width: contentWidth
@@ -1600,7 +1756,7 @@ async function exportarPDF() {
 
     if (data.notas && data.notas.trim()) {
       y = drawWrappedTextBlock({
-        title: "NOTAS",
+        title: t("notesTitle"),
         text: data.notas.trim(),
         y: y,
         width: contentWidth
@@ -1609,89 +1765,127 @@ async function exportarPDF() {
 
     addFooterToAllPages();
 
-    const nombreArchivo = `Cotizacion_${(data.folio || "sin_folio").replace(/\s+/g, "_")}.pdf`;
+    const nombreArchivo = `${t("quoteFilePrefix")}_${(data.folio || t("noFolio")).replace(/\s+/g, "_")}.pdf`;
     doc.save(nombreArchivo);
 
   } catch (error) {
     console.error(error);
-    alert("Ocurrió un error al generar el PDF. Revisa que exista assets/logo-pdf.png");
+    alert(t("pdfError"));
   }
 }
 
 function exportarExcel() {
   const data = obtenerDatosFormulario();
-
   const wb = XLSX.utils.book_new();
+  const isEnglish = currentLanguage === "en";
+
+  const labels = isEnglish ? {
+    company: "COMPANY", companyEmail: "COMPANY EMAIL", companyPhone: "COMPANY PHONE", website: "WEBSITE", city: "CITY",
+    folio: "QUOTE NUMBER", date: "DATE", visualDate: "FORMATTED DATE", expires: "EXPIRES", validity: "VALIDITY", serviceType: "SERVICE TYPE",
+    client: "CLIENT", contact: "CONTACT", clientEmail: "CLIENT EMAIL", clientPhone: "CLIENT PHONE", project: "PROJECT", location: "LOCATION",
+    paymentTerms: "PAYMENT TERMS", paymentMethod: "PAYMENT METHOD", depositPct: "DEPOSIT (%)", resicoTable: "RESICO TABLE",
+    resicoRate: "RESICO RATE (%)", resicoItem: "RESICO ITEM", currency: "CURRENCY", currencyDescription: "CURRENCY DESCRIPTION",
+    grossBaseSubtotal: "GROSS BASE SUBTOTAL", baseItemDiscount: "BASE ITEM DISCOUNT", baseItemDiscountPct: "BASE ITEM DISCOUNT (%)",
+    originalBaseSubtotal: "ORIGINAL BASE SUBTOTAL", originalBaseBeforeVat: "ORIGINAL BASE BEFORE VAT", integratedResico: "RESICO INCLUDED IN PRICE",
+    clientGrossSubtotal: "CLIENT GROSS SUBTOTAL", clientItemDiscount: "CLIENT ITEM DISCOUNT", clientItemDiscountPct: "CLIENT ITEM DISCOUNT (%)",
+    clientSubtotal: "CLIENT SUBTOTAL", generalDiscount: "GENERAL DISCOUNT", totalDiscount: "TOTAL DISCOUNT", totalDiscountPct: "TOTAL DISCOUNT (%)",
+    vat: "VAT", total: "TOTAL", estimatedNetResico: "ESTIMATED NET AFTER RESICO", suggestedDeposit: "SUGGESTED DEPOSIT",
+    outstandingBalance: "OUTSTANDING BALANCE", notes: "NOTES", terms: "TERMS", language: "LANGUAGE"
+  } : {
+    company: "EMPRESA", companyEmail: "CORREO EMPRESA", companyPhone: "TELÉFONO EMPRESA", website: "SITIO WEB", city: "CIUDAD",
+    folio: "FOLIO", date: "FECHA", visualDate: "FECHA VISUAL", expires: "EXPIRA", validity: "VIGENCIA", serviceType: "TIPO DE SERVICIO",
+    client: "CLIENTE", contact: "CONTACTO", clientEmail: "CORREO CLIENTE", clientPhone: "TELÉFONO CLIENTE", project: "PROYECTO", location: "UBICACIÓN",
+    paymentTerms: "FORMA DE PAGO", paymentMethod: "MÉTODO DE PAGO", depositPct: "ANTICIPO (%)", resicoTable: "RESICO TABLA",
+    resicoRate: "RESICO TASA (%)", resicoItem: "RESICO CONCEPTO", currency: "MONEDA", currencyDescription: "DESCRIPCIÓN MONEDA",
+    grossBaseSubtotal: "SUBTOTAL BRUTO BASE", baseItemDiscount: "DESCUENTO POR CONCEPTOS BASE", baseItemDiscountPct: "DESCUENTO POR CONCEPTOS BASE (%)",
+    originalBaseSubtotal: "SUBTOTAL BASE ORIGINAL", originalBaseBeforeVat: "BASE ORIGINAL SIN IVA", integratedResico: "RESICO INTEGRADO AL PRECIO",
+    clientGrossSubtotal: "SUBTOTAL BRUTO CLIENTE", clientItemDiscount: "DESCUENTO POR CONCEPTOS CLIENTE", clientItemDiscountPct: "DESCUENTO POR CONCEPTOS CLIENTE (%)",
+    clientSubtotal: "SUBTOTAL CLIENTE", generalDiscount: "DESCUENTO GENERAL", totalDiscount: "DESCUENTO TOTAL", totalDiscountPct: "DESCUENTO TOTAL (%)",
+    vat: "IVA", total: "TOTAL", estimatedNetResico: "NETO ESTIMADO RESICO", suggestedDeposit: "ANTICIPO SUGERIDO",
+    outstandingBalance: "SALDO PENDIENTE", notes: "NOTAS", terms: "TÉRMINOS", language: "IDIOMA"
+  };
+
+  const resicoTableLabel = data.resicoTabla === "anual"
+    ? (isEnglish ? "annual" : "anual")
+    : (isEnglish ? "monthly" : "mensual");
 
   const hojaResumen = [
-    ["EMPRESA", data.empresa],
-    ["CORREO EMPRESA", data.correoEmpresa],
-    ["TELÉFONO EMPRESA", data.telefonoEmpresa],
-    ["SITIO WEB", data.sitioEmpresa],
-    ["CIUDAD", data.ciudadEmpresa],
+    [labels.company, data.empresa],
+    [labels.companyEmail, data.correoEmpresa],
+    [labels.companyPhone, data.telefonoEmpresa],
+    [labels.website, data.sitioEmpresa],
+    [labels.city, data.ciudadEmpresa],
     [],
-    ["FOLIO", data.folio],
-    ["FECHA", data.fecha],
-    ["FECHA VISUAL", data.fechaVisual],
-    ["EXPIRA", data.fechaExpiracion],
-    ["VIGENCIA", `${data.vigencia} días`],
-    ["TIPO DE SERVICIO", data.tipoServicio],
+    [labels.folio, data.folio],
+    [labels.date, data.fecha],
+    [labels.visualDate, data.fechaVisual],
+    [labels.expires, data.fechaExpiracion],
+    [labels.validity, `${data.vigencia} ${t("days")}`],
+    [labels.serviceType, data.tipoServicioLabel],
+    [labels.language, isEnglish ? "English" : "Español"],
     [],
-    ["CLIENTE", data.cliente],
-    ["CONTACTO", data.contacto],
-    ["CORREO CLIENTE", data.correoCliente],
-    ["TELÉFONO CLIENTE", data.telefonoCliente],
-    ["PROYECTO", data.proyecto],
-    ["UBICACIÓN", data.ubicacionProyecto],
+    [labels.client, data.cliente],
+    [labels.contact, data.contacto],
+    [labels.clientEmail, data.correoCliente],
+    [labels.clientPhone, data.telefonoCliente],
+    [labels.project, data.proyecto],
+    [labels.location, data.ubicacionProyecto],
     [],
-    ["FORMA DE PAGO", data.formaPago],
-    ["MÉTODO DE PAGO", data.metodoPagoClave],
-    ["ANTICIPO (%)", data.anticipo],
-    ["RESICO TABLA", data.resicoTabla],
-    ["RESICO TASA (%)", data.resicoTasa],
-    ["RESICO CONCEPTO", `#${(data.resicoConceptoIndex || 0) + 1}`],
-    ["MONEDA", data.moneda],
-    ["DESCRIPCIÓN MONEDA", data.monedaDescripcion],
+    [labels.paymentTerms, data.formaPago],
+    [labels.paymentMethod, data.metodoPagoClave],
+    [labels.depositPct, data.anticipo],
+    [labels.resicoTable, resicoTableLabel],
+    [labels.resicoRate, data.resicoTasa],
+    [labels.resicoItem, `#${(data.resicoConceptoIndex || 0) + 1}`],
+    [labels.currency, data.moneda],
+    [labels.currencyDescription, data.monedaDescripcion],
     [],
-    ["SUBTOTAL BRUTO BASE", data.subtotalBrutoBase],
-    ["DESCUENTO POR CONCEPTOS BASE", data.descuentoConceptosBase],
-    ["DESCUENTO POR CONCEPTOS BASE (%)", data.descuentoConceptosPorcentajeBase],
-    ["SUBTOTAL BASE ORIGINAL", data.subtotalBase],
-    ["BASE ORIGINAL SIN IVA", data.subtotalConDescuentoBase],
-    ["RESICO INTEGRADO AL PRECIO", data.isrResicoMonto],
-    ["SUBTOTAL BRUTO CLIENTE", data.subtotalBruto],
-    ["DESCUENTO POR CONCEPTOS CLIENTE", data.descuentoConceptosMonto],
-    ["DESCUENTO POR CONCEPTOS CLIENTE (%)", data.descuentoConceptosPorcentaje],
-    ["SUBTOTAL CLIENTE", data.subtotal],
-    ["DESCUENTO GENERAL", data.descuentoMonto],
-    ["DESCUENTO TOTAL", data.descuentoTotalMonto],
-    ["DESCUENTO TOTAL (%)", data.descuentoTotalPorcentaje],
-    ["IVA", data.ivaMonto],
-    ["TOTAL", data.total],
-    ["NETO ESTIMADO RESICO", data.netoEstimadoResico],
-    ["ANTICIPO SUGERIDO", data.anticipoMonto],
-    ["SALDO PENDIENTE", data.saldoPendiente],
+    [labels.grossBaseSubtotal, data.subtotalBrutoBase],
+    [labels.baseItemDiscount, data.descuentoConceptosBase],
+    [labels.baseItemDiscountPct, data.descuentoConceptosPorcentajeBase],
+    [labels.originalBaseSubtotal, data.subtotalBase],
+    [labels.originalBaseBeforeVat, data.subtotalConDescuentoBase],
+    [labels.integratedResico, data.isrResicoMonto],
+    [labels.clientGrossSubtotal, data.subtotalBruto],
+    [labels.clientItemDiscount, data.descuentoConceptosMonto],
+    [labels.clientItemDiscountPct, data.descuentoConceptosPorcentaje],
+    [labels.clientSubtotal, data.subtotal],
+    [labels.generalDiscount, data.descuentoMonto],
+    [labels.totalDiscount, data.descuentoTotalMonto],
+    [labels.totalDiscountPct, data.descuentoTotalPorcentaje],
+    [labels.vat, data.ivaMonto],
+    [labels.total, data.total],
+    [labels.estimatedNetResico, data.netoEstimadoResico],
+    [labels.suggestedDeposit, data.anticipoMonto],
+    [labels.outstandingBalance, data.saldoPendiente],
     [],
-    ["NOTAS", data.notas],
-    ["TÉRMINOS", data.terminos]
+    [labels.notes, data.notas],
+    [labels.terms, data.terminos]
   ];
 
-  const hojaConceptos = data.conceptos.map(item => ({
+  const hojaConceptos = data.conceptos.map(item => isEnglish ? {
+    No: item.no,
+    Item: item.concepto,
+    Quantity: item.cantidad,
+    Unit_Price: item.precio,
+    Discount_Percentage: item.descuento,
+    Amount: item.importe
+  } : {
     No: item.no,
     Concepto: item.concepto,
     Cantidad: item.cantidad,
     Precio_Unitario: item.precio,
     Descuento_Porcentaje: item.descuento,
     Importe: item.importe
-  }));
+  });
 
   const wsResumen = XLSX.utils.aoa_to_sheet(hojaResumen);
   const wsConceptos = XLSX.utils.json_to_sheet(hojaConceptos);
 
-  XLSX.utils.book_append_sheet(wb, wsResumen, "Resumen");
-  XLSX.utils.book_append_sheet(wb, wsConceptos, "Conceptos");
+  XLSX.utils.book_append_sheet(wb, wsResumen, t("summarySheet"));
+  XLSX.utils.book_append_sheet(wb, wsConceptos, t("itemsSheet"));
 
-  const nombreArchivo = `Cotizacion_${(data.folio || "sin_folio").replace(/\s+/g, "_")}.xlsx`;
+  const nombreArchivo = `${t("quoteFilePrefix")}_${(data.folio || t("noFolio")).replace(/\s+/g, "_")}.xlsx`;
   XLSX.writeFile(wb, nombreArchivo);
 }
 
@@ -1701,7 +1895,7 @@ btnPDF.addEventListener("click", exportarPDF);
 btnExcel.addEventListener("click", exportarExcel);
 
 btnNuevo.addEventListener("click", () => {
-  if (confirm("¿Deseas limpiar la cotización actual?")) {
+  if (confirm(t("clearConfirm"))) {
     limpiarFormulario();
   }
 });
@@ -1716,6 +1910,11 @@ if (btnImportarExcel && inputImportarExcel) {
     importarExcel(file);
     e.target.value = "";
   });
+}
+
+const idiomaSelect = document.getElementById("idioma");
+if (idiomaSelect) {
+  idiomaSelect.addEventListener("change", event => applyLanguage(event.target.value));
 }
 
 [
@@ -1742,8 +1941,10 @@ if (!document.getElementById("folio").value.trim()) {
   generarNuevoFolio();
 }
 
+applyLanguage(currentLanguage, { translateDefaults: true, recalculate: false, persist: false });
+
 crearFila({
-  concepto: "Servicio profesional",
+  concepto: t("defaultProfessionalService"),
   cantidad: 1,
   precio: 0,
   descuento: 0
