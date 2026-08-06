@@ -433,11 +433,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .brand-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   width: 100%;
   align-items: center;
@@ -448,6 +450,8 @@
 .brand-card {
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 94px;
   max-width: 160px;
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.03);
@@ -479,16 +483,71 @@
   transition: filter .22s ease, transform .22s ease;
 }
 
+.brand-card img.brand-logo-white {
+  width: 100%;
+  max-width: 145px;
+  max-height: none;
+}
+
 .brand-card:hover img,
 .brand-card:focus img {
   filter: none;
   transform: scale(1.02);
 }
 
-@media (max-width: 767px) {
-  .brand-grid { gap: 10px; grid-template-columns: repeat(3, minmax(80px,1fr)); }
-  .brand-card { max-width: 120px; padding:8px; }
-  .brand-card img { max-height: 48px; }
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .brand-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .brand-grid {
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 6px 0;
+  }
+
+  .brand-card {
+    max-width: none;
+    min-height: 82px;
+    padding: 8px;
+  }
+
+  .brand-card img {
+    max-height: 48px;
+  }
+
+  .brand-card img.brand-logo-white {
+    max-width: 132px;
+    max-height: none;
+  }
+}
+
+@media (max-width: 479.98px) {
+  .brand-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .brand-card {
+    min-height: 78px;
+  }
+}
+
+@media (max-width: 359.98px) {
+  .brand-grid {
+    gap: 8px;
+  }
+
+  .brand-card {
+    min-height: 72px;
+    padding: 6px;
+  }
+
+  .brand-card img {
+    max-height: 44px;
+  }
 }
 </style>
 
@@ -4030,6 +4089,22 @@ body.modal-open .header-container{
 
                 <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="Hikvision" data-brand-desc="Videovigilancia IP y soluciones de vídeo." data-brand-logo="assets/img/misc/hikvision.png" aria-label="Hikvision">
                   <img src="assets/img/misc/hikvision.png" alt="Hikvision logo">
+                </button>
+
+                <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="AXIS Communications" data-brand-desc="Cámaras IP, analíticas y soluciones profesionales de videovigilancia en red." data-brand-logo="assets/img/misc/axis-blanco.png" aria-label="AXIS Communications">
+                  <img class="brand-logo-white" src="assets/img/misc/axis-blanco.png" alt="AXIS Communications logo" loading="lazy" decoding="async">
+                </button>
+
+                <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="CyberPower" data-brand-desc="UPS, respaldo energético, PDUs y soluciones para la administración de energía." data-brand-logo="assets/img/misc/cyberpower-blanco.png" aria-label="CyberPower">
+                  <img class="brand-logo-white" src="assets/img/misc/cyberpower-blanco.png" alt="CyberPower logo" loading="lazy" decoding="async">
+                </button>
+
+                <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="APC" data-brand-desc="UPS, protección eléctrica e infraestructura para la continuidad de energía crítica." data-brand-logo="assets/img/misc/apc-blanco.png" aria-label="APC">
+                  <img class="brand-logo-white" src="assets/img/misc/apc-blanco.png" alt="APC logo" loading="lazy" decoding="async">
+                </button>
+
+                <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="Windows" data-brand-desc="Plataformas Windows cliente y Windows Server para estaciones de trabajo e infraestructura empresarial." data-brand-logo="assets/img/misc/windows-blanco.png" aria-label="Windows">
+                  <img class="brand-logo-white" src="assets/img/misc/windows-blanco.png" alt="Windows logo" loading="lazy" decoding="async">
                 </button>
               </div>
             </div>
