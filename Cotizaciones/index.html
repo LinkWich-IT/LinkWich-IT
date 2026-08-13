@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkWich-IT | Cotizador Profesional</title>
-  <link rel="stylesheet" href="style.css?v=20260813-3" />
+  <link rel="stylesheet" href="style.css?v=20260813-4" />
 
   <style>
     .field-help {
@@ -290,6 +290,83 @@
           </div>
         </div>
 
+        <div class="commercial-notes-builder" id="commercialNotesBuilder">
+          <div class="commercial-notes-builder__header">
+            <div>
+              <span class="commercial-notes-builder__eyebrow" data-i18n="commercialNotesAssistant">Asistente de notas comerciales</span>
+              <h4 data-i18n="commercialNotesAssistantTitle">Genera condiciones sin escribirlas desde cero</h4>
+              <p data-i18n="commercialNotesAssistantHelp">Selecciona el tipo de suministro, el plazo y las condiciones aplicables. Después puedes editar el texto antes de agregarlo a Notas.</p>
+            </div>
+          </div>
+
+          <div class="commercial-notes-config">
+            <div class="field">
+              <label for="notaTipoSuministro" data-i18n="supplyType">Tipo de suministro</label>
+              <select id="notaTipoSuministro">
+                <option value="servicio" data-i18n="supplyService">Servicio</option>
+                <option value="material" data-i18n="supplyMaterial">Material</option>
+                <option value="equipamiento" selected data-i18n="supplyEquipment">Equipamiento</option>
+                <option value="mixto" data-i18n="supplyMixed">Material, equipamiento y servicios</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="notaDiasEntrega" data-i18n="estimatedDelivery">Tiempo estimado de entrega</label>
+              <input id="notaDiasEntrega" type="number" min="0" step="1" value="10">
+            </div>
+            <div class="field">
+              <label for="notaUnidadEntrega" data-i18n="deliveryUnit">Unidad del plazo</label>
+              <select id="notaUnidadEntrega">
+                <option value="habiles" selected data-i18n="businessDays">Días hábiles</option>
+                <option value="naturales" data-i18n="calendarDays">Días naturales</option>
+                <option value="semanas" data-i18n="weeks">Semanas</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="commercial-notes-options">
+            <div class="commercial-notes-options__title" data-i18n="quickConditions">Condiciones que deseas incluir</div>
+            <div class="commercial-notes-options__grid">
+              <label class="commercial-note-option">
+                <input type="checkbox" id="notaNoCancelacion" checked>
+                <span><strong data-i18n="noCancellationTitle">Pedido no cancelable</strong><small data-i18n="noCancellationHelp">Aplica cuando el material o equipo ya fue solicitado.</small></span>
+              </label>
+              <label class="commercial-note-option">
+                <input type="checkbox" id="notaDisponibilidad" checked>
+                <span><strong data-i18n="availabilityTitle">Entrega sujeta a disponibilidad</strong><small data-i18n="availabilityHelp">Considera fabricante, distribuidor y transporte.</small></span>
+              </label>
+              <label class="commercial-note-option">
+                <input type="checkbox" id="notaSinObraCivil" checked>
+                <span><strong data-i18n="civilWorksTitle">No incluye obra civil</strong><small data-i18n="civilWorksHelp">Excluye albañilería, resanes, pintura y adecuaciones.</small></span>
+              </label>
+              <label class="commercial-note-option">
+                <input type="checkbox" id="notaTrabajosExtra" checked>
+                <span><strong data-i18n="extraWorksTitle">Trabajos adicionales por separado</strong><small data-i18n="extraWorksHelp">Lo no especificado requiere autorización y cotización.</small></span>
+              </label>
+              <label class="commercial-note-option">
+                <input type="checkbox" id="notaGarantiaFabricante" checked>
+                <span><strong data-i18n="warrantyTitle">Garantía de fabricante</strong><small data-i18n="warrantyHelp">Sujeta a políticas y diagnóstico del fabricante.</small></span>
+              </label>
+              <label class="commercial-note-option">
+                <input type="checkbox" id="notaInstalacionLimitada" checked>
+                <span><strong data-i18n="installationScopeTitle">Instalación limitada al alcance</strong><small data-i18n="installationScopeHelp">Solo incluye instalación o configuración expresamente indicada.</small></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field commercial-notes-preview-field">
+            <label for="notasComercialesPreview" data-i18n="commercialNotesPreview">Vista previa editable</label>
+            <textarea id="notasComercialesPreview" rows="9" data-i18n-placeholder="commercialNotesPreviewPlaceholder" placeholder="Aquí se generarán las condiciones seleccionadas."></textarea>
+            <small class="field-help" data-i18n="commercialNotesPreviewHelp">Puedes corregir, eliminar o agregar texto antes de enviarlo al campo Notas.</small>
+          </div>
+
+          <div class="commercial-notes-actions">
+            <button id="btnRegenerarNotasComerciales" class="btn btn-secondary" type="button" data-i18n="regenerateNotes">Regenerar vista previa</button>
+            <button id="btnAgregarNotasComerciales" class="btn btn-primary" type="button" data-i18n="appendToNotes">Agregar a Notas</button>
+            <button id="btnReemplazarNotasComerciales" class="btn btn-warning" type="button" data-i18n="replaceNotes">Reemplazar Notas</button>
+          </div>
+          <div id="commercialNotesStatus" class="commercial-notes-status" role="status" aria-live="polite"></div>
+        </div>
+
         <div class="grid grid-3">
           <div class="field">
             <label data-i18n="paymentTerms">Forma de pago</label>
@@ -365,7 +442,7 @@
 
       if (sessionStorage.getItem(ACCESS_KEY) === "1") {
         var script = document.createElement("script");
-        script.src = "script.js?v=20260813-3";
+        script.src = "script.js?v=20260813-4";
         document.body.appendChild(script);
         return;
       }
