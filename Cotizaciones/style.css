@@ -837,3 +837,56 @@ tbody tr:hover {
 .pdf-language-control {
   display: none !important;
 }
+
+/* =========================================================
+   INTEGRACIÓN CON EL PORTAL PARTNER
+   Solo se usa si alguien intenta abrir /Cotizaciones/ sin
+   haber iniciado sesión desde /LinkWich-Monitor/.
+   No modifica el diseño normal del cotizador.
+   ========================================================= */
+.lwq-access-denied {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.lwq-access-card {
+  width: min(100%, 540px);
+  padding: clamp(24px, 5vw, 42px);
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(17, 26, 46, 0.98), rgba(13, 22, 39, 0.98));
+  box-shadow: var(--shadow);
+}
+
+.lwq-access-icon {
+  width: 68px;
+  height: 68px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 18px;
+  border: 1px solid rgba(45, 127, 249, 0.28);
+  border-radius: 18px;
+  background: rgba(45, 127, 249, 0.14);
+  font-size: 1.7rem;
+}
+
+.lwq-access-card h1 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: clamp(1.45rem, 4vw, 2rem);
+}
+
+.lwq-access-card p {
+  margin: 0 0 22px;
+  color: var(--muted);
+}
+
+.lwq-access-card .btn {
+  display: inline-flex;
+  width: auto;
+  margin: 0;
+  text-decoration: none;
+}
