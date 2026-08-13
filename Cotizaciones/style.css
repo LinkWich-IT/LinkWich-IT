@@ -839,6 +839,191 @@ tbody tr:hover {
 }
 
 /* =========================================================
+   ASISTENTE DE NOTAS COMERCIALES
+   Extensión visual integrada al estilo original del cotizador.
+   ========================================================= */
+.commercial-notes-builder {
+  margin: 20px 0;
+  padding: 18px;
+  border: 1px solid rgba(45, 127, 249, 0.28);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, rgba(45, 127, 249, 0.10), rgba(8, 145, 178, 0.04)),
+    rgba(255,255,255,0.02);
+}
+
+.commercial-notes-builder__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.commercial-notes-builder__eyebrow {
+  display: inline-flex;
+  margin-bottom: 7px;
+  color: #8fc2ff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.commercial-notes-builder h4 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.08rem;
+}
+
+.commercial-notes-builder__header p {
+  max-width: 880px;
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.commercial-notes-config {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.commercial-notes-options {
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(7, 15, 31, 0.34);
+}
+
+.commercial-notes-options__title {
+  margin-bottom: 11px;
+  color: #c9d7f2;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.commercial-notes-options__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.commercial-note-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.025);
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.commercial-note-option:hover {
+  transform: translateY(-1px);
+  border-color: rgba(45, 127, 249, 0.36);
+  background: rgba(45, 127, 249, 0.07);
+}
+
+.commercial-note-option input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin: 2px 0 0;
+  accent-color: var(--primary);
+}
+
+.commercial-note-option span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.commercial-note-option strong {
+  color: var(--text);
+  font-size: 0.84rem;
+  line-height: 1.35;
+}
+
+.commercial-note-option small {
+  color: var(--muted);
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+.commercial-notes-preview-field {
+  margin-top: 15px;
+}
+
+.commercial-notes-preview-field textarea {
+  min-height: 210px;
+  line-height: 1.5;
+}
+
+.commercial-notes-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 13px;
+}
+
+.commercial-notes-actions .btn {
+  width: auto;
+  min-width: 185px;
+  margin: 0;
+}
+
+.commercial-notes-status {
+  min-height: 20px;
+  margin-top: 9px;
+  color: #86efac;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.commercial-notes-status.is-warning {
+  color: #fbbf24;
+}
+
+@media (max-width: 1100px) {
+  .commercial-notes-options__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .commercial-notes-config,
+  .commercial-notes-options__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .commercial-notes-actions {
+    flex-direction: column;
+  }
+
+  .commercial-notes-actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .commercial-notes-builder {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .commercial-notes-options {
+    padding: 11px;
+  }
+}
+
+/* =========================================================
    INTEGRACIÓN CON EL PORTAL PARTNER
    Solo se usa si alguien intenta abrir /Cotizaciones/ sin
    haber iniciado sesión desde /LinkWich-Monitor/.
