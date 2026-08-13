@@ -1177,6 +1177,110 @@
     }
   </style>
 
+  <style id="lw-professional-quoter-integration-v1">
+    .lw-quote-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.75rem;
+      margin-top:1.15rem;
+    }
+    #pricing .lw-partner-quote-card .lw-quote-actions .btn{
+      flex:1 1 210px;
+    }
+    #pricing .lw-partner-quote-card .btn-professional{
+      color:#fff;
+      background:#040677;
+      border-color:#040677;
+    }
+    #pricing .lw-partner-quote-card .btn-professional:hover{
+      color:#fff;
+      background:#101a92;
+      border-color:#101a92;
+    }
+    #lwProfessionalQuoteModal{
+      --bs-modal-width:100vw;
+      padding:0 !important;
+    }
+    #lwProfessionalQuoteModal .modal-dialog{
+      width:100vw;
+      max-width:none;
+      height:100vh;
+      margin:0;
+    }
+    #lwProfessionalQuoteModal .modal-content{
+      height:100vh;
+      border:0;
+      border-radius:0;
+      overflow:hidden;
+      background:#eef3f9;
+    }
+    #lwProfessionalQuoteModal .modal-header{
+      min-height:62px;
+      padding:.75rem clamp(1rem, 2.4vw, 2rem);
+      color:#fff;
+      background:linear-gradient(135deg,#040677,#0d3f9c);
+      border:0;
+    }
+    #lwProfessionalQuoteModal .modal-title{
+      display:flex;
+      align-items:center;
+      gap:.65rem;
+      color:#fff;
+      font-weight:800;
+    }
+    #lwProfessionalQuoteModal .modal-title small{
+      display:block;
+      color:rgba(255,255,255,.72);
+      font-size:.72rem;
+      font-weight:500;
+    }
+    #lwProfessionalQuoteModal .btn-close{
+      filter:invert(1) grayscale(1);
+      opacity:.9;
+    }
+    #lwProfessionalQuoteModal .modal-body{
+      position:relative;
+      min-height:0;
+      padding:0;
+      background:#eef3f9;
+    }
+    #lwProfessionalQuoteFrame{
+      display:block;
+      width:100%;
+      height:100%;
+      border:0;
+      background:#eef3f9;
+    }
+    .lw-professional-loading{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.8rem;
+      color:#040677;
+      background:#eef3f9;
+      font-weight:750;
+    }
+    .lw-professional-loading.is-hidden{
+      visibility:hidden;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .22s ease, visibility .22s ease;
+    }
+    body.lw-professional-modal-open{
+      overflow:hidden !important;
+    }
+    @media (max-width:575.98px){
+      #lwProfessionalQuoteModal .modal-header{ min-height:56px; padding:.6rem .85rem; }
+      #lwProfessionalQuoteModal .modal-title{ font-size:.98rem; }
+      #lwProfessionalQuoteModal .modal-title small{ display:none; }
+      #pricing .lw-partner-quote-card .lw-quote-actions{ flex-direction:column; }
+      #pricing .lw-partner-quote-card .lw-quote-actions .btn{ width:100%; flex-basis:auto; }
+    }
+  </style>
+
 
 
   <style id="lw-local-brand-logos-v9">
@@ -3832,16 +3936,21 @@
             <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="350">
               <div class="lw-partner-quote-card h-100">
                 <div class="lw-partner-panel-icon"><i class="bi bi-calculator"></i></div>
-                <h3>Cotizador rápido partner</h3>
+                <h3>Centro de cotización partner</h3>
                 <p>
-                  Calcula nodos, meses, descuento comercial, implementación, servidor físico y total estimado
-                  para preparar una propuesta inicial.
+                  Calcula rápidamente licencias por nodos o prepara una cotización profesional completa con
+                  datos del cliente, conceptos, descuentos, RESICO, anticipo, PDF y Excel.
                 </p>
-                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#lwQuoteModal">
-                  <i class="bi bi-calculator me-2"></i>Abrir cotizador
-                </button>
+                <div class="lw-quote-actions">
+                  <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#lwQuoteModal">
+                    <i class="bi bi-lightning-charge me-2"></i>Cálculo rápido
+                  </button>
+                  <button id="lwOpenProfessionalQuote" type="button" class="btn btn-professional btn-lg" data-bs-toggle="modal" data-bs-target="#lwProfessionalQuoteModal">
+                    <i class="bi bi-file-earmark-text me-2"></i>Cotización profesional
+                  </button>
+                </div>
                 <div class="small fst-italic mt-3 opacity-75">
-                  Los importes son estimados y no incluyen IVA, salvo que se indique lo contrario.
+                  El cálculo rápido es referencial; el cotizador profesional genera el documento comercial completo.
                 </div>
               </div>
             </div>
@@ -4522,6 +4631,9 @@
       </div>
 
       <div class="modal-footer">
+        <button id="lwq_to_professional" type="button" class="btn btn-primary">
+          <i class="bi bi-arrow-right-circle me-1"></i> Enviar al cotizador profesional
+        </button>
         <a href="https://linkwich-it.github.io/LinkWich-IT/#contact" class="btn btn-outline-light">
           <i class="bi bi-envelope me-1"></i> Solicitar propuesta formal
         </a>
@@ -4635,6 +4747,27 @@ IVA: ${money(iva)}
 *IVA ${includeIVA ? "incluido en el total" : "no incluido"}`;
 
   window.__LWQ_TEXT__ = txt;
+  window.__LWQ_DATA__ = {
+    source: "linkwich-monitor-quick-quote",
+    packageKey: pkg,
+    packageLabel: pkg === "custom"
+      ? "Personalizado"
+      : pkg.charAt(0).toUpperCase() + pkg.slice(1),
+    nodes: nodes,
+    months: months,
+    basePrice: basePrice,
+    promoPrice: promoPrice,
+    extraDiscount: extra,
+    finalNode: finalNode,
+    monthly: monthly,
+    yearly: yearly,
+    subtotal: total,
+    includeIVA: includeIVA,
+    ivaRate: includeIVA ? (IVA_RATE * 100) : 0,
+    iva: iva,
+    total: includeIVA ? totalWithIVA : total,
+    note: note
+  };
 
   // Link WhatsApp directo
   const wa = "https://api.whatsapp.com/send?phone=526241586134&text=" + encodeURIComponent(txt);
@@ -4670,6 +4803,36 @@ $("lwq_copy").addEventListener("click", async ()=>{
 // Recalcular cuando abra el modal (para que no salga en $0)
 document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recompute);
 </script>
+
+<!-- =========================
+     MODAL: COTIZADOR PROFESIONAL COMPLETO
+     El iframe mantiene aislados estilos y lógica para no afectar el sitio.
+========================= -->
+<div class="modal fade" id="lwProfessionalQuoteModal" tabindex="-1" aria-labelledby="lwProfessionalQuoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lwProfessionalQuoteModalLabel">
+          <i class="bi bi-file-earmark-check-fill"></i>
+          <span>Cotizador Profesional <small>LinkWich-IT · acceso comercial autorizado</small></span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar cotizador profesional"></button>
+      </div>
+      <div class="modal-body">
+        <div id="lwProfessionalQuoteLoading" class="lw-professional-loading" role="status" aria-live="polite">
+          <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          <span>Cargando cotizador profesional...</span>
+        </div>
+        <iframe
+          id="lwProfessionalQuoteFrame"
+          title="Cotizador Profesional LinkWich-IT"
+          data-src="../Cotizaciones/index.html"
+          allow="clipboard-write"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
 
           
 
@@ -4973,6 +5136,8 @@ document.getElementById("lwQuoteModal").addEventListener("shown.bs.modal", recom
   }
 })();
 </script>
+
+<script src="assets/js/linkwich-enterprise-2026.js?v=20260813-2"></script>
 
 </body>
 </html>
