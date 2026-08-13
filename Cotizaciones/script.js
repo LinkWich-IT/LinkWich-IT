@@ -74,6 +74,38 @@ const I18N = {
     itemDiscountPdf: "Desc. conceptos", generalDiscountShort: "Desc. general", totalDiscountPdf: "Desc. total",
     paymentTermsTitle: "FORMA DE PAGO", termsTitle: "TÉRMINOS Y CONDICIONES", notesTitle: "NOTAS",
     allPricesClause: "Todos los precios están expresados en {currency} e incluyen IVA, salvo que se indique lo contrario.",
+    commercialNotesAssistant: "Asistente de notas comerciales",
+    commercialNotesAssistantTitle: "Genera condiciones sin escribirlas desde cero",
+    commercialNotesAssistantHelp: "Selecciona el tipo de suministro, el plazo y las condiciones aplicables. Después puedes editar el texto antes de agregarlo a Notas.",
+    supplyType: "Tipo de suministro", supplyService: "Servicio", supplyMaterial: "Material",
+    supplyEquipment: "Equipamiento", supplyMixed: "Material, equipamiento y servicios",
+    estimatedDelivery: "Tiempo estimado de entrega", deliveryUnit: "Unidad del plazo",
+    businessDays: "Días hábiles", calendarDays: "Días naturales", weeks: "Semanas",
+    quickConditions: "Condiciones que deseas incluir",
+    noCancellationTitle: "Pedido no cancelable", noCancellationHelp: "Aplica cuando el material o equipo ya fue solicitado.",
+    availabilityTitle: "Entrega sujeta a disponibilidad", availabilityHelp: "Considera fabricante, distribuidor y transporte.",
+    civilWorksTitle: "No incluye obra civil", civilWorksHelp: "Excluye albañilería, resanes, pintura y adecuaciones.",
+    extraWorksTitle: "Trabajos adicionales por separado", extraWorksHelp: "Lo no especificado requiere autorización y cotización.",
+    warrantyTitle: "Garantía de fabricante", warrantyHelp: "Sujeta a políticas y diagnóstico del fabricante.",
+    installationScopeTitle: "Instalación limitada al alcance", installationScopeHelp: "Solo incluye instalación o configuración expresamente indicada.",
+    commercialNotesPreview: "Vista previa editable",
+    commercialNotesPreviewPlaceholder: "Aquí se generarán las condiciones seleccionadas.",
+    commercialNotesPreviewHelp: "Puedes corregir, eliminar o agregar texto antes de enviarlo al campo Notas.",
+    regenerateNotes: "Regenerar vista previa", appendToNotes: "Agregar a Notas", replaceNotes: "Reemplazar Notas",
+    commercialConditionsHeading: "CONDICIONES COMERCIALES — {type}",
+    deliveryClause: "Tiempo estimado de entrega: {days} {unit}, contado a partir de la confirmación del pedido y de la recepción del anticipo correspondiente.",
+    executionClause: "Tiempo estimado para programar o ejecutar el servicio: {days} {unit}, contado a partir de la autorización y de la recepción del anticipo correspondiente.",
+    noCancellationGoodsClause: "Una vez confirmado el pedido y solicitados los materiales o equipos, la orden no podrá cancelarse ni estará sujeta a devolución, salvo autorización expresa por escrito.",
+    noCancellationServiceClause: "Una vez autorizado el servicio y asignados recursos o fechas de ejecución, cualquier cancelación o reprogramación quedará sujeta a revisión y a los costos ya generados.",
+    availabilityClause: "Los tiempos de entrega están sujetos a disponibilidad del fabricante o distribuidor, transporte y condiciones ajenas a LinkWich-IT.",
+    civilWorksClause: "No se incluyen trabajos de obra civil, albañilería, pintura, resanes, canalizaciones, alimentación eléctrica ni adecuaciones físicas, salvo que se indiquen expresamente en los conceptos.",
+    extraWorksClause: "Cualquier suministro, instalación, configuración o trabajo no especificado en esta cotización se cotizará por separado y requerirá autorización previa del cliente.",
+    warrantyClause: "La garantía de materiales y equipos será la ofrecida por el fabricante y estará sujeta a sus políticas, diagnóstico y condiciones de uso.",
+    serviceWarrantyClause: "La garantía del servicio se limita a correcciones directamente relacionadas con el alcance ejecutado; no cubre fallas de terceros, infraestructura existente ni modificaciones posteriores.",
+    installationScopeClause: "La instalación, configuración, puesta en marcha y capacitación se incluyen únicamente cuando estén indicadas expresamente en los conceptos y alcances de esta cotización.",
+    notesAdded: "Condiciones agregadas al campo Notas.", notesReplaced: "El campo Notas fue reemplazado con la vista previa.",
+    notesAlreadyIncluded: "Estas condiciones ya están incluidas en Notas.", emptyCommercialPreview: "La vista previa está vacía.",
+    replaceNotesConfirm: "¿Deseas reemplazar todo el contenido actual del campo Notas?",
     quoteFilePrefix: "Cotizacion", noFolio: "sin_folio", summarySheet: "Resumen", itemsSheet: "Conceptos",
     taxableNone: "Sin base gravable", resicoExceeds: "Excede $3,500,000; validar RESICO con contador",
     limitMonthly25: "Hasta $25,000 mensual", limitMonthly50: "Hasta $50,000 mensual",
@@ -146,6 +178,38 @@ const I18N = {
     itemDiscountPdf: "Item discounts", generalDiscountShort: "General discount", totalDiscountPdf: "Total discount",
     paymentTermsTitle: "PAYMENT TERMS", termsTitle: "TERMS AND CONDITIONS", notesTitle: "NOTES",
     allPricesClause: "All prices are stated in {currency} and include VAT unless otherwise indicated.",
+    commercialNotesAssistant: "Commercial notes assistant",
+    commercialNotesAssistantTitle: "Create conditions without writing them from scratch",
+    commercialNotesAssistantHelp: "Select the supply type, lead time, and applicable conditions. You can edit the text before adding it to Notes.",
+    supplyType: "Supply type", supplyService: "Service", supplyMaterial: "Materials",
+    supplyEquipment: "Equipment", supplyMixed: "Materials, equipment, and services",
+    estimatedDelivery: "Estimated delivery time", deliveryUnit: "Lead-time unit",
+    businessDays: "Business days", calendarDays: "Calendar days", weeks: "Weeks",
+    quickConditions: "Conditions to include",
+    noCancellationTitle: "Non-cancelable order", noCancellationHelp: "Applies after materials or equipment have been ordered.",
+    availabilityTitle: "Delivery subject to availability", availabilityHelp: "Considers manufacturer, distributor, and transportation.",
+    civilWorksTitle: "Civil works not included", civilWorksHelp: "Excludes masonry, patching, painting, and physical adaptations.",
+    extraWorksTitle: "Additional work quoted separately", extraWorksHelp: "Unspecified work requires authorization and a separate quotation.",
+    warrantyTitle: "Manufacturer warranty", warrantyHelp: "Subject to manufacturer policies and diagnostics.",
+    installationScopeTitle: "Installation limited to scope", installationScopeHelp: "Only expressly stated installation or configuration is included.",
+    commercialNotesPreview: "Editable preview",
+    commercialNotesPreviewPlaceholder: "The selected conditions will be generated here.",
+    commercialNotesPreviewHelp: "You can revise, remove, or add text before sending it to the Notes field.",
+    regenerateNotes: "Regenerate preview", appendToNotes: "Add to Notes", replaceNotes: "Replace Notes",
+    commercialConditionsHeading: "COMMERCIAL CONDITIONS — {type}",
+    deliveryClause: "Estimated delivery time: {days} {unit}, starting after order confirmation and receipt of the corresponding deposit.",
+    executionClause: "Estimated time to schedule or perform the service: {days} {unit}, starting after authorization and receipt of the corresponding deposit.",
+    noCancellationGoodsClause: "Once the order is confirmed and materials or equipment have been ordered, the order may not be canceled or returned unless expressly authorized in writing.",
+    noCancellationServiceClause: "Once the service is authorized and resources or execution dates have been assigned, any cancellation or rescheduling will be subject to review and any costs already incurred.",
+    availabilityClause: "Delivery times are subject to manufacturer or distributor availability, transportation, and circumstances beyond LinkWich-IT's control.",
+    civilWorksClause: "Civil works, masonry, painting, patching, pathways, electrical power, and physical adaptations are not included unless expressly stated in the quoted items.",
+    extraWorksClause: "Any supply, installation, configuration, or work not specified in this quotation will be quoted separately and will require prior client authorization.",
+    warrantyClause: "The warranty for materials and equipment will be the warranty provided by the manufacturer and is subject to its policies, diagnostics, and conditions of use.",
+    serviceWarrantyClause: "The service warranty is limited to corrections directly related to the completed scope; it does not cover third-party failures, existing infrastructure, or subsequent modifications.",
+    installationScopeClause: "Installation, configuration, commissioning, and training are included only when expressly stated in the items and scope of this quotation.",
+    notesAdded: "Conditions added to the Notes field.", notesReplaced: "The Notes field was replaced with the preview.",
+    notesAlreadyIncluded: "These conditions are already included in Notes.", emptyCommercialPreview: "The preview is empty.",
+    replaceNotesConfirm: "Do you want to replace all current content in the Notes field?",
     quoteFilePrefix: "Quotation", noFolio: "no_number", summarySheet: "Summary", itemsSheet: "Items",
     taxableNone: "No taxable base", resicoExceeds: "Exceeds $3,500,000; confirm RESICO with an accountant",
     limitMonthly25: "Up to $25,000 monthly", limitMonthly50: "Up to $50,000 monthly",
@@ -261,6 +325,9 @@ function applyLanguage(language, options = {}) {
   if (languageSelect) languageSelect.value = nextLanguage;
 
   refreshDynamicTranslations();
+  if (typeof actualizarVistaNotasComerciales === "function") {
+    actualizarVistaNotasComerciales();
+  }
   if (persist) localStorage.setItem("linkwich_cotizador_idioma", nextLanguage);
   if (recalculate && typeof recalcularTodo === "function") recalcularTodo();
 }
@@ -278,6 +345,188 @@ const btnCargar = document.getElementById("btnCargar");
 const btnImportarExcel = document.getElementById("btnImportarExcel");
 
 const inputImportarExcel = document.getElementById("inputImportarExcel");
+
+const commercialNotesElements = {
+  type: document.getElementById("notaTipoSuministro"),
+  days: document.getElementById("notaDiasEntrega"),
+  unit: document.getElementById("notaUnidadEntrega"),
+  preview: document.getElementById("notasComercialesPreview"),
+  notes: document.getElementById("notas"),
+  status: document.getElementById("commercialNotesStatus"),
+  regenerate: document.getElementById("btnRegenerarNotasComerciales"),
+  append: document.getElementById("btnAgregarNotasComerciales"),
+  replace: document.getElementById("btnReemplazarNotasComerciales"),
+  options: {
+    noCancellation: document.getElementById("notaNoCancelacion"),
+    availability: document.getElementById("notaDisponibilidad"),
+    noCivilWorks: document.getElementById("notaSinObraCivil"),
+    extraWorks: document.getElementById("notaTrabajosExtra"),
+    warranty: document.getElementById("notaGarantiaFabricante"),
+    installationScope: document.getElementById("notaInstalacionLimitada")
+  }
+};
+
+let commercialNotesStatusTimer = null;
+
+function getCommercialSupplyLabel(type) {
+  const keys = {
+    servicio: "supplyService",
+    material: "supplyMaterial",
+    equipamiento: "supplyEquipment",
+    mixto: "supplyMixed"
+  };
+  return t(keys[type] || "supplyEquipment");
+}
+
+function getCommercialDeliveryUnitLabel(unit, amount) {
+  const isSingular = Number(amount) === 1;
+
+  if (currentLanguage === "en") {
+    if (unit === "semanas") return isSingular ? "week" : "weeks";
+    if (unit === "naturales") return isSingular ? "calendar day" : "calendar days";
+    return isSingular ? "business day" : "business days";
+  }
+
+  if (unit === "semanas") return isSingular ? "semana" : "semanas";
+  if (unit === "naturales") return isSingular ? "día natural" : "días naturales";
+  return isSingular ? "día hábil" : "días hábiles";
+}
+
+function getCommercialNotesBuilderState() {
+  if (!commercialNotesElements.type) return null;
+
+  return {
+    type: commercialNotesElements.type.value || "equipamiento",
+    days: Math.max(0, Number(commercialNotesElements.days?.value || 0)),
+    unit: commercialNotesElements.unit?.value || "habiles",
+    options: Object.fromEntries(
+      Object.entries(commercialNotesElements.options).map(([key, element]) => [key, Boolean(element?.checked)])
+    ),
+    preview: commercialNotesElements.preview?.value || ""
+  };
+}
+
+function buildCommercialNotesText() {
+  const state = getCommercialNotesBuilderState();
+  if (!state) return "";
+
+  const supplyLabel = getCommercialSupplyLabel(state.type).toLocaleUpperCase(getCurrentLocale());
+  const lines = [t("commercialConditionsHeading", { type: supplyLabel })];
+
+  if (state.options.noCancellation) {
+    lines.push(`• ${t(state.type === "servicio" ? "noCancellationServiceClause" : "noCancellationGoodsClause")}`);
+  }
+
+  if (state.days > 0) {
+    const clauseKey = state.type === "servicio" ? "executionClause" : "deliveryClause";
+    lines.push(`• ${t(clauseKey, {
+      days: Number(state.days).toLocaleString(getCurrentLocale(), { maximumFractionDigits: 0 }),
+      unit: getCommercialDeliveryUnitLabel(state.unit, state.days)
+    })}`);
+  }
+
+  if (state.options.availability) lines.push(`• ${t("availabilityClause")}`);
+  if (state.options.noCivilWorks) lines.push(`• ${t("civilWorksClause")}`);
+  if (state.options.extraWorks) lines.push(`• ${t("extraWorksClause")}`);
+  if (state.options.warranty) {
+    lines.push(`• ${t(state.type === "servicio" ? "serviceWarrantyClause" : "warrantyClause")}`);
+  }
+  if (state.options.installationScope) lines.push(`• ${t("installationScopeClause")}`);
+
+  return lines.join("\n");
+}
+
+function actualizarVistaNotasComerciales() {
+  if (!commercialNotesElements.preview) return;
+  commercialNotesElements.preview.value = buildCommercialNotesText();
+}
+
+function showCommercialNotesStatus(message, warning = false) {
+  if (!commercialNotesElements.status) return;
+  commercialNotesElements.status.textContent = message;
+  commercialNotesElements.status.classList.toggle("is-warning", warning);
+  clearTimeout(commercialNotesStatusTimer);
+  commercialNotesStatusTimer = setTimeout(() => {
+    commercialNotesElements.status.textContent = "";
+    commercialNotesElements.status.classList.remove("is-warning");
+  }, 3500);
+}
+
+function appendCommercialNotesToNotes() {
+  const preview = String(commercialNotesElements.preview?.value || "").trim();
+  const notesElement = commercialNotesElements.notes;
+  if (!preview || !notesElement) {
+    showCommercialNotesStatus(t("emptyCommercialPreview"), true);
+    return;
+  }
+
+  const currentNotes = String(notesElement.value || "").trim();
+  if (currentNotes.includes(preview)) {
+    showCommercialNotesStatus(t("notesAlreadyIncluded"), true);
+    return;
+  }
+
+  notesElement.value = currentNotes ? `${currentNotes}\n\n${preview}` : preview;
+  notesElement.dispatchEvent(new Event("input", { bubbles: true }));
+  showCommercialNotesStatus(t("notesAdded"));
+}
+
+function replaceNotesWithCommercialNotes() {
+  const preview = String(commercialNotesElements.preview?.value || "").trim();
+  const notesElement = commercialNotesElements.notes;
+  if (!preview || !notesElement) {
+    showCommercialNotesStatus(t("emptyCommercialPreview"), true);
+    return;
+  }
+
+  if (String(notesElement.value || "").trim() && !confirm(t("replaceNotesConfirm"))) return;
+  notesElement.value = preview;
+  notesElement.dispatchEvent(new Event("input", { bubbles: true }));
+  showCommercialNotesStatus(t("notesReplaced"));
+}
+
+function setCommercialNotesBuilderState(state = {}) {
+  if (!commercialNotesElements.type) return;
+
+  const validTypes = ["servicio", "material", "equipamiento", "mixto"];
+  const validUnits = ["habiles", "naturales", "semanas"];
+  commercialNotesElements.type.value = validTypes.includes(state.type) ? state.type : "equipamiento";
+  commercialNotesElements.days.value = Number.isFinite(Number(state.days)) ? Math.max(0, Number(state.days)) : 10;
+  commercialNotesElements.unit.value = validUnits.includes(state.unit) ? state.unit : "habiles";
+
+  Object.entries(commercialNotesElements.options).forEach(([key, element]) => {
+    if (!element) return;
+    element.checked = state.options && Object.prototype.hasOwnProperty.call(state.options, key)
+      ? Boolean(state.options[key])
+      : true;
+  });
+
+  if (state.preview) {
+    commercialNotesElements.preview.value = String(state.preview);
+  } else {
+    actualizarVistaNotasComerciales();
+  }
+}
+
+function initializeCommercialNotesAssistant() {
+  if (!commercialNotesElements.type) return;
+
+  [commercialNotesElements.type, commercialNotesElements.days, commercialNotesElements.unit]
+    .filter(Boolean)
+    .forEach(element => {
+      element.addEventListener("input", actualizarVistaNotasComerciales);
+      element.addEventListener("change", actualizarVistaNotasComerciales);
+    });
+
+  Object.values(commercialNotesElements.options).filter(Boolean).forEach(element => {
+    element.addEventListener("change", actualizarVistaNotasComerciales);
+  });
+
+  commercialNotesElements.regenerate?.addEventListener("click", actualizarVistaNotasComerciales);
+  commercialNotesElements.append?.addEventListener("click", appendCommercialNotesToNotes);
+  commercialNotesElements.replace?.addEventListener("click", replaceNotesWithCommercialNotes);
+  actualizarVistaNotasComerciales();
+}
 
 /*
   Respaldo visual:
@@ -1039,6 +1288,7 @@ function obtenerDatosFormulario() {
     saldoPendiente: financieros.saldoPendiente,
 
     notas: document.getElementById("notas").value,
+    notasComercialesConfig: getCommercialNotesBuilderState(),
     terminos: document.getElementById("terminos").value,
     monedaDescripcion: getCurrencyLabel(),
 
@@ -1096,6 +1346,7 @@ function limpiarFormulario() {
 
   document.getElementById("anticipo").value = DEFAULT_ANTICIPO;
   document.getElementById("fecha").valueAsDate = new Date();
+  setCommercialNotesBuilderState();
 
   generarNuevoFolio();
   conceptosBody.innerHTML = "";
@@ -1158,6 +1409,7 @@ function cargarBorrador() {
   }
 
   document.getElementById("notas").value = data.notas || "";
+  setCommercialNotesBuilderState(data.notasComercialesConfig || {});
   document.getElementById("terminos").value = data.terminos || t("defaultTerms");
 
   conceptosBody.innerHTML = "";
@@ -2180,6 +2432,8 @@ if (anticipoInput && !String(anticipoInput.value || "").trim()) {
 if (!document.getElementById("folio").value.trim()) {
   generarNuevoFolio();
 }
+
+initializeCommercialNotesAssistant();
 
 applyLanguage(currentLanguage, { translateDefaults: true, recalculate: false, persist: false });
 
