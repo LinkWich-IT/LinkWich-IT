@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkWich-IT | Cotizador Profesional</title>
-  <link rel="stylesheet" href="style.css?v=20260813-2" />
+  <link rel="stylesheet" href="style.css?v=20260813-3" />
 
   <style>
     .field-help {
@@ -359,9 +359,13 @@
 
   <script>
     (function(){
-      if (sessionStorage.getItem("lwPartnerAuthorized") === "1") {
+      var ACCESS_KEY = "lwPartnerAuthorized";
+      var VALID_USER = "admin";
+      var VALID_PASS = "LinkWich-IT";
+
+      if (sessionStorage.getItem(ACCESS_KEY) === "1") {
         var script = document.createElement("script");
-        script.src = "script.js?v=20260813-2";
+        script.src = "script.js?v=20260813-3";
         document.body.appendChild(script);
         return;
       }
@@ -370,12 +374,75 @@
         '<main class="lwq-access-denied">',
           '<div class="lwq-access-card">',
             '<div class="lwq-access-icon" aria-hidden="true">&#128274;</div>',
-            '<h1>Contenido comercial protegido</h1>',
-            '<p>El cotizador profesional está disponible únicamente después de iniciar sesión en el portal para partners.</p>',
-            '<a class="btn btn-primary" href="../LinkWich-Monitor/index.html#pricing">Volver al acceso partner</a>',
+            '<h1>Acceso al cotizador profesional</h1>',
+            '<p>Ingresa tus credenciales comerciales para abrir el cotizador directamente.</p>',
+            '<form id="lwqDirectLoginForm" class="lwq-access-form" autocomplete="off">',
+              '<div id="lwqDirectLoginAlert" class="lwq-access-alert" role="alert" aria-live="polite" hidden></div>',
+              '<label for="lwqDirectUser">Usuario</label>',
+              '<div class="lwq-access-input">',
+                '<span aria-hidden="true">&#128100;</span>',
+                '<input id="lwqDirectUser" name="username" type="text" placeholder="Usuario" autocomplete="username" required>',
+              '</div>',
+              '<label for="lwqDirectPass">Contraseña</label>',
+              '<div class="lwq-access-input">',
+                '<span aria-hidden="true">&#128273;</span>',
+                '<input id="lwqDirectPass" name="password" type="password" placeholder="Contraseña" autocomplete="current-password" required>',
+                '<button id="lwqDirectTogglePass" type="button" class="lwq-password-toggle" aria-label="Mostrar contraseña" title="Mostrar u ocultar contraseña">&#128065;</button>',
+              '</div>',
+              '<button id="lwqDirectSubmit" class="btn btn-primary lwq-access-submit" type="submit">Ingresar al cotizador</button>',
+            '</form>',
+            '<div class="lwq-access-divider"><span>o</span></div>',
+            '<a class="lwq-access-back" href="../LinkWich-Monitor/index.html#pricing">Volver al portal LinkWich-Monitor</a>',
           '</div>',
         '</main>'
       ].join('');
+
+      var form = document.getElementById("lwqDirectLoginForm");
+      var userInput = document.getElementById("lwqDirectUser");
+      var passInput = document.getElementById("lwqDirectPass");
+      var alertBox = document.getElementById("lwqDirectLoginAlert");
+      var submitButton = document.getElementById("lwqDirectSubmit");
+      var toggleButton = document.getElementById("lwqDirectTogglePass");
+
+      function showError(message) {
+        alertBox.textContent = message;
+        alertBox.hidden = false;
+      }
+
+      function clearError() {
+        alertBox.textContent = "";
+        alertBox.hidden = true;
+      }
+
+      form.addEventListener("submit", function(event){
+        event.preventDefault();
+        clearError();
+
+        var user = String(userInput.value || "").trim();
+        var password = String(passInput.value || "");
+
+        if (user !== VALID_USER || password !== VALID_PASS) {
+          showError("Usuario o contraseña incorrectos. Verifica tus credenciales.");
+          passInput.value = "";
+          passInput.focus();
+          return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Acceso correcto. Cargando...";
+        sessionStorage.setItem(ACCESS_KEY, "1");
+        window.location.reload();
+      });
+
+      toggleButton.addEventListener("click", function(){
+        var showPassword = passInput.type === "password";
+        passInput.type = showPassword ? "text" : "password";
+        toggleButton.setAttribute("aria-label", showPassword ? "Ocultar contraseña" : "Mostrar contraseña");
+      });
+
+      userInput.addEventListener("input", clearError);
+      passInput.addEventListener("input", clearError);
+      window.setTimeout(function(){ userInput.focus(); }, 50);
     })();
   </script>
 </body>
