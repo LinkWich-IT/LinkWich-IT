@@ -904,6 +904,90 @@ function recalcularTodo() {
   resTotal.textContent = formatMoney(financieros.total);
 }
 
+const PROFESSIONAL_PREFILL_STORAGE_KEY = "linkwich_professional_quote_prefill_v1";
+let lastProfessionalPrefillId = "";
+
+function aplicarPrellenadoCotizadorProfesional(payload) {
+  if (!payload || typeof payload !== "object") return false;
+
+  const payloadId = String(payload.id || "");
+  if (payloadId && payloadId === lastProfessionalPrefillId) return false;
+
+  const conceptos = Array.isArray(payload.conceptos)
+    ? payload.conceptos.filter(item => item && typeof item === "object")
+    : [];
+
+  if (!conceptos.length) return false;
+
+  if (payload.tipoServicio) {
+    document.getElementById("tipoServicio").value = normalizeServiceType(payload.tipoServicio);
+  }
+
+  const proyectoEl = document.getElementById("proyecto");
+  if (proyectoEl && !String(proyectoEl.value || "").trim() && payload.proyecto) {
+    proyectoEl.value = payload.proyecto;
+  }
+
+  const ivaEl = document.getElementById("iva");
+  if (ivaEl && Number.isFinite(Number(payload.iva))) {
+    ivaEl.value = Math.max(0, Number(payload.iva));
+  }
+
+  const notasEl = document.getElementById("notas");
+  if (notasEl && payload.notas) {
+    const notaNueva = String(payload.notas).trim();
+    const notasActuales = String(notasEl.value || "").trim();
+    if (notaNueva && !notasActuales.includes(notaNueva)) {
+      notasEl.value = notasActuales ? `${notasActuales}\n\n${notaNueva}` : notaNueva;
+    }
+  }
+
+  const filasActuales = [...conceptosBody.querySelectorAll("tr")];
+  const puedeSustituirFilaInicial = filasActuales.length === 1 && (() => {
+    const fila = filasActuales[0];
+    const concepto = String(fila.querySelector(".concepto")?.value || "").trim();
+    const cantidad = Number(fila.querySelector(".cantidad")?.value || 0);
+    const precio = Number(fila.querySelector(".precio")?.value || 0);
+    const descuento = Number(fila.querySelector(".descuento")?.value || 0);
+    return precio === 0 && descuento === 0 && cantidad === 1 &&
+      (!concepto || concepto === t("defaultProfessionalService") || concepto === I18N.es.defaultProfessionalService || concepto === I18N.en.defaultProfessionalService);
+  })();
+
+  if (puedeSustituirFilaInicial) conceptosBody.innerHTML = "";
+
+  conceptos.forEach(item => crearFila({
+    concepto: String(item.concepto || ""),
+    cantidad: Number.isFinite(Number(item.cantidad)) ? Number(item.cantidad) : 1,
+    precio: Number.isFinite(Number(item.precio)) ? Number(item.precio) : 0,
+    descuento: Number.isFinite(Number(item.descuento)) ? Number(item.descuento) : 0
+  }));
+
+  lastProfessionalPrefillId = payloadId;
+  try { localStorage.removeItem(PROFESSIONAL_PREFILL_STORAGE_KEY); } catch (error) {}
+
+  recalcularTodo();
+  document.getElementById("tablaConceptos")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  return true;
+}
+
+function consumirPrellenadoPendiente() {
+  try {
+    const raw = localStorage.getItem(PROFESSIONAL_PREFILL_STORAGE_KEY);
+    if (!raw) return false;
+    return aplicarPrellenadoCotizadorProfesional(JSON.parse(raw));
+  } catch (error) {
+    console.warn("No se pudo cargar la base del cotizador rápido.", error);
+    return false;
+  }
+}
+
+window.addEventListener("message", event => {
+  if (event.source !== window.parent) return;
+  if (window.location.origin !== "null" && event.origin !== window.location.origin) return;
+  if (!event.data || event.data.type !== "LINKWICH_PRO_QUOTE_PREFILL") return;
+  aplicarPrellenadoCotizadorProfesional(event.data.payload);
+});
+
 function obtenerDatosFormulario() {
   const financieros = calcularDatosFinancieros({ actualizarUI: false });
 
@@ -1718,7 +1802,18 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
     doc.roundedRect(quoteBoxX, quoteBoxY, quoteBoxW, quoteBoxH, 3, 3, "F");
 
     try {
-      const logo = await loadImageAsDataURL(`assets/logo-pdf.png?v=${Date.now()}`);
+      let logo = null;
+      const logoCandidates = ["assets/logo-pdf.png", "assets/logo.png"];
+      for (const logoPath of logoCandidates) {
+        try {
+          logo = await loadImageAsDataURL(`${logoPath}?v=${Date.now()}`);
+          break;
+        } catch (logoError) {
+          console.warn(logoError.message);
+        }
+      }
+
+      if (!logo) throw new Error(t("logoLoadError", { src: logoCandidates.join(" / ") }));
 
       const maxW = logoBoxW;
       const maxH = logoBoxH;
@@ -2096,3 +2191,9 @@ crearFila({
 });
 
 recalcularTodo();
+
+consumirPrellenadoPendiente();
+
+if (window.parent && window.parent !== window) {
+  window.parent.postMessage({ type: "LINKWICH_PRO_QUOTE_READY" }, "*");
+}
