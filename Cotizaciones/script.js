@@ -824,7 +824,11 @@ function leerConceptosDesdeTabla() {
   return rows.map((row, i) => {
     const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
     const precio = parseFloat(row.querySelector(".precio").value) || 0;
-    const descuentoCapturado = parseFloat(row.querySelector(".descuento").value) || 0;
+    const descuentoInput = row.querySelector(".descuento");
+    const descuentoPreciso = parseFloat(descuentoInput?.dataset.preciseDiscount);
+    const descuentoCapturado = Number.isFinite(descuentoPreciso)
+      ? descuentoPreciso
+      : (parseFloat(descuentoInput?.value) || 0);
     const descuento = Math.max(0, Math.min(100, descuentoCapturado));
 
     const importeBruto = cantidad * precio;
@@ -1085,6 +1089,10 @@ function calcularDatosFinancieros(options = {}) {
 
 function crearFila(data = {}) {
   const tr = document.createElement("tr");
+  const descuentoPreciso = Math.max(0, Math.min(100,
+    Number(data.descuentoPreciso ?? data.descuento) || 0
+  ));
+  const descuentoVisible = formatPercent(descuentoPreciso);
 
   tr.innerHTML = `
     <td class="row-number"></td>
@@ -1098,7 +1106,7 @@ function crearFila(data = {}) {
       <input class="concept-input precio" type="number" min="0" step="0.01" value="${data.precio ?? 0}">
     </td>
     <td>
-      <input class="concept-input descuento" type="number" min="0" step="0.01" value="${data.descuento ?? 0}">
+      <input class="concept-input descuento" type="number" min="0" max="100" step="0.01" value="${descuentoVisible}">
     </td>
     <td class="importe-cell">$0.00</td>
     <td>
@@ -1106,8 +1114,14 @@ function crearFila(data = {}) {
     </td>
   `;
 
+  const descuentoInput = tr.querySelector(".descuento");
+  descuentoInput.dataset.preciseDiscount = String(descuentoPreciso);
+
   const inputs = tr.querySelectorAll("input");
-  inputs.forEach(input => input.addEventListener("input", recalcularTodo));
+  inputs.forEach(input => input.addEventListener("input", () => {
+    if (input === descuentoInput) delete descuentoInput.dataset.preciseDiscount;
+    recalcularTodo();
+  }));
 
   tr.querySelector(".btn-delete").addEventListener("click", () => {
     tr.remove();
@@ -1208,7 +1222,10 @@ function aplicarPrellenadoCotizadorProfesional(payload) {
     concepto: String(item.concepto || ""),
     cantidad: Number.isFinite(Number(item.cantidad)) ? Number(item.cantidad) : 1,
     precio: Number.isFinite(Number(item.precio)) ? Number(item.precio) : 0,
-    descuento: Number.isFinite(Number(item.descuento)) ? Number(item.descuento) : 0
+    descuento: Number.isFinite(Number(item.descuento)) ? Number(item.descuento) : 0,
+    descuentoPreciso: Number.isFinite(Number(item.descuentoPreciso))
+      ? Number(item.descuentoPreciso)
+      : (Number.isFinite(Number(item.descuento)) ? Number(item.descuento) : 0)
   }));
 
   lastProfessionalPrefillId = payloadId;
@@ -2140,7 +2157,7 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
       item.concepto || "-",
       item.cantidad,
       formatMoney(item.precio),
-      `${item.descuento}%`,
+      `${formatPercent(item.descuento)}%`,
       formatMoney(item.importe)
     ]);
 
