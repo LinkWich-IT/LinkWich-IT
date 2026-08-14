@@ -77,8 +77,29 @@
 
     function buildProfessionalPrefill(data){
       var packageLabel = data.packageLabel || 'Personalizado';
+      var nodes = Math.max(1, Number(data.nodes || 1));
+      var months = Math.max(1, Number(data.months || 1));
+      var basePrice = Math.max(0, Number(data.basePrice || 0));
+      var promoPrice = Math.max(0, Number(data.promoPrice || 0));
+      var finalNode = Math.max(0, Number(data.finalNode || promoPrice));
+      var finalSubtotal = Math.max(0, Number(data.subtotal || (finalNode * nodes * months)));
+      var listTotal = basePrice > 0 ? basePrice * nodes * months : finalSubtotal;
+      var discountAmount = Math.max(0, listTotal - finalSubtotal);
+      var discountPercentPrecise = listTotal > 0
+        ? Math.max(0, Math.min(100, (discountAmount / listTotal) * 100))
+        : 0;
+      var discountPercentDisplay = Number(discountPercentPrecise.toFixed(2));
+      var money = function(value){
+        return Number(value || 0).toLocaleString('es-MX', {
+          style:'currency', currency:'MXN', minimumFractionDigits:2, maximumFractionDigits:2
+        });
+      };
       var description = 'Licencia LinkWich-Monitor — Paquete ' + packageLabel +
-        ' (' + data.nodes + ' nodos por ' + data.months + ' meses)';
+        ' (' + nodes + ' nodos por ' + months + ' meses)' +
+        ' | Lista: ' + money(basePrice) + ' por nodo/mes' +
+        ' | Precio partner: ' + money(finalNode) + ' por nodo/mes' +
+        ' | Descuento: ' + discountPercentDisplay.toFixed(2) + '%' +
+        ' | Ahorro: ' + money(discountAmount);
 
       return {
         id: 'lwq-' + Date.now(),
@@ -88,14 +109,18 @@
         proyecto: 'Licenciamiento LinkWich-Monitor — ' + packageLabel,
         iva: Number(data.ivaRate || 0),
         notas: 'Base generada desde el cálculo rápido partner. ' +
-          data.nodes + ' nodos, ' + data.months + ' meses, precio final ' +
-          Number(data.finalNode || 0).toLocaleString('es-MX', {style:'currency', currency:'MXN'}) +
-          ' por nodo/mes. ' + (data.note || ''),
+          nodes + ' nodos por ' + months + ' meses. Precio de lista: ' +
+          money(listTotal) + '. Descuento comercial aplicado: ' +
+          discountPercentDisplay.toFixed(2) + '% (' + money(discountAmount) +
+          ' de ahorro). Total promocional antes de IVA: ' + money(finalSubtotal) +
+          '. ' + (data.note || ''),
         conceptos: [{
           concepto: description,
           cantidad: 1,
-          precio: Number(data.subtotal || 0),
-          descuento: 0
+          precio: listTotal,
+          descuento: discountPercentPrecise,
+          descuentoPreciso: discountPercentPrecise,
+          importeObjetivo: finalSubtotal
         }]
       };
     }
