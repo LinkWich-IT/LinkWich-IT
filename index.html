@@ -3280,6 +3280,645 @@ body.modal-open .header-container{
     left:.9rem;
   }
 }
+
+/* ============================================================
+   DIAGRAMA INTERACTIVO LINKWICH-MONITOR
+   Sustituye visualmente el bloque anterior sin afectar otros módulos.
+   ============================================================ */
+.lw-flow-showcase{
+  --lw-flow-blue:#2f80ed;
+  --lw-flow-cyan:#62b6ff;
+  --lw-flow-ink:#08152f;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  padding:clamp(1rem,2.4vw,2rem);
+  border-radius:32px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 8% 12%,rgba(98,182,255,.20),transparent 28%),
+    radial-gradient(circle at 92% 6%,rgba(47,128,237,.20),transparent 26%),
+    linear-gradient(135deg,#07142d 0%,#10264d 55%,#0b1b3b 100%);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 26px 70px rgba(2,6,23,.24);
+}
+
+.lw-flow-showcase::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.22;
+  background-image:radial-gradient(circle,rgba(124,192,255,.85) 1.2px,transparent 1.2px);
+  background-size:22px 22px;
+  mask-image:linear-gradient(120deg,#000,transparent 42%);
+  -webkit-mask-image:linear-gradient(120deg,#000,transparent 42%);
+}
+
+.lw-flow-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1.25rem;
+  margin-bottom:1.35rem;
+}
+
+.lw-flow-heading{
+  max-width:760px;
+}
+
+.lw-flow-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.46rem .72rem;
+  margin-bottom:.75rem;
+  border-radius:999px;
+  color:rgba(255,255,255,.92);
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:.8rem;
+  font-weight:800;
+  letter-spacing:.02em;
+}
+
+.lw-flow-eyebrow i{
+  color:var(--lw-flow-cyan);
+}
+
+.lw-flow-heading h3{
+  margin:0;
+  color:#fff;
+  font-size:clamp(1.75rem,3.3vw,3rem);
+  line-height:1.06;
+  font-weight:900;
+  letter-spacing:-.04em;
+}
+
+.lw-flow-heading p{
+  max-width:700px;
+  margin:.72rem 0 0;
+  color:rgba(255,255,255,.76);
+  font-size:1rem;
+  line-height:1.65;
+}
+
+.lw-flow-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:.6rem;
+}
+
+.lw-flow-action{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.45rem;
+  min-height:44px;
+  padding:.7rem .9rem;
+  border-radius:14px;
+  color:#fff;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  font-weight:800;
+  transition:transform .2s ease,background .2s ease,border-color .2s ease;
+}
+
+.lw-flow-action:hover{
+  transform:translateY(-2px);
+  color:#fff;
+  background:rgba(255,255,255,.14);
+  border-color:rgba(124,192,255,.42);
+}
+
+.lw-flow-action.is-primary{
+  color:#07142d;
+  background:#fff;
+  border-color:#fff;
+}
+
+.lw-flow-action.is-primary:hover{
+  color:#07142d;
+  background:#eaf5ff;
+}
+
+.lw-flow-track{
+  display:grid;
+  grid-template-columns:minmax(140px,1fr) 26px minmax(140px,1fr) 26px minmax(160px,1.12fr) 26px minmax(140px,1fr) 26px minmax(140px,1fr);
+  align-items:stretch;
+  gap:.35rem;
+}
+
+.lw-flow-node{
+  position:relative;
+  overflow:hidden;
+  min-width:0;
+  min-height:162px;
+  padding:1rem;
+  border-radius:22px;
+  text-align:left;
+  color:rgba(255,255,255,.90);
+  background:linear-gradient(180deg,rgba(255,255,255,.095),rgba(255,255,255,.055));
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease;
+}
+
+.lw-flow-node::after{
+  content:"";
+  position:absolute;
+  right:-34px;
+  bottom:-44px;
+  width:105px;
+  height:105px;
+  border-radius:50%;
+  background:rgba(98,182,255,.08);
+  pointer-events:none;
+}
+
+.lw-flow-node:hover{
+  transform:translateY(-3px);
+  color:#fff;
+  border-color:rgba(98,182,255,.42);
+  background:linear-gradient(180deg,rgba(98,182,255,.15),rgba(255,255,255,.07));
+}
+
+.lw-flow-node.is-active,
+.lw-flow-node[aria-selected="true"]{
+  transform:translateY(-5px);
+  color:#fff;
+  border-color:rgba(98,182,255,.78);
+  background:linear-gradient(160deg,rgba(47,128,237,.38),rgba(98,182,255,.12));
+  box-shadow:0 15px 34px rgba(2,12,34,.30),inset 0 1px 0 rgba(255,255,255,.12);
+}
+
+.lw-flow-node-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:.5rem;
+  margin-bottom:1rem;
+}
+
+.lw-flow-number,
+.lw-flow-node-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+}
+
+.lw-flow-number{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  color:#07142d;
+  background:#fff;
+  font-size:.84rem;
+  font-weight:900;
+}
+
+.lw-flow-node-icon{
+  width:38px;
+  height:38px;
+  border-radius:13px;
+  color:var(--lw-flow-cyan);
+  background:rgba(98,182,255,.12);
+  border:1px solid rgba(98,182,255,.16);
+  font-size:1.05rem;
+}
+
+.lw-flow-node strong{
+  position:relative;
+  z-index:1;
+  display:block;
+  margin-bottom:.36rem;
+  color:#fff;
+  font-size:.94rem;
+  line-height:1.25;
+  font-weight:900;
+}
+
+.lw-flow-node small{
+  position:relative;
+  z-index:1;
+  display:block;
+  color:rgba(255,255,255,.65);
+  font-size:.76rem;
+  line-height:1.4;
+}
+
+.lw-flow-connector{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--lw-flow-cyan);
+  font-size:1.25rem;
+}
+
+.lw-flow-connector::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:50%;
+  height:2px;
+  transform:translateY(-50%);
+  background:linear-gradient(90deg,rgba(98,182,255,.22),rgba(98,182,255,.85));
+}
+
+.lw-flow-connector i{
+  position:relative;
+  z-index:1;
+  margin-left:auto;
+  background:#10264d;
+}
+
+.lw-flow-detail{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:1rem;
+  align-items:start;
+  min-height:176px;
+  margin-top:1rem;
+  padding:1.15rem;
+  border-radius:24px;
+  color:#fff;
+  background:rgba(255,255,255,.085);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.lw-flow-detail-icon{
+  width:58px;
+  height:58px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:18px;
+  color:#07142d;
+  background:linear-gradient(145deg,#fff,#dff0ff);
+  box-shadow:0 10px 24px rgba(2,6,23,.22);
+  font-size:1.4rem;
+}
+
+.lw-flow-detail-kicker{
+  display:block;
+  margin-bottom:.22rem;
+  color:var(--lw-flow-cyan);
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.lw-flow-detail h4{
+  margin:0;
+  color:#fff;
+  font-size:clamp(1.18rem,2vw,1.55rem);
+  font-weight:900;
+}
+
+.lw-flow-detail p{
+  margin:.42rem 0 .78rem;
+  color:rgba(255,255,255,.76);
+  line-height:1.6;
+}
+
+.lw-flow-detail-list{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.55rem;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.lw-flow-detail-list li{
+  display:flex;
+  align-items:flex-start;
+  gap:.45rem;
+  min-width:0;
+  padding:.58rem .65rem;
+  border-radius:14px;
+  color:rgba(255,255,255,.84);
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  font-size:.82rem;
+  line-height:1.4;
+}
+
+.lw-flow-detail-list i{
+  flex:0 0 auto;
+  margin-top:.12rem;
+  color:var(--lw-flow-cyan);
+}
+
+.lw-flow-visibility{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:.65rem 1rem;
+  margin-top:1rem;
+  padding:.8rem 1rem;
+  border-radius:18px;
+  color:rgba(255,255,255,.78);
+  background:rgba(4,12,30,.34);
+  border:1px solid rgba(255,255,255,.09);
+}
+
+.lw-flow-visibility-title{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  color:#fff;
+  font-weight:900;
+}
+
+.lw-flow-visibility-item{
+  display:inline-flex;
+  align-items:center;
+  gap:.38rem;
+  font-size:.82rem;
+  font-weight:700;
+}
+
+.lw-flow-visibility-item i{
+  color:var(--lw-flow-cyan);
+}
+
+.lw-flow-bottom{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:1rem;
+  align-items:end;
+  margin-top:1rem;
+  padding-top:1rem;
+  border-top:1px solid rgba(255,255,255,.10);
+}
+
+.lw-flow-requirements h5{
+  display:flex;
+  align-items:center;
+  gap:.48rem;
+  margin:0 0 .6rem;
+  color:#fff;
+  font-size:1rem;
+  font-weight:900;
+}
+
+.lw-flow-requirements h5 i{
+  color:var(--lw-flow-cyan);
+}
+
+.lw-flow-req-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+}
+
+.lw-flow-req-list span{
+  display:inline-flex;
+  align-items:center;
+  gap:.34rem;
+  padding:.42rem .58rem;
+  border-radius:999px;
+  color:rgba(255,255,255,.80);
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.09);
+  font-size:.77rem;
+  font-weight:700;
+}
+
+.lw-flow-req-list i{
+  color:var(--lw-flow-cyan);
+}
+
+.lw-flow-requirements p{
+  margin:.55rem 0 0;
+  color:rgba(255,255,255,.64);
+  font-size:.82rem;
+  line-height:1.5;
+}
+
+.lw-flow-cta{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:.55rem;
+}
+
+.lw-flow-cta .btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  border-radius:14px;
+  font-weight:800;
+}
+
+.lw-flow-cta .btn-outline-light{
+  background:rgba(255,255,255,.06);
+}
+
+.lw-flow-modal .modal-dialog{
+  max-width:min(1460px,calc(100% - 2rem));
+}
+
+.lw-flow-modal .modal-content,
+.lw-flow-image-modal .modal-content{
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:24px;
+  color:#fff;
+  background:#08162f;
+  box-shadow:0 30px 90px rgba(2,6,23,.44);
+}
+
+.lw-flow-modal .modal-header,
+.lw-flow-image-modal .modal-header{
+  border-bottom:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.04);
+}
+
+.lw-flow-modal .modal-title,
+.lw-flow-image-modal .modal-title{
+  color:#fff;
+  font-weight:900;
+}
+
+.lw-flow-modal .btn-close,
+.lw-flow-image-modal .btn-close{
+  filter:invert(1) grayscale(1);
+}
+
+.lw-flow-expanded-mount{
+  padding:.2rem;
+}
+
+.lw-flow-modal .lw-flow-interactive{
+  padding:.4rem;
+}
+
+.lw-flow-image-wrap{
+  padding:.75rem;
+  border-radius:18px;
+  background:#fff;
+}
+
+.lw-flow-image-wrap img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:12px;
+  object-fit:contain;
+}
+
+.lw-flow-image-modal .modal-footer{
+  border-top:1px solid rgba(255,255,255,.10);
+}
+
+@media (max-width:1199px){
+  .lw-flow-head{
+    flex-direction:column;
+  }
+
+  .lw-flow-toolbar{
+    justify-content:flex-start;
+  }
+
+  .lw-flow-track{
+    grid-template-columns:minmax(125px,1fr) 20px minmax(125px,1fr) 20px minmax(145px,1.08fr) 20px minmax(125px,1fr) 20px minmax(125px,1fr);
+    gap:.25rem;
+  }
+
+  .lw-flow-node{
+    min-height:150px;
+    padding:.82rem;
+  }
+
+  .lw-flow-node strong{
+    font-size:.86rem;
+  }
+
+  .lw-flow-node small{
+    font-size:.71rem;
+  }
+
+  .lw-flow-bottom{
+    grid-template-columns:1fr;
+  }
+
+  .lw-flow-cta{
+    justify-content:flex-start;
+  }
+}
+
+@media (max-width:991px){
+  .lw-flow-showcase{
+    border-radius:26px;
+  }
+
+  .lw-flow-track{
+    display:flex;
+    flex-direction:column;
+    gap:.55rem;
+  }
+
+  .lw-flow-node{
+    display:grid;
+    grid-template-columns:76px minmax(0,1fr);
+    column-gap:.65rem;
+    align-items:start;
+    min-height:auto;
+    padding:.82rem .9rem;
+  }
+
+  .lw-flow-node-top{
+    grid-column:1;
+    grid-row:1 / span 2;
+    justify-content:flex-start;
+    margin:0;
+  }
+
+  .lw-flow-node strong,
+  .lw-flow-node small{
+    grid-column:2;
+  }
+
+  .lw-flow-node strong{
+    margin:.08rem 0 .25rem;
+  }
+
+  .lw-flow-node small{
+    min-height:auto;
+  }
+
+  .lw-flow-connector{
+    height:20px;
+    transform:rotate(90deg);
+  }
+
+  .lw-flow-connector::before{
+    left:calc(50% - 18px);
+    right:calc(50% - 18px);
+  }
+
+  .lw-flow-detail-list{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:575px){
+  .lw-flow-showcase{
+    padding:.9rem;
+    border-radius:22px;
+  }
+
+  .lw-flow-toolbar,
+  .lw-flow-toolbar .lw-flow-action,
+  .lw-flow-cta,
+  .lw-flow-cta .btn{
+    width:100%;
+  }
+
+  .lw-flow-detail{
+    grid-template-columns:1fr;
+  }
+
+  .lw-flow-detail-icon{
+    width:48px;
+    height:48px;
+    border-radius:15px;
+  }
+
+  .lw-flow-visibility{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .lw-flow-modal .modal-dialog,
+  .lw-flow-image-modal .modal-dialog{
+    max-width:none;
+    margin:0;
+  }
+
+  .lw-flow-modal .modal-content,
+  .lw-flow-image-modal .modal-content{
+    min-height:100%;
+    border-radius:0;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .lw-flow-node,
+  .lw-flow-action{
+    transition:none;
+  }
+}
 </style>
 <style id="lw-registered-mark-styles">
 /* Marca registrada: tamaño discreto y consistente en toda la interfaz. */
@@ -4150,108 +4789,185 @@ body.modal-open .header-container{
 
         </br>
 
-        <div class="row mt-4">
-          <div class="col-lg-11 mx-auto">
-            <div class="lw-monitor-showcase" data-aos="fade-up" data-aos-delay="300">
-              <div class="lw-monitor-bg-orb lw-monitor-bg-orb-1"></div>
-              <div class="lw-monitor-bg-orb lw-monitor-bg-orb-2"></div>
-
-              <div class="row g-4 align-items-center position-relative">
-                <div class="col-lg-6">
-                  <div class="lw-monitor-content">
-                    <span class="lw-monitor-eyebrow">
-                      <i class="bi bi-activity"></i>
-                      Plataforma de monitoreo y automatización TI
-                    </span>
-
-                    <h4>Monitorea, automatiza y protege tu red con LinkWich-Monitor<sup class="lw-registered-mark">®</sup></h4>
-
-                    <p class="lw-monitor-lead">
-                      LinkWich-Monitor<sup class="lw-registered-mark">®</sup> centraliza la supervisión de tu infraestructura tecnológica para que tu equipo pueda visualizar dispositivos, detectar incidencias, automatizar tareas y responder con mayor rapidez desde una sola plataforma.
-                    </p>
-
-                    <div class="lw-monitor-feature-grid">
-                      <div class="lw-monitor-feature">
-                        <i class="bi bi-router-fill"></i>
-                        <span>Dispositivos y servicios en tiempo real</span>
-                      </div>
-                      <div class="lw-monitor-feature">
-                        <i class="bi bi-whatsapp"></i>
-                        <span>Alertas por correo y WhatsApp</span>
-                      </div>
-                      <div class="lw-monitor-feature">
-                        <i class="bi bi-hdd-network-fill"></i>
-                        <span>Respaldos automáticos de switches y routers</span>
-                      </div>
-                      <div class="lw-monitor-feature">
-                        <i class="bi bi-diagram-3-fill"></i>
-                        <span>Mapa LLDP y visibilidad de topología</span>
-                      </div>
-                      <div class="lw-monitor-feature">
-                        <i class="bi bi-graph-up-arrow"></i>
-                        <span>Reportes de disponibilidad y rendimiento</span>
-                      </div>
-                      <div class="lw-monitor-feature">
-                        <i class="bi bi-shield-check"></i>
-                        <span>Soporte para operación, auditoría y continuidad</span>
-                      </div>
-                    </div>
-
-                    <div class="lw-monitor-requirements" aria-label="Requerimientos de instalación on-premise">
-                      <div class="lw-monitor-req-title">
-                        <i class="bi bi-server"></i>
-                        Implementación On-Premise flexible
-                      </div>
-                      <div class="lw-monitor-req-list">
-                        <span><i class="bi bi-windows"></i> Windows 10/11 Pro o Windows Server</span>
-                        <span><i class="bi bi-memory"></i> 8 GB RAM mínimo, 16 GB recomendado</span>
-                        <span><i class="bi bi-hdd"></i> Desde 50 GB para históricos y respaldos</span>
-                        <span><i class="bi bi-cpu"></i> IA local opcional según alcance</span>
-                      </div>
-                      <p>
-                        ¿No cuentas con infraestructura local? Podemos apoyarte con un servidor dedicado y entregar la solución completamente implementada.
-                      </p>
-                    </div>
-
-                    <div class="lw-monitor-actions">
-                      <a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html" target="_blank" rel="noopener" class="btn btn-primary">
-                        <i class="bi bi-box-arrow-up-right me-2"></i>Ver sitio oficial
-                      </a>
-                      <a href="#contact" class="btn btn-outline">
-                        <i class="bi bi-chat-dots me-2"></i>Solicitar una demo
-                      </a>
-                    </div>
-                  </div>
+        <div class="row mt-4" id="linkwich-monitor-flow">
+          <div class="col-12">
+            <section class="lw-flow-showcase" data-aos="fade-up" data-aos-delay="300" aria-labelledby="lwFlowHeading">
+              <div class="lw-flow-head">
+                <div class="lw-flow-heading">
+                  <span class="lw-flow-eyebrow">
+                    <i class="bi bi-diagram-3-fill" aria-hidden="true"></i>
+                    Recorrido interactivo de la plataforma
+                  </span>
+                  <h3 id="lwFlowHeading">¿Cómo funciona LinkWich-Monitor<sup class="lw-registered-mark">®</sup>?</h3>
+                  <p>
+                    Selecciona cada etapa para conocer cómo la plataforma obtiene información de tu infraestructura,
+                    la centraliza y la convierte en alertas, automatizaciones y decisiones útiles para tu operación.
+                  </p>
                 </div>
 
-           
-
-      <div class="col-lg-6">
-  <a 
-    href="assets/img/about/LINKWICH-MONITOR-COMO-FUNCIONA.png?v=20260612"
-    class="lw-monitor-visual glightbox"
-    data-gallery="linkwich-monitor"
-    data-title="Cómo funciona LinkWich-Monitor®"
-    aria-label="Abrir imagen completa de cómo funciona LinkWich-Monitor®">
-
-    <span class="lw-monitor-visual-badge">
-      <i class="bi bi-arrows-fullscreen"></i>
-      Ver imagen completa
-    </span>
-
-    <img 
-      src="assets/img/about/LINKWICH-MONITOR-COMO-FUNCIONA.png?v=20260612"
-      alt="Diagrama visual de cómo funciona LinkWich-Monitor®"
-      loading="lazy">
-  </a>
-</div>
+                <div class="lw-flow-toolbar" aria-label="Opciones del diagrama">
+                  <button type="button" class="lw-flow-action is-primary" data-bs-toggle="modal" data-bs-target="#lwFlowExpandModal">
+                    <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+                    Ampliar diagrama
+                  </button>
+                  <button type="button" class="lw-flow-action" data-bs-toggle="modal" data-bs-target="#lwFlowImageModal">
+                    <i class="bi bi-image" aria-hidden="true"></i>
+                    Ver infografía
+                  </button>
+                </div>
               </div>
-            </div>
+
+              <div class="lw-flow-interactive" data-lw-flow>
+                <div class="lw-flow-track" role="tablist" aria-label="Etapas de funcionamiento de LinkWich-Monitor">
+                  <button type="button" class="lw-flow-node is-active" data-flow-step="0" role="tab" aria-selected="true">
+                    <span class="lw-flow-node-top">
+                      <span class="lw-flow-number">1</span>
+                      <span class="lw-flow-node-icon"><i class="bi bi-router-fill" aria-hidden="true"></i></span>
+                    </span>
+                    <strong>Infraestructura</strong>
+                    <small>Equipos y servicios conectados</small>
+                  </button>
+
+                  <span class="lw-flow-connector" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+
+                  <button type="button" class="lw-flow-node" data-flow-step="1" role="tab" aria-selected="false">
+                    <span class="lw-flow-node-top">
+                      <span class="lw-flow-number">2</span>
+                      <span class="lw-flow-node-icon"><i class="bi bi-broadcast-pin" aria-hidden="true"></i></span>
+                    </span>
+                    <strong>Recolección</strong>
+                    <small>Estado, eventos y métricas</small>
+                  </button>
+
+                  <span class="lw-flow-connector" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+
+                  <button type="button" class="lw-flow-node" data-flow-step="2" role="tab" aria-selected="false">
+                    <span class="lw-flow-node-top">
+                      <span class="lw-flow-number">3</span>
+                      <span class="lw-flow-node-icon"><i class="bi bi-display" aria-hidden="true"></i></span>
+                    </span>
+                    <strong>Plataforma central</strong>
+                    <small>Analiza todo en tiempo real</small>
+                  </button>
+
+                  <span class="lw-flow-connector" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+
+                  <button type="button" class="lw-flow-node" data-flow-step="3" role="tab" aria-selected="false">
+                    <span class="lw-flow-node-top">
+                      <span class="lw-flow-number">4</span>
+                      <span class="lw-flow-node-icon"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i></span>
+                    </span>
+                    <strong>Automatización</strong>
+                    <small>Alertas, reportes y respaldos</small>
+                  </button>
+
+                  <span class="lw-flow-connector" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+
+                  <button type="button" class="lw-flow-node" data-flow-step="4" role="tab" aria-selected="false">
+                    <span class="lw-flow-node-top">
+                      <span class="lw-flow-number">5</span>
+                      <span class="lw-flow-node-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></span>
+                    </span>
+                    <strong>Resultados</strong>
+                    <small>Visibilidad, control y continuidad</small>
+                  </button>
+                </div>
+
+                <div class="lw-flow-detail" role="tabpanel" aria-live="polite">
+                  <span class="lw-flow-detail-icon"><i class="bi bi-router-fill" aria-hidden="true"></i></span>
+                  <div>
+                    <span class="lw-flow-detail-kicker">Etapa 1 de 5</span>
+                    <h4>Dispositivos e infraestructura</h4>
+                    <p>LinkWich-Monitor<sup class="lw-registered-mark">®</sup> se integra con los equipos y servicios que forman parte de tu operación tecnológica.</p>
+                    <ul class="lw-flow-detail-list">
+                      <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Switches, routers y firewalls</span></li>
+                      <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>WiFi, servidores, cámaras y UPS</span></li>
+                      <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Servicios y estaciones de trabajo</span></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lw-flow-visibility" aria-label="Información disponible en la plataforma">
+                <span class="lw-flow-visibility-title"><i class="bi bi-eye-fill" aria-hidden="true"></i> Lo que puedes ver</span>
+                <span class="lw-flow-visibility-item"><i class="bi bi-pc-display-horizontal" aria-hidden="true"></i> Estado en tiempo real</span>
+                <span class="lw-flow-visibility-item"><i class="bi bi-bell-fill" aria-hidden="true"></i> Alertas</span>
+                <span class="lw-flow-visibility-item"><i class="bi bi-speedometer2" aria-hidden="true"></i> Rendimiento</span>
+                <span class="lw-flow-visibility-item"><i class="bi bi-diagram-3" aria-hidden="true"></i> Topología</span>
+                <span class="lw-flow-visibility-item"><i class="bi bi-database-fill-gear" aria-hidden="true"></i> Respaldos</span>
+              </div>
+
+              <div class="lw-flow-bottom">
+                <div class="lw-flow-requirements">
+                  <h5><i class="bi bi-server" aria-hidden="true"></i> Implementación On-Premise flexible</h5>
+                  <div class="lw-flow-req-list">
+                    <span><i class="bi bi-windows" aria-hidden="true"></i> Windows 10/11 Pro o Windows Server</span>
+                    <span><i class="bi bi-memory" aria-hidden="true"></i> 8 GB RAM mínimo, 16 GB recomendado</span>
+                    <span><i class="bi bi-hdd" aria-hidden="true"></i> Desde 50 GB para históricos y respaldos</span>
+                    <span><i class="bi bi-cpu" aria-hidden="true"></i> IA local opcional según alcance</span>
+                  </div>
+                  <p>Si no cuentas con infraestructura local, podemos apoyarte con un servidor dedicado y entregar la solución completamente implementada.</p>
+                </div>
+
+                <div class="lw-flow-cta">
+                  <a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html" target="_blank" rel="noopener" class="btn btn-primary">
+                    <i class="bi bi-box-arrow-up-right me-2" aria-hidden="true"></i>Ver sitio oficial
+                  </a>
+                  <a href="#contact" class="btn btn-outline-light">
+                    <i class="bi bi-chat-dots me-2" aria-hidden="true"></i>Solicitar una demo
+                  </a>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
 
       </div>
     </section>
+
+    <div class="modal fade lw-flow-modal" id="lwFlowExpandModal" tabindex="-1" aria-labelledby="lwFlowExpandModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-xl-down">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <span class="lw-flow-detail-kicker">Recorrido interactivo ampliado</span>
+              <h4 class="modal-title" id="lwFlowExpandModalLabel">Cómo funciona LinkWich-Monitor<sup class="lw-registered-mark">®</sup></h4>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar diagrama ampliado"></button>
+          </div>
+          <div class="modal-body">
+            <div class="lw-flow-expanded-mount" id="lwFlowExpandedMount"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade lw-flow-image-modal" id="lwFlowImageModal" tabindex="-1" aria-labelledby="lwFlowImageModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-xl-down">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <span class="lw-flow-detail-kicker">Infografía de referencia</span>
+              <h4 class="modal-title" id="lwFlowImageModalLabel">Cómo funciona LinkWich-Monitor<sup class="lw-registered-mark">®</sup></h4>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar infografía"></button>
+          </div>
+          <div class="modal-body">
+            <div class="lw-flow-image-wrap">
+              <img src="assets/img/about/LINKWICH-MONITOR-COMO-FUNCIONA.png?v=20260612"
+                   alt="Infografía completa de cómo funciona LinkWich-Monitor®"
+                   loading="lazy">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="assets/img/about/LINKWICH-MONITOR-COMO-FUNCIONA.png?v=20260612" target="_blank" rel="noopener" class="btn btn-primary">
+              <i class="bi bi-box-arrow-up-right me-2" aria-hidden="true"></i>Abrir imagen original
+            </a>
+            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <section id="support-cta" class="support-cta section">
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -7466,6 +8182,162 @@ document.addEventListener("DOMContentLoaded", function () {
 
   renderProducts();
 });
+</script>
+
+<script id="lw-interactive-flow-script">
+(function () {
+  const flowSteps = [
+    {
+      icon: "bi-router-fill",
+      title: "Dispositivos e infraestructura",
+      description: "LinkWich-Monitor<sup class=\"lw-registered-mark\">®</sup> se integra con los equipos y servicios que forman parte de tu operación tecnológica.",
+      points: [
+        "Switches, routers y firewalls",
+        "WiFi, servidores, cámaras y UPS",
+        "Servicios y estaciones de trabajo"
+      ]
+    },
+    {
+      icon: "bi-broadcast-pin",
+      title: "Recolección de información",
+      description: "La plataforma consulta el estado, recibe eventos y reúne métricas usando métodos compatibles con cada tipo de equipo.",
+      points: [
+        "Ping, SNMP y Syslog",
+        "SSH y Telnet cuando el equipo lo permite",
+        "Verificación controlada de servicios"
+      ]
+    },
+    {
+      icon: "bi-display",
+      title: "Plataforma central",
+      description: "La información se organiza en una sola vista para facilitar la supervisión, el análisis y el seguimiento de la infraestructura.",
+      points: [
+        "Disponibilidad y rendimiento en tiempo real",
+        "Mapas LLDP, sitios e históricos",
+        "Paneles operativos y reportes ejecutivos"
+      ]
+    },
+    {
+      icon: "bi-lightning-charge-fill",
+      title: "Acciones y automatización",
+      description: "Cuando ocurre un evento, LinkWich-Monitor<sup class=\"lw-registered-mark\">®</sup> actúa según la configuración definida para informar y apoyar la respuesta operativa.",
+      points: [
+        "Alertas por correo y WhatsApp",
+        "Respaldos automáticos de switches y routers",
+        "Reportes y detección oportuna de incidentes"
+      ]
+    },
+    {
+      icon: "bi-shield-check",
+      title: "Beneficios para el usuario",
+      description: "El resultado es una operación con mayor visibilidad, mejor control y herramientas claras para responder con rapidez.",
+      points: [
+        "Menos interrupciones y respuesta más rápida",
+        "Soporte para auditoría y continuidad",
+        "Decisiones informadas con datos centralizados"
+      ]
+    }
+  ];
+
+  let flowInstance = 0;
+
+  function activateStep(root, index, shouldFocus) {
+    const buttons = Array.from(root.querySelectorAll(".lw-flow-node"));
+    const detail = root.querySelector(".lw-flow-detail");
+    const data = flowSteps[index];
+    if (!buttons.length || !detail || !data) return;
+
+    buttons.forEach(function (button, buttonIndex) {
+      const active = buttonIndex === index;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-selected", active ? "true" : "false");
+      button.setAttribute("tabindex", active ? "0" : "-1");
+    });
+
+    const icon = detail.querySelector(".lw-flow-detail-icon i");
+    const kicker = detail.querySelector(".lw-flow-detail-kicker");
+    const title = detail.querySelector("h4");
+    const description = detail.querySelector("p");
+    const list = detail.querySelector(".lw-flow-detail-list");
+
+    if (icon) {
+      icon.className = "bi " + data.icon;
+      icon.setAttribute("aria-hidden", "true");
+    }
+    if (kicker) kicker.textContent = "Etapa " + (index + 1) + " de " + flowSteps.length;
+    if (title) title.textContent = data.title;
+    if (description) description.innerHTML = data.description;
+    if (list) {
+      list.innerHTML = data.points.map(function (point) {
+        return '<li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>' + point + "</span></li>";
+      }).join("");
+    }
+
+    if (shouldFocus && buttons[index]) buttons[index].focus();
+  }
+
+  function initFlow(root) {
+    if (!root || root.dataset.flowReady === "true") return;
+
+    const buttons = Array.from(root.querySelectorAll(".lw-flow-node"));
+    const detail = root.querySelector(".lw-flow-detail");
+    if (!buttons.length || !detail) return;
+
+    flowInstance += 1;
+    const detailId = "lwFlowDetailInstance" + flowInstance;
+    detail.id = detailId;
+
+    buttons.forEach(function (button, index) {
+      button.setAttribute("aria-controls", detailId);
+      button.addEventListener("click", function () {
+        activateStep(root, index, false);
+      });
+
+      button.addEventListener("keydown", function (event) {
+        let nextIndex = null;
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") nextIndex = (index + 1) % buttons.length;
+        if (event.key === "ArrowLeft" || event.key === "ArrowUp") nextIndex = (index - 1 + buttons.length) % buttons.length;
+        if (event.key === "Home") nextIndex = 0;
+        if (event.key === "End") nextIndex = buttons.length - 1;
+        if (nextIndex === null) return;
+        event.preventDefault();
+        activateStep(root, nextIndex, true);
+      });
+    });
+
+    root.dataset.flowReady = "true";
+    const selected = buttons.findIndex(function (button) {
+      return button.getAttribute("aria-selected") === "true";
+    });
+    activateStep(root, selected >= 0 ? selected : 0, false);
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("[data-lw-flow]").forEach(initFlow);
+
+    const expandModal = document.getElementById("lwFlowExpandModal");
+    const mount = document.getElementById("lwFlowExpandedMount");
+    const source = document.querySelector("#linkwich-monitor-flow [data-lw-flow]");
+
+    if (expandModal && mount && source) {
+      expandModal.addEventListener("show.bs.modal", function () {
+        const clone = source.cloneNode(true);
+        delete clone.dataset.flowReady;
+        clone.querySelectorAll(".lw-flow-node").forEach(function (button) {
+          button.removeAttribute("aria-controls");
+        });
+        const oldDetail = clone.querySelector(".lw-flow-detail");
+        if (oldDetail) oldDetail.removeAttribute("id");
+        mount.replaceChildren(clone);
+        initFlow(clone);
+      });
+
+      expandModal.addEventListener("hidden.bs.modal", function () {
+        mount.replaceChildren();
+      });
+    }
+  });
+})();
 </script>
 
   <script src="assets/js/main.js"></script>
