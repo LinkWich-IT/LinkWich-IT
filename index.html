@@ -3919,6 +3919,536 @@ body.modal-open .header-container{
     transition:none;
   }
 }
+
+/* ============================================================
+   CENTRO DE CONTROL INTERACTIVO - VERSIÓN COMERCIAL
+   ============================================================ */
+.lw-cockpit{
+  --lw-cockpit-blue:#2f80ed;
+  --lw-cockpit-cyan:#69c2ff;
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  padding:clamp(1rem,2.4vw,2rem);
+  border-radius:34px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(47,128,237,.20),transparent 30%),
+    radial-gradient(circle at 5% 10%,rgba(105,194,255,.16),transparent 28%),
+    linear-gradient(140deg,#061128 0%,#0d2146 52%,#071733 100%);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 28px 76px rgba(2,6,23,.28);
+}
+
+.lw-cockpit::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.20;
+  background-image:radial-gradient(circle,rgba(105,194,255,.9) 1.1px,transparent 1.1px);
+  background-size:24px 24px;
+  mask-image:linear-gradient(125deg,#000,transparent 44%);
+  -webkit-mask-image:linear-gradient(125deg,#000,transparent 44%);
+}
+
+.lw-cockpit-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1.2rem;
+  margin-bottom:1rem;
+}
+
+.lw-cockpit-copy{
+  max-width:820px;
+}
+
+.lw-cockpit-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.44rem .7rem;
+  margin-bottom:.65rem;
+  border-radius:999px;
+  color:#dff2ff;
+  background:rgba(105,194,255,.10);
+  border:1px solid rgba(105,194,255,.18);
+  font-size:.78rem;
+  font-weight:900;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+.lw-cockpit-eyebrow i{
+  color:var(--lw-cockpit-cyan);
+}
+
+.lw-cockpit-copy h3{
+  margin:0;
+  color:#fff;
+  font-size:clamp(1.8rem,3.3vw,3.05rem);
+  line-height:1.05;
+  font-weight:900;
+  letter-spacing:-.045em;
+}
+
+.lw-cockpit-copy p{
+  max-width:760px;
+  margin:.65rem 0 0;
+  color:rgba(255,255,255,.72);
+  font-size:1rem;
+  line-height:1.6;
+}
+
+.lw-cockpit-map{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(210px,1fr) minmax(270px,1.15fr) minmax(210px,1fr);
+  gap:clamp(2rem,5vw,5.2rem);
+  align-items:center;
+  min-height:430px;
+  padding:.6rem 0;
+}
+
+.lw-cockpit-lines{
+  position:absolute;
+  inset:5% 7%;
+  z-index:0;
+  width:86%;
+  height:90%;
+  overflow:visible;
+  pointer-events:none;
+}
+
+.lw-cockpit-lines path{
+  fill:none;
+  stroke:rgba(105,194,255,.48);
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-dasharray:9 11;
+  vector-effect:non-scaling-stroke;
+  animation:lwCockpitDash 9s linear infinite;
+}
+
+.lw-cockpit-lines circle{
+  fill:#9ad8ff;
+  filter:drop-shadow(0 0 5px rgba(105,194,255,.85));
+}
+
+@keyframes lwCockpitDash{
+  to{stroke-dashoffset:-80;}
+}
+
+.lw-cockpit-side{
+  position:relative;
+  z-index:2;
+  display:grid;
+  gap:.72rem;
+}
+
+.lw-cockpit-capability{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  gap:.72rem;
+  align-items:center;
+  width:100%;
+  min-width:0;
+  padding:.82rem;
+  border-radius:20px;
+  color:rgba(255,255,255,.88);
+  text-align:left;
+  background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.055));
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+  transition:transform .22s ease,border-color .22s ease,background .22s ease,box-shadow .22s ease;
+}
+
+.lw-cockpit-capability:hover{
+  transform:translateY(-3px);
+  color:#fff;
+  border-color:rgba(105,194,255,.42);
+  background:linear-gradient(180deg,rgba(105,194,255,.14),rgba(255,255,255,.065));
+}
+
+.lw-cockpit-capability.is-active,
+.lw-cockpit-capability[aria-selected="true"]{
+  transform:translateY(-3px);
+  color:#fff;
+  border-color:rgba(105,194,255,.78);
+  background:linear-gradient(145deg,rgba(47,128,237,.34),rgba(105,194,255,.11));
+  box-shadow:0 14px 30px rgba(2,9,27,.28),inset 0 1px 0 rgba(255,255,255,.10);
+}
+
+.lw-cockpit-capability-icon{
+  width:48px;
+  height:48px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:16px;
+  color:var(--lw-cockpit-cyan);
+  background:rgba(105,194,255,.11);
+  border:1px solid rgba(105,194,255,.16);
+  font-size:1.25rem;
+}
+
+.lw-cockpit-capability-copy strong{
+  display:block;
+  color:#fff;
+  font-size:.93rem;
+  font-weight:900;
+  line-height:1.25;
+}
+
+.lw-cockpit-capability-copy small{
+  display:block;
+  margin-top:.2rem;
+  color:rgba(255,255,255,.60);
+  font-size:.75rem;
+  line-height:1.35;
+}
+
+.lw-cockpit-capability-arrow{
+  color:rgba(105,194,255,.62);
+  font-size:.95rem;
+}
+
+.lw-cockpit-core{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:min(100%,310px);
+  aspect-ratio:1;
+  margin:auto;
+}
+
+.lw-cockpit-ring{
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(105,194,255,.20);
+  box-shadow:0 0 40px rgba(47,128,237,.08) inset;
+}
+
+.lw-cockpit-ring.is-outer{
+  inset:0;
+  animation:lwCockpitPulse 3.2s ease-in-out infinite;
+}
+
+.lw-cockpit-ring.is-middle{
+  inset:9%;
+  border-color:rgba(105,194,255,.32);
+  animation:lwCockpitPulse 3.2s .5s ease-in-out infinite;
+}
+
+@keyframes lwCockpitPulse{
+  0%,100%{transform:scale(.98);opacity:.52;}
+  50%{transform:scale(1.02);opacity:1;}
+}
+
+.lw-cockpit-core-body{
+  position:relative;
+  z-index:2;
+  width:76%;
+  height:76%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+  border-radius:50%;
+  text-align:center;
+  background:
+    radial-gradient(circle at 45% 28%,rgba(255,255,255,.16),transparent 28%),
+    linear-gradient(150deg,rgba(47,128,237,.74),rgba(9,31,67,.95));
+  border:1px solid rgba(157,218,255,.48);
+  box-shadow:0 24px 60px rgba(1,10,30,.40),inset 0 1px 0 rgba(255,255,255,.20);
+}
+
+.lw-cockpit-core-icon{
+  width:58px;
+  height:58px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:.65rem;
+  border-radius:20px;
+  color:#061128;
+  background:#fff;
+  box-shadow:0 12px 28px rgba(2,6,23,.24);
+  font-size:1.55rem;
+}
+
+.lw-cockpit-core-body strong{
+  color:#fff;
+  font-size:clamp(1.05rem,2vw,1.38rem);
+  font-weight:900;
+  line-height:1.18;
+}
+
+.lw-cockpit-core-body > span:not(.lw-cockpit-core-icon){
+  margin-top:.35rem;
+  color:rgba(255,255,255,.70);
+  font-size:.76rem;
+  line-height:1.35;
+}
+
+.lw-cockpit-core-pills{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:.3rem;
+  margin-top:.65rem;
+}
+
+.lw-cockpit-core-pills small{
+  padding:.28rem .42rem;
+  border-radius:999px;
+  color:#eaf7ff;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:.65rem;
+  font-weight:800;
+}
+
+.lw-cockpit-detail{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:.9rem;
+  align-items:start;
+  min-height:132px;
+  padding:1rem 1.05rem;
+  border-radius:22px;
+  color:#fff;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.11);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.lw-cockpit-detail-icon{
+  width:52px;
+  height:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:17px;
+  color:#061128;
+  background:linear-gradient(145deg,#fff,#dff2ff);
+  box-shadow:0 10px 24px rgba(2,6,23,.20);
+  font-size:1.3rem;
+}
+
+.lw-cockpit-detail-kicker{
+  display:block;
+  margin-bottom:.18rem;
+  color:var(--lw-cockpit-cyan);
+  font-size:.72rem;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.lw-cockpit-detail h4{
+  margin:0;
+  color:#fff;
+  font-size:clamp(1.12rem,2vw,1.45rem);
+  font-weight:900;
+}
+
+.lw-cockpit-detail p{
+  margin:.32rem 0 .65rem;
+  color:rgba(255,255,255,.70);
+  line-height:1.5;
+}
+
+.lw-cockpit-detail-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.42rem;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.lw-cockpit-detail-tags li{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  padding:.4rem .56rem;
+  border-radius:999px;
+  color:rgba(255,255,255,.84);
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.08);
+  font-size:.77rem;
+  font-weight:700;
+}
+
+.lw-cockpit-detail-tags i{
+  color:var(--lw-cockpit-cyan);
+}
+
+.lw-cockpit-outcomes{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.55rem;
+  margin-top:.75rem;
+}
+
+.lw-cockpit-outcome{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:.45rem;
+  padding:.62rem;
+  color:rgba(255,255,255,.78);
+  font-size:.8rem;
+  font-weight:800;
+}
+
+.lw-cockpit-outcome i{
+  color:var(--lw-cockpit-cyan);
+  font-size:1rem;
+}
+
+.lw-cockpit-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin-top:.85rem;
+  padding-top:.9rem;
+  border-top:1px solid rgba(255,255,255,.09);
+}
+
+.lw-cockpit-promise{
+  margin:0;
+  color:rgba(255,255,255,.68);
+  font-size:.86rem;
+}
+
+.lw-cockpit-promise strong{
+  color:#fff;
+}
+
+.lw-flow-modal .lw-cockpit-interactive{
+  padding:.35rem;
+}
+
+@media (max-width:1199px){
+  .lw-cockpit-head{
+    flex-direction:column;
+  }
+
+  .lw-cockpit-map{
+    gap:2rem;
+  }
+
+  .lw-cockpit-capability{
+    padding:.72rem;
+  }
+
+  .lw-cockpit-capability-icon{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+  }
+}
+
+@media (max-width:991px){
+  .lw-cockpit{
+    border-radius:26px;
+  }
+
+  .lw-cockpit-map{
+    display:flex;
+    flex-direction:column;
+    min-height:auto;
+    gap:.8rem;
+  }
+
+  .lw-cockpit-lines{
+    display:none;
+  }
+
+  .lw-cockpit-core{
+    order:1;
+    width:min(78vw,270px);
+    margin:.25rem auto .65rem;
+  }
+
+  .lw-cockpit-side{
+    width:100%;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  }
+
+  .lw-cockpit-side.is-left{
+    order:2;
+  }
+
+  .lw-cockpit-side.is-right{
+    order:3;
+  }
+
+  .lw-cockpit-detail{
+    margin-top:.85rem;
+  }
+
+  .lw-cockpit-footer{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .lw-cockpit-footer .lw-flow-cta{
+    justify-content:flex-start;
+  }
+}
+
+@media (max-width:575px){
+  .lw-cockpit{
+    padding:.9rem;
+    border-radius:22px;
+  }
+
+  .lw-cockpit-side{
+    grid-template-columns:1fr;
+  }
+
+  .lw-cockpit-core{
+    width:min(84vw,250px);
+  }
+
+  .lw-cockpit-detail{
+    grid-template-columns:1fr;
+  }
+
+  .lw-cockpit-outcomes{
+    grid-template-columns:1fr;
+  }
+
+  .lw-cockpit-outcome{
+    justify-content:flex-start;
+  }
+
+  .lw-cockpit-footer .lw-flow-cta,
+  .lw-cockpit-footer .lw-flow-cta .btn{
+    width:100%;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .lw-cockpit-lines path,
+  .lw-cockpit-ring{
+    animation:none;
+  }
+
+  .lw-cockpit-capability{
+    transition:none;
+  }
+}
 </style>
 <style id="lw-registered-mark-styles">
 /* Marca registrada: tamaño discreto y consistente en toda la interfaz. */
@@ -4791,24 +5321,21 @@ body.modal-open .header-container{
 
         <div class="row mt-4" id="linkwich-monitor-flow">
           <div class="col-12">
-            <section class="lw-flow-showcase" data-aos="fade-up" data-aos-delay="300" aria-labelledby="lwFlowHeading">
-              <div class="lw-flow-head">
-                <div class="lw-flow-heading">
-                  <span class="lw-flow-eyebrow">
-                    <i class="bi bi-diagram-3-fill" aria-hidden="true"></i>
-                    Recorrido interactivo de la plataforma
+            <section class="lw-cockpit" data-aos="fade-up" data-aos-delay="300" aria-labelledby="lwFlowHeading">
+              <div class="lw-cockpit-head">
+                <div class="lw-cockpit-copy">
+                  <span class="lw-cockpit-eyebrow">
+                    <i class="bi bi-broadcast-pin" aria-hidden="true"></i>
+                    Monitoreo y análisis inteligente
                   </span>
-                  <h3 id="lwFlowHeading">¿Cómo funciona LinkWich-Monitor<sup class="lw-registered-mark">®</sup>?</h3>
-                  <p>
-                    Selecciona cada etapa para conocer cómo la plataforma obtiene información de tu infraestructura,
-                    la centraliza y la convierte en alertas, automatizaciones y decisiones útiles para tu operación.
-                  </p>
+                  <h3 id="lwFlowHeading">Tu red habla. LinkWich-Monitor<sup class="lw-registered-mark">®</sup> la escucha y actúa.</h3>
+                  <p>Monitorea, analiza el tráfico, detecta riesgos y avisa antes de que un incidente afecte tu operación.</p>
                 </div>
 
                 <div class="lw-flow-toolbar" aria-label="Opciones del diagrama">
                   <button type="button" class="lw-flow-action is-primary" data-bs-toggle="modal" data-bs-target="#lwFlowExpandModal">
                     <i class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
-                    Ampliar diagrama
+                    Ampliar
                   </button>
                   <button type="button" class="lw-flow-action" data-bs-toggle="modal" data-bs-target="#lwFlowImageModal">
                     <i class="bi bi-image" aria-hidden="true"></i>
@@ -4817,101 +5344,109 @@ body.modal-open .header-container{
                 </div>
               </div>
 
-              <div class="lw-flow-interactive" data-lw-flow>
-                <div class="lw-flow-track" role="tablist" aria-label="Etapas de funcionamiento de LinkWich-Monitor">
-                  <button type="button" class="lw-flow-node is-active" data-flow-step="0" role="tab" aria-selected="true">
-                    <span class="lw-flow-node-top">
-                      <span class="lw-flow-number">1</span>
-                      <span class="lw-flow-node-icon"><i class="bi bi-router-fill" aria-hidden="true"></i></span>
-                    </span>
-                    <strong>Infraestructura</strong>
-                    <small>Equipos y servicios conectados</small>
-                  </button>
+              <div class="lw-cockpit-interactive" data-lw-flow>
+                <div class="lw-cockpit-map" role="tablist" aria-label="Capacidades principales de LinkWich-Monitor®">
+                  <svg class="lw-cockpit-lines" viewBox="0 0 1000 500" preserveAspectRatio="none" role="img" aria-label="Conexiones entre las capacidades y la plataforma central">
+                    <path d="M245 145 C355 145 380 225 445 245"></path>
+                    <path d="M245 355 C355 355 380 275 445 255"></path>
+                    <path d="M555 250 C620 225 650 105 755 105"></path>
+                    <path d="M555 250 C635 250 675 250 755 250"></path>
+                    <path d="M555 250 C620 275 650 395 755 395"></path>
+                    <circle cx="445" cy="250" r="5"></circle>
+                    <circle cx="555" cy="250" r="5"></circle>
+                  </svg>
 
-                  <span class="lw-flow-connector" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+                  <div class="lw-cockpit-side is-left">
+                    <button type="button" class="lw-cockpit-capability" data-flow-step="0" role="tab" aria-selected="false">
+                      <span class="lw-cockpit-capability-icon"><i class="bi bi-activity" aria-hidden="true"></i></span>
+                      <span class="lw-cockpit-capability-copy">
+                        <strong>Monitoreo 24/7</strong>
+                        <small>Estado · Rendimiento · Topología</small>
+                      </span>
+                      <i class="bi bi-chevron-right lw-cockpit-capability-arrow" aria-hidden="true"></i>
+                    </button>
 
-                  <button type="button" class="lw-flow-node" data-flow-step="1" role="tab" aria-selected="false">
-                    <span class="lw-flow-node-top">
-                      <span class="lw-flow-number">2</span>
-                      <span class="lw-flow-node-icon"><i class="bi bi-broadcast-pin" aria-hidden="true"></i></span>
-                    </span>
-                    <strong>Recolección</strong>
-                    <small>Estado, eventos y métricas</small>
-                  </button>
+                    <button type="button" class="lw-cockpit-capability is-active" data-flow-step="1" role="tab" aria-selected="true">
+                      <span class="lw-cockpit-capability-icon"><i class="bi bi-broadcast-pin" aria-hidden="true"></i></span>
+                      <span class="lw-cockpit-capability-copy">
+                        <strong>Sniffer inteligente</strong>
+                        <small>Capturas y análisis programados</small>
+                      </span>
+                      <i class="bi bi-chevron-right lw-cockpit-capability-arrow" aria-hidden="true"></i>
+                    </button>
+                  </div>
 
-                  <span class="lw-flow-connector" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+                  <div class="lw-cockpit-core" aria-label="LinkWich-Monitor, plataforma central">
+                    <span class="lw-cockpit-ring is-outer" aria-hidden="true"></span>
+                    <span class="lw-cockpit-ring is-middle" aria-hidden="true"></span>
+                    <div class="lw-cockpit-core-body">
+                      <span class="lw-cockpit-core-icon"><i class="bi bi-cpu-fill" aria-hidden="true"></i></span>
+                      <strong>LinkWich-Monitor<sup class="lw-registered-mark">®</sup></strong>
+                      <span>Monitorea · Analiza · Automatiza</span>
+                      <div class="lw-cockpit-core-pills" aria-label="Características centrales">
+                        <small>24/7</small>
+                        <small>Multimarca</small>
+                        <small>Tiempo real</small>
+                      </div>
+                    </div>
+                  </div>
 
-                  <button type="button" class="lw-flow-node" data-flow-step="2" role="tab" aria-selected="false">
-                    <span class="lw-flow-node-top">
-                      <span class="lw-flow-number">3</span>
-                      <span class="lw-flow-node-icon"><i class="bi bi-display" aria-hidden="true"></i></span>
-                    </span>
-                    <strong>Plataforma central</strong>
-                    <small>Analiza todo en tiempo real</small>
-                  </button>
+                  <div class="lw-cockpit-side is-right">
+                    <button type="button" class="lw-cockpit-capability" data-flow-step="2" role="tab" aria-selected="false">
+                      <span class="lw-cockpit-capability-icon"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i></span>
+                      <span class="lw-cockpit-capability-copy">
+                        <strong>Detección temprana</strong>
+                        <small>IP duplicada · Loops · Broadcast alto</small>
+                      </span>
+                      <i class="bi bi-chevron-left lw-cockpit-capability-arrow" aria-hidden="true"></i>
+                    </button>
 
-                  <span class="lw-flow-connector" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+                    <button type="button" class="lw-cockpit-capability" data-flow-step="3" role="tab" aria-selected="false">
+                      <span class="lw-cockpit-capability-icon"><i class="bi bi-bell-fill" aria-hidden="true"></i></span>
+                      <span class="lw-cockpit-capability-copy">
+                        <strong>Alertas multicanal</strong>
+                        <small>WhatsApp · Correo · Aplicación</small>
+                      </span>
+                      <i class="bi bi-chevron-left lw-cockpit-capability-arrow" aria-hidden="true"></i>
+                    </button>
 
-                  <button type="button" class="lw-flow-node" data-flow-step="3" role="tab" aria-selected="false">
-                    <span class="lw-flow-node-top">
-                      <span class="lw-flow-number">4</span>
-                      <span class="lw-flow-node-icon"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i></span>
-                    </span>
-                    <strong>Automatización</strong>
-                    <small>Alertas, reportes y respaldos</small>
-                  </button>
-
-                  <span class="lw-flow-connector" aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
-
-                  <button type="button" class="lw-flow-node" data-flow-step="4" role="tab" aria-selected="false">
-                    <span class="lw-flow-node-top">
-                      <span class="lw-flow-number">5</span>
-                      <span class="lw-flow-node-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></span>
-                    </span>
-                    <strong>Resultados</strong>
-                    <small>Visibilidad, control y continuidad</small>
-                  </button>
+                    <button type="button" class="lw-cockpit-capability" data-flow-step="4" role="tab" aria-selected="false">
+                      <span class="lw-cockpit-capability-icon"><i class="bi bi-gear-fill" aria-hidden="true"></i></span>
+                      <span class="lw-cockpit-capability-copy">
+                        <strong>Automatización</strong>
+                        <small>Respaldos · Reportes · Auditoría</small>
+                      </span>
+                      <i class="bi bi-chevron-left lw-cockpit-capability-arrow" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
 
-                <div class="lw-flow-detail" role="tabpanel" aria-live="polite">
-                  <span class="lw-flow-detail-icon"><i class="bi bi-router-fill" aria-hidden="true"></i></span>
+                <div class="lw-cockpit-detail" role="tabpanel" aria-live="polite">
+                  <span class="lw-cockpit-detail-icon"><i class="bi bi-broadcast-pin" aria-hidden="true"></i></span>
                   <div>
-                    <span class="lw-flow-detail-kicker">Etapa 1 de 5</span>
-                    <h4>Dispositivos e infraestructura</h4>
-                    <p>LinkWich-Monitor<sup class="lw-registered-mark">®</sup> se integra con los equipos y servicios que forman parte de tu operación tecnológica.</p>
-                    <ul class="lw-flow-detail-list">
-                      <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Switches, routers y firewalls</span></li>
-                      <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>WiFi, servidores, cámaras y UPS</span></li>
-                      <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>Servicios y estaciones de trabajo</span></li>
+                    <span class="lw-cockpit-detail-kicker">Capacidad destacada</span>
+                    <h4>Sniffer de red programable</h4>
+                    <p>Programa análisis de tráfico y recibe evidencia clara para actuar antes de que el problema crezca.</p>
+                    <ul class="lw-cockpit-detail-tags">
+                      <li><i class="bi bi-calendar-check" aria-hidden="true"></i><span>Capturas programadas</span></li>
+                      <li><i class="bi bi-search" aria-hidden="true"></i><span>Análisis de tráfico</span></li>
+                      <li><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i><span>Reporte de hallazgos</span></li>
                     </ul>
                   </div>
                 </div>
-              </div>
 
-              <div class="lw-flow-visibility" aria-label="Información disponible en la plataforma">
-                <span class="lw-flow-visibility-title"><i class="bi bi-eye-fill" aria-hidden="true"></i> Lo que puedes ver</span>
-                <span class="lw-flow-visibility-item"><i class="bi bi-pc-display-horizontal" aria-hidden="true"></i> Estado en tiempo real</span>
-                <span class="lw-flow-visibility-item"><i class="bi bi-bell-fill" aria-hidden="true"></i> Alertas</span>
-                <span class="lw-flow-visibility-item"><i class="bi bi-speedometer2" aria-hidden="true"></i> Rendimiento</span>
-                <span class="lw-flow-visibility-item"><i class="bi bi-diagram-3" aria-hidden="true"></i> Topología</span>
-                <span class="lw-flow-visibility-item"><i class="bi bi-database-fill-gear" aria-hidden="true"></i> Respaldos</span>
-              </div>
-
-              <div class="lw-flow-bottom">
-                <div class="lw-flow-requirements">
-                  <h5><i class="bi bi-server" aria-hidden="true"></i> Implementación On-Premise flexible</h5>
-                  <div class="lw-flow-req-list">
-                    <span><i class="bi bi-windows" aria-hidden="true"></i> Windows 10/11 Pro o Windows Server</span>
-                    <span><i class="bi bi-memory" aria-hidden="true"></i> 8 GB RAM mínimo, 16 GB recomendado</span>
-                    <span><i class="bi bi-hdd" aria-hidden="true"></i> Desde 50 GB para históricos y respaldos</span>
-                    <span><i class="bi bi-cpu" aria-hidden="true"></i> IA local opcional según alcance</span>
-                  </div>
-                  <p>Si no cuentas con infraestructura local, podemos apoyarte con un servidor dedicado y entregar la solución completamente implementada.</p>
+                <div class="lw-cockpit-outcomes" aria-label="Beneficios principales">
+                  <span class="lw-cockpit-outcome"><i class="bi bi-eye-fill" aria-hidden="true"></i> Visibilidad en una sola plataforma</span>
+                  <span class="lw-cockpit-outcome"><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i> Respuesta más rápida</span>
+                  <span class="lw-cockpit-outcome"><i class="bi bi-shield-check" aria-hidden="true"></i> Menos interrupciones</span>
                 </div>
+              </div>
 
+              <div class="lw-cockpit-footer">
+                <p class="lw-cockpit-promise"><strong>Detecta antes. Avisa a tiempo. Mantén tu operación en marcha.</strong></p>
                 <div class="lw-flow-cta">
                   <a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html" target="_blank" rel="noopener" class="btn btn-primary">
-                    <i class="bi bi-box-arrow-up-right me-2" aria-hidden="true"></i>Ver sitio oficial
+                    <i class="bi bi-box-arrow-up-right me-2" aria-hidden="true"></i>Conocer la plataforma
                   </a>
                   <a href="#contact" class="btn btn-outline-light">
                     <i class="bi bi-chat-dots me-2" aria-hidden="true"></i>Solicitar una demo
@@ -4930,8 +5465,8 @@ body.modal-open .header-container{
         <div class="modal-content">
           <div class="modal-header">
             <div>
-              <span class="lw-flow-detail-kicker">Recorrido interactivo ampliado</span>
-              <h4 class="modal-title" id="lwFlowExpandModalLabel">Cómo funciona LinkWich-Monitor<sup class="lw-registered-mark">®</sup></h4>
+              <span class="lw-cockpit-detail-kicker">Centro de control ampliado</span>
+              <h4 class="modal-title" id="lwFlowExpandModalLabel">Explora LinkWich-Monitor<sup class="lw-registered-mark">®</sup></h4>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar diagrama ampliado"></button>
           </div>
@@ -4947,7 +5482,7 @@ body.modal-open .header-container{
         <div class="modal-content">
           <div class="modal-header">
             <div>
-              <span class="lw-flow-detail-kicker">Infografía de referencia</span>
+              <span class="lw-cockpit-detail-kicker">Infografía de referencia</span>
               <h4 class="modal-title" id="lwFlowImageModalLabel">Cómo funciona LinkWich-Monitor<sup class="lw-registered-mark">®</sup></h4>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar infografía"></button>
@@ -8188,53 +8723,53 @@ document.addEventListener("DOMContentLoaded", function () {
 (function () {
   const flowSteps = [
     {
-      icon: "bi-router-fill",
-      title: "Dispositivos e infraestructura",
-      description: "LinkWich-Monitor<sup class=\"lw-registered-mark\">®</sup> se integra con los equipos y servicios que forman parte de tu operación tecnológica.",
+      icon: "bi-activity",
+      title: "Monitoreo integral 24/7",
+      description: "Visualiza el estado de tu infraestructura y reconoce cambios importantes desde una sola plataforma.",
       points: [
-        "Switches, routers y firewalls",
-        "WiFi, servidores, cámaras y UPS",
-        "Servicios y estaciones de trabajo"
+        "Equipos y servicios en tiempo real",
+        "Rendimiento e históricos",
+        "Topología y mapas LLDP"
       ]
     },
     {
       icon: "bi-broadcast-pin",
-      title: "Recolección de información",
-      description: "La plataforma consulta el estado, recibe eventos y reúne métricas usando métodos compatibles con cada tipo de equipo.",
+      title: "Sniffer de red programable",
+      description: "Programa análisis de tráfico y recibe evidencia clara para actuar antes de que el problema crezca.",
       points: [
-        "Ping, SNMP y Syslog",
-        "SSH y Telnet cuando el equipo lo permite",
-        "Verificación controlada de servicios"
+        "Capturas programadas",
+        "Análisis de tráfico",
+        "Reporte de hallazgos"
       ]
     },
     {
-      icon: "bi-display",
-      title: "Plataforma central",
-      description: "La información se organiza en una sola vista para facilitar la supervisión, el análisis y el seguimiento de la infraestructura.",
+      icon: "bi-exclamation-triangle-fill",
+      title: "Detección temprana",
+      description: "Identifica condiciones que pueden afectar la estabilidad de la red y permite atenderlas oportunamente.",
       points: [
-        "Disponibilidad y rendimiento en tiempo real",
-        "Mapas LLDP, sitios e históricos",
-        "Paneles operativos y reportes ejecutivos"
+        "Direcciones IP duplicadas",
+        "Loops de red",
+        "Broadcast elevado"
       ]
     },
     {
-      icon: "bi-lightning-charge-fill",
-      title: "Acciones y automatización",
-      description: "Cuando ocurre un evento, LinkWich-Monitor<sup class=\"lw-registered-mark\">®</sup> actúa según la configuración definida para informar y apoyar la respuesta operativa.",
+      icon: "bi-bell-fill",
+      title: "Alertas y reportes multicanal",
+      description: "LinkWich-Monitor<sup class=\"lw-registered-mark\">®</sup> genera alertas y reportes por WhatsApp, correo y dentro de la aplicación para acelerar la respuesta.",
       points: [
-        "Alertas por correo y WhatsApp",
-        "Respaldos automáticos de switches y routers",
-        "Reportes y detección oportuna de incidentes"
+        "WhatsApp",
+        "Correo electrónico",
+        "Alertas y reportes locales"
       ]
     },
     {
-      icon: "bi-shield-check",
-      title: "Beneficios para el usuario",
-      description: "El resultado es una operación con mayor visibilidad, mejor control y herramientas claras para responder con rapidez.",
+      icon: "bi-gear-fill",
+      title: "Automatización y continuidad",
+      description: "Reduce tareas repetitivas y conserva información útil para respaldar la operación, la auditoría y la toma de decisiones.",
       points: [
-        "Menos interrupciones y respuesta más rápida",
-        "Soporte para auditoría y continuidad",
-        "Decisiones informadas con datos centralizados"
+        "Respaldos automáticos",
+        "Reportes ejecutivos",
+        "Evidencia para auditoría"
       ]
     }
   ];
@@ -8242,8 +8777,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let flowInstance = 0;
 
   function activateStep(root, index, shouldFocus) {
-    const buttons = Array.from(root.querySelectorAll(".lw-flow-node"));
-    const detail = root.querySelector(".lw-flow-detail");
+    const buttons = Array.from(root.querySelectorAll(".lw-cockpit-capability"));
+    const detail = root.querySelector(".lw-cockpit-detail");
     const data = flowSteps[index];
     if (!buttons.length || !detail || !data) return;
 
@@ -8254,22 +8789,22 @@ document.addEventListener("DOMContentLoaded", function () {
       button.setAttribute("tabindex", active ? "0" : "-1");
     });
 
-    const icon = detail.querySelector(".lw-flow-detail-icon i");
-    const kicker = detail.querySelector(".lw-flow-detail-kicker");
+    const icon = detail.querySelector(".lw-cockpit-detail-icon i");
+    const kicker = detail.querySelector(".lw-cockpit-detail-kicker");
     const title = detail.querySelector("h4");
     const description = detail.querySelector("p");
-    const list = detail.querySelector(".lw-flow-detail-list");
+    const list = detail.querySelector(".lw-cockpit-detail-tags");
 
     if (icon) {
       icon.className = "bi " + data.icon;
       icon.setAttribute("aria-hidden", "true");
     }
-    if (kicker) kicker.textContent = "Etapa " + (index + 1) + " de " + flowSteps.length;
+    if (kicker) kicker.textContent = "Función " + (index + 1) + " de " + flowSteps.length;
     if (title) title.textContent = data.title;
     if (description) description.innerHTML = data.description;
     if (list) {
       list.innerHTML = data.points.map(function (point) {
-        return '<li><i class="bi bi-check-circle-fill" aria-hidden="true"></i><span>' + point + "</span></li>";
+        return '<li><i class="bi bi-check2-circle" aria-hidden="true"></i><span>' + point + "</span></li>";
       }).join("");
     }
 
@@ -8279,8 +8814,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function initFlow(root) {
     if (!root || root.dataset.flowReady === "true") return;
 
-    const buttons = Array.from(root.querySelectorAll(".lw-flow-node"));
-    const detail = root.querySelector(".lw-flow-detail");
+    const buttons = Array.from(root.querySelectorAll(".lw-cockpit-capability"));
+    const detail = root.querySelector(".lw-cockpit-detail");
     if (!buttons.length || !detail) return;
 
     flowInstance += 1;
@@ -8323,10 +8858,10 @@ document.addEventListener("DOMContentLoaded", function () {
       expandModal.addEventListener("show.bs.modal", function () {
         const clone = source.cloneNode(true);
         delete clone.dataset.flowReady;
-        clone.querySelectorAll(".lw-flow-node").forEach(function (button) {
+        clone.querySelectorAll(".lw-cockpit-capability").forEach(function (button) {
           button.removeAttribute("aria-controls");
         });
-        const oldDetail = clone.querySelector(".lw-flow-detail");
+        const oldDetail = clone.querySelector(".lw-cockpit-detail");
         if (oldDetail) oldDetail.removeAttribute("id");
         mount.replaceChildren(clone);
         initFlow(clone);
