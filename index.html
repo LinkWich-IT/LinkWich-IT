@@ -3292,13 +3292,23 @@ body.modal-open .header-container{
   vertical-align: super;
 }
 
-/* En el nombre principal del header la marca registrada tiene mayor presencia. */
+/* El nombre principal reserva espacio para mostrar completa la marca registrada. */
+#header .logo .sitename {
+  position: relative !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  padding-right: .72em !important;
+}
+
 .header .sitename .lw-registered-mark {
-  margin-left: .09em;
-  display: inline-block;
-  font-size: .72em;
+  position: absolute;
+  top: -.16em;
+  right: 0;
+  display: block;
+  margin-left: 0;
+  font-size: .58em;
   line-height: 1;
-  vertical-align: top;
+  vertical-align: baseline;
 }
 
 /* En los accesos de LinkWich-Monitor del header se mantiene visible sin saturar. */
