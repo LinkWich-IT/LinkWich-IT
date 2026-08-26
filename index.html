@@ -3285,11 +3285,23 @@ body.modal-open .header-container{
 /* Marca registrada: tamaño discreto y consistente en toda la interfaz. */
 .lw-registered-mark {
   display: inline;
-  margin-left: .06em;
-  font-size: .48em;
+  margin-left: .07em;
+  font-size: .62em;
   line-height: 0;
   font-weight: 700;
   vertical-align: super;
+}
+
+/* En el nombre principal del header la marca registrada tiene mayor presencia. */
+.header .sitename .lw-registered-mark {
+  margin-left: .09em;
+  font-size: .78em;
+}
+
+/* En los accesos de LinkWich-Monitor del header se mantiene visible sin saturar. */
+.header .navmenu .lw-registered-mark,
+.header .lw-header-monitor .lw-registered-mark {
+  font-size: .70em;
 }
 </style>
 </head>
