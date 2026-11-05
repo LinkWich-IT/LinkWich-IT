@@ -1,5 +1,5 @@
 import {createClient} from './vendor/supabase.js';
-import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js';
+import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnostico-1';
 const $=id=>document.getElementById(id);
 let db,factor,poll,lastActivity=Date.now(),loading=false,epoch=0;
 const names={online:'En línea',unreachable:'Sin comunicación',app_down:'Aplicativo sin respuesta',pending:'Esperando primera señal',paused:'Monitoreo pausado'};
@@ -29,13 +29,38 @@ async function setupMfa(){
  $('mfa-help').textContent=verified?'Escribe el código de tu aplicación autenticadora.':'Escanea el QR con tu aplicación autenticadora y escribe el código para activar la protección.';
  screen('mfa');$('otp').focus();
 }
+function loginFailure(error,stage){
+ const raw=typeof error?.code==='string'?error.code:'';
+ const code=/^[a-z0-9_]{1,80}$/.test(raw)?raw:'';
+ const messages={
+  invalid_credentials:'Supabase rechazó el correo o la contraseña. Comprueba que sean los del usuario de este proyecto.',
+  email_not_confirmed:'El correo de esta cuenta aún no está confirmado en Supabase.',
+  email_provider_disabled:'El acceso por correo está deshabilitado en Supabase.',
+  over_request_rate_limit:'Se alcanzó el límite de solicitudes. Espera antes de volver a intentar.',
+  over_email_send_rate_limit:'Se alcanzó el límite de correo de Supabase. Espera antes de volver a intentar.',
+  mfa_totp_enroll_not_enabled:'El correo y contraseña fueron aceptados, pero la inscripción TOTP está deshabilitada en Supabase.',
+  mfa_factor_name_conflict:'El correo y contraseña fueron aceptados, pero ya existe una inscripción con el mismo nombre. Revisa los factores MFA de esta cuenta.',
+  too_many_enrolled_mfa_factors:'El correo y contraseña fueron aceptados, pero esta cuenta alcanzó el límite de factores MFA.'
+ };
+ const base=messages[code] || (stage==='mfa'
+  ? 'El correo y contraseña fueron aceptados, pero no se pudo preparar el segundo factor.'
+  : 'No se pudo completar la conexión de acceso con Supabase. Revisa Red y Consola del navegador.');
+ // Sólo código y estado; jamás registrar contraseñas, sesiones ni el objeto de error completo.
+ const status=Number.isInteger(error?.status)?error.status:null;
+ console.warn('[LinkWich acceso]',{etapa:stage,codigo:code||'sin_codigo',estado:status});
+ return base+(code?' Código: '+code+'.':'');
+}
 $('login-form').onsubmit=async e=>{
  e.preventDefault();notice();const button=e.submitter;button.disabled=true;
+ let stage='login';
  try{
-  if(!db)throw Error('configuration');
+  if(!db){notice('El navegador no cargó una configuración válida de Supabase. Comprueba config.js y recarga con Ctrl + F5.');return;}
+  notice('Conectando con Supabase…');
   const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
-  $('password').value='';if(error)throw error;await setupMfa();
- }catch{notice('No fue posible iniciar sesión. Revisa tus credenciales o contacta a LinkWich-IT.');}
+  $('password').value='';if(error)throw error;
+  stage='mfa';notice('Acceso aceptado. Preparando verificación en dos pasos…');
+  await setupMfa();notice();
+ }catch(error){notice(loginFailure(error,stage));}
  finally{button.disabled=false;}
 };
 $('mfa-form').onsubmit=async e=>{
