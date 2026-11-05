@@ -24,7 +24,8 @@ function mfaQrImage(value){
   const payload=svg.slice(comma+1);
   svg=payload.trimStart().startsWith('<')?payload:decodeURIComponent(payload);
  }
- if(!/^(?:<\?xml[\s\S]*?\?>\s*)?<svg[\s>]/i.test(svg.trim()))throw new Error('invalid_qr_format');
+ // Supabase usa SVGo: puede incluir declaración XML y comentarios antes de <svg>.
+ if(!/^(?:<\?xml[\s\S]*?\?>\s*|<!--[\s\S]*?-->\s*)*<svg[\s>]/i.test(svg.trim()))throw new Error('invalid_qr_format');
  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
 }
 async function setupMfa(){
