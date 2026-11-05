@@ -15,6 +15,18 @@ async function logout(){epoch++;clearInterval(poll);$('password').value='';$('ot
 for(const id of ['logout','mfa-cancel'])$(id).onclick=()=>logout();
 for(const event of ['pointerdown','keydown','touchstart'])document.addEventListener(event,()=>lastActivity=Date.now(),{passive:true});
 setInterval(()=>{if(!$('dashboard').hidden&&Date.now()-lastActivity>15*60000){logout();notice('Tu sesión se cerró por inactividad.');}},15000);
+function mfaQrImage(value){
+ // El SDK puede entregar una data URL; no envolverla por segunda vez.
+ let svg=typeof value==='string'?value.trim():'';
+ if(/^data:image\/svg\+xml(?:;[^,]*)?,/i.test(svg)){
+  const comma=svg.indexOf(',');
+  if(/;base64$/i.test(svg.slice(0,comma)))return svg;
+  const payload=svg.slice(comma+1);
+  svg=payload.trimStart().startsWith('<')?payload:decodeURIComponent(payload);
+ }
+ if(!/^(?:<\?xml[\s\S]*?\?>\s*)?<svg[\s>]/i.test(svg.trim()))throw new Error('invalid_qr_format');
+ return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
 async function setupMfa(){
  const {data,error}=await db.auth.mfa.listFactors();if(error)throw error;
  const verified=data.totp.find(f=>f.status==='verified');
@@ -22,11 +34,13 @@ async function setupMfa(){
  if(verified)factor=verified.id;
  else{
   // Retira factores incompletos propios antes de iniciar una nueva inscripción.
-  for(const f of data.totp.filter(f=>f.status!=='verified')){const {error}=await db.auth.mfa.unenroll({factorId:f.id});if(error)throw error;}
+  for(const f of (data.all || []).filter(f=>f.factor_type==='totp'&&f.status==='unverified'&&f.friendly_name==='LinkWich-IT')){const {error}=await db.auth.mfa.unenroll({factorId:f.id});if(error)throw error;}
   const {data:enrolled,error}=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'LinkWich-IT'});if(error)throw error;
-  factor=enrolled.id;$('qr').src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(enrolled.totp.qr_code);$('totp-secret').textContent=enrolled.totp.secret;
+  factor=enrolled.id;$('totp-secret').textContent=enrolled.totp.secret;
+  try{$('qr').src=mfaQrImage(enrolled.totp.qr_code);$('qr').hidden=false;}
+  catch{$('qr').removeAttribute('src');$('qr').hidden=true;}
  }
- $('mfa-help').textContent=verified?'Escribe el código de tu aplicación autenticadora.':'Escanea el QR con tu aplicación autenticadora y escribe el código para activar la protección.';
+ $('mfa-help').textContent=verified?'Escribe el código de tu aplicación autenticadora.':($('qr').hidden?'Abre «Configurar manualmente», agrega la clave en tu autenticador y escribe el código.':'Escanea el QR con tu aplicación autenticadora y escribe el código para activar la protección.');
  screen('mfa');$('otp').focus();
 }
 function loginFailure(error,stage){
