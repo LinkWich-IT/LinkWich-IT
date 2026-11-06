@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkWich-IT | Cotizador Profesional</title>
-  <link rel="stylesheet" href="style.css?v=20260813-4" />
+  <link rel="stylesheet" href="style.css?v=20261106-constructoras-1" />
 
   <style>
     .field-help {
@@ -170,6 +170,14 @@
             <label data-i18n="validityDays">Vigencia (días)</label>
             <input type="number" id="vigencia" value="15" min="1" />
           </div>
+          <div class="field lwq-quote-mode-field">
+            <label for="modoCotizador" data-i18n="quoteMode">Modalidad de cotización</label>
+            <select id="modoCotizador">
+              <option value="normal" data-i18n="quoteNormal">Cotización estándar</option>
+              <option value="constructora" data-i18n="quoteConstruction">Cotización para constructoras / catálogo de obra</option>
+            </select>
+            <small class="field-help" data-i18n="quoteModeHelp">El modo estándar conserva sus funciones actuales.</small>
+          </div>
           <div class="field">
             <label data-i18n="serviceType">Tipo de servicio</label>
             <select id="tipoServicio">
@@ -220,6 +228,72 @@
         </div>
       </section>
 
+      <!-- MODULO NUEVO, AISLADO DEL COTIZADOR ESTANDAR -->
+      <section class="card lwq-construction-only" id="constructorCard" hidden>
+        <div class="card-header">
+          <h3 data-i18n="constructionSettings">Catálogo de obra y prorrateos internos</h3>
+          <p class="lwq-muted" data-i18n="constructionIntro">Conserva partidas, unidades y cantidades del catálogo original. Los cargos internos se integran al precio unitario; el cliente no ve RESICO ni misceláneos separados.</p>
+        </div>
+        <div class="grid grid-3">
+          <div class="field">
+            <label for="catalogoReferencia" data-i18n="catalogReference">Referencia de catálogo / concurso</label>
+            <input id="catalogoReferencia" type="text" placeholder="SC-00096554" maxlength="120">
+          </div>
+          <div class="field">
+            <label for="indirectoBase" data-i18n="indirectBase">Bolsa de indirectos / misceláneos ($)</label>
+            <input id="indirectoBase" type="number" min="0" step="0.01" value="0">
+          </div>
+          <div class="field">
+            <label for="indirectoPorcentaje" data-i18n="indirectMarkup">Incremento de bolsa (%)</label>
+            <input id="indirectoPorcentaje" type="number" min="0" step="0.01" value="0">
+            <small class="field-help" data-i18n="indirectExample">Ejemplo: $20,000 más 15% = $23,000 a distribuir.</small>
+          </div>
+        </div>
+        <div class="lwq-builder-summary">
+          <div><span data-i18n="indirectTotal">Bolsa total a prorratear</span><strong id="bolsaTotalVista">$0.00</strong></div>
+          <div><span data-i18n="resicoAmountBuilder">RESICO estimado a prorratear</span><strong id="resicoDistribuirVista">$0.00</strong></div>
+          <div><span data-i18n="allocationStatus">Estado de asignaciones</span><strong id="allocationEstado">—</strong></div>
+        </div>
+        <div class="grid grid-2 lwq-distribution-methods">
+          <div class="field">
+            <label for="metodoResicoDistribucion" data-i18n="resicoMethod">Distribuir RESICO</label>
+            <select id="metodoResicoDistribucion">
+              <option value="proporcional" data-i18n="allocationProportional">Proporcional al valor de las partidas</option>
+              <option value="iguales" data-i18n="allocationEqual">En partes iguales</option>
+              <option value="manual" data-i18n="allocationManual">Porcentajes manuales (total 100%)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="metodoIndirectosDistribucion" data-i18n="indirectMethod">Distribuir indirectos</label>
+            <select id="metodoIndirectosDistribucion">
+              <option value="proporcional" data-i18n="allocationProportional">Proporcional al valor de las partidas</option>
+              <option value="iguales" data-i18n="allocationEqual">En partes iguales</option>
+              <option value="manual" data-i18n="allocationManual">Porcentajes manuales (total 100%)</option>
+            </select>
+          </div>
+        </div>
+        <p class="lwq-muted" data-i18n="distributionSelectHelp">Marca las partidas que recibirán cada cargo. Puedes excluir Cisco, equipos u otras partidas. En modo manual, captura porcentajes que sumen 100%.</p>
+        <div class="lwq-allocation-actions">
+          <button id="btnSeleccionarTodosResico" class="btn btn-secondary" type="button" data-i18n="selectAllResico">Marcar todas para RESICO</button>
+          <button id="btnSeleccionarTodosIndirectos" class="btn btn-secondary" type="button" data-i18n="selectAllIndirects">Marcar todas para indirectos</button>
+          <button id="btnLimpiarAsignaciones" class="btn btn-dark" type="button" data-i18n="clearAllocations">Limpiar asignaciones</button>
+        </div>
+        <div class="table-wrap lwq-prorrateo-scroll">
+          <table class="lwq-assign-table">
+            <thead><tr>
+              <th data-i18n="catalogItem">Partida</th><th data-i18n="item">Concepto</th>
+              <th data-i18n="applyResico">RESICO</th><th data-i18n="resicoShare">% RESICO</th>
+              <th data-i18n="applyIndirect">Indirectos</th><th data-i18n="indirectShare">% Indirectos</th>
+              <th data-i18n="amountIntegrated">Incremento estimado</th>
+            </tr></thead>
+            <tbody id="tablaDistribucionBody"></tbody>
+          </table>
+        </div>
+        <div id="distribucionAviso" class="lwq-allocation-warning" role="status" aria-live="polite"></div>
+        <button id="btnExcelInterno" class="btn btn-info lwq-internal-export" type="button" data-i18n="exportInternal">Exportar Excel de control interno</button>
+        <small class="field-help" data-i18n="privateExportNote">El Excel común y el PDF son para el cliente; el Excel de control interno sí muestra los prorrateos y RESICO.</small>
+      </section>
+
       <section class="card">
         <div class="card-header between">
           <h3 data-i18n="items">Conceptos</h3>
@@ -231,7 +305,9 @@
             <thead>
               <tr>
                 <th style="width: 70px;">#</th>
+                <th class="lwq-construction-only-cell" data-i18n="catalogItem">Partida</th>
                 <th data-i18n="item">Concepto</th>
+                <th class="lwq-construction-only-cell" data-i18n="unit">Unidad</th>
                 <th style="width: 120px;" data-i18n="quantity">Cantidad</th>
                 <th style="width: 160px;" data-i18n="unitPrice">Precio Unitario</th>
                 <th style="width: 120px;" data-i18n="discountShortPct">Desc. %</th>
@@ -442,7 +518,7 @@
 
       if (sessionStorage.getItem(ACCESS_KEY) === "1") {
         var script = document.createElement("script");
-        script.src = "script.js?v=20260813-5";
+        script.src = "script.js?v=20261106-constructoras-1";
         document.body.appendChild(script);
         return;
       }
