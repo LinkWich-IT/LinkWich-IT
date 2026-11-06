@@ -11,6 +11,28 @@ const DEFAULT_METODO_PAGO_UNICO = "PUE";
 
 const I18N = {
   es: {
+    quoteMode: "Modalidad de cotización", quoteNormal: "Cotización estándar", quoteConstruction: "Cotización para constructoras / catálogo de obra",
+    quoteModeHelp: "El modo estándar conserva sus funciones actuales.", constructionSettings: "Catálogo de obra y prorrateos internos",
+    constructionIntro: "Conserva partidas, unidades y cantidades del catálogo original. Los cargos internos se integran al precio unitario; el cliente no ve RESICO ni misceláneos separados.",
+    catalogReference: "Referencia de catálogo / concurso", catalogItem: "Partida", unit: "Unidad",
+    indirectBase: "Bolsa de indirectos / misceláneos ($)", indirectMarkup: "Incremento de bolsa (%)",
+    indirectExample: "Ejemplo: $20,000 más 15% = $23,000 a distribuir.", indirectTotal: "Bolsa total a prorratear",
+    resicoAmountBuilder: "RESICO estimado a prorratear", allocationStatus: "Estado de asignaciones",
+    resicoMethod: "Distribuir RESICO", indirectMethod: "Distribuir indirectos",
+    allocationProportional: "Proporcional al valor de las partidas", allocationEqual: "En partes iguales",
+    allocationManual: "Porcentajes manuales (total 100%)",
+    distributionSelectHelp: "Marca las partidas que recibirán cada cargo. Puedes excluir Cisco, equipos u otras partidas. En modo manual, captura porcentajes que sumen 100%.",
+    selectAllResico: "Marcar todas para RESICO", selectAllIndirects: "Marcar todas para indirectos",
+    clearAllocations: "Limpiar asignaciones", applyResico: "RESICO", resicoShare: "% RESICO",
+    applyIndirect: "Indirectos", indirectShare: "% Indirectos", amountIntegrated: "Incremento estimado",
+    exportInternal: "Exportar Excel de control interno", privateExportNote: "El Excel común y el PDF son para el cliente; el Excel de control interno sí muestra los prorrateos y RESICO.",
+    allocationZeroDiscount: "No se pueden integrar cargos con 100% de descuento general. Ajusta el descuento antes de exportar.",
+    allocationReady: "Correcto", allocationUnselected: "Selecciona al menos una partida para {cargo}.",
+    allocationIncorrect: "Los porcentajes de {cargo} deben sumar 100%. Actualmente suman {sum}%.",
+    exportBlocked: "Revisa las asignaciones antes de exportar:\n{issues}",
+    resicoMixedConfirm: "El RESICO estimado de {amount} se integrará en {count} partida(s). No se mostrará como impuesto separado. ¿Continuar?",
+    constructionPdfUnit: "Unid.", constructionModeDescription: "Catálogo de obra", constructionFileName: "Catalogo_Obra",
+    catalogRefLabel: "Catálogo", noConstructionCharges: "Sin cargos para distribuir",
     pageTitle: "LinkWich-IT | Cotizador Profesional",
     actions: "Acciones", new: "Nuevo", addItem: "Agregar concepto", generatePdf: "Generar PDF",
     pdfLanguage: "Idioma del PDF", pdfCurrent: "Igual que la interfaz", pdfSpanish: "Español",
@@ -115,6 +137,27 @@ const I18N = {
     limitAnnual2500: "Hasta $2,500,000 anual", limitAnnual3500: "Hasta $3,500,000 anual"
   },
   en: {
+    quoteMode: "Quotation mode", quoteNormal: "Standard quotation", quoteConstruction: "Construction companies / bill of quantities",
+    quoteModeHelp: "Standard mode retains all existing features.", constructionSettings: "Construction catalog and internal allocations",
+    constructionIntro: "Keep the original catalog's line numbers, units and quantities. Internal charges are included in unit prices and not broken out for the client.",
+    catalogReference: "Catalog / tender reference", catalogItem: "Item code", unit: "Unit",
+    indirectBase: "Overhead / miscellaneous allowance ($)", indirectMarkup: "Allowance markup (%)",
+    indirectExample: "Example: $20,000 plus 15% = $23,000 to allocate.", indirectTotal: "Total allowance to allocate",
+    resicoAmountBuilder: "Estimated RESICO to allocate", allocationStatus: "Allocation status",
+    resicoMethod: "Allocate RESICO", indirectMethod: "Allocate overhead",
+    allocationProportional: "Proportional to item value", allocationEqual: "Equal portions", allocationManual: "Manual percentages (total 100%)",
+    distributionSelectHelp: "Select the catalog items that will receive each charge. Exclude Cisco or other equipment as needed. Manual percentages must total 100%.",
+    selectAllResico: "Select all for RESICO", selectAllIndirects: "Select all for overhead", clearAllocations: "Clear selections",
+    applyResico: "RESICO", resicoShare: "% RESICO", applyIndirect: "Overhead", indirectShare: "% overhead",
+    amountIntegrated: "Estimated addition", exportInternal: "Export internal-control Excel",
+    privateExportNote: "Regular Excel and PDF are client-facing; internal-control Excel includes allocations and RESICO.",
+    allocationZeroDiscount: "Charges cannot be included with a 100% general discount. Adjust the discount before exporting.",
+    allocationReady: "Ready", allocationUnselected: "Choose at least one item for {cargo}.",
+    allocationIncorrect: "{cargo} percentages must add up to 100%. Current total: {sum}%.",
+    exportBlocked: "Fix allocations before export:\n{issues}",
+    resicoMixedConfirm: "Estimated RESICO {amount} will be included in {count} item(s), not shown as a separate tax. Continue?",
+    constructionPdfUnit: "Unit", constructionModeDescription: "Bill of quantities", constructionFileName: "Construction_Quote",
+    catalogRefLabel: "Reference", noConstructionCharges: "No charges to allocate",
     pageTitle: "LinkWich-IT | Professional Quoter",
     actions: "Actions", new: "New", addItem: "Add item", generatePdf: "Generate PDF",
     pdfLanguage: "PDF language", pdfCurrent: "Same as interface", pdfSpanish: "Spanish",
@@ -330,6 +373,250 @@ function applyLanguage(language, options = {}) {
   }
   if (persist) localStorage.setItem("linkwich_cotizador_idioma", nextLanguage);
   if (recalculate && typeof recalcularTodo === "function") recalcularTodo();
+}
+
+
+/* ==========================================================
+   COTIZADOR PARA CONSTRUCTORAS - MODULO AISLADO
+   Todas las cantidades de reparto son internas y SOLO se suman
+   a los precios de venta en memoria, nunca al costo base de fila.
+   ========================================================== */
+const CONSTRUCTION_DRAFT_KEY = "linkwich_cotizador_borrador_constructora_v1";
+let nextBuilderRowId = 1;
+const builderAllocation = Object.create(null);
+let builderLastBreakdown = {};
+let builderLastIssues = [];
+
+function isConstructionMode() {
+  return document.getElementById("modoCotizador")?.value === "constructora";
+}
+function getBuilderDraftKey() {
+  return isConstructionMode() ? CONSTRUCTION_DRAFT_KEY : "linkwich_cotizador_borrador";
+}
+function getBuilderNumber(id) {
+  const value = Number(document.getElementById(id)?.value || 0);
+  return Number.isFinite(value) ? Math.max(0, value) : 0;
+}
+function ensureBuilderAllocation(rowId) {
+  const id = String(rowId || "");
+  if (!builderAllocation[id]) builderAllocation[id] = { resico: false, indirectos: false, resicoPct: 0, indirectosPct: 0 };
+  return builderAllocation[id];
+}
+function builderSelectionKey(type) { return type === "resico" ? "resico" : "indirectos"; }
+function getBuilderModeFor(type) {
+  return document.getElementById(type === "resico" ? "metodoResicoDistribucion" : "metodoIndirectosDistribucion")?.value || "proporcional";
+}
+function buildBuilderWeights(conceptos, type, value, issues) {
+  if (value <= 0.0000001) return [];
+  const key = builderSelectionKey(type);
+  const selected = conceptos.map((item, index) => ({ item, index, selection: ensureBuilderAllocation(item.rowId) }))
+    .filter(entry => entry.selection[key] && entry.item.cantidad > 0 && Number(entry.item.descuento) < 100);
+  if (!selected.length) {
+    issues.push(t("allocationUnselected", { cargo: type === "resico" ? "RESICO" : t("applyIndirect") }));
+    return [];
+  }
+  const method = getBuilderModeFor(type);
+  let weights;
+  if (method === "iguales") weights = selected.map(() => 1);
+  else if (method === "manual") {
+    weights = selected.map(entry => Math.max(0, Number(entry.selection[`${key}Pct`]) || 0));
+    const rawSum = weights.reduce((sum, n) => sum + n, 0);
+    if (Math.abs(rawSum - 100) > 0.011) {
+      issues.push(t("allocationIncorrect", { cargo: key === "resico" ? "RESICO" : t("applyIndirect"), sum: formatPercent(rawSum) }));
+    }
+    if (rawSum < 0.0000001) weights = selected.map(() => 1);
+  } else {
+    weights = selected.map(entry => Math.max(0, Number(entry.item.importe) || 0));
+    if (weights.every(weight => weight <= 0)) weights = selected.map(() => 1);
+  }
+  const weightSum = weights.reduce((sum,n) => sum + n, 0);
+  const result = selected.map((entry, i) => ({ index: entry.index, weight: weights[i] / weightSum }));
+  // En centavos: conserva el importe íntegro sin diferencias acumuladas por redondeo.
+  let centsRemaining = Math.round(value * 100);
+  return result.map((entry, index) => {
+    const cents = index === result.length - 1 ? centsRemaining : Math.round(value * 100 * entry.weight);
+    centsRemaining -= cents;
+    return { index: entry.index, amount: cents / 100, weight: entry.weight };
+  });
+}
+function applyBuilderAllocations(conceptos, allocations) {
+  let adjusted = conceptos.map(item => ({ ...item }));
+  allocations.forEach(entry => {
+    adjusted = aplicarCargoResicoAConceptos(adjusted, entry.amount, entry.index);
+  });
+  return adjusted;
+}
+function prepareBuilderCalculation(conceptosBase, generalDiscountFactor, originalAfterDiscount) {
+  const rawBase = getBuilderNumber("indirectoBase");
+  const markup = getBuilderNumber("indirectoPorcentaje");
+  const totalIndirectos = Math.round(rawBase * (1 + markup / 100) * 100) / 100;
+  const issues = [];
+  if (generalDiscountFactor <= 0 && totalIndirectos > 0) issues.push(t("allocationZeroDiscount"));
+  const preGeneralCharge = generalDiscountFactor > 0 ? totalIndirectos / generalDiscountFactor : totalIndirectos;
+  const indirectAlloc = buildBuilderWeights(conceptosBase, "indirectos", preGeneralCharge, issues);
+  const withIndirects = applyBuilderAllocations(conceptosBase, indirectAlloc);
+  const baseWithIndirects = originalAfterDiscount + totalIndirectos;
+  const rateInfo = getResicoRateInfo(baseWithIndirects);
+  const resicoAmount = baseWithIndirects > 0 && rateInfo.tasaDecimal > 0 && rateInfo.tasaDecimal < 1
+    ? baseWithIndirects * (rateInfo.tasaDecimal / (1 - rateInfo.tasaDecimal)) : 0;
+  const resicoBeforeGlobal = generalDiscountFactor > 0 ? resicoAmount / generalDiscountFactor : resicoAmount;
+  const resicoAlloc = buildBuilderWeights(conceptosBase, "resico", resicoBeforeGlobal, issues);
+  const finalItems = applyBuilderAllocations(withIndirects, resicoAlloc);
+  const detailed = {};
+  conceptosBase.forEach(item => detailed[item.rowId] = { resico: 0, indirectos: 0 });
+  indirectAlloc.forEach(e => { detailed[conceptosBase[e.index].rowId].indirectos += e.amount; });
+  resicoAlloc.forEach(e => { detailed[conceptosBase[e.index].rowId].resico += e.amount; });
+  return { rateInfo, resicoAmount, totalIndirectos, resicoBeforeGlobal, indirectAlloc, resicoAlloc, finalItems, detailed, issues };
+}
+function updateBuilderModeUI() {
+  const on = isConstructionMode();
+  document.body.classList.toggle("lwq-mode-construction", on);
+  const card = document.getElementById("constructorCard");
+  if (card) card.hidden = !on;
+  document.getElementById("resicoConceptoIndex")?.closest(".field")?.classList.toggle("lwq-construction-hide", on);
+  document.getElementById("btnExcelInterno")?.classList.toggle("lwq-hidden", !on);
+  document.querySelectorAll("#conceptosBody tr").forEach(row => {
+    const input = row.querySelector("input.concepto");
+    const longInput = row.querySelector("textarea.concepto-larga");
+    if (input && longInput) longInput.value = input.value;
+  });
+  renderBuilderAllocationTable();
+  recalcularTodo();
+}
+function renderBuilderAllocationTable() {
+  const target = document.getElementById("tablaDistribucionBody");
+  if (!target || !isConstructionMode()) return;
+  const rows = [...conceptosBody.querySelectorAll("tr")];
+  const previousActiveId = document.activeElement?.dataset?.builderFocus || "";
+  const previousStart = document.activeElement?.selectionStart;
+  target.textContent = "";
+  rows.forEach((row, i) => {
+    const rowId = row.dataset.rowId;
+    const selection = ensureBuilderAllocation(rowId);
+    const tr = document.createElement("tr");
+    const name = row.querySelector(".concepto")?.value || t("noDescription");
+    const partida = row.querySelector(".partida")?.value || String(i+1);
+    function td(text, cssName) {
+      const cell = document.createElement("td");
+      if (cssName) cell.className = cssName;
+      cell.textContent = String(text);
+      tr.appendChild(cell);
+      return cell;
+    }
+    td(partida, "lwq-assign-code");
+    td(name.substring(0,115), "lwq-assign-description");
+    [["resico", "resicoPct"],["indirectos", "indirectosPct"]].forEach(([key,pct]) => {
+      const checkTd = document.createElement("td");
+      const check = document.createElement("input");
+      check.type = "checkbox"; check.checked = !!selection[key]; check.dataset.builderFocus = `${rowId}-${key}`;
+      check.addEventListener("change", () => {
+        selection[key] = check.checked;
+        renderBuilderAllocationTable();
+        recalcularTodo();
+      });
+      checkTd.appendChild(check); tr.appendChild(checkTd);
+      const valueTd = document.createElement("td");
+      const input = document.createElement("input");
+      input.type = "number"; input.className = "lwq-pct-input";
+      input.min = "0"; input.max = "100"; input.step = "0.01";
+      input.dataset.builderFocus = `${rowId}-${pct}`;
+      input.value = Number(selection[pct] || 0).toString();
+      input.disabled = !selection[key] || getBuilderModeFor(key) !== "manual";
+      input.addEventListener("input", () => {
+        selection[pct] = Math.max(0, Math.min(100, Number(input.value) || 0));
+        recalcularTodo();
+      });
+      valueTd.appendChild(input); tr.appendChild(valueTd);
+    });
+    const increment = td("$0.00", "lwq-assign-amount");
+    increment.dataset.rowId = rowId;
+    target.appendChild(tr);
+  });
+  if (previousActiveId) {
+    const focusEl = [...target.querySelectorAll("[data-builder-focus]")].find(el => el.dataset.builderFocus === previousActiveId);
+    if (focusEl && !focusEl.disabled) {
+      focusEl.focus();
+      if (focusEl.setSelectionRange && Number.isInteger(previousStart)) {
+        try { focusEl.setSelectionRange(previousStart, previousStart); } catch (_) {}
+      }
+    }
+  }
+}
+function updateBuilderFinancialUI(financieros) {
+  if (!isConstructionMode()) return;
+  const el = id => document.getElementById(id);
+  if (el("bolsaTotalVista")) el("bolsaTotalVista").textContent = formatMoney(financieros.builderTotalIndirectos);
+  if (el("resicoDistribuirVista")) el("resicoDistribuirVista").textContent = formatMoney(financieros.isrResicoMonto);
+  const issues = financieros.builderIssues || [];
+  if (el("allocationEstado")) el("allocationEstado").textContent = issues.length ? `${issues.length} pendiente(s)` : t("allocationReady");
+  if (el("distribucionAviso")) {
+    el("distribucionAviso").textContent = issues.length ? issues.join(" | ") : t("allocationReady");
+    el("distribucionAviso").classList.toggle("lwq-allocation-warning--bad", !!issues.length);
+  }
+  document.querySelectorAll(".lwq-assign-amount").forEach(cell => {
+    const data = financieros.builderBreakdown?.[cell.dataset.rowId] || { resico: 0, indirectos: 0 };
+    cell.textContent = formatMoney((data.resico || 0) + (data.indirectos || 0));
+  });
+}
+function validateBuilderExport() {
+  if (!isConstructionMode()) return true;
+  const d = calcularDatosFinancieros({ actualizarUI: false });
+  if (d.builderIssues?.length) {
+    alert(t("exportBlocked", { issues: d.builderIssues.join("\\n• ") }));
+    document.getElementById("constructorCard")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    return false;
+  }
+  return true;
+}
+function getBuilderFormInfo() {
+  return {
+    modoCotizador: isConstructionMode() ? "constructora" : "normal",
+    catalogoReferencia: document.getElementById("catalogoReferencia")?.value || "",
+    indirectoBase: getBuilderNumber("indirectoBase"),
+    indirectoPorcentaje: getBuilderNumber("indirectoPorcentaje"),
+    metodoResicoDistribucion: getBuilderModeFor("resico"),
+    metodoIndirectosDistribucion: getBuilderModeFor("indirectos"),
+    builderAllocation: JSON.parse(JSON.stringify(builderAllocation))
+  };
+}
+function restoreBuilderForm(data = {}) {
+  document.getElementById("modoCotizador").value = data.modoCotizador === "constructora" ? "constructora" : "normal";
+  document.getElementById("catalogoReferencia").value = data.catalogoReferencia || "";
+  document.getElementById("indirectoBase").value = data.indirectoBase ?? 0;
+  document.getElementById("indirectoPorcentaje").value = data.indirectoPorcentaje ?? 0;
+  document.getElementById("metodoResicoDistribucion").value = data.metodoResicoDistribucion || "proporcional";
+  document.getElementById("metodoIndirectosDistribucion").value = data.metodoIndirectosDistribucion || "proporcional";
+  Object.keys(builderAllocation).forEach(k => delete builderAllocation[k]);
+  Object.entries(data.builderAllocation || {}).forEach(([k,v]) => {
+    builderAllocation[k] = { resico: !!v.resico, indirectos: !!v.indirectos, resicoPct: Number(v.resicoPct)||0, indirectosPct: Number(v.indirectosPct)||0 };
+  });
+  updateBuilderModeUI();
+}
+function initBuilderMode() {
+  const mode = document.getElementById("modoCotizador");
+  if (!mode) return;
+  mode.addEventListener("change", updateBuilderModeUI);
+  ["indirectoBase","indirectoPorcentaje"].forEach(id => {
+    const e = document.getElementById(id);
+    e?.addEventListener("input", recalcularTodo);
+  });
+  ["metodoResicoDistribucion","metodoIndirectosDistribucion"].forEach(id => {
+    const e = document.getElementById(id);
+    e?.addEventListener("change", () => { renderBuilderAllocationTable(); recalcularTodo(); });
+  });
+  const applyAll = (key, value) => {
+    conceptosBody.querySelectorAll("tr").forEach(row => ensureBuilderAllocation(row.dataset.rowId)[key] = value);
+    renderBuilderAllocationTable(); recalcularTodo();
+  };
+  document.getElementById("btnSeleccionarTodosResico")?.addEventListener("click", () => applyAll("resico", true));
+  document.getElementById("btnSeleccionarTodosIndirectos")?.addEventListener("click", () => applyAll("indirectos", true));
+  document.getElementById("btnLimpiarAsignaciones")?.addEventListener("click", () => {
+    applyAll("resico", false); applyAll("indirectos", false);
+  });
+  document.getElementById("btnExcelInterno")?.addEventListener("click", () => {
+    if (validateBuilderExport()) exportarExcel(true);
+  });
+  updateBuilderModeUI();
 }
 
 const conceptosBody = document.getElementById("conceptosBody");
@@ -837,6 +1124,9 @@ function leerConceptosDesdeTabla() {
 
     return {
       no: i + 1,
+      rowId: row.dataset.rowId || "",
+      partida: row.querySelector(".partida")?.value.trim() || "",
+      unidad: row.querySelector(".unidad")?.value || "PZA",
       concepto: row.querySelector(".concepto").value.trim(),
       cantidad,
       precio,
@@ -980,7 +1270,11 @@ function calcularDatosFinancieros(options = {}) {
     ? (descuentoTotalBase / subtotalBrutoBase) * 100
     : 0;
 
-  const resicoInfo = getResicoRateInfo(subtotalConDescuentoBase);
+  const builderMode = isConstructionMode();
+  const builder = builderMode
+    ? prepareBuilderCalculation(conceptosBase, factorDescuentoGeneral, subtotalConDescuentoBase)
+    : null;
+  const resicoInfo = builderMode ? builder.rateInfo : getResicoRateInfo(subtotalConDescuentoBase);
 
   /*
     RESICO AUTOMÁTICO INTERNO:
@@ -989,19 +1283,19 @@ function calcularDatosFinancieros(options = {}) {
     - Se integra al concepto seleccionado para que el total del cliente ya lo contemple.
     - Se usa gross-up para que el impuesto estimado quede cubierto al subir el precio.
   */
-  const isrResicoMonto = subtotalConDescuentoBase > 0 && resicoInfo.tasaDecimal > 0 && resicoInfo.tasaDecimal < 1
-    ? subtotalConDescuentoBase * (resicoInfo.tasaDecimal / (1 - resicoInfo.tasaDecimal))
-    : 0;
+  const isrResicoMonto = builderMode
+    ? builder.resicoAmount
+    : (subtotalConDescuentoBase > 0 && resicoInfo.tasaDecimal > 0 && resicoInfo.tasaDecimal < 1
+      ? subtotalConDescuentoBase * (resicoInfo.tasaDecimal / (1 - resicoInfo.tasaDecimal))
+      : 0);
 
   const cargoResicoAntesDescuentoGeneral = factorDescuentoGeneral > 0
     ? isrResicoMonto / factorDescuentoGeneral
     : isrResicoMonto;
 
-  const conceptosCliente = aplicarCargoResicoAConceptos(
-    conceptosBase,
-    cargoResicoAntesDescuentoGeneral,
-    resicoConceptoIndex
-  );
+  const conceptosCliente = builderMode
+    ? builder.finalItems
+    : aplicarCargoResicoAConceptos(conceptosBase, cargoResicoAntesDescuentoGeneral, resicoConceptoIndex);
 
   const resumenConceptosCliente = calcularResumenDescuentosPorConcepto(conceptosCliente);
   const subtotalBruto = resumenConceptosCliente.subtotalBruto;
@@ -1033,20 +1327,28 @@ function calcularDatosFinancieros(options = {}) {
       const modoLabel = resicoInfo.mode === "anual" ? t("annualTable") : t("monthlyTable");
       const concepto = conceptosBase[resicoConceptoIndex]?.concepto || t("itemN", { n: resicoConceptoIndex + 1 });
       const extra = resicoInfo.excedeLimite ? t("importantResico") : "";
-      resicoDetalleEl.textContent = `${t("baseBeforeVat")}: ${formatMoney(subtotalConDescuentoBase)} | ${modoLabel} | ${t("rate")} ${formatPercent(resicoInfo.tasa)}% | ${t("integratedInto")} #${resicoConceptoIndex + 1}: ${concepto || t("noDescription")}.${extra}`;
+      resicoDetalleEl.textContent = builderMode
+        ? `${t("baseBeforeVat")}: ${formatMoney(subtotalConDescuentoBase + builder.totalIndirectos)} | ${modoLabel} | ${t("rate")} ${formatPercent(resicoInfo.tasa)}% | ${builder.resicoAlloc.length} ${t("items")}.${extra}`
+        : `${t("baseBeforeVat")}: ${formatMoney(subtotalConDescuentoBase)} | ${modoLabel} | ${t("rate")} ${formatPercent(resicoInfo.tasa)}% | ${t("integratedInto")} #${resicoConceptoIndex + 1}: ${concepto || t("noDescription")}.${extra}`;
     }
 
     const resicoConceptoResumenEl = document.getElementById("resicoConceptoResumen");
     if (resicoConceptoResumenEl) {
-      resicoConceptoResumenEl.textContent = conceptosBase.length
-        ? t("itemN", { n: resicoConceptoIndex + 1 })
-        : t("noItems");
+      resicoConceptoResumenEl.textContent = builderMode
+        ? `${builder.resicoAlloc.length} ${t("items")}`
+        : (conceptosBase.length ? t("itemN", { n: resicoConceptoIndex + 1 }) : t("noItems"));
     }
   }
 
   return {
     conceptosBase,
     conceptos: conceptosCliente,
+    builderMode,
+    builderTotalIndirectos: builderMode ? builder.totalIndirectos : 0,
+    builderBreakdown: builderMode ? builder.detailed : {},
+    builderIssues: builderMode ? builder.issues : [],
+    builderResicoAlloc: builderMode ? builder.resicoAlloc : [],
+    builderIndirectAlloc: builderMode ? builder.indirectAlloc : [],
     resicoConceptoIndex,
     resicoTabla: resicoInfo.mode,
     resicoTasa: resicoInfo.tasa,
@@ -1089,6 +1391,9 @@ function calcularDatosFinancieros(options = {}) {
 
 function crearFila(data = {}) {
   const tr = document.createElement("tr");
+  const rowId = String(data.rowId || `lwq-row-${nextBuilderRowId++}`);
+  tr.dataset.rowId = rowId;
+  ensureBuilderAllocation(rowId);
   const descuentoPreciso = Math.max(0, Math.min(100,
     Number(data.descuentoPreciso ?? data.descuento) || 0
   ));
@@ -1096,9 +1401,12 @@ function crearFila(data = {}) {
 
   tr.innerHTML = `
     <td class="row-number"></td>
+    <td class="lwq-construction-only-cell"><input class="concept-input partida" type="text" maxlength="40" placeholder="7000"></td>
     <td>
-      <input class="concept-input concepto" type="text" placeholder="${t("descriptionPlaceholder")}" value="${data.concepto || ""}">
+      <input class="concept-input concepto" type="text" placeholder="${t("descriptionPlaceholder")}">
+      <textarea class="concept-input concepto-larga lwq-construction-only-cell" rows="3" placeholder="${t("descriptionPlaceholder")}"></textarea>
     </td>
+    <td class="lwq-construction-only-cell"><select class="concept-input unidad"><option value="PZA">PZA</option><option value="M">M</option><option value="ML">ML</option><option value="LOTE">LOTE</option><option value="JGO">JGO</option><option value="SERV">SERV</option><option value="KG">KG</option><option value="OTRO">OTRO</option></select></td>
     <td>
       <input class="concept-input cantidad" type="number" min="0" step="0.01" value="${data.cantidad ?? 1}">
     </td>
@@ -1114,21 +1422,41 @@ function crearFila(data = {}) {
     </td>
   `;
 
+  tr.querySelector(".concepto").value = String(data.concepto || "");
+  tr.querySelector(".concepto-larga").value = String(data.concepto || "");
+  tr.querySelector(".partida").value = String(data.partida || "");
+  tr.querySelector(".unidad").value = String(data.unidad || "PZA").toUpperCase();
+  if (!tr.querySelector(".unidad").value) tr.querySelector(".unidad").value = "PZA";
+  const standardConceptInput = tr.querySelector(".concepto");
+  const builderConceptInput = tr.querySelector(".concepto-larga");
+  standardConceptInput.addEventListener("input", () => {
+    builderConceptInput.value = standardConceptInput.value;
+  });
+  builderConceptInput.addEventListener("input", () => {
+    standardConceptInput.value = builderConceptInput.value;
+    recalcularTodo();
+  });
+  builderConceptInput.addEventListener("blur", renderBuilderAllocationTable);
   const descuentoInput = tr.querySelector(".descuento");
   descuentoInput.dataset.preciseDiscount = String(descuentoPreciso);
 
   const inputs = tr.querySelectorAll("input");
   inputs.forEach(input => input.addEventListener("input", () => {
     if (input === descuentoInput) delete descuentoInput.dataset.preciseDiscount;
+    if (input.classList.contains("concepto") || input.classList.contains("partida")) renderBuilderAllocationTable();
     recalcularTodo();
   }));
 
   tr.querySelector(".btn-delete").addEventListener("click", () => {
     tr.remove();
+    delete builderAllocation[rowId];
+    renderBuilderAllocationTable();
     recalcularTodo();
   });
+  tr.querySelector(".unidad").addEventListener("change", recalcularTodo);
 
   conceptosBody.appendChild(tr);
+  renderBuilderAllocationTable();
   recalcularTodo();
 }
 
@@ -1165,6 +1493,7 @@ function recalcularTodo() {
   if (resDescuentoConceptos) resDescuentoConceptos.textContent = formatMoney(financieros.descuentoConceptosMonto);
   resIVA.textContent = formatMoney(financieros.ivaMonto);
   resTotal.textContent = formatMoney(financieros.total);
+  updateBuilderFinancialUI(financieros);
 }
 
 const PROFESSIONAL_PREFILL_STORAGE_KEY = "linkwich_professional_quote_prefill_v1";
@@ -1258,6 +1587,7 @@ function obtenerDatosFormulario() {
   const financieros = calcularDatosFinancieros({ actualizarUI: false });
 
   return {
+    ...getBuilderFormInfo(),
     empresa: document.getElementById("empresa").value,
     correoEmpresa: document.getElementById("correoEmpresa").value,
     telefonoEmpresa: document.getElementById("telefonoEmpresa").value,
@@ -1293,6 +1623,9 @@ function obtenerDatosFormulario() {
     resicoEtiqueta: financieros.resicoEtiqueta,
     resicoExcedeLimite: financieros.resicoExcedeLimite,
     resicoConceptoIndex: financieros.resicoConceptoIndex,
+    builderTotalIndirectos: financieros.builderTotalIndirectos,
+    builderBreakdown: financieros.builderBreakdown,
+    builderIssues: financieros.builderIssues,
 
     formaPago: document.getElementById("formaPago")
       ? document.getElementById("formaPago").value
@@ -1336,6 +1669,7 @@ function obtenerDatosFormulario() {
 }
 
 function limpiarFormulario() {
+  const currentMode = isConstructionMode() ? "constructora" : "normal";
   const ids = [
     "cliente", "contacto", "correoCliente", "telefonoCliente",
     "proyecto", "ubicacionProyecto", "notas"
@@ -1367,6 +1701,7 @@ function limpiarFormulario() {
 
   generarNuevoFolio();
   conceptosBody.innerHTML = "";
+  restoreBuilderForm({ modoCotizador: currentMode });
   crearFila({ concepto: t("defaultProfessionalService"), cantidad: 1, precio: 0, descuento: 0 });
 }
 
@@ -1379,18 +1714,19 @@ function guardarBorrador() {
     conceptos: data.conceptosBase
   };
 
-  localStorage.setItem("linkwich_cotizador_borrador", JSON.stringify(borrador));
+  localStorage.setItem(getBuilderDraftKey(), JSON.stringify(borrador));
   alert(t("draftSaved"));
 }
 
 function cargarBorrador() {
-  const raw = localStorage.getItem("linkwich_cotizador_borrador");
+  const raw = localStorage.getItem(getBuilderDraftKey());
   if (!raw) {
     alert(t("noDraft"));
     return;
   }
 
   const data = JSON.parse(raw);
+  restoreBuilderForm(data);
   if (data.idioma === "en" || data.idioma === "es") {
     applyLanguage(data.idioma, { translateDefaults: false, recalculate: false });
   }
@@ -1435,6 +1771,8 @@ function cargarBorrador() {
 
   if (!conceptosBorrador.length) crearFila();
 
+  // Restituir las asignaciones después de reconstruir las filas del borrador.
+  renderBuilderAllocationTable();
   const resicoSelect = document.getElementById("resicoConceptoIndex");
   if (resicoSelect && data.resicoConceptoIndex !== undefined && data.resicoConceptoIndex !== null) {
     resicoSelect.value = String(data.resicoConceptoIndex);
@@ -1568,6 +1906,12 @@ function importarDesdeWorkbook(workbook) {
     const moneda = getValue("MONEDA", "CURRENCY");
     if (moneda === "MXN" || moneda === "USD") setFieldIfExists("moneda", moneda);
 
+    const importQuoteMode = getValue("MODALIDAD", "QUOTE MODE");
+    if (String(importQuoteMode || "").toLowerCase().includes("construct")) {
+      document.getElementById("modoCotizador").value = "constructora";
+      updateBuilderModeUI();
+    }
+    setFieldIfExists("catalogoReferencia", getValue("CATÁLOGO", "CATALOG REFERENCE"));
     const modoResicoRaw = getValue("RESICO TABLA", "RESICO TABLE");
     if (modoResicoRaw !== undefined) {
       const modo = String(modoResicoRaw || "").trim().toLowerCase();
@@ -1632,7 +1976,9 @@ function importarDesdeWorkbook(workbook) {
       const precioNumerico = parseFloat(precio) || 0;
       if (!conceptoLimpio && !precioNumerico) return;
 
-      crearFila({ concepto: conceptoLimpio, cantidad, precio, descuento });
+      const partida = getItemValue("PARTIDA", "ITEM CODE", "LINE", "LINEA ORIGINAL") || "";
+      const unidad = getItemValue("UNIDAD", "UNIT") || "PZA";
+      crearFila({ concepto: conceptoLimpio, cantidad, precio, descuento, partida, unidad });
     });
 
     if (!conceptosBody.querySelectorAll("tr").length) crearFila();
@@ -1699,7 +2045,14 @@ function prepararDatosParaIdiomaPDF(data, targetLanguage) {
 }
 
 function confirmarExportacionPDF() {
+  if (!validateBuilderExport()) return false;
   const data = obtenerDatosFormulario();
+  if (isConstructionMode()) {
+    return data.isrResicoMonto <= 0 || confirm(t("resicoMixedConfirm", {
+      amount: formatMoney(data.isrResicoMonto),
+      count: Object.values(data.builderBreakdown || {}).filter(x => (x.resico || 0) > 0).length
+    }));
+  }
 
   if (data.conceptosBase.length > 1 && data.isrResicoMonto > 0) {
     const conceptoSeleccionado =
@@ -1927,7 +2280,10 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9.5);
-      const valueLines = doc.splitTextToSize(data.tipoServicioLabel || getServiceTypeLabel(data.tipoServicio) || "-", textWidth);
+      const modeText = data.modoCotizador === "constructora"
+        ? `${t("constructionModeDescription")}${data.catalogoReferencia ? " | " + t("catalogRefLabel") + ": " + data.catalogoReferencia : ""}`
+        : (data.tipoServicioLabel || getServiceTypeLabel(data.tipoServicio) || "-");
+      const valueLines = doc.splitTextToSize(modeText, textWidth);
       const boxH = Math.max(12, 8 + (valueLines.length * 4.5));
 
       let currentY = ensureSpace(y, boxH + 6);
@@ -2152,18 +2508,18 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
     y = drawClientBox(y);
     y = drawServiceTypeBox(y);
 
-    const tableData = data.conceptos.map(item => [
-      item.no,
-      item.concepto || "-",
-      item.cantidad,
-      formatMoney(item.precio),
-      `${formatPercent(item.descuento)}%`,
-      formatMoney(item.importe)
-    ]);
+    const isBuilderPdf = data.modoCotizador === "constructora";
+    const tableData = data.conceptos.map(item => isBuilderPdf
+      ? [item.partida || item.no, item.concepto || "-", item.cantidad, item.unidad || "PZA",
+        formatMoney(item.precio), `${formatPercent(item.descuento)}%`, formatMoney(item.importe)]
+      : [item.no, item.concepto || "-", item.cantidad,
+        formatMoney(item.precio), `${formatPercent(item.descuento)}%`, formatMoney(item.importe)]);
 
     doc.autoTable({
       startY: y,
-      head: [["#", t("item"), t("quantity"), t("unitPrice"), t("discountShortPct"), t("amount")]],
+      head: [isBuilderPdf
+        ? [t("catalogItem"), t("item"), t("quantity"), t("constructionPdfUnit"), t("unitPrice"), t("discountShortPct"), t("amount")]
+        : ["#", t("item"), t("quantity"), t("unitPrice"), t("discountShortPct"), t("amount")]],
       body: tableData,
       theme: "grid",
       margin: { left: margin, right: margin, bottom: footerHeight + 4 },
@@ -2184,7 +2540,15 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
       alternateRowStyles: {
         fillColor: [252, 252, 252]
       },
-      columnStyles: {
+      columnStyles: isBuilderPdf ? {
+        0: { halign: "center", cellWidth: 15 },
+        1: { cellWidth: 68 },
+        2: { halign: "center", cellWidth: 14 },
+        3: { halign: "center", cellWidth: 14 },
+        4: { halign: "right", cellWidth: 25 },
+        5: { halign: "center", cellWidth: 17 },
+        6: { halign: "right", cellWidth: 29 }
+      } : {
         0: { halign: "center", cellWidth: 10 },
         1: { cellWidth: 82 },
         2: { halign: "center", cellWidth: 18 },
@@ -2209,7 +2573,11 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
 
     if (data.terminos && data.terminos.trim()) {
       const terminosCompletos =
-        `${t("allPricesClause", { currency: data.monedaDescripcion })} ${data.terminos.trim()}`;
+        `${isBuilderPdf
+          ? (targetLanguage === "en"
+            ? `Unit prices are stated in ${data.monedaDescripcion} before VAT; VAT is shown in the financial summary.`
+            : `Los precios unitarios están expresados en ${data.monedaDescripcion} antes de IVA; el IVA se desglosa en el resumen financiero.`)
+          : t("allPricesClause", { currency: data.monedaDescripcion })} ${data.terminos.trim()}`;
 
       y = drawWrappedTextBlock({
         title: t("termsTitle"),
@@ -2231,7 +2599,8 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
     addFooterToAllPages();
 
     const languageSuffix = targetLanguage === "en" ? "EN" : "ES";
-    const nombreArchivo = `${t("quoteFilePrefix")}_${(data.folio || t("noFolio")).replace(/\s+/g, "_")}_${languageSuffix}.pdf`;
+    const filePrefix = isBuilderPdf ? t("constructionFileName") : t("quoteFilePrefix");
+    const nombreArchivo = `${filePrefix}_${(data.folio || t("noFolio")).replace(/\s+/g, "_")}_${languageSuffix}.pdf`;
     doc.save(nombreArchivo);
     return true;
 
@@ -2272,7 +2641,9 @@ async function exportarPDF() {
   }
 }
 
-function exportarExcel() {
+function exportarExcel(internalControl = false) {
+  if (!validateBuilderExport()) return;
+  if (isConstructionMode()) return exportarExcelConstructora(!!internalControl);
   const data = obtenerDatosFormulario();
   const wb = XLSX.utils.book_new();
   const isEnglish = currentLanguage === "en";
@@ -2387,10 +2758,78 @@ function exportarExcel() {
   XLSX.writeFile(wb, nombreArchivo);
 }
 
+
+function exportarExcelConstructora(internalControl = false) {
+  const d = obtenerDatosFormulario();
+  const wb = XLSX.utils.book_new();
+  const en = currentLanguage === "en";
+  const resumen = [
+    [en ? "COMPANY" : "EMPRESA", d.empresa],
+    [en ? "QUOTE MODE" : "MODALIDAD", "constructora"],
+    [en ? "CATALOG REFERENCE" : "CATÁLOGO", d.catalogoReferencia],
+    [en ? "QUOTE NUMBER" : "FOLIO", d.folio],
+    [en ? "DATE" : "FECHA", d.fecha],
+    [en ? "CLIENT" : "CLIENTE", d.cliente],
+    [en ? "PROJECT" : "PROYECTO", d.proyecto],
+    [en ? "LOCATION" : "UBICACIÓN", d.ubicacionProyecto],
+    [],
+    [en ? "NET SUBTOTAL" : "SUBTOTAL NETO", d.subtotalConDescuentoBase + d.builderTotalIndirectos + d.isrResicoMonto],
+    [en ? "VAT" : "IVA", d.ivaMonto],
+    [en ? "TOTAL" : "TOTAL", d.total],
+    [en ? "DEPOSIT (%)" : "ANTICIPO (%)", d.anticipo],
+    [en ? "PAYMENT TERMS" : "FORMA DE PAGO", d.formaPago],
+    [en ? "NOTES" : "NOTAS", d.notas],
+    [en ? "TERMS" : "TÉRMINOS", d.terminos]
+  ];
+  const items = d.conceptos.map(item => en ? {
+    "Item code": item.partida || String(item.no), "Item": item.concepto,
+    "Quantity": item.cantidad, "Unit": item.unidad || "PZA",
+    "Unit price": item.precio, "Discount (%)": item.descuento, "Amount": item.importe
+  } : {
+    "Partida": item.partida || String(item.no), "Concepto": item.concepto,
+    "Cantidad": item.cantidad, "Unidad": item.unidad || "PZA",
+    "Precio_Unitario": item.precio, "Descuento_Porcentaje": item.descuento, "Importe": item.importe
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(resumen), en ? "Summary" : "Resumen");
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(items), en ? "Items" : "Conceptos");
+  if (internalControl) {
+    const table = d.conceptosBase.map((item, i) => {
+      const share = d.builderBreakdown[item.rowId] || { resico: 0, indirectos: 0 };
+      const options = ensureBuilderAllocation(item.rowId);
+      const final = d.conceptos[i];
+      return {
+        "Partida": item.partida || i+1, "Concepto": item.concepto,
+        "Base precio unitario": item.precio, "Cantidad": item.cantidad,
+        "Unidad": item.unidad, "Ind. asignados ANTES desc. general": share.indirectos,
+        "RESICO asignado ANTES desc. general": share.resico,
+        "Partida indirectos": options.indirectos ? "SI" : "NO",
+        "% manual indirectos": options.indirectosPct,
+        "Partida RESICO": options.resico ? "SI" : "NO",
+        "% manual RESICO": options.resicoPct,
+        "Precio unitario cliente": final.precio, "Importe cliente": final.importe
+      };
+    });
+    const sheet = XLSX.utils.json_to_sheet(table);
+    XLSX.utils.book_append_sheet(wb, sheet, "Control Interno");
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([
+      ["Catalogo", d.catalogoReferencia], ["Bolsa base", d.indirectoBase],
+      ["Incremento bolsa (%)", d.indirectoPorcentaje],
+      ["Bolsa total", d.builderTotalIndirectos],
+      ["RESICO estimado", d.isrResicoMonto],
+      ["Tasa (%)", d.resicoTasa], ["Base imponible sin IVA (estimada)", d.subtotalConDescuentoBase + d.builderTotalIndirectos],
+      ["Metodo indirectos", d.metodoIndirectosDistribucion], ["Metodo RESICO", d.metodoResicoDistribucion],
+      ["NOTA", "Control comercial interno: no compartir con el cliente."],
+      ["ADVERTENCIA", "RESICO es un cálculo estimado del cotizador, no una determinación fiscal. Confirmar con contador."]
+    ]), "Parametros Internos");
+  }
+  const filename = `${t("constructionFileName")}_${String(d.folio || "sin_folio").replace(/[^A-Za-z0-9_-]/g,"_")}${internalControl ? "_INTERNO" : "_CLIENTE"}.xlsx`;
+  XLSX.writeFile(wb, filename);
+}
+
 btnAgregarFila.addEventListener("click", () => crearFila());
 btnAgregarFilaTop.addEventListener("click", () => crearFila());
 btnPDF.addEventListener("click", exportarPDF);
-btnExcel.addEventListener("click", exportarExcel);
+btnExcel.addEventListener("click", () => exportarExcel(false));
 
 btnNuevo.addEventListener("click", () => {
   if (confirm(t("clearConfirm"))) {
@@ -2451,6 +2890,7 @@ if (!document.getElementById("folio").value.trim()) {
 }
 
 initializeCommercialNotesAssistant();
+initBuilderMode();
 
 applyLanguage(currentLanguage, { translateDefaults: true, recalculate: false, persist: false });
 
