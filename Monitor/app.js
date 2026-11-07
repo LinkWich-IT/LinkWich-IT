@@ -4,7 +4,7 @@ import {createManagement} from './management.js?v=notices-1';
 import {icon,buttonIcon,setBusy,statusStyles,decorateStatic,renderChart,renderChartTable} from './visuals.js?v=filters-1';
 import {createClient} from './vendor/supabase.js';
 import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnostico-1';
-import {renderLicense} from './license.js?v=filters-1';
+import {renderLicense,renderSiteDetails} from './license.js?v=friendly-1';
 const $=id=>document.getElementById(id);
 let manager;
 let refreshAgain=false,historySite='',chartCache=null;
@@ -90,7 +90,7 @@ async function setupMfa(){
  else{
   // Retira factores incompletos propios antes de iniciar una nueva inscripción.
   for(const f of (data.all || []).filter(f=>f.factor_type==='totp'&&f.status==='unverified'&&f.friendly_name==='LinkWich-IT')){const {error}=await db.auth.mfa.unenroll({factorId:f.id});if(error)throw error;}
-  const {data:enrolled,error}=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'LinkWich-IT'});if(error)throw error;
+  const {data:enrolled,error}=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'LinkWich-IT',issuer:'LinkWich-IT'});if(error)throw error;
   factor=enrolled.id;$('totp-secret').textContent=enrolled.totp.secret;
   try{$('qr').src=mfaQrImage(enrolled.totp.qr_code);$('qr').hidden=false;}
   catch{$('qr').removeAttribute('src');$('qr').hidden=true;}
@@ -179,7 +179,7 @@ async function refresh(){
    const status=states[ix],[cls,symbol]=statusStyles[status]||statusStyles.pending;
    const card=node('article','','panel installation status-'+status);card.append(node('p',manager.tenantName(i.tenant_id),'small muted'));
    const heading=node('div','','site-heading');heading.append(icon('server'),node('h3',i.name));const badge=node('span',names[status],'badge '+cls);badge.prepend(icon(symbol));
-   card.append(heading,badge,node('p','Última señal: '+date(i.last_seen)),node('p','Licencia al recibir señal: '+(i.license_ok===null?'Sin dato':i.license_ok?'Vigente':'Sin validación vigente')));renderLicense(card,i,status);$('installations').append(card);
+   card.append(heading,badge);renderSiteDetails(card,i,status,date);renderLicense(card,i,status);$('installations').append(card);
   }
   setBusy($('installations'),false);
   const scoped=historySite?rows.filter(i=>i.id===historySite):rows;
@@ -207,3 +207,4 @@ decorateStatic();for(const[id,name]of [['metric-total-icon','server'],['metric-o
 $('refresh').onclick=()=>manager?.refreshActive();
 if(!/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(SUPABASE_URL)||SUPABASE_PUBLISHABLE_KEY.startsWith('REEMPLAZAR'))notice('El portal está pendiente de configuración por LinkWich-IT.','warning');
 else {db=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,storageKey:'lw-monitor-'+SUPABASE_URL.split('//')[1].split('.')[0]+'-auth',autoRefreshToken:true,detectSessionInUrl:false}});manager=createManagement({db,baseUrl:SUPABASE_URL,publishableKey:SUPABASE_PUBLISHABLE_KEY,notice,logout,onTenantChange:refresh});db.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')setTimeout(()=>logout(false),0);});restoreSession();}
+
