@@ -1,9 +1,10 @@
-import {icon,buttonIcon,setBusy} from './visuals.js?v=premium-1';
+import {matchesSearch,matchesSiteStatus,monitoringBadge} from './search.js?v=filters-1';
+import {icon,buttonIcon,setBusy} from './visuals.js?v=filters-1';
 // No contiene claves privadas. Todas las operaciones se autorizan en portal-admin.
 export function createManagement({db,baseUrl,publishableKey,notice,logout,onTenantChange}) {
  const $=id=>document.getElementById(id);
  const el=(tag,text='',cls='')=>{const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;};
- let ctx=null,tenants=[],users=[],page=1,hasMore=false,version=0,selected='',view='overview',credentialTimer,adminTab='clients';
+ let ctx=null,tenants=[],users=[],page=1,hasMore=false,version=0,selected='',view='overview',credentialTimer,adminTab='clients',query='',loadSeq=0,auditPage=1,userStatus='',userRole='',auditAction='',auditDays=90;
  const root=$('management-view'),profileRoot=$('profile-view');
  async function api(action,values={}){
   const {data:{session}}=await db.auth.getSession();if(!session)throw Error('Tu sesión terminó. Vuelve a ingresar.');
@@ -19,21 +20,33 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  function status(message=''){const target=$('management-notice');if(target){target.textContent=message;target.hidden=!message;}else notice(message);}
  function setView(next){
   if(ctx?.profile.must_change_password)next='profile';
-  view=next;for(const name of ['overview','management','profile'])$(name+'-view').hidden=name!==next;
+  view=next;$('portal-filters').hidden=next==='profile';updateFilterScope();for(const name of ['overview','management','profile'])$(name+'-view').hidden=name!==next;
   for(const b of $('portal-nav').querySelectorAll('button'))b.setAttribute('aria-current',String(b.dataset.view===next));
  }
  function syncFilter(){
   const filter=$('tenant-filter');filter.replaceChildren(new Option(ctx.global_admin?'Todos los clientes':'Todos mis sitios',''));
   for(const t of tenants)filter.add(new Option(t.name,t.id));
   if(!tenants.some(t=>t.id===selected))selected='';filter.value=selected;
-  filter.onchange=()=>{selected=filter.value;onTenantChange();};
+  filter.onchange=()=>{selected=filter.value;filtersChanged();};
  }
  function nav(){
   const n=$('portal-nav');n.replaceChildren();
   const entries=[['overview','Disponibilidad'],...(ctx.global_admin||ctx.memberships.some(m=>m.role==='client_admin')?[['management',ctx.global_admin?'Administración':'Gestionar sitios']]:[]),['profile','Mi perfil']];
-  for(const [id,label] of entries){const b=button(label,async()=>{setView(id);if(id==='management')await load();if(id==='profile')renderProfile();});b.dataset.view=id;n.append(b);}
+  for(const [id,label] of entries){const b=button(label,async()=>{setView(id);if(id==='management')await load();if(id==='profile')renderProfile();if(id==='overview')onTenantChange();});b.dataset.view=id;n.append(b);}
   setView(view);
  }
+ function updateFilterScope(){
+  const siteContext=view==='overview'||(view==='management'&&adminTab==='sites');
+  $('global-site-status').hidden=!siteContext;
+  $('filter-scope').textContent=view==='management'&&adminTab==='security'?'La seguridad es una configuración global. Los filtros se conservan para las otras pestañas.':'Cliente y búsqueda se aplican a la pestaña visible. El estado sólo filtra sitios; Usuarios y Actividad tienen filtros adicionales. Pulsa Aplicar filtros o Enter para buscar.';
+ }
+ function filtersChanged(){page=1;auditPage=1;onTenantChange();if(view==='management')load();}
+ $('portal-filters').onsubmit=event=>{event.preventDefault();query=$('portal-search').value.trim();filtersChanged();};
+ $('site-status-filter').onchange=()=>filtersChanged();
+ $('clear-portal-filters').onclick=()=>{query='';selected='';page=1;auditPage=1;userStatus='';userRole='';auditAction='';auditDays=90;$('portal-search').value='';$('tenant-filter').value='';$('site-status-filter').value='';window.dispatchEvent(new CustomEvent('lw-filters-cleared'));filtersChanged();};
+ function control(panel,label,options,value,changed){const wrap=el('div');const l=el('label',label),select=el('select');select.id='filter-'+label.toLowerCase().replace(/[^a-z0-9]/g,'-');l.htmlFor=select.id;for(const[v,t]of options)select.add(new Option(t,v));select.value=value;select.onchange=()=>{changed(select.value);load();};wrap.append(l,select);panel.append(wrap);return select;}
+ function count(panel,total,label='resultados'){panel.append(el('p',total+' '+label,'small muted result-count'));}
+ function pager(panel,current,more,change,total){const n=el('div','','form-actions');if(current>1)n.append(button('Página anterior',()=>change(current-1)));n.append(el('span','Página '+current+(Number.isFinite(total)?' · '+total+' resultados':''),'small muted'));if(more)n.append(button('Página siguiente',()=>change(current+1)));panel.append(n);}
  async function init(){
   const generation=version;const fresh=await api('context');if(generation!==version)return;
   ctx=fresh;
@@ -146,39 +159,45 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   {name:'idle_minutes',label:'Minutos sin interacción (5 a 1440)',type:'number',value:ctx.idle_minutes||15,min:5,max:1440},
  ],async v=>{const r=await api('settings_save',v);ctx.idle_minutes=r.idle_minutes;window.dispatchEvent(new CustomEvent('lw-idle-setting',{detail:r.idle_minutes}));return r;},
  'Aplica a todos los usuarios. Recargar la página y actualizar datos automáticamente NO cuentan como actividad. Si reduces el tiempo, las sesiones que ya lo excedan finalizarán.');}
- function chooseAdminTab(key){adminTab=key;for(const panel of root.querySelectorAll('[data-admin-section]'))panel.hidden=panel.dataset.adminSection!==key;for(const b of root.querySelectorAll('[data-admin-tab]'))b.setAttribute('aria-current',String(b.dataset.adminTab===key));}
- function adminTabs(){const n=el('nav','','admin-subnav');n.setAttribute('aria-label','Administración');const tabs=[['clients','Clientes'],['sites','Sitios'],...(ctx.global_admin?[['users','Usuarios'],['security','Seguridad'],['audit','Actividad']]:[])];if(!tabs.some(([key])=>key===adminTab))adminTab='clients';for(const[key,label]of tabs){const b=button(label,()=>chooseAdminTab(key));b.dataset.adminTab=key;b.setAttribute('aria-current',String(key===adminTab));n.append(b);}root.append(n);}
+ function chooseAdminTab(key){adminTab=key;updateFilterScope();for(const panel of root.querySelectorAll('[data-admin-section]'))panel.hidden=panel.dataset.adminSection!==key;for(const b of root.querySelectorAll('[data-admin-tab]'))b.setAttribute('aria-current',String(b.dataset.adminTab===key));}
+ function adminTabs(){const n=el('nav','','admin-subnav');n.setAttribute('aria-label','Administración');const tabs=[['clients','Clientes'],['sites','Sitios'],...(ctx.global_admin?[['users','Usuarios'],['security','Seguridad'],['audit','Actividad']]:[])];if(!tabs.some(([key])=>key===adminTab))adminTab='clients';for(const[key,label]of tabs){const b=button(label,async()=>{chooseAdminTab(key);await load();});b.dataset.adminTab=key;b.setAttribute('aria-current',String(key===adminTab));n.append(b);}root.append(n);}
  function section(title,help){const p=el('section','','panel admin-section');p.dataset.adminSection=title.startsWith('Clientes')?'clients':title.startsWith('Sitios')?'sites':title.startsWith('Usuarios')?'users':title.startsWith('Sesiones')?'security':'audit';p.hidden=p.dataset.adminSection!==adminTab;p.append(el('h2',title));if(help)p.append(el('p',help,'small muted'));root.append(p);return p;}
  function compactLists(){for(const p of root.querySelectorAll('.admin-section')){const rows=[...p.querySelectorAll(':scope > .admin-row')];if(rows.length){const list=el('div','','record-list');for(const row of rows)list.append(row);p.insertBefore(list,p.querySelector(':scope > .form-actions'));}}} 
  async function load(){
-  status();const generation=version;setBusy(root,true,'Cargando administración');for(const panel of root.querySelectorAll('.admin-section'))setBusy(panel,true);
+  status();const generation=version,loadId=++loadSeq;setBusy(root,true,'Cargando administración');for(const panel of root.querySelectorAll('.admin-section'))setBusy(panel,true);
   try{
-   const fresh=await api('context');if(generation!==version)return;ctx=fresh;nav();if(ctx.profile.must_change_password){renderProfile();return;}
+   const fresh=await api('context');if(generation!==version||loadId!==loadSeq)return;ctx=fresh;nav();if(ctx.profile.must_change_password){renderProfile();return;}
    tenants=(await api('tenants_list')).rows;syncFilter();
-   const sites=await db.from('lw_installations').select('id,tenant_id,name,paused,timeout_seconds,last_seen').order('name');if(sites.error)throw Error('No se pudieron consultar los sitios.');
-   if(generation!==version)return;root.replaceChildren();
+   const sites=await db.from('lw_installations').select('id,tenant_id,name,paused,timeout_seconds,last_seen,created_at,app_ok').order('name');if(sites.error)throw Error('No se pudieron consultar los sitios.');
+   if(generation!==version||loadId!==loadSeq)return;root.replaceChildren();
    const feedback=el('p','','form-error');feedback.id='management-notice';feedback.hidden=true;feedback.setAttribute('role','status');root.append(feedback);
    const heading=el('div','','section-label');heading.append(el('h2',ctx.global_admin?'Administración de LinkWich-IT':'Gestión de tu ecosistema'));root.append(heading);adminTabs();
    const tp=section('Clientes y destinatarios','Cada cliente tiene su propio conjunto de sitios y contactos de alertas. Los cambios de destinatarios aplican a eventos nuevos.');
    if(ctx.global_admin)tp.append(button('Crear cliente',()=>editTenant()));
-   for(const t of tenants){
+   const filteredTenants=tenants.filter(t=>(!selected||t.id===selected)&&matchesSearch(query,t.name,t.id,t.alert_email,t.alert_cc||[],(sites.data||[]).filter(s=>s.tenant_id===t.id).map(s=>[s.name,s.id])));count(tp,filteredTenants.length,'clientes');
+   for(const t of filteredTenants){
     const card=el('article','','admin-row');const info=el('div');info.append(el('strong',t.name),el('p','Alertas: '+t.alert_email,'small muted'),el('p','Copias: '+(t.alert_cc?.join(', ')||'Ninguna'),'small muted'));
     card.append(info);if(canManage(t.id))card.append(button('Editar cliente / correos',()=>editTenant(t)));tp.append(card);
    }
-   if(!tenants.length)tp.append(el('p','Aún no hay clientes asignados.','muted'));
+   if(!filteredTenants.length)tp.append(el('p','No hay clientes que coincidan con los filtros.','muted'));
    const sp=section('Sitios de LinkWich-Monitor','Primero configura el agente del sitio; después quita la pausa para comenzar a recibir señales y alertas.');
    if(tenants.some(t=>canManage(t.id)))sp.append(button('Añadir sitio',()=>newSite()));
-   for(const s of sites.data||[]){
-    const card=el('article','','admin-row');const info=el('div');info.append(el('strong',s.name),el('p',tenants.find(t=>t.id===s.tenant_id)?.name||'Cliente','small muted'),el('p',s.paused?'Pausado':'Monitoreo habilitado','small'),el('code',s.id,'small'));card.append(info);
+   const filteredSites=(sites.data||[]).filter(s=>(!selected||s.tenant_id===selected)&&matchesSiteStatus(s,$('site-status-filter').value)&&matchesSearch(query,s.name,s.id,tenants.find(t=>t.id===s.tenant_id)?.name));count(sp,filteredSites.length,'sitios');
+   for(const s of filteredSites){
+    const card=el('article','','admin-row');const info=el('div');info.append(el('strong',s.name),el('p',tenants.find(t=>t.id===s.tenant_id)?.name||'Cliente','small muted'),monitoringBadge(s.paused),el('code',s.id,'small'));card.append(info);
     if(canManage(s.tenant_id)){const actions=el('div','','row-actions');actions.append(button('Editar / activar',()=>editSite(s)),button('Renovar credencial',()=>rotateSite(s)));if(ctx.global_admin&&tenants.some(t=>t.id!==s.tenant_id))actions.append(button('Transferir a otro cliente',()=>transferSite(s)));card.append(actions);}sp.append(card);
    }
+   if(!filteredSites.length)sp.append(el('p','No hay sitios que coincidan con los filtros.','muted'));
    if(ctx.global_admin){
     const settingsPanel=section('Sesiones y seguridad','Cierre por inactividad: '+(ctx.idle_minutes||15)+' minutos. La sesión se conserva al recargar mientras siga vigente.');settingsPanel.append(button('Configurar inactividad',()=>editIdle()));
     const up=section('Usuarios y perfiles','Consulta: ve los sitios asignados. Administrador de cliente: también gestiona sus sitios y destinatarios.');setBusy(up,true,'Cargando usuarios');
-    const response=await api('users_list',{page});if(generation!==version)return;users=response.rows;hasMore=response.has_more;
+    const userControls=el('div','','tab-filters');up.append(userControls);
+    control(userControls,'Estado de cuenta',[['','Todos'],['active','Habilitada'],['disabled','Desactivada'],['temporary','Contraseña temporal'],['mfa_pending','Recuperación MFA pendiente']],userStatus,v=>{userStatus=v;page=1;});
+    control(userControls,'Perfil de acceso',[['','Todos'],['global_admin','Administrador general'],['client_admin','Administrador de cliente'],['viewer','Consulta']],userRole,v=>{userRole=v;page=1;});
+    const response=adminTab==='users'?await api('users_search',{page,query,tenant_id:selected||null,status:userStatus,role:userRole}):{rows:[],has_more:false,total:0};if(generation!==version||loadId!==loadSeq)return;users=response.rows;hasMore=response.has_more;
     if(tenants.length)up.append(button('Crear usuario',()=>newUser()));
     for(const u of users){
-     const card=el('article','','admin-row');const info=el('div');info.append(el('strong',u.profile.display_name||u.email),el('p',u.email,'small muted'),el('p',u.global_admin?'Administrador general':u.profile.active?'Cuenta habilitada':'Cuenta desactivada','small'));
+     const card=el('article','','admin-row');const info=el('div');info.append(el('strong',u.profile.display_name||u.email),el('p',u.email,'small muted'),el('span',u.global_admin?'Administrador general':u.profile.active?'Cuenta habilitada':'Cuenta desactivada','badge '+(u.global_admin?'neutral':u.profile.active?'good':'bad')));
      if(u.profile.mfa_recovery_pending)info.append(el('p','Recuperación de autenticador pendiente: reintenta Reiniciar autenticador.','form-error small'));
      for(const m of u.memberships){const name=tenants.find(t=>t.id===m.tenant_id)?.name||m.tenant_id;info.append(el('p',name+' · '+(m.role==='client_admin'?'Administrador del cliente':'Consulta')+(m.active?'':' · Acceso desactivado'),'small muted'));}
      card.append(info);
@@ -186,13 +205,18 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
       acts.append(button('Reiniciar autenticador',()=>resetMfa(u)));
       for(const m of u.memberships)acts.append(button('Editar acceso: '+(tenants.find(t=>t.id===m.tenant_id)?.name||'cliente'),()=>membership(u,m)));card.append(acts);}up.append(card);
     }
-    const pager=el('div','','form-actions');if(page>1)pager.append(button('Usuarios anteriores',async()=>{page--;await load();}));pager.append(el('span','Página '+page,'small muted'));if(hasMore)pager.append(button('Usuarios siguientes',async()=>{page++;await load();}));up.append(pager);setBusy(up,false);
-    const ap=section('Actividad administrativa reciente','Acciones administrativas de los últimos 60 días. No almacena contraseñas ni credenciales.');setBusy(ap,true,'Cargando actividad');const history=await api('audit_list');if(generation!==version)return;
+    if(!users.length)up.append(el('p','No hay usuarios que coincidan con los filtros.','muted'));pager(up,page,hasMore,async next=>{page=next;await load();},response.total);setBusy(up,false);
+    const ap=section('Actividad administrativa reciente','Acciones administrativas de los últimos 90 días. No almacena contraseñas ni credenciales.');setBusy(ap,true,'Cargando actividad');const auditControls=el('div','','tab-filters');ap.append(auditControls);
+    control(auditControls,'Tipo de actividad',[['','Todas'],['tenant.','Clientes'],['site.','Sitios'],['user.','Usuarios'],['membership.','Accesos'],['password.','Contraseñas'],['mfa.','Autenticadores'],['settings.','Configuración'],['profile.','Perfiles']],auditAction,v=>{auditAction=v;auditPage=1;});
+    control(auditControls,'Periodo de actividad',[['7','7 días'],['30','30 días'],['60','60 días'],['90','90 días']],String(auditDays),v=>{auditDays=Number(v);auditPage=1;});
+    const history=adminTab==='audit'?await api('audit_search',{page:auditPage,query,tenant_id:selected||null,action_prefix:auditAction,days:auditDays}):{rows:[],has_more:false,total:0};if(generation!==version||loadId!==loadSeq)return;
     const auditList=el('div','','audit-list');ap.append(auditList);
-    for(const a of history.rows.filter(a=>Date.parse(a.created_at)>=Date.now()-60*86400000)){const actor=users.find(u=>u.id===a.actor_id)?.email||a.actor_id||'Cuenta eliminada';auditList.append(el('p',new Date(a.created_at).toLocaleString()+' · '+actor+' · '+a.action+' · '+(tenants.find(t=>t.id===a.tenant_id)?.name||a.target_id||''),'small audit-line'));}
+    for(const a of history.rows){const actor=a.actor_email||a.actor_id||'Cuenta eliminada';auditList.append(el('p',new Date(a.created_at).toLocaleString()+' · '+actor+' · '+a.action+' · '+(a.tenant_name||a.target_id||''),'small audit-line'));}
+    if(!history.rows.length)auditList.append(el('p','No hay actividad que coincida con los filtros.','muted'));
+    pager(ap,auditPage,history.has_more,async next=>{auditPage=next;await load();},history.total);
    }
    compactLists();chooseAdminTab(adminTab);
-  }catch(e){if(generation===version)status(e.message);}finally{setBusy(root,false);for(const panel of root.querySelectorAll('.admin-section'))setBusy(panel,false);}
+  }catch(e){if(generation===version&&loadId===loadSeq)status(e.message);}finally{setBusy(root,false);for(const panel of root.querySelectorAll('.admin-section'))setBusy(panel,false);}
  }
  function renderProfile(){
   if(!ctx)return;profileRoot.replaceChildren();profileRoot.append(el('h2','Mi perfil'),el('p',ctx.user.email,'muted'),el('p',ctx.profile.display_name||'Sin nombre registrado'));
@@ -204,6 +228,6 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    {name:'confirmation',label:'Repetir nueva contraseña',type:'password'},
   ],v=>{if(v.password!==v.confirmation)throw Error('Las contraseñas no coinciden.');return api('password_self',v);},'Al terminar volverás a iniciar sesión. Tu segundo factor se conserva.')));
  }
- function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';page=1;view='overview';adminTab='clients';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
- return {init,clear,checkSession:()=>api('session_check'),touch:()=>api('activity'),end:()=>api('session_end'),currentTenant:()=>selected,tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
+ function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';query='';page=1;auditPage=1;userStatus='';userRole='';auditAction='';auditDays=90;view='overview';adminTab='clients';$('portal-search').value='';$('site-status-filter').value='';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
+ return {init,clear,checkSession:()=>api('session_check'),touch:()=>api('activity'),end:()=>api('session_end'),currentTenant:()=>selected,currentQuery:()=>query,refreshActive:()=>view==='management'?load():view==='profile'?renderProfile():onTenantChange(),isOverview:()=>view==='overview',tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
 }
