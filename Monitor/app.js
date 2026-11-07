@@ -1,5 +1,6 @@
+import {renderNotice,noticeElement} from './notices.js?v=notices-1';
 import {matchesSearch,matchesSiteStatus,siteState} from './search.js?v=filters-1';
-import {createManagement} from './management.js?v=filters-1';
+import {createManagement} from './management.js?v=notices-1';
 import {icon,buttonIcon,setBusy,statusStyles,decorateStatic,renderChart,renderChartTable} from './visuals.js?v=filters-1';
 import {createClient} from './vendor/supabase.js';
 import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnostico-1';
@@ -13,7 +14,7 @@ const names={online:'En línea',unreachable:'Sin comunicación',app_down:'Aplica
 const storedTheme=localStorage.getItem('lw-theme');
 document.documentElement.dataset.theme=storedTheme || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
 $('theme').onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;localStorage.setItem('lw-theme',t);};
-function notice(message=''){$('notice').textContent=message;$('notice').hidden=!message;}
+function notice(message='',kind='info'){renderNotice($('notice'),message,kind);}
 function screen(id){document.body.dataset.screen=id;for(const name of ['login','mfa','dashboard'])$(name).hidden=name!==id;}
 function node(tag,text,cls){const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;}
 function date(value){return value?new Date(value).toLocaleString():'Sin señales';}
@@ -29,12 +30,12 @@ async function logout(remote=true){
  try{await end;if(remote&&db)await db.auth.signOut({scope:'local'});}finally{signingOut=false;}
 }
 for(const id of ['logout','mfa-cancel'])$(id).onclick=()=>logout();
-window.addEventListener('lw-session-expired',()=>{logout();notice('Tu sesión terminó. Ingresa nuevamente con tu segundo factor.');});
+window.addEventListener('lw-session-expired',()=>{logout();notice('Tu sesión terminó. Ingresa nuevamente con tu segundo factor.','warning');});
 window.addEventListener('lw-idle-setting',e=>setIdle(e.detail));
 function expired(){return Date.now()-Math.max(lastActivity,readActivity())>=idleMinutes*60000;}
 async function inactivityCheck(){
  if($('dashboard').hidden)return;
- if(expired()){await logout();notice('Tu sesión se cerró por '+idleMinutes+' minutos de inactividad.');}
+ if(expired()){await logout();notice('Tu sesión se cerró por '+idleMinutes+' minutos de inactividad.','warning');}
 }
 function humanActivity(){
  if($('dashboard').hidden||signingOut)return;
@@ -54,7 +55,7 @@ async function openDashboard(){
  let sid;try{sid=JSON.parse(atob(session.access_token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).session_id;}catch{throw Error('Sesión inválida.');}
  activityKey='lw-monitor-activity-'+sid;setIdle(context.idle_minutes);
  lastActivity=Math.max(readActivity(),Date.parse(context.last_activity)||0);
- if(!lastActivity||expired()){await logout();notice('Tu sesión terminó por inactividad. Inicia sesión nuevamente.');return;}
+ if(!lastActivity||expired()){await logout();notice('Tu sesión terminó por inactividad. Inicia sesión nuevamente.','warning');return;}
  saveActivity(lastActivity);lastTouch=Date.now();screen('dashboard');$('identity').textContent=user.email||'';
  await refresh();clearInterval(poll);poll=setInterval(refresh,30000);
 }
@@ -66,7 +67,7 @@ async function restoreSession(){
   const {data,error:ae}=await db.auth.mfa.getAuthenticatorAssuranceLevel();if(ae)throw ae;
   if(data.currentLevel!=='aal2'){await setupMfa();return;}
   await openDashboard();
- }catch(error){if(error.status===401){await logout();notice('Tu sesión terminó. Vuelve a ingresar.');}else{screen('login');$('retry-session').hidden=false;notice('No se pudo comprobar tu sesión. Puedes reintentar sin cerrar la sesión guardada. '+(error.message||''));}}
+ }catch(error){if(error.status===401){await logout();notice('Tu sesión terminó. Vuelve a ingresar.','warning');}else{screen('login');$('retry-session').hidden=false;notice('No se pudo comprobar tu sesión. Puedes reintentar sin cerrar la sesión guardada. '+(error.message||''),'error');}}
 }
 function mfaQrImage(value){
  // El SDK puede entregar una data URL; no envolverla por segunda vez.
@@ -122,13 +123,13 @@ $('login-form').onsubmit=async e=>{
  e.preventDefault();notice();const button=e.submitter;button.disabled=true;setBusy(button,true);
  let stage='login';
  try{
-  if(!db){notice('El navegador no cargó una configuración válida de Supabase. Comprueba config.js y recarga con Ctrl + F5.');return;}
+  if(!db){notice('El navegador no cargó una configuración válida de Supabase. Comprueba config.js y recarga con Ctrl + F5.','error');return;}
   notice('Conectando con Supabase…');
   const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
   $('password').value='';if(error)throw error;
   stage='mfa';notice('Acceso aceptado. Preparando verificación en dos pasos…');
   await setupMfa();notice();
- }catch(error){notice(loginFailure(error,stage));}
+ }catch(error){notice(loginFailure(error,stage),'error');}
  finally{button.disabled=false;setBusy(button,false);}
 };
 $('mfa-form').onsubmit=async e=>{
@@ -138,7 +139,7 @@ $('mfa-form').onsubmit=async e=>{
   $('otp').value='';$('enrollment').hidden=true;$('qr').removeAttribute('src');$('totp-secret').textContent='';
   const {data,error:ae}=await db.auth.mfa.getAuthenticatorAssuranceLevel();if(ae||data.currentLevel!=='aal2')throw Error('MFA');
   await openDashboard();
- }catch(error){notice('No se pudo completar el acceso: '+(error.message||'revisa el código y la configuración de portal-admin.'));}
+ }catch(error){notice('No se pudo completar el acceso: '+(error.message||'revisa el código y la configuración de portal-admin.'),'error');}
  finally{e.submitter.disabled=false;setBusy(e.submitter,false);}
 };
 function setDashboardBusy(active){
@@ -157,7 +158,7 @@ async function updateChart(generation,visibleRows){
   if(chartCache?.key===key&&Date.now()-chartCache.at<60000)rows=chartCache.rows;
   else{const result=await db.rpc('lw_incident_daily_filtered',{p_tenant:tenant||null,p_sites:ids,p_days:days});if(result.error)throw Error('No se pudo consultar la gráfica. Comprueba que instalaste el SQL 08 de búsqueda y filtros.');rows=result.data||[];if(generation===epoch)chartCache={key,at:Date.now(),rows};}
   if(generation!==epoch)return;renderChart($('incident-chart'),rows);renderChartTable($('chart-data'),rows);
- }catch(error){if(generation===epoch){$('incident-chart').replaceChildren(node('p',error.message,'muted small'));$('chart-data').replaceChildren();}}
+ }catch(error){if(generation===epoch){$('incident-chart').replaceChildren(noticeElement(error.message));$('chart-data').replaceChildren();}}
  finally{if(generation===epoch)setBusy($('incident-chart'),false);}
 }
 async function refresh(){
@@ -189,14 +190,14 @@ async function refresh(){
     const lookup=Object.fromEntries(rows.map(i=>[i.id,i.name]));$('events').replaceChildren();
     for(const e of b.data||[]){const item=node('div','','event event-'+e.state),title=node('div','','event-title');title.append(icon((statusStyles[e.state]||statusStyles.pending)[1]),node('span',(lookup[e.installation_id]||'Instalación')+' · '+(names[e.state]||e.state)));item.append(title,node('time',date(e.created_at)));$('events').append(item);}
     if(!b.data?.length)$('events').append(node('p','Aún no hay cambios registrados en el periodo.','muted small'));
-   }catch{if(generation===epoch)$('events').replaceChildren(node('p','No se pudo actualizar el historial.','muted'));}
+   }catch{if(generation===epoch)$('events').replaceChildren(noticeElement('No se pudo actualizar el historial.'));}
    finally{if(generation===epoch)setBusy($('events'),false);}
   })();
   await Promise.allSettled([historyPromise,updateChart(generation,rows)]);
   if(generation!==epoch)return;$('updated').textContent='Actualizado '+new Date().toLocaleTimeString();notice();
  }catch{
-  if(generation!==epoch)return;$('installations').replaceChildren(node('p','No se puede confirmar el estado actual.','muted'));$('events').replaceChildren();$('incident-chart').replaceChildren(node('p','Sin datos actualizados.','muted'));
-  for(const id of ['total','online','attention'])$(id).textContent='—';$('updated').textContent='Sin datos actualizados';notice('No fue posible consultar el servicio. Reintenta o vuelve a iniciar sesión.');
+  if(generation!==epoch)return;$('installations').replaceChildren(noticeElement('No se puede confirmar el estado actual.'));$('events').replaceChildren();$('incident-chart').replaceChildren(noticeElement('Sin datos actualizados.'));
+  for(const id of ['total','online','attention'])$(id).textContent='—';$('updated').textContent='Sin datos actualizados';notice('No fue posible consultar el servicio. Reintenta o vuelve a iniciar sesión.','error');
  }finally{loading=false;if(generation===epoch){setDashboardBusy(false);$('refresh').disabled=false;if(refreshAgain){refreshAgain=false;queueMicrotask(refresh);}}}
 }
 window.addEventListener('lw-filters-cleared',()=>{historySite='';chartCache=null;$('history-site-filter').value='';$('history-period').value='30';});
@@ -204,5 +205,5 @@ $('history-site-filter').onchange=()=>{historySite=$('history-site-filter').valu
 $('history-period').onchange=()=>{chartCache=null;refresh();};
 decorateStatic();for(const[id,name]of [['metric-total-icon','server'],['metric-online-icon','check'],['metric-attention-icon','alert'],['chart-icon','activity'],['events-icon','clock']])$(id).append(icon(name));
 $('refresh').onclick=()=>manager?.refreshActive();
-if(!/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(SUPABASE_URL)||SUPABASE_PUBLISHABLE_KEY.startsWith('REEMPLAZAR'))notice('El portal está pendiente de configuración por LinkWich-IT.');
+if(!/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(SUPABASE_URL)||SUPABASE_PUBLISHABLE_KEY.startsWith('REEMPLAZAR'))notice('El portal está pendiente de configuración por LinkWich-IT.','warning');
 else {db=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,storageKey:'lw-monitor-'+SUPABASE_URL.split('//')[1].split('.')[0]+'-auth',autoRefreshToken:true,detectSessionInUrl:false}});manager=createManagement({db,baseUrl:SUPABASE_URL,publishableKey:SUPABASE_PUBLISHABLE_KEY,notice,logout,onTenantChange:refresh});db.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')setTimeout(()=>logout(false),0);});restoreSession();}
