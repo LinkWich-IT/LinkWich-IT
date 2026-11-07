@@ -138,3 +138,4 @@ body.portal-layout-compact[data-screen=login] .pwa-actions .subtle{background:va
 body.portal-layout-compact[data-screen=login] header.portal-header{border-color:var(--auth-line)}
 body.portal-layout-compact[data-screen=login] footer{border-color:var(--auth-line);color:var(--auth-muted)}
 body.portal-layout-compact[data-screen=login] footer a{color:var(--auth-muted)}
+
