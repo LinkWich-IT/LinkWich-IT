@@ -1,0 +1,39 @@
+{
+  "id": "./",
+  "name": "LinkWich-IT · Continuidad del servicio",
+  "short_name": "LinkWich",
+  "description": "Portal privado para consultar la comunicación y respuesta de tus instalaciones LinkWich-Monitor.",
+  "lang": "es-MX",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fb",
+  "theme_color": "#2067df",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "img/pwa/icon-original.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "img/pwa/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "img/pwa/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "img/pwa/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
