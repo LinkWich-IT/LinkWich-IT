@@ -1,4 +1,4 @@
-import {createManagement} from './management.js?v=administracion-2';
+import {createManagement} from './management.js?v=administracion-2-1';
 import {createClient} from './vendor/supabase.js';
 import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnostico-1';
 const $=id=>document.getElementById(id);
@@ -131,7 +131,7 @@ $('mfa-form').onsubmit=async e=>{
  e.preventDefault();notice();e.submitter.disabled=true;
  try{
   const {error}=await db.auth.mfa.challengeAndVerify({factorId:factor,code:$('otp').value});if(error)throw error;
-  $('otp').value='';$('qr').removeAttribute('src');$('totp-secret').textContent='';
+  $('otp').value='';$('enrollment').hidden=true;$('qr').removeAttribute('src');$('totp-secret').textContent='';
   const {data,error:ae}=await db.auth.mfa.getAuthenticatorAssuranceLevel();if(ae||data.currentLevel!=='aal2')throw Error('MFA');
   await openDashboard();
  }catch(error){notice('No se pudo completar el acceso: '+(error.message||'revisa el código y la configuración de portal-admin.'));}
