@@ -1,3 +1,4 @@
+import {renderNotice,noticeElement} from './notices.js?v=notices-1';
 import {matchesSearch,matchesSiteStatus,monitoringBadge} from './search.js?v=filters-1';
 import {icon,buttonIcon,setBusy} from './visuals.js?v=filters-1';
 // No contiene claves privadas. Todas las operaciones se autorizan en portal-admin.
@@ -17,7 +18,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  }
  const canManage=t=>ctx?.global_admin||ctx?.memberships?.some(m=>m.tenant_id===t&&m.role==='client_admin');
  const button=(text,action,cls='subtle')=>{const b=el('button',text,cls);b.type='button';const symbol=/autenticador/i.test(text)?'shield':/contraseña|credencial/i.test(text)?'key':/usuario|perfil/i.test(text)?'user':/cliente/i.test(text)?'users':/sitio/i.test(text)?'server':/inactividad|seguridad/i.test(text)?'settings':/actividad|disponibilidad/i.test(text)?'activity':null;if(symbol)buttonIcon(b,symbol);b.onclick=async()=>{b.disabled=true;setBusy(b,true);try{await action();}catch(e){status(e.message);}finally{b.disabled=false;setBusy(b,false);}};return b;};
- function status(message=''){const target=$('management-notice');if(target){target.textContent=message;target.hidden=!message;}else notice(message);}
+ function status(message='',kind='error'){const target=$('management-notice');if(target)renderNotice(target,message,kind);else notice(message,kind);}
  function setView(next){
   if(ctx?.profile.must_change_password)next='profile';
   view=next;$('portal-filters').hidden=next==='profile';updateFilterScope();for(const name of ['overview','management','profile'])$(name+'-view').hidden=name!==next;
@@ -55,7 +56,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   nav();renderProfile();
   syncFilter();
   $('account-role').textContent=ctx.profile.must_change_password?'Cambio de contraseña requerido':ctx.global_admin?'Administrador general':ctx.memberships.some(m=>m.role==='client_admin')?'Administrador de cliente':'Usuario de consulta';
-  if(ctx.profile.must_change_password){setView('profile');notice('Cambia tu contraseña temporal para acceder a tus instalaciones.');}
+  if(ctx.profile.must_change_password){setView('profile');notice('Cambia tu contraseña temporal para acceder a tus instalaciones.','warning');}
   return ctx;
  }
  function form(title,fields,onSave,help=''){
@@ -78,14 +79,14 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   const save=el('button','Guardar','primary');save.type='submit';
   const cancel=button('Cancelar',()=>dlg.close());actions.append(cancel,save);f.append(error,actions);dlg.append(f);document.body.append(dlg);
   dlg.addEventListener('close',()=>{for(const input of Object.values(inputs))input.value='';dlg.remove();},{once:true});
-  f.onsubmit=async event=>{event.preventDefault();save.disabled=true;cancel.disabled=true;setBusy(save,true,'Guardando');error.textContent='';const generation=version;
+  f.onsubmit=async event=>{event.preventDefault();save.disabled=true;cancel.disabled=true;setBusy(save,true,'Guardando');renderNotice(error);const generation=version;
    try{
     const values=Object.fromEntries(fields.map(s=>[s.name,s.type==='checkbox'?inputs[s.name].checked:s.type==='number'?Number(inputs[s.name].value):inputs[s.name].value]));
     const output=await onSave(values);if(generation!==version)return;
-    dlg.close();if(output?.relogin){await logout();notice('Contraseña actualizada. Ingresa de nuevo con tu nueva contraseña y segundo factor.');return;}
+    dlg.close();if(output?.relogin){await logout();notice('Contraseña actualizada. Ingresa de nuevo con tu nueva contraseña y segundo factor.','success');return;}
     if(output?.token)credentials(output);
     if(view==='management')await load();else if(view==='profile'){await init();renderProfile();}
-   }catch(e){if(generation===version)error.textContent=e.message;}finally{save.disabled=false;cancel.disabled=false;setBusy(save,false);}
+   }catch(e){if(generation===version)renderNotice(error,e.message,'error');}finally{save.disabled=false;cancel.disabled=false;setBusy(save,false);}
   };
   dlg.addEventListener('cancel',event=>{if(save.disabled)event.preventDefault();});
   dlg.showModal();inputs[fields[0]?.name]?.focus();
@@ -153,7 +154,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   {name:'reason',label:'Motivo de la recuperación'},
   {name:'identity_verified',label:'Verifiqué la identidad de la persona por un canal confiable',type:'checkbox',value:false},
   {name:'current_password',label:'Tu contraseña de administrador',type:'password'},
- ],async v=>{const r=await api('mfa_reset',{id:u.id,...v});notice(r.message);return r;},
+ ],async v=>{const r=await api('mfa_reset',{id:u.id,...v});notice(r.message,'success');return r;},
  'Cuenta: '+u.email+'. Se eliminará su autenticador TOTP y se cerrarán sus sesiones. Al ingresar con su correo y contraseña verá un QR NUEVO para registrar en su teléfono. No cambia su contraseña. El QR anterior no se recupera ni se muestra al administrador.');}
  function editIdle(){form('Tiempo de cierre por inactividad',[
   {name:'idle_minutes',label:'Minutos sin interacción (5 a 1440)',type:'number',value:ctx.idle_minutes||15,min:5,max:1440},
@@ -198,7 +199,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
     if(tenants.length)up.append(button('Crear usuario',()=>newUser()));
     for(const u of users){
      const card=el('article','','admin-row');const info=el('div');info.append(el('strong',u.profile.display_name||u.email),el('p',u.email,'small muted'),el('span',u.global_admin?'Administrador general':u.profile.active?'Cuenta habilitada':'Cuenta desactivada','badge '+(u.global_admin?'neutral':u.profile.active?'good':'bad')));
-     if(u.profile.mfa_recovery_pending)info.append(el('p','Recuperación de autenticador pendiente: reintenta Reiniciar autenticador.','form-error small'));
+     if(u.profile.mfa_recovery_pending)info.append(noticeElement('Recuperación de autenticador pendiente: reintenta Reiniciar autenticador.','warning'));
      for(const m of u.memberships){const name=tenants.find(t=>t.id===m.tenant_id)?.name||m.tenant_id;info.append(el('p',name+' · '+(m.role==='client_admin'?'Administrador del cliente':'Consulta')+(m.active?'':' · Acceso desactivado'),'small muted'));}
      card.append(info);
      if(!u.global_admin&&u.id!==ctx.user.id){const acts=el('div','','row-actions');acts.append(button('Editar perfil',()=>editUser(u)),button('Asignar cliente',()=>membership(u)),button('Contraseña temporal',()=>resetUser(u)));
@@ -220,7 +221,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  }
  function renderProfile(){
   if(!ctx)return;profileRoot.replaceChildren();profileRoot.append(el('h2','Mi perfil'),el('p',ctx.user.email,'muted'),el('p',ctx.profile.display_name||'Sin nombre registrado'));
-  if(ctx.profile.must_change_password)profileRoot.append(el('p','Tu contraseña es temporal. Cámbiala para acceder a tus sitios.','form-error'));
+  if(ctx.profile.must_change_password)profileRoot.append(noticeElement('Tu contraseña es temporal. Cámbiala para acceder a tus sitios.','warning'));
   profileRoot.append(button('Editar mi nombre',()=>form('Mi nombre',[{name:'display_name',label:'Nombre',value:ctx.profile.display_name}],v=>api('profile_save',v))));
   profileRoot.append(button('Cambiar mi contraseña',()=>form('Cambiar contraseña',[
    {name:'current_password',label:'Contraseña actual',type:'password'},
