@@ -139,3 +139,5 @@ body.portal-layout-compact[data-screen=login] header.portal-header{border-color:
 body.portal-layout-compact[data-screen=login] footer{border-color:var(--auth-line);color:var(--auth-muted)}
 body.portal-layout-compact[data-screen=login] footer a{color:var(--auth-muted)}
 
+/* Centrado horizontal del logo en la columna de marca del login de escritorio. */
+@media(min-width:821px){body.portal-layout-compact[data-screen=login] #login.auth-compact .compact-logo{align-self:center}}
