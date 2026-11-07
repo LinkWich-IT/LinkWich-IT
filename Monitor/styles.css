@@ -139,3 +139,13 @@ html[data-theme=dark] .portal-unified header .brand-logo,html[data-theme=dark] .
 @media(max-width:760px){.portal-unified .access-intro{border-right:0;border-bottom:1px solid var(--line)}}
 
 .portal-unified[data-screen=mfa] #notice{width:min(480px,100%);align-self:center}
+
+
+/* Identificadores de marca y pequeño aumento del símbolo; QR sin cambios. */
+.brand-registered{font-size:.36em;line-height:0;position:relative;top:-.68em;vertical-align:baseline;margin-left:.18em;letter-spacing:0;font-weight:500;color:inherit}
+.access-product .brand-registered,footer .brand-registered{font-size:.6em;top:-.55em}
+#login .access-brand>img{width:64px;height:64px;flex-basis:64px}
+#mfa .access-brand>img{width:40px;height:40px;flex-basis:40px}
+.portal-unified header .brand-official .brand-logo{width:36px;height:36px}
+#portal-nav:after{content:'LinkWich-Monitor®'}
+@media(max-width:760px){#login .access-brand>img{width:50px;height:50px;flex-basis:50px}.portal-unified header .brand-official .brand-logo{width:32px;height:32px}}
