@@ -4,7 +4,7 @@ import {createManagement} from './management.js?v=notices-1';
 import {icon,buttonIcon,setBusy,statusStyles,decorateStatic,renderChart,renderChartTable} from './visuals.js?v=filters-1';
 import {createClient} from './vendor/supabase.js';
 import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnostico-1';
-import {renderLicense,renderSiteDetails} from './license.js?v=friendly-1';
+import {renderLicense,renderSiteDetails} from './license.js?v=cards-2';
 const $=id=>document.getElementById(id);
 let manager;
 let refreshAgain=false,historySite='',chartCache=null;
@@ -207,4 +207,3 @@ decorateStatic();for(const[id,name]of [['metric-total-icon','server'],['metric-o
 $('refresh').onclick=()=>manager?.refreshActive();
 if(!/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(SUPABASE_URL)||SUPABASE_PUBLISHABLE_KEY.startsWith('REEMPLAZAR'))notice('El portal está pendiente de configuración por LinkWich-IT.','warning');
 else {db=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,storageKey:'lw-monitor-'+SUPABASE_URL.split('//')[1].split('.')[0]+'-auth',autoRefreshToken:true,detectSessionInUrl:false}});manager=createManagement({db,baseUrl:SUPABASE_URL,publishableKey:SUPABASE_PUBLISHABLE_KEY,notice,logout,onTenantChange:refresh});db.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')setTimeout(()=>logout(false),0);});restoreSession();}
-
