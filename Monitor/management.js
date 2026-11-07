@@ -11,7 +11,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    body:JSON.stringify({action,...values}),cache:'no-store',signal:AbortSignal.timeout(30000),
   });
   const data=await response.json().catch(()=>({error:'Respuesta no válida. Comprueba que portal-admin esté desplegada.'}));
-  if(!response.ok)throw Error(data.error||'No fue posible completar la operación.');return data;
+  if(!response.ok){const error=Error(data.error||'No fue posible completar la operación.');error.status=response.status;if(response.status===401&&action!=='session_end')window.dispatchEvent(new CustomEvent('lw-session-expired'));throw error;}return data;
  }
  const canManage=t=>ctx?.global_admin||ctx?.memberships?.some(m=>m.tenant_id===t&&m.role==='client_admin');
  const button=(text,action,cls='subtle')=>{const b=el('button',text,cls);b.type='button';b.onclick=async()=>{b.disabled=true;try{await action();}catch(e){status(e.message);}finally{b.disabled=false;}};return b;};
@@ -128,6 +128,22 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  function resetUser(u){form('Establecer contraseña temporal',[
   {name:'password',label:'Nueva contraseña temporal',type:'password'},
  ],v=>api('password_admin',{id:u.id,...v}),'Cuenta: '+u.email+'. Entrega la contraseña por un canal privado. El usuario conservará su segundo factor y deberá cambiar esta contraseña al acceder.');}
+ function transferSite(s){form('Transferir sitio a otro cliente',[
+  {name:'tenant_id',label:'Cliente destino',type:'select',options:tenantOptions().filter(([id])=>id!==s.tenant_id)},
+  {name:'confirm',label:'Confirmo que el nuevo cliente debe ver este sitio y TODO su historial',type:'checkbox',value:false},
+  {name:'cancel_pending',label:'Cancelar avisos aún pendientes para los contactos del cliente anterior',type:'checkbox',value:false},
+ ],v=>api('site_transfer',{id:s.id,...v}),'Sitio: '+s.name+'. Conserva ID y credencial; no debes cambiar on-premise. Los correos ya enviados no se pueden retirar. Si hay avisos en procesamiento, espera a que termine el envío.');}
+ function resetMfa(u){form('Reiniciar autenticador del usuario',[
+  {name:'confirm_email',label:'Escribe el correo del usuario para confirmar',type:'email'},
+  {name:'reason',label:'Motivo de la recuperación'},
+  {name:'identity_verified',label:'Verifiqué la identidad de la persona por un canal confiable',type:'checkbox',value:false},
+  {name:'current_password',label:'Tu contraseña de administrador',type:'password'},
+ ],async v=>{const r=await api('mfa_reset',{id:u.id,...v});notice(r.message);return r;},
+ 'Cuenta: '+u.email+'. Se eliminará su autenticador TOTP y se cerrarán sus sesiones. Al ingresar con su correo y contraseña verá un QR NUEVO para registrar en su teléfono. No cambia su contraseña. El QR anterior no se recupera ni se muestra al administrador.');}
+ function editIdle(){form('Tiempo de cierre por inactividad',[
+  {name:'idle_minutes',label:'Minutos sin interacción (5 a 1440)',type:'number',value:ctx.idle_minutes||15,min:5,max:1440},
+ ],async v=>{const r=await api('settings_save',v);ctx.idle_minutes=r.idle_minutes;window.dispatchEvent(new CustomEvent('lw-idle-setting',{detail:r.idle_minutes}));return r;},
+ 'Aplica a todos los usuarios. Recargar la página y actualizar datos automáticamente NO cuentan como actividad. Si reduces el tiempo, las sesiones que ya lo excedan finalizarán.');}
  function section(title,help){const p=el('section','','panel admin-section');p.append(el('h2',title));if(help)p.append(el('p',help,'small muted'));root.append(p);return p;}
  async function load(){
   status();const generation=version;root.setAttribute('aria-busy','true');
@@ -149,17 +165,20 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    if(tenants.some(t=>canManage(t.id)))sp.append(button('Añadir sitio',()=>newSite()));
    for(const s of sites.data||[]){
     const card=el('article','','admin-row');const info=el('div');info.append(el('strong',s.name),el('p',tenants.find(t=>t.id===s.tenant_id)?.name||'Cliente','small muted'),el('p',s.paused?'Pausado':'Monitoreo habilitado','small'),el('code',s.id,'small'));card.append(info);
-    if(canManage(s.tenant_id)){const actions=el('div','','row-actions');actions.append(button('Editar / activar',()=>editSite(s)),button('Renovar credencial',()=>rotateSite(s)));card.append(actions);}sp.append(card);
+    if(canManage(s.tenant_id)){const actions=el('div','','row-actions');actions.append(button('Editar / activar',()=>editSite(s)),button('Renovar credencial',()=>rotateSite(s)));if(ctx.global_admin&&tenants.some(t=>t.id!==s.tenant_id))actions.append(button('Transferir a otro cliente',()=>transferSite(s)));card.append(actions);}sp.append(card);
    }
    if(ctx.global_admin){
+    const settingsPanel=section('Sesiones y seguridad','Cierre por inactividad: '+(ctx.idle_minutes||15)+' minutos. La sesión se conserva al recargar mientras siga vigente.');settingsPanel.append(button('Configurar inactividad',()=>editIdle()));
     const response=await api('users_list',{page});if(generation!==version)return;users=response.rows;hasMore=response.has_more;
     const up=section('Usuarios y perfiles','Consulta: ve los sitios asignados. Administrador de cliente: también gestiona sus sitios y destinatarios. Administrador general: gestiona todos los clientes y usuarios.');
     if(tenants.length)up.append(button('Crear usuario',()=>newUser()));
     for(const u of users){
      const card=el('article','','admin-row');const info=el('div');info.append(el('strong',u.profile.display_name||u.email),el('p',u.email,'small muted'),el('p',u.global_admin?'Administrador general':u.profile.active?'Cuenta habilitada':'Cuenta desactivada','small'));
+     if(u.profile.mfa_recovery_pending)info.append(el('p','Recuperación de autenticador pendiente: reintenta Reiniciar autenticador.','form-error small'));
      for(const m of u.memberships){const name=tenants.find(t=>t.id===m.tenant_id)?.name||m.tenant_id;info.append(el('p',name+' · '+(m.role==='client_admin'?'Administrador del cliente':'Consulta')+(m.active?'':' · Acceso desactivado'),'small muted'));}
      card.append(info);
      if(!u.global_admin&&u.id!==ctx.user.id){const acts=el('div','','row-actions');acts.append(button('Editar perfil',()=>editUser(u)),button('Asignar cliente',()=>membership(u)),button('Contraseña temporal',()=>resetUser(u)));
+      acts.append(button('Reiniciar autenticador',()=>resetMfa(u)));
       for(const m of u.memberships)acts.append(button('Editar acceso: '+(tenants.find(t=>t.id===m.tenant_id)?.name||'cliente'),()=>membership(u,m)));card.append(acts);}up.append(card);
     }
     const pager=el('div','','form-actions');if(page>1)pager.append(button('Usuarios anteriores',async()=>{page--;await load();}));pager.append(el('span','Página '+page,'small muted'));if(hasMore)pager.append(button('Usuarios siguientes',async()=>{page++;await load();}));up.append(pager);
@@ -179,5 +198,5 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   ],v=>{if(v.password!==v.confirmation)throw Error('Las contraseñas no coinciden.');return api('password_self',v);},'Al terminar volverás a iniciar sesión. Tu segundo factor se conserva.')));
  }
  function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';page=1;view='overview';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
- return {init,clear,currentTenant:()=>selected,tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
+ return {init,clear,checkSession:()=>api('session_check'),touch:()=>api('activity'),end:()=>api('session_end'),currentTenant:()=>selected,tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
 }
