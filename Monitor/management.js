@@ -36,7 +36,8 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  async function init(){
   const generation=version;const fresh=await api('context');if(generation!==version)return;
   ctx=fresh;
-  tenants=(await api('tenants_list')).rows;if(generation!==version)return;
+  // Las cuentas temporales solo pueden cargar su perfil hasta cambiar la contraseña.
+  tenants=ctx.profile.must_change_password?[]:(await api('tenants_list')).rows;if(generation!==version)return;
   nav();renderProfile();
   syncFilter();
   $('account-role').textContent=ctx.profile.must_change_password?'Cambio de contraseña requerido':ctx.global_admin?'Administrador general':ctx.memberships.some(m=>m.role==='client_admin')?'Administrador de cliente':'Usuario de consulta';
