@@ -1,8 +1,9 @@
-import {createManagement} from './management.js?v=premium-90-1';
-import {icon,buttonIcon,setBusy,statusStyles,decorateStatic,renderChart,renderChartTable} from './visuals.js?v=premium-90-1';
+import {matchesSearch,matchesSiteStatus,siteState} from './search.js?v=filters-1';
+import {createManagement} from './management.js?v=filters-1';
+import {icon,buttonIcon,setBusy,statusStyles,decorateStatic,renderChart,renderChartTable} from './visuals.js?v=filters-1';
 import {createClient} from './vendor/supabase.js';
 import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnostico-1';
-import {renderLicense} from './license.js?v=license-1';
+import {renderLicense} from './license.js?v=filters-1';
 const $=id=>document.getElementById(id);
 let manager;
 let refreshAgain=false,historySite='',chartCache=null;
@@ -16,7 +17,7 @@ function notice(message=''){$('notice').textContent=message;$('notice').hidden=!
 function screen(id){document.body.dataset.screen=id;for(const name of ['login','mfa','dashboard'])$(name).hidden=name!==id;}
 function node(tag,text,cls){const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;}
 function date(value){return value?new Date(value).toLocaleString():'Sin señales';}
-function state(i){if(i.paused)return 'paused';if(!i.last_seen)return Date.now()-Date.parse(i.created_at)>i.timeout_seconds*1000?'unreachable':'pending';return Date.now()-Date.parse(i.last_seen)>i.timeout_seconds*1000?'unreachable':i.app_ok?'online':'app_down';}
+const state=siteState;
 function readActivity(){try{return Number(localStorage.getItem(activityKey))||0;}catch{return 0;}}
 function saveActivity(value){lastActivity=value;if(activityKey)try{localStorage.setItem(activityKey,String(value));}catch{}}
 function setIdle(minutes){if(Number.isInteger(minutes)&&minutes>=5&&minutes<=1440)idleMinutes=minutes;$('session-policy').textContent='Cierre tras '+idleMinutes+' minutos sin actividad';}
@@ -149,28 +150,30 @@ function historyOptions(rows){
  for(const row of rows)filter.add(new Option(row.name,row.id));
  if(!rows.some(row=>row.id===historySite))historySite='';filter.value=historySite;
 }
-async function updateChart(generation){
- const days=Number($('history-period').value)||30,tenant=manager.currentTenant();const key=JSON.stringify([tenant,historySite,days]);
+async function updateChart(generation,visibleRows){
+ const days=Number($('history-period').value)||30,tenant=manager.currentTenant(),ids=(historySite?visibleRows.filter(i=>i.id===historySite):visibleRows).map(i=>i.id).sort();const key=JSON.stringify([tenant,ids,days]);
  try{
   let rows;
   if(chartCache?.key===key&&Date.now()-chartCache.at<60000)rows=chartCache.rows;
-  else{const result=await db.rpc('lw_incident_daily',{p_tenant:tenant||null,p_site:historySite||null,p_days:days});if(result.error)throw Error('No se pudo consultar la gráfica. Comprueba que instalaste el SQL 04.');rows=result.data||[];if(generation===epoch)chartCache={key,at:Date.now(),rows};}
+  else{const result=await db.rpc('lw_incident_daily_filtered',{p_tenant:tenant||null,p_sites:ids,p_days:days});if(result.error)throw Error('No se pudo consultar la gráfica. Comprueba que instalaste el SQL 08 de búsqueda y filtros.');rows=result.data||[];if(generation===epoch)chartCache={key,at:Date.now(),rows};}
   if(generation!==epoch)return;renderChart($('incident-chart'),rows);renderChartTable($('chart-data'),rows);
  }catch(error){if(generation===epoch){$('incident-chart').replaceChildren(node('p',error.message,'muted small'));$('chart-data').replaceChildren();}}
  finally{if(generation===epoch)setBusy($('incident-chart'),false);}
 }
 async function refresh(){
- if($('dashboard').hidden||manager?.mustChange())return;if(loading){refreshAgain=true;return;}
+ if($('dashboard').hidden||manager?.mustChange()||!manager?.isOverview())return;if(loading){refreshAgain=true;return;}
  loading=true;const generation=epoch;setDashboardBusy(true);$('refresh').disabled=true;
  try{
   const security=await manager.checkSession();setIdle(security.idle_minutes);if(generation!==epoch||$('dashboard').hidden)return;if(expired()){await inactivityCheck();return;}
   const a=await db.from('lw_installations').select('id,tenant_id,name,paused,created_at,last_seen,app_ok,license_ok,timeout_seconds,license_summary,license_received_at').order('name');
   if(generation!==epoch)return;if(a.error)throw Error('fetch');
-  const rows=(a.data||[]).filter(i=>!manager.currentTenant()||i.tenant_id===manager.currentTenant()),states=rows.map(state);historyOptions(rows);
+  const clientRows=(a.data||[]).filter(i=>!manager.currentTenant()||i.tenant_id===manager.currentTenant());
+  const rows=clientRows.filter(i=>matchesSiteStatus(i,$('site-status-filter').value)&&matchesSearch(manager.currentQuery(),i.name,i.id,manager.tenantName(i.tenant_id))),states=rows.map(state);historyOptions(rows);
+  $('site-result-count').textContent=rows.length+' de '+clientRows.length+' sitios coinciden con los filtros';
   $('total').textContent=rows.length;$('online').textContent=states.filter(s=>s==='online').length;$('attention').textContent=states.filter(s=>['app_down','unreachable'].includes(s)).length;
   for(const id of ['metric-total','metric-online','metric-attention'])setBusy($(id),false);
   $('installations').replaceChildren();
-  if(!rows.length)$('installations').append(node('p','No hay sitios asignados a esta cuenta. Contacta a LinkWich-IT.','muted'));
+  if(!rows.length)$('installations').append(node('p','No hay sitios que coincidan con los filtros. Prueba a limpiar la búsqueda.','muted'));
   for(const [ix,i]of rows.entries()){
    const status=states[ix],[cls,symbol]=statusStyles[status]||statusStyles.pending;
    const card=node('article','','panel installation status-'+status);card.append(node('p',manager.tenantName(i.tenant_id),'small muted'));
@@ -181,7 +184,7 @@ async function refresh(){
   const scoped=historySite?rows.filter(i=>i.id===historySite):rows;
   const historyPromise=(async()=>{
    try{
-    const b=scoped.length?await db.from('lw_events').select('id,installation_id,state,created_at').in('installation_id',scoped.map(i=>i.id)).gte('created_at',new Date(Date.now()-90*86400000).toISOString()).order('created_at',{ascending:false}).limit(20):{data:[],error:null};
+    const b=scoped.length?await db.from('lw_events').select('id,installation_id,state,created_at').in('installation_id',scoped.map(i=>i.id)).gte('created_at',new Date(Date.now()-(Number($('history-period').value)||30)*86400000).toISOString()).order('created_at',{ascending:false}).limit(20):{data:[],error:null};
     if(generation!==epoch)return;if(b.error)throw Error('fetch');
     const lookup=Object.fromEntries(rows.map(i=>[i.id,i.name]));$('events').replaceChildren();
     for(const e of b.data||[]){const item=node('div','','event event-'+e.state),title=node('div','','event-title');title.append(icon((statusStyles[e.state]||statusStyles.pending)[1]),node('span',(lookup[e.installation_id]||'Instalación')+' · '+(names[e.state]||e.state)));item.append(title,node('time',date(e.created_at)));$('events').append(item);}
@@ -189,16 +192,17 @@ async function refresh(){
    }catch{if(generation===epoch)$('events').replaceChildren(node('p','No se pudo actualizar el historial.','muted'));}
    finally{if(generation===epoch)setBusy($('events'),false);}
   })();
-  await Promise.allSettled([historyPromise,updateChart(generation)]);
+  await Promise.allSettled([historyPromise,updateChart(generation,rows)]);
   if(generation!==epoch)return;$('updated').textContent='Actualizado '+new Date().toLocaleTimeString();notice();
  }catch{
   if(generation!==epoch)return;$('installations').replaceChildren(node('p','No se puede confirmar el estado actual.','muted'));$('events').replaceChildren();$('incident-chart').replaceChildren(node('p','Sin datos actualizados.','muted'));
   for(const id of ['total','online','attention'])$(id).textContent='—';$('updated').textContent='Sin datos actualizados';notice('No fue posible consultar el servicio. Reintenta o vuelve a iniciar sesión.');
  }finally{loading=false;if(generation===epoch){setDashboardBusy(false);$('refresh').disabled=false;if(refreshAgain){refreshAgain=false;queueMicrotask(refresh);}}}
 }
+window.addEventListener('lw-filters-cleared',()=>{historySite='';chartCache=null;$('history-site-filter').value='';$('history-period').value='30';});
 $('history-site-filter').onchange=()=>{historySite=$('history-site-filter').value;chartCache=null;refresh();};
 $('history-period').onchange=()=>{chartCache=null;refresh();};
 decorateStatic();for(const[id,name]of [['metric-total-icon','server'],['metric-online-icon','check'],['metric-attention-icon','alert'],['chart-icon','activity'],['events-icon','clock']])$(id).append(icon(name));
-$('refresh').onclick=refresh;
+$('refresh').onclick=()=>manager?.refreshActive();
 if(!/^https:\/\/[a-z0-9]{20}\.supabase\.co$/.test(SUPABASE_URL)||SUPABASE_PUBLISHABLE_KEY.startsWith('REEMPLAZAR'))notice('El portal está pendiente de configuración por LinkWich-IT.');
 else {db=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,storageKey:'lw-monitor-'+SUPABASE_URL.split('//')[1].split('.')[0]+'-auth',autoRefreshToken:true,detectSessionInUrl:false}});manager=createManagement({db,baseUrl:SUPABASE_URL,publishableKey:SUPABASE_PUBLISHABLE_KEY,notice,logout,onTenantChange:refresh});db.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')setTimeout(()=>logout(false),0);});restoreSession();}
