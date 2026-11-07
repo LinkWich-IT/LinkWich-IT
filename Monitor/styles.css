@@ -94,3 +94,5 @@ body.portal-layout-compact .form-actions{flex-wrap:wrap}body.portal-layout-compa
 @media(max-width:360px){body.portal-layout-compact .history-controls{grid-template-columns:1fr}body.portal-layout-compact .metrics{gap:7px}body.portal-layout-compact .metrics .panel{padding:12px 9px}body.portal-layout-compact .metric-top{gap:4px}body.portal-layout-compact .metrics span:not(.spinner){font-size:9px}body.portal-layout-compact .metrics strong{font-size:26px}}
 
 @media(max-width:820px){body.portal-layout-compact input,body.portal-layout-compact select,body.portal-layout-compact textarea{font-size:16px}body.portal-layout-compact .row-actions .subtle{min-height:44px}}
+
+
