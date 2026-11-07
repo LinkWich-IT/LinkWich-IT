@@ -4,5 +4,6 @@ html[data-theme=dark]{color-scheme:dark;--bg:#0c1523;--panel:#142235;--text:#edf
 #management-view{position:relative;min-height:250px}
 #management-view>.section-label{margin:6px 0}#management-view>.section-label>h2{font-size:16px;color:var(--muted)}.admin-subnav{margin:8px 0 14px}.record-list,.audit-list{max-height:clamp(180px,calc(100dvh - 570px),490px)}.dashboard-top .eyebrow{font-size:9px}.dashboard-top h1{margin:4px 0}.dashboard-top p{margin-top:4px}button{max-width:100%;overflow-wrap:anywhere}.event-title>span,#identity{min-width:0;overflow-wrap:anywhere}@media(max-width:720px){.record-list,.audit-list{max-height:48dvh}.row-actions .subtle{white-space:normal}}
 
-
-
+/* Resumen comercial: mismas tarjetas y distribución responsive del portal. */
+.license-summary{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border,#dce4ef);min-width:0}
+.license-summary h4{margin:0 0 .65rem;font-size:1rem}.license-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1rem 0}.license-grid dt{font-size:.75rem;opacity:.75}.license-grid dd{margin:.2rem 0 0;font-weight:650;overflow-wrap:anywhere}.license-summary progress{width:100%;height:.6rem;accent-color:#16a36a}.license-modules{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0}.license-module{font-size:.75rem;padding:.45rem .6rem;border:1px solid var(--border,#dce4ef);border-radius:.5rem}.license-warning{color:#a76700}@media(max-width:420px){.license-grid{grid-template-columns:1fr}}
