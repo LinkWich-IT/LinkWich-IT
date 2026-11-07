@@ -30,3 +30,5 @@ export function renderChart(target,rows){
  });target.append(svg);
 }
 export function renderChartTable(target,rows){target.replaceChildren();const table=document.createElement('table');const head=document.createElement('thead');const tr=document.createElement('tr');for(const title of ['Fecha UTC','Sin comunicación','Aplicativo','Recuperaciones']){const th=document.createElement('th');th.textContent=title;tr.append(th);}head.append(tr);table.append(head);const body=document.createElement('tbody');for(const r of rows){const tr=document.createElement('tr');for(const value of [r.day,r.unreachable,r.app_down,r.recoveries]){const td=document.createElement('td');td.textContent=value;tr.append(td);}body.append(tr);}table.append(body);target.append(table);}
+
+
