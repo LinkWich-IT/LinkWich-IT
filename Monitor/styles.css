@@ -149,3 +149,21 @@ html[data-theme=dark] .portal-unified header .brand-logo,html[data-theme=dark] .
 .portal-unified header .brand-official .brand-logo{width:36px;height:36px}
 #portal-nav:after{content:'LinkWich-Monitor®'}
 @media(max-width:760px){#login .access-brand>img{width:50px;height:50px;flex-basis:50px}.portal-unified header .brand-official .brand-logo{width:32px;height:32px}}
+
+
+/* Barra única del dashboard: marca, identidad y acciones. */
+.header-identity,.dashboard-header-control{display:none}
+.portal-unified[data-screen=dashboard] .header-identity{display:block;flex:1 1 180px;min-width:0;text-align:right;margin-right:4px}
+.header-identity #identity{margin:0;font-size:11px;line-height:1.6;overflow-wrap:anywhere}
+.portal-unified[data-screen=dashboard] .dashboard-header-control{display:inline-flex;flex:0 0 auto}
+.portal-unified[data-screen=dashboard] header.portal-header{align-items:center;min-height:76px;gap:14px}
+.portal-unified[data-screen=dashboard] header .brand-official{flex:0 1 270px}
+.portal-unified[data-screen=dashboard] .pwa-actions{margin-left:auto;align-items:center;gap:7px;flex:0 1 auto}
+.portal-unified[data-screen=dashboard] .pwa-actions .subtle{min-height:38px;padding:8px 11px;font-size:11px}
+.portal-unified[data-screen=dashboard] main{margin-top:20px}
+#dashboard{grid-template-areas:"nav meta" "nav filters" "nav content"}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:1100px){.portal-unified[data-screen=dashboard] .header-identity{display:none}.portal-unified[data-screen=dashboard] header .brand-official{flex:1 1 180px}}
+@media(max-width:980px){#dashboard{grid-template-areas:"nav" "meta" "filters" "content"}}
+@media(max-width:760px){.portal-unified[data-screen=dashboard] header.portal-header{gap:10px;min-height:66px}.portal-unified[data-screen=dashboard] .pwa-actions{flex:1 1 auto;justify-content:flex-end;flex-wrap:wrap}.portal-unified[data-screen=dashboard] .pwa-actions .subtle{font-size:10px;padding:7px 9px;min-height:38px}.portal-unified[data-screen=dashboard] main{margin-top:15px}}
+@media(max-width:480px){.portal-unified[data-screen=dashboard] header .brand-official{flex-basis:100%}.portal-unified[data-screen=dashboard] .pwa-actions{width:100%;justify-content:flex-start;margin-left:0}.portal-unified[data-screen=dashboard] .pwa-actions>.dashboard-header-control{flex:1 1 auto}.portal-unified[data-screen=dashboard] .dashboard-header-control>.subtle{width:100%}.portal-unified[data-screen=dashboard] .pwa-actions>#pwa-install,.portal-unified[data-screen=dashboard] .pwa-actions>#theme{flex:1 1 auto}}
