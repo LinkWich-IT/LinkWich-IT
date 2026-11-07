@@ -10,3 +10,16 @@ html[data-theme=dark]{color-scheme:dark;--bg:#0c1523;--panel:#142235;--text:#edf
 
 /* Filtros compartidos: disponibles en todas las pestañas de datos. */
 .portal-filters{display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin:16px 0;padding:16px 18px}.portal-filters>div{flex:1 1 180px;min-width:0}.portal-filters>.search-field{flex:2 1 240px}.portal-filters label,.tab-filters label{margin-top:0}.portal-filters .filter-actions{display:flex;gap:8px;flex:0 1 auto;flex-wrap:wrap}.portal-filters .filter-scope{flex-basis:100%;margin:0}.tab-filters{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}.tab-filters>div{flex:1 1 180px}.result-count{margin:10px 0}.badge.paused-badge{background:#fff0d9;color:#a34c00;border-color:#efc086}.installation.status-paused{border-top-color:#e38a23}.admin-row .badge{margin:7px 0}.chart-tooltip{min-height:48px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:8px;background:var(--soft);color:var(--text);font-size:12px;line-height:1.6;overflow-wrap:anywhere}.chart-tooltip[hidden]{display:block;visibility:hidden}.chart-hit{fill:transparent;cursor:pointer}.chart-hit:hover,.chart-hit:focus{fill:#2067df18;stroke:var(--blue);stroke-width:1;outline:none}[data-theme=dark] .badge.paused-badge{background:#4a2e12;color:#ffc77c;border-color:#95612f}@media(max-width:720px){.portal-filters{padding:14px}.portal-filters>div,.portal-filters>.search-field{flex-basis:100%}.portal-filters .filter-actions{flex-basis:100%}.portal-filters .filter-actions button{flex:1}.tab-filters>div{flex-basis:100%}}
+
+
+/* Marca oficial. Dimensiones reservadas para evitar saltos al cargar el PNG. */
+header .brand-official{flex:1 1 auto;min-width:0;gap:14px;max-width:calc(100% - 110px);text-decoration:none}
+header .brand-official .brand-logo{display:block;flex:0 0 auto;width:84px;height:90px;object-fit:contain;background:transparent;border:0;box-shadow:none}
+header .brand-caption{display:block;min-width:0;color:var(--text)}
+header .brand-caption strong{display:block;font-size:17px;font-weight:750;line-height:1.3;letter-spacing:-.02em;overflow-wrap:normal}
+header .brand-caption small{font-size:9px;line-height:1.6;letter-spacing:.12em;white-space:normal;margin-top:5px}
+header.portal-header{min-height:110px;gap:12px;padding-block:8px}
+header #theme{flex:0 0 auto;min-height:38px}
+html[data-theme=dark] .brand-official .brand-logo{filter:brightness(1.4)}
+@media(max-width:720px){header.portal-header{min-height:88px;gap:10px;padding-block:6px}header .brand-official{gap:10px;max-width:calc(100% - 96px)}header .brand-official .brand-logo{width:64px;height:69px}header .brand-caption strong{font-size:13px}header .brand-caption small{font-size:7px;letter-spacing:.08em}header #theme{font-size:11px;padding:7px 9px}}
+@media(max-width:380px){header .brand-official{gap:7px;max-width:calc(100% - 88px)}header .brand-official .brand-logo{width:54px;height:58px}header .brand-caption strong{font-size:11px}header .brand-caption small{font-size:6px;letter-spacing:.03em}header #theme{font-size:10px;padding:6px 7px}}
