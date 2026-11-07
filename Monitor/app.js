@@ -1,7 +1,8 @@
-import {createManagement} from './management.js?v=premium-1';
-import {icon,buttonIcon,setBusy,statusStyles,decorateStatic,renderChart,renderChartTable} from './visuals.js?v=premium-1';
+import {createManagement} from './management.js?v=premium-90-1';
+import {icon,buttonIcon,setBusy,statusStyles,decorateStatic,renderChart,renderChartTable} from './visuals.js?v=premium-90-1';
 import {createClient} from './vendor/supabase.js';
 import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnostico-1';
+import {renderLicense} from './license.js?v=license-1';
 const $=id=>document.getElementById(id);
 let manager;
 let refreshAgain=false,historySite='',chartCache=null;
@@ -163,7 +164,7 @@ async function refresh(){
  loading=true;const generation=epoch;setDashboardBusy(true);$('refresh').disabled=true;
  try{
   const security=await manager.checkSession();setIdle(security.idle_minutes);if(generation!==epoch||$('dashboard').hidden)return;if(expired()){await inactivityCheck();return;}
-  const a=await db.from('lw_installations').select('id,tenant_id,name,paused,created_at,last_seen,app_ok,license_ok,timeout_seconds').order('name');
+  const a=await db.from('lw_installations').select('id,tenant_id,name,paused,created_at,last_seen,app_ok,license_ok,timeout_seconds,license_summary,license_received_at').order('name');
   if(generation!==epoch)return;if(a.error)throw Error('fetch');
   const rows=(a.data||[]).filter(i=>!manager.currentTenant()||i.tenant_id===manager.currentTenant()),states=rows.map(state);historyOptions(rows);
   $('total').textContent=rows.length;$('online').textContent=states.filter(s=>s==='online').length;$('attention').textContent=states.filter(s=>['app_down','unreachable'].includes(s)).length;
@@ -174,13 +175,13 @@ async function refresh(){
    const status=states[ix],[cls,symbol]=statusStyles[status]||statusStyles.pending;
    const card=node('article','','panel installation status-'+status);card.append(node('p',manager.tenantName(i.tenant_id),'small muted'));
    const heading=node('div','','site-heading');heading.append(icon('server'),node('h3',i.name));const badge=node('span',names[status],'badge '+cls);badge.prepend(icon(symbol));
-   card.append(heading,badge,node('p','Última señal: '+date(i.last_seen)),node('p','Licencia al recibir señal: '+(i.license_ok===null?'Sin dato':i.license_ok?'Vigente':'Sin validación vigente')));$('installations').append(card);
+   card.append(heading,badge,node('p','Última señal: '+date(i.last_seen)),node('p','Licencia al recibir señal: '+(i.license_ok===null?'Sin dato':i.license_ok?'Vigente':'Sin validación vigente')));renderLicense(card,i,status);$('installations').append(card);
   }
   setBusy($('installations'),false);
   const scoped=historySite?rows.filter(i=>i.id===historySite):rows;
   const historyPromise=(async()=>{
    try{
-    const b=scoped.length?await db.from('lw_events').select('id,installation_id,state,created_at').in('installation_id',scoped.map(i=>i.id)).gte('created_at',new Date(Date.now()-60*86400000).toISOString()).order('created_at',{ascending:false}).limit(20):{data:[],error:null};
+    const b=scoped.length?await db.from('lw_events').select('id,installation_id,state,created_at').in('installation_id',scoped.map(i=>i.id)).gte('created_at',new Date(Date.now()-90*86400000).toISOString()).order('created_at',{ascending:false}).limit(20):{data:[],error:null};
     if(generation!==epoch)return;if(b.error)throw Error('fetch');
     const lookup=Object.fromEntries(rows.map(i=>[i.id,i.name]));$('events').replaceChildren();
     for(const e of b.data||[]){const item=node('div','','event event-'+e.state),title=node('div','','event-title');title.append(icon((statusStyles[e.state]||statusStyles.pending)[1]),node('span',(lookup[e.installation_id]||'Instalación')+' · '+(names[e.state]||e.state)));item.append(title,node('time',date(e.created_at)));$('events').append(item);}
