@@ -23,3 +23,13 @@ header #theme{flex:0 0 auto;min-height:38px}
 html[data-theme=dark] .brand-official .brand-logo{filter:brightness(1.4)}
 @media(max-width:720px){header.portal-header{min-height:88px;gap:10px;padding-block:6px}header .brand-official{gap:10px;max-width:calc(100% - 96px)}header .brand-official .brand-logo{width:64px;height:69px}header .brand-caption strong{font-size:13px}header .brand-caption small{font-size:7px;letter-spacing:.08em}header #theme{font-size:11px;padding:7px 9px}}
 @media(max-width:380px){header .brand-official{gap:7px;max-width:calc(100% - 88px)}header .brand-official .brand-logo{width:54px;height:58px}header .brand-caption strong{font-size:11px}header .brand-caption small{font-size:6px;letter-spacing:.03em}header #theme{font-size:10px;padding:6px 7px}}
+
+
+/* Avisos por tipo: los mensajes se insertan como texto, con iconos SVG locales. */
+.notice-box,#notice.notice-box{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--line);border-left-width:4px;border-radius:9px;font-size:13px;line-height:1.55;overflow-wrap:anywhere}
+.notice-box>span{min-width:0;flex:1}.notice-icon{width:20px;height:20px;flex:0 0 20px;margin-top:1px}
+.notice-box[data-kind=error],#notice.notice-box[data-kind=error]{background:var(--red-bg);border-color:var(--bad);color:var(--bad)}
+.notice-box[data-kind=warning],#notice.notice-box[data-kind=warning]{background:var(--amber-bg);border-color:var(--warn);color:var(--warn)}
+.notice-box[data-kind=success],#notice.notice-box[data-kind=success]{background:var(--green-bg);border-color:var(--good);color:var(--good)}
+.notice-box[data-kind=info],#notice.notice-box[data-kind=info]{background:var(--soft);border-color:var(--blue);color:var(--blue)}
+@media(max-width:480px){.notice-box,#notice.notice-box{font-size:12px;padding:10px;gap:8px}.notice-icon{width:18px;height:18px;flex-basis:18px}}
