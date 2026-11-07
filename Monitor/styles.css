@@ -33,3 +33,53 @@ html[data-theme=dark] .brand-official .brand-logo{filter:brightness(1.4)}
 .notice-box[data-kind=success],#notice.notice-box[data-kind=success]{background:var(--green-bg);border-color:var(--good);color:var(--good)}
 .notice-box[data-kind=info],#notice.notice-box[data-kind=info]{background:var(--soft);border-color:var(--blue);color:var(--blue)}
 @media(max-width:480px){.notice-box,#notice.notice-box{font-size:12px;padding:10px;gap:8px}.notice-icon{width:18px;height:18px;flex-basis:18px}}
+
+
+/* Acceso: una composición de marca y formulario. Resto del portal intacto. */
+body[data-screen=login]{background:radial-gradient(ellipse at 15% 12%,#dceaff80,transparent 55%),var(--bg)}
+body[data-screen=login] header.portal-header{width:min(1060px,calc(100% - 40px));min-height:56px;padding-block:8px;border-bottom:0;justify-content:flex-end}
+body[data-screen=login] header .brand-official{display:none}
+body[data-screen=login] main{width:min(1060px,calc(100% - 40px));display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:14px;margin:8px auto 24px}
+body[data-screen=login] footer{width:min(1060px,calc(100% - 40px));border-color:var(--line)}
+body[data-screen=login] #notice{width:100%;margin:0}
+#login.auth-premium{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:0;max-width:1060px;margin:0;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:var(--panel);box-shadow:0 22px 70px #173b6510;align-items:stretch}
+#login .login-story{display:flex;flex-direction:column;align-items:flex-start;padding:36px 40px;background:linear-gradient(145deg,#edf5ff,#e8f0fb);position:relative;min-width:0}
+.login-brand{display:flex;flex-direction:column;align-items:flex-start;gap:18px;margin-bottom:18px}
+.login-brand img{display:block;width:83px;height:89px;object-fit:contain;flex:none}
+.login-service-label{font-size:9px;font-weight:800;letter-spacing:.16em;color:#2067df}
+#login .login-story h1{font-size:clamp(29px,3.1vw,39px);line-height:1.14;letter-spacing:-.045em;margin:0 0 16px;max-width:360px;color:var(--text)}
+#login .login-story>p{font-size:14px;line-height:1.75;color:var(--muted);max-width:365px;margin:0 0 24px}
+.login-assurances{display:grid;gap:15px;margin-bottom:26px}
+.login-assurances>div{display:flex;align-items:flex-start;gap:11px}
+.login-assurances svg{width:19px;height:19px;color:#2067df;flex:0 0 19px;margin-top:2px}
+.login-assurances strong{display:block;font-size:12px;font-weight:700;line-height:1.5}
+.login-assurances small{display:block;font-size:11px;color:var(--muted);line-height:1.5;margin-top:2px}
+.login-story-footer{font-size:8px;font-weight:750;letter-spacing:.11em;color:var(--muted);margin-top:auto}
+#login>.login-panel{padding:42px 40px 34px;border:0;border-left:1px solid var(--line);border-radius:0;box-shadow:none;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.login-form-heading{display:flex;align-items:center;gap:11px;margin-bottom:20px}
+.login-shield{display:grid;place-items:center;width:38px;height:38px;border:1px solid var(--line);border-radius:11px;background:var(--soft);color:var(--blue)}
+.login-shield svg{width:20px;height:20px}
+#login .login-panel h2{font-size:26px;line-height:1.25;letter-spacing:-.035em;margin:0 0 8px}
+.login-description{font-size:13px;margin:0 0 8px}
+#login-form label{font-size:12px;margin:17px 0 7px}
+.login-input{position:relative}
+.login-input>svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none}
+#login-form .login-input input{height:47px;padding:11px 13px 11px 42px;border-radius:10px;background:var(--bg);font-size:13px}
+#login-form input::placeholder{color:var(--muted);opacity:.8}
+#login-form .primary{min-height:47px;margin-top:23px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:13px;box-shadow:0 5px 13px #2067df18}
+#login-form .primary>svg{width:18px;height:18px;flex:none}
+.login-security-note{display:flex;align-items:flex-start;justify-content:center;gap:6px;color:var(--muted);font-size:10px;line-height:1.55;margin:14px 0 22px}
+.login-security-note>svg{width:14px;height:14px;flex:0 0 14px;margin-top:1px}
+.login-support{border-top:1px solid var(--line);padding-top:17px}
+.login-support strong{font-size:11px;font-weight:700}
+.login-support p{font-size:11px;color:var(--muted);line-height:1.7;margin:5px 0 0}
+#login #retry-session{margin-top:12px;justify-content:center}
+html[data-theme=dark] body[data-screen=login]{background:radial-gradient(ellipse at 15% 12%,#14346070,transparent 55%),var(--bg)}
+html[data-theme=dark] #login.auth-premium{box-shadow:0 22px 70px #0003}
+html[data-theme=dark] #login .login-story{background:linear-gradient(145deg,#162b47,#13233a)}
+html[data-theme=dark] .login-brand img{filter:brightness(1.4)}
+html[data-theme=dark] .login-service-label,html[data-theme=dark] .login-assurances svg{color:#8bb5ff}
+@media(max-width:900px)and(min-width:761px){#login .login-story{padding:30px}#login>.login-panel{padding:34px 30px}.login-assurances small{font-size:10px}}
+@media(max-width:760px){body[data-screen=login] header.portal-header{width:calc(100% - 28px);min-height:48px}body[data-screen=login] main{width:min(480px,calc(100% - 28px));margin:5px auto 20px;justify-content:flex-start}body[data-screen=login] footer{width:calc(100% - 28px)}#login.auth-premium{grid-template-columns:1fr;border-radius:20px}#login .login-story{padding:23px 25px 22px}.login-brand{flex-direction:row;align-items:center;gap:17px;margin-bottom:15px}.login-brand img{width:61px;height:65px}.login-service-label{font-size:8px;letter-spacing:.12em}#login .login-story h1{font-size:28px;line-height:1.15;margin-bottom:11px;max-width:none}#login .login-story h1 br{display:none}#login .login-story>p{font-size:12px;line-height:1.65;max-width:none;margin-bottom:17px}.login-assurances{display:flex;flex-wrap:wrap;gap:9px 16px;margin-bottom:0}.login-assurances strong{font-size:10px}.login-assurances svg{width:15px;height:15px;flex-basis:15px}.login-assurances>div{gap:7px}.login-assurances small,.login-story-footer{display:none}#login>.login-panel{padding:27px 25px 25px;border-left:0;border-top:1px solid var(--line)}.login-form-heading{margin-bottom:15px}#login .login-panel h2{font-size:24px}.login-security-note{margin-bottom:18px}}
+@media(max-width:360px){#login .login-story,#login>.login-panel{padding-inline:20px}#login .login-story h1{font-size:25px}.login-service-label{font-size:7px}.login-assurances{gap:8px}.login-assurances strong{font-size:9px}}
+@media(max-height:760px)and(min-width:761px){body[data-screen=login] header.portal-header{min-height:48px}body[data-screen=login] main{margin:4px auto 16px}#login .login-story{padding:27px 34px}.login-brand{gap:13px;margin-bottom:15px}.login-brand img{width:68px;height:73px}#login .login-story h1{font-size:32px}#login .login-story>p{margin-bottom:18px}.login-assurances{gap:12px;margin-bottom:18px}#login>.login-panel{padding:30px 34px}.login-form-heading{margin-bottom:15px}#login-form label{margin-top:13px}.login-security-note{margin-bottom:16px}}
