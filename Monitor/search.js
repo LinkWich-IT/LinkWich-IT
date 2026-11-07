@@ -1,0 +1,5 @@
+export const normalize=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().trim();
+export function matchesSearch(query,...values){const haystack=normalize(values.flat(Infinity).join(' '));return normalize(query).split(/\s+/).filter(Boolean).every(word=>haystack.includes(word));}
+export function siteState(site){if(site.paused)return 'paused';if(!site.last_seen)return Date.now()-Date.parse(site.created_at)>site.timeout_seconds*1000?'unreachable':'pending';return Date.now()-Date.parse(site.last_seen)>site.timeout_seconds*1000?'unreachable':site.app_ok?'online':'app_down';}
+export function matchesSiteStatus(site,status){if(!status)return true;if(status==='enabled')return !site.paused;return siteState(site)===status;}
+export function monitoringBadge(paused){const b=document.createElement('span');b.className='badge '+(paused?'paused-badge':'good');b.textContent=paused?'Pausado':'Habilitado';b.title=paused?'No acepta señales ni genera alertas de caída.':'Acepta señales y permite alertas. Revisa la disponibilidad para saber si está en línea.';return b;}
