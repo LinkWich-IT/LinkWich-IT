@@ -38,7 +38,7 @@ html[data-theme=dark] .brand-official .brand-logo{filter:brightness(1.4)}
 /* Acceso: una composición de marca y formulario. Resto del portal intacto. */
 body[data-screen=login]{background:radial-gradient(ellipse at 15% 12%,#dceaff80,transparent 55%),var(--bg)}
 body[data-screen=login] header.portal-header{width:min(1060px,calc(100% - 40px));min-height:56px;padding-block:8px;border-bottom:0;justify-content:flex-end}
-body[data-screen=login] header .brand-official{display:none}
+body[data-screen=login] header .brand-official{display:flex}
 body[data-screen=login] main{width:min(1060px,calc(100% - 40px));display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:14px;margin:8px auto 24px}
 body[data-screen=login] footer{width:min(1060px,calc(100% - 40px));border-color:var(--line)}
 body[data-screen=login] #notice{width:100%;margin:0}
@@ -83,3 +83,16 @@ html[data-theme=dark] .login-service-label,html[data-theme=dark] .login-assuranc
 @media(max-width:760px){body[data-screen=login] header.portal-header{width:calc(100% - 28px);min-height:48px}body[data-screen=login] main{width:min(480px,calc(100% - 28px));margin:5px auto 20px;justify-content:flex-start}body[data-screen=login] footer{width:calc(100% - 28px)}#login.auth-premium{grid-template-columns:1fr;border-radius:20px}#login .login-story{padding:23px 25px 22px}.login-brand{flex-direction:row;align-items:center;gap:17px;margin-bottom:15px}.login-brand img{width:61px;height:65px}.login-service-label{font-size:8px;letter-spacing:.12em}#login .login-story h1{font-size:28px;line-height:1.15;margin-bottom:11px;max-width:none}#login .login-story h1 br{display:none}#login .login-story>p{font-size:12px;line-height:1.65;max-width:none;margin-bottom:17px}.login-assurances{display:flex;flex-wrap:wrap;gap:9px 16px;margin-bottom:0}.login-assurances strong{font-size:10px}.login-assurances svg{width:15px;height:15px;flex-basis:15px}.login-assurances>div{gap:7px}.login-assurances small,.login-story-footer{display:none}#login>.login-panel{padding:27px 25px 25px;border-left:0;border-top:1px solid var(--line)}.login-form-heading{margin-bottom:15px}#login .login-panel h2{font-size:24px}.login-security-note{margin-bottom:18px}}
 @media(max-width:360px){#login .login-story,#login>.login-panel{padding-inline:20px}#login .login-story h1{font-size:25px}.login-service-label{font-size:7px}.login-assurances{gap:8px}.login-assurances strong{font-size:9px}}
 @media(max-height:760px)and(min-width:761px){body[data-screen=login] header.portal-header{min-height:48px}body[data-screen=login] main{margin:4px auto 16px}#login .login-story{padding:27px 34px}.login-brand{gap:13px;margin-bottom:15px}.login-brand img{width:68px;height:73px}#login .login-story h1{font-size:32px}#login .login-story>p{margin-bottom:18px}.login-assurances{gap:12px;margin-bottom:18px}#login>.login-panel{padding:30px 34px}.login-form-heading{margin-bottom:15px}#login-form label{margin-top:13px}.login-security-note{margin-bottom:16px}}
+
+
+/* Marca visible también durante el acceso; compatible con el marcado anterior. */
+body[data-screen=login] header.portal-header{justify-content:space-between;min-height:88px;gap:14px}
+body[data-screen=login] header .brand-official{display:flex;gap:12px}
+body[data-screen=login] header .brand-official .brand-logo{display:block;width:66px;height:71px}
+body[data-screen=login] header .brand-caption strong{font-size:14px}
+body[data-screen=login] header .brand-caption small{font-size:8px}
+#login .login-product{font-size:24px;font-weight:800;letter-spacing:-.045em;line-height:1.25;color:var(--text)}
+#login .login-product>span{color:var(--blue)}
+#login .login-brand{gap:10px;margin-bottom:23px}
+@media(max-width:760px){body[data-screen=login] header.portal-header{min-height:72px}body[data-screen=login] header .brand-official .brand-logo{width:51px;height:55px}body[data-screen=login] header .brand-official{gap:9px}body[data-screen=login] header .brand-caption strong{font-size:12px}body[data-screen=login] header .brand-caption small{font-size:6px}#login .login-brand{flex-direction:column;align-items:flex-start;gap:7px;margin-bottom:16px}#login .login-product{font-size:22px}}
+@media(max-width:360px){body[data-screen=login] header .brand-caption strong{font-size:10px}body[data-screen=login] header .brand-caption small{font-size:5px}}
