@@ -1,8 +1,9 @@
+import {icon,buttonIcon,setBusy} from './visuals.js?v=premium-1';
 // No contiene claves privadas. Todas las operaciones se autorizan en portal-admin.
 export function createManagement({db,baseUrl,publishableKey,notice,logout,onTenantChange}) {
  const $=id=>document.getElementById(id);
  const el=(tag,text='',cls='')=>{const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;};
- let ctx=null,tenants=[],users=[],page=1,hasMore=false,version=0,selected='',view='overview',credentialTimer;
+ let ctx=null,tenants=[],users=[],page=1,hasMore=false,version=0,selected='',view='overview',credentialTimer,adminTab='clients';
  const root=$('management-view'),profileRoot=$('profile-view');
  async function api(action,values={}){
   const {data:{session}}=await db.auth.getSession();if(!session)throw Error('Tu sesión terminó. Vuelve a ingresar.');
@@ -14,7 +15,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   if(!response.ok){const error=Error(data.error||'No fue posible completar la operación.');error.status=response.status;if(response.status===401&&action!=='session_end')window.dispatchEvent(new CustomEvent('lw-session-expired'));throw error;}return data;
  }
  const canManage=t=>ctx?.global_admin||ctx?.memberships?.some(m=>m.tenant_id===t&&m.role==='client_admin');
- const button=(text,action,cls='subtle')=>{const b=el('button',text,cls);b.type='button';b.onclick=async()=>{b.disabled=true;try{await action();}catch(e){status(e.message);}finally{b.disabled=false;}};return b;};
+ const button=(text,action,cls='subtle')=>{const b=el('button',text,cls);b.type='button';const symbol=/autenticador/i.test(text)?'shield':/contraseña|credencial/i.test(text)?'key':/usuario|perfil/i.test(text)?'user':/cliente/i.test(text)?'users':/sitio/i.test(text)?'server':/inactividad|seguridad/i.test(text)?'settings':/actividad|disponibilidad/i.test(text)?'activity':null;if(symbol)buttonIcon(b,symbol);b.onclick=async()=>{b.disabled=true;setBusy(b,true);try{await action();}catch(e){status(e.message);}finally{b.disabled=false;setBusy(b,false);}};return b;};
  function status(message=''){const target=$('management-notice');if(target){target.textContent=message;target.hidden=!message;}else notice(message);}
  function setView(next){
   if(ctx?.profile.must_change_password)next='profile';
@@ -64,14 +65,14 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   const save=el('button','Guardar','primary');save.type='submit';
   const cancel=button('Cancelar',()=>dlg.close());actions.append(cancel,save);f.append(error,actions);dlg.append(f);document.body.append(dlg);
   dlg.addEventListener('close',()=>{for(const input of Object.values(inputs))input.value='';dlg.remove();},{once:true});
-  f.onsubmit=async event=>{event.preventDefault();save.disabled=true;cancel.disabled=true;error.textContent='';const generation=version;
+  f.onsubmit=async event=>{event.preventDefault();save.disabled=true;cancel.disabled=true;setBusy(save,true,'Guardando');error.textContent='';const generation=version;
    try{
     const values=Object.fromEntries(fields.map(s=>[s.name,s.type==='checkbox'?inputs[s.name].checked:s.type==='number'?Number(inputs[s.name].value):inputs[s.name].value]));
     const output=await onSave(values);if(generation!==version)return;
     dlg.close();if(output?.relogin){await logout();notice('Contraseña actualizada. Ingresa de nuevo con tu nueva contraseña y segundo factor.');return;}
     if(output?.token)credentials(output);
     if(view==='management')await load();else if(view==='profile'){await init();renderProfile();}
-   }catch(e){if(generation===version)error.textContent=e.message;}finally{save.disabled=false;cancel.disabled=false;}
+   }catch(e){if(generation===version)error.textContent=e.message;}finally{save.disabled=false;cancel.disabled=false;setBusy(save,false);}
   };
   dlg.addEventListener('cancel',event=>{if(save.disabled)event.preventDefault();});
   dlg.showModal();inputs[fields[0]?.name]?.focus();
@@ -145,16 +146,19 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   {name:'idle_minutes',label:'Minutos sin interacción (5 a 1440)',type:'number',value:ctx.idle_minutes||15,min:5,max:1440},
  ],async v=>{const r=await api('settings_save',v);ctx.idle_minutes=r.idle_minutes;window.dispatchEvent(new CustomEvent('lw-idle-setting',{detail:r.idle_minutes}));return r;},
  'Aplica a todos los usuarios. Recargar la página y actualizar datos automáticamente NO cuentan como actividad. Si reduces el tiempo, las sesiones que ya lo excedan finalizarán.');}
- function section(title,help){const p=el('section','','panel admin-section');p.append(el('h2',title));if(help)p.append(el('p',help,'small muted'));root.append(p);return p;}
+ function chooseAdminTab(key){adminTab=key;for(const panel of root.querySelectorAll('[data-admin-section]'))panel.hidden=panel.dataset.adminSection!==key;for(const b of root.querySelectorAll('[data-admin-tab]'))b.setAttribute('aria-current',String(b.dataset.adminTab===key));}
+ function adminTabs(){const n=el('nav','','admin-subnav');n.setAttribute('aria-label','Administración');const tabs=[['clients','Clientes'],['sites','Sitios'],...(ctx.global_admin?[['users','Usuarios'],['security','Seguridad'],['audit','Actividad']]:[])];if(!tabs.some(([key])=>key===adminTab))adminTab='clients';for(const[key,label]of tabs){const b=button(label,()=>chooseAdminTab(key));b.dataset.adminTab=key;b.setAttribute('aria-current',String(key===adminTab));n.append(b);}root.append(n);}
+ function section(title,help){const p=el('section','','panel admin-section');p.dataset.adminSection=title.startsWith('Clientes')?'clients':title.startsWith('Sitios')?'sites':title.startsWith('Usuarios')?'users':title.startsWith('Sesiones')?'security':'audit';p.hidden=p.dataset.adminSection!==adminTab;p.append(el('h2',title));if(help)p.append(el('p',help,'small muted'));root.append(p);return p;}
+ function compactLists(){for(const p of root.querySelectorAll('.admin-section')){const rows=[...p.querySelectorAll(':scope > .admin-row')];if(rows.length){const list=el('div','','record-list');for(const row of rows)list.append(row);p.insertBefore(list,p.querySelector(':scope > .form-actions'));}}} 
  async function load(){
-  status();const generation=version;root.setAttribute('aria-busy','true');
+  status();const generation=version;setBusy(root,true,'Cargando administración');for(const panel of root.querySelectorAll('.admin-section'))setBusy(panel,true);
   try{
    const fresh=await api('context');if(generation!==version)return;ctx=fresh;nav();if(ctx.profile.must_change_password){renderProfile();return;}
    tenants=(await api('tenants_list')).rows;syncFilter();
    const sites=await db.from('lw_installations').select('id,tenant_id,name,paused,timeout_seconds,last_seen').order('name');if(sites.error)throw Error('No se pudieron consultar los sitios.');
    if(generation!==version)return;root.replaceChildren();
    const feedback=el('p','','form-error');feedback.id='management-notice';feedback.hidden=true;feedback.setAttribute('role','status');root.append(feedback);
-   const heading=el('div','','section-label');heading.append(el('h2',ctx.global_admin?'Administración de LinkWich-IT':'Gestión de tu ecosistema'));root.append(heading);
+   const heading=el('div','','section-label');heading.append(el('h2',ctx.global_admin?'Administración de LinkWich-IT':'Gestión de tu ecosistema'));root.append(heading);adminTabs();
    const tp=section('Clientes y destinatarios','Cada cliente tiene su propio conjunto de sitios y contactos de alertas. Los cambios de destinatarios aplican a eventos nuevos.');
    if(ctx.global_admin)tp.append(button('Crear cliente',()=>editTenant()));
    for(const t of tenants){
@@ -170,8 +174,8 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    }
    if(ctx.global_admin){
     const settingsPanel=section('Sesiones y seguridad','Cierre por inactividad: '+(ctx.idle_minutes||15)+' minutos. La sesión se conserva al recargar mientras siga vigente.');settingsPanel.append(button('Configurar inactividad',()=>editIdle()));
+    const up=section('Usuarios y perfiles','Consulta: ve los sitios asignados. Administrador de cliente: también gestiona sus sitios y destinatarios.');setBusy(up,true,'Cargando usuarios');
     const response=await api('users_list',{page});if(generation!==version)return;users=response.rows;hasMore=response.has_more;
-    const up=section('Usuarios y perfiles','Consulta: ve los sitios asignados. Administrador de cliente: también gestiona sus sitios y destinatarios. Administrador general: gestiona todos los clientes y usuarios.');
     if(tenants.length)up.append(button('Crear usuario',()=>newUser()));
     for(const u of users){
      const card=el('article','','admin-row');const info=el('div');info.append(el('strong',u.profile.display_name||u.email),el('p',u.email,'small muted'),el('p',u.global_admin?'Administrador general':u.profile.active?'Cuenta habilitada':'Cuenta desactivada','small'));
@@ -182,11 +186,13 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
       acts.append(button('Reiniciar autenticador',()=>resetMfa(u)));
       for(const m of u.memberships)acts.append(button('Editar acceso: '+(tenants.find(t=>t.id===m.tenant_id)?.name||'cliente'),()=>membership(u,m)));card.append(acts);}up.append(card);
     }
-    const pager=el('div','','form-actions');if(page>1)pager.append(button('Usuarios anteriores',async()=>{page--;await load();}));pager.append(el('span','Página '+page,'small muted'));if(hasMore)pager.append(button('Usuarios siguientes',async()=>{page++;await load();}));up.append(pager);
-    const history=await api('audit_list');if(generation!==version)return;const ap=section('Actividad administrativa reciente','Registra acciones y sus identificadores. No almacena contraseñas ni credenciales del agente.');
-    for(const a of history.rows){const actor=users.find(u=>u.id===a.actor_id)?.email||a.actor_id||'Cuenta eliminada';ap.append(el('p',new Date(a.created_at).toLocaleString()+' · '+actor+' · '+a.action+' · '+(tenants.find(t=>t.id===a.tenant_id)?.name||a.target_id||''),'small audit-line'));}
+    const pager=el('div','','form-actions');if(page>1)pager.append(button('Usuarios anteriores',async()=>{page--;await load();}));pager.append(el('span','Página '+page,'small muted'));if(hasMore)pager.append(button('Usuarios siguientes',async()=>{page++;await load();}));up.append(pager);setBusy(up,false);
+    const ap=section('Actividad administrativa reciente','Acciones administrativas de los últimos 60 días. No almacena contraseñas ni credenciales.');setBusy(ap,true,'Cargando actividad');const history=await api('audit_list');if(generation!==version)return;
+    const auditList=el('div','','audit-list');ap.append(auditList);
+    for(const a of history.rows.filter(a=>Date.parse(a.created_at)>=Date.now()-60*86400000)){const actor=users.find(u=>u.id===a.actor_id)?.email||a.actor_id||'Cuenta eliminada';auditList.append(el('p',new Date(a.created_at).toLocaleString()+' · '+actor+' · '+a.action+' · '+(tenants.find(t=>t.id===a.tenant_id)?.name||a.target_id||''),'small audit-line'));}
    }
-  }catch(e){if(generation===version)status(e.message);}finally{root.removeAttribute('aria-busy');}
+   compactLists();chooseAdminTab(adminTab);
+  }catch(e){if(generation===version)status(e.message);}finally{setBusy(root,false);for(const panel of root.querySelectorAll('.admin-section'))setBusy(panel,false);}
  }
  function renderProfile(){
   if(!ctx)return;profileRoot.replaceChildren();profileRoot.append(el('h2','Mi perfil'),el('p',ctx.user.email,'muted'),el('p',ctx.profile.display_name||'Sin nombre registrado'));
@@ -198,6 +204,6 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    {name:'confirmation',label:'Repetir nueva contraseña',type:'password'},
   ],v=>{if(v.password!==v.confirmation)throw Error('Las contraseñas no coinciden.');return api('password_self',v);},'Al terminar volverás a iniciar sesión. Tu segundo factor se conserva.')));
  }
- function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';page=1;view='overview';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
+ function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';page=1;view='overview';adminTab='clients';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
  return {init,clear,checkSession:()=>api('session_check'),touch:()=>api('activity'),end:()=>api('session_end'),currentTenant:()=>selected,tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
 }
