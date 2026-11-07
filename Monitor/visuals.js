@@ -9,26 +9,32 @@ export function setBusy(target,active,label='Actualizando'){
  if(active&&!overlay){overlay=document.createElement('div');overlay.className='busy-overlay';overlay.setAttribute('role','status');const spin=document.createElement('span');spin.className='spinner';spin.setAttribute('aria-hidden','true');overlay.append(spin,document.createTextNode(label+'…'));target.append(overlay);}
  if(!active)overlay?.remove();
 }
-export const statusStyles={online:['good','check'],unreachable:['bad','offline'],app_down:['warn','alert'],pending:['warn','clock'],paused:['neutral','pause']};
+export const statusStyles={online:['good','check'],unreachable:['bad','offline'],app_down:['warn','alert'],pending:['warn','clock'],paused:['paused-badge','pause']};
 export function decorateStatic(){for(const [id,name]of [['theme','moon'],['refresh','refresh'],['logout','logout']]){const n=document.getElementById(id);if(n)buttonIcon(n,name);}}
 function svgEl(tag,attrs={},text){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,String(v));if(text!==undefined)e.textContent=String(text);return e;}
 export function renderChart(target,rows){
- target.replaceChildren();const sum=rows.reduce((s,r)=>s+Number(r.unreachable)+Number(r.app_down)+Number(r.recoveries),0);
- if(!sum){const empty=document.createElement('div');empty.className='chart-empty';empty.append(icon('check'));const p=document.createElement('p');p.textContent='Sin cambios de falla o recuperación registrados en este periodo.';empty.append(p);target.append(empty);return;}
+ target.replaceChildren();
+ if(!rows.length){const p=document.createElement('p');p.className='muted small';p.textContent='Sin datos para los sitios seleccionados.';target.append(p);return;}
+ const tooltip=document.createElement('div');tooltip.className='chart-tooltip';tooltip.id=target.id+'-tooltip';tooltip.setAttribute('role','tooltip');tooltip.hidden=true;target.append(tooltip);
  const width=960,height=230,left=36,right=12,top=15,bottom=34,plot=height-top-bottom;
  const max=Math.max(1,...rows.map(r=>Number(r.unreachable)+Number(r.app_down)+Number(r.recoveries)));const ceiling=Math.max(4,Math.ceil(max/4)*4);
- const svg=svgEl('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':'Eventos de disponibilidad por día; datos completos en la tabla desplegable'});
+ const svg=svgEl('svg',{viewBox:`0 0 ${width} ${height}`,role:'group','aria-label':'Eventos diarios. Usa Tab para consultar cada día; pulsa Escape para cerrar el detalle.'});
  svg.append(svgEl('title',{},'Eventos de disponibilidad por día (UTC)'));
  for(let n=0;n<=4;n++){const y=top+plot-plot*n/4;svg.append(svgEl('line',{x1:left,y1:y,x2:width-right,y2:y,class:'chart-grid'}),svgEl('text',{x:left-8,y:y+4,'text-anchor':'end',class:'chart-label'},ceiling*n/4));}
  const step=(width-left-right)/rows.length,bar=Math.max(3,Math.min(28,step*.6));
  rows.forEach((row,index)=>{
-  const x=left+step*index+(step-bar)/2;let y=top+plot;
-  for(const [key,cls,label]of [['unreachable','chart-red','Sin comunicación'],['app_down','chart-amber','Aplicativo sin respuesta'],['recoveries','chart-green','Recuperaciones']]){
-   const value=Number(row[key]);if(!value)continue;const h=value/ceiling*plot;y-=h;const rect=svgEl('rect',{x,y,width:bar,height:h,rx:2,class:cls});rect.append(svgEl('title',{},`${row.day}: ${label}: ${value}`));svg.append(rect);
+  const group=svgEl('g');const x=left+step*index+(step-bar)/2;let y=top+plot;
+  for(const [key,cls]of [['unreachable','chart-red'],['app_down','chart-amber'],['recoveries','chart-green']]){
+   const value=Number(row[key]);if(!value)continue;const h=value/ceiling*plot;y-=h;group.append(svgEl('rect',{x,y,width:bar,height:h,rx:2,class:cls}));
   }
+  const label=`${row.day} (UTC) · Sin comunicación: ${row.unreachable} · Aplicativo sin respuesta: ${row.app_down} · Recuperaciones: ${row.recoveries}`;
+  const hit=svgEl('rect',{x:left+step*index,y:top,width:step,height:plot,tabindex:0,role:'button',class:'chart-hit','aria-label':label,'aria-describedby':tooltip.id});
+  const show=()=>{tooltip.textContent=label;tooltip.hidden=false;};const hide=()=>{tooltip.hidden=true;};
+  hit.addEventListener('pointerenter',show);hit.addEventListener('pointerleave',()=>{if(document.activeElement!==hit)hide();});hit.addEventListener('focus',show);hit.addEventListener('blur',hide);hit.addEventListener('click',show);
+  hit.addEventListener('keydown',event=>{if(event.key==='Escape')hide();if(event.key==='Enter'||event.key===' '){event.preventDefault();show();}});
+  group.append(hit);svg.append(group);
   if(index%Math.max(1,Math.ceil(rows.length/8))===0||index===rows.length-1){const date=String(row.day).slice(5).split('-').reverse().join('/');svg.append(svgEl('text',{x:left+step*(index+.5),y:height-9,'text-anchor':'middle',class:'chart-label'},date));}
- });target.append(svg);
+ });
+ target.append(svg);const help=document.createElement('p');help.className='small muted';help.textContent='Pasa el cursor, toca un día o usa Tab para consultar los valores. Fechas agrupadas en UTC.';target.append(help);
 }
 export function renderChartTable(target,rows){target.replaceChildren();const table=document.createElement('table');const head=document.createElement('thead');const tr=document.createElement('tr');for(const title of ['Fecha UTC','Sin comunicación','Aplicativo','Recuperaciones']){const th=document.createElement('th');th.textContent=title;tr.append(th);}head.append(tr);table.append(head);const body=document.createElement('tbody');for(const r of rows){const tr=document.createElement('tr');for(const value of [r.day,r.unreachable,r.app_down,r.recoveries]){const td=document.createElement('td');td.textContent=value;tr.append(td);}body.append(tr);}table.append(body);target.append(table);}
-
-
