@@ -7,6 +7,7 @@ import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnos
 import {renderLicense,renderSiteDetails} from './license.js?v=cards-2';
 const $=id=>document.getElementById(id);
 let manager;
+let welcomedSession='';
 let refreshAgain=false,historySite='',chartCache=null;
 let db,factor,poll,lastActivity=Date.now(),loading=false,epoch=0;
 let idleMinutes=15,activityKey='',lastTouch=0,lastWrite=0,signingOut=false;
@@ -14,7 +15,18 @@ const names={online:'En línea',unreachable:'Sin comunicación',app_down:'Aplica
 const storedTheme=localStorage.getItem('lw-theme');
 document.documentElement.dataset.theme=storedTheme || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
 $('theme').onclick=()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;localStorage.setItem('lw-theme',t);};
-function notice(message='',kind='info'){renderNotice($('notice'),message,kind);}
+function notice(message='',kind='info'){delete $('notice').dataset.reason;renderNotice($('notice'),message,kind);}
+function welcomeUser(context,user,sid,generation){
+ if(generation!==epoch||$('dashboard').hidden||context.profile?.must_change_password||welcomedSession===sid)return;
+ const target=$('notice');
+ // Los errores o advertencias de acceso tienen prioridad sobre el saludo.
+ if(!target.hidden&&['error','warning'].includes(target.dataset.kind))return;
+ const candidates=[context.profile?.display_name,user.user_metadata?.full_name,user.user_metadata?.name,user.user_metadata?.display_name,user.email];
+ const value=candidates.find(v=>typeof v==='string'&&v.trim());
+ const name=value?value.trim().replace(/\s+/g,' ').slice(0,120):'';
+ notice(name?'¡Te damos la bienvenida, '+name+'! Tu panel está listo.':'¡Te damos la bienvenida! Tu panel está listo.','success');
+ target.dataset.reason='welcome';welcomedSession=sid;
+}
 function screen(id){document.body.dataset.screen=id;for(const name of ['login','mfa','dashboard'])$(name).hidden=name!==id;}
 function node(tag,text,cls){const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;}
 function date(value){return value?new Date(value).toLocaleString():'Sin señales';}
@@ -23,7 +35,7 @@ function readActivity(){try{return Number(localStorage.getItem(activityKey))||0;
 function saveActivity(value){lastActivity=value;if(activityKey)try{localStorage.setItem(activityKey,String(value));}catch{}}
 function setIdle(minutes){if(Number.isInteger(minutes)&&minutes>=5&&minutes<=1440)idleMinutes=minutes;$('session-policy').textContent='Cierre tras '+idleMinutes+' minutos sin actividad';}
 async function logout(remote=true){
- if(signingOut)return;signingOut=true;
+ if(signingOut)return;signingOut=true;welcomedSession='';if($('notice').dataset.reason==='welcome')notice();
  const end=remote&&db&&!$('dashboard').hidden?manager?.end().catch(()=>{}):null;
  epoch++;chartCache=null;historySite='';refreshAgain=false;clearInterval(poll);manager?.clear();$('password').value='';$('otp').value='';$('qr').removeAttribute('src');$('totp-secret').textContent='';$('installations').replaceChildren();$('events').replaceChildren();$('incident-chart').replaceChildren();$('chart-data').replaceChildren();screen('login');
  if(activityKey)try{localStorage.removeItem(activityKey);}catch{}activityKey='';
@@ -57,7 +69,7 @@ async function openDashboard(){
  lastActivity=Math.max(readActivity(),Date.parse(context.last_activity)||0);
  if(!lastActivity||expired()){await logout();notice('Tu sesión terminó por inactividad. Inicia sesión nuevamente.','warning');return;}
  saveActivity(lastActivity);lastTouch=Date.now();screen('dashboard');$('identity').textContent=user.email||'';
- await refresh();clearInterval(poll);poll=setInterval(refresh,30000);
+ const openingEpoch=epoch;await refresh();welcomeUser(context,user,sid,openingEpoch);clearInterval(poll);poll=setInterval(refresh,30000);
 }
 $('retry-session').onclick=()=>restoreSession();
 async function restoreSession(){
@@ -194,7 +206,7 @@ async function refresh(){
    finally{if(generation===epoch)setBusy($('events'),false);}
   })();
   await Promise.allSettled([historyPromise,updateChart(generation,rows)]);
-  if(generation!==epoch)return;$('updated').textContent='Actualizado '+new Date().toLocaleTimeString();notice();
+  if(generation!==epoch)return;$('updated').textContent='Actualizado '+new Date().toLocaleTimeString();if($('notice').dataset.reason!=='welcome'||$('notice').hidden)notice();
  }catch{
   if(generation!==epoch)return;$('installations').replaceChildren(noticeElement('No se puede confirmar el estado actual.'));$('events').replaceChildren();$('incident-chart').replaceChildren(noticeElement('Sin datos actualizados.'));
   for(const id of ['total','online','attention'])$(id).textContent='—';$('updated').textContent='Sin datos actualizados';notice('No fue posible consultar el servicio. Reintenta o vuelve a iniciar sesión.','error');
