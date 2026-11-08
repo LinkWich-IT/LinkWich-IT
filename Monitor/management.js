@@ -1,3 +1,4 @@
+import {mountPersonalHistory} from './personal-history.js?v=delete-1';
 import {emailCopies} from './email-copies.js?v=copies-1';
 import {renderNotice,noticeElement} from './notices.js?v=visible-1';
 import {matchesSearch,matchesSiteStatus,monitoringBadge} from './search.js?v=filters-1';
@@ -61,9 +62,9 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   if(ctx.profile.must_change_password){setView('profile');notice('Cambia tu contraseña temporal para acceder a tus instalaciones.','warning');}
   return ctx;
  }
- function form(title,fields,onSave,help=''){
+ function form(title,fields,onSave,help='',danger=false){
   const dlg=el('dialog','','edit-dialog');const f=el('form');const h=el('h2',title);f.append(h);
-  if(help)f.append(el('p',help,'small muted'));
+  if(help)f.append(el('p',help,danger?'delete-confirmation':'muted'));
   const inputs={};
   for(const spec of fields){
    if(spec.type==='email-list'){const control=emailCopies(spec.value,inputs.alert_email);inputs[spec.name]=control.input;f.append(control.element);continue;}
@@ -79,7 +80,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    inputs[spec.name]=input;f.append(label,input);
   }
   const error=el('p','','form-error');error.setAttribute('role','alert');const actions=el('div','','form-actions');
-  const save=el('button','Guardar','primary');save.type='submit';
+  const save=el('button',danger?'Eliminar definitivamente':'Guardar',danger?'subtle danger-action':'primary');save.type='submit';
   const cancel=button('Cancelar',()=>dlg.close());actions.append(cancel,save);f.append(error,actions);dlg.append(f);document.body.append(dlg);
   dlg.addEventListener('close',()=>{for(const input of Object.values(inputs))input.value='';dlg.remove();},{once:true});
   f.onsubmit=async event=>{event.preventDefault();save.disabled=true;cancel.disabled=true;setBusy(save,true,'Guardando');renderNotice(error);const generation=version;
@@ -154,6 +155,21 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   panel.append(list);pager(panel,securityPage,history.has_more,async next=>{securityPage=next;await load();},history.total);
   panel.append(el('p','La búsqueda se aplica por nombre o correo a todos los clientes. El filtro de ecosistema no limita este registro global.','small muted'));
  }
+ function deleteResource(kind,row){
+  if(!ctx?.global_admin)throw Error('Solo el administrador global puede eliminar.');
+  const expected=kind==='user'?row.email:row.name,generation=version;
+  const titles={user:'Eliminar usuario',site:'Eliminar sitio',tenant:'Eliminar cliente'};
+  const help={user:'Se eliminará la cuenta del portal y sus accesos. Los sitios y clientes se conservarán. La acción quedará en auditoría. No se puede deshacer.',site:'Se eliminarán este sitio, su credencial, su historial de disponibilidad y los correos asociados en la cola. El aplicativo on-premise seguirá funcionando, pero no podrá enviar señales con esta credencial. Los correos que ya estén en procesamiento podrían enviarse. No se puede deshacer.',tenant:'Solo puedes eliminarlo cuando no tenga sitios. Primero transfiérelos o elimínalos. Se retirarán las vinculaciones de usuarios a este cliente, conservando sus cuentas. La acción y el nombre del cliente quedarán en auditoría. No se puede deshacer.'};
+  form(titles[kind],[
+   {name:'confirmation',label:'Escribe exactamente '+(kind==='user'?'el correo: ':'el nombre: ')+expected,type:kind==='user'?'email':'text'},
+   {name:'acknowledge',label:'Entiendo que esta eliminación es permanente',type:'checkbox'},
+  ],async v=>{
+   if(!v.acknowledge)throw Error('Debes confirmar que entiendes la eliminación.');
+   const match=kind==='user'?v.confirmation.trim().toLowerCase()===expected.toLowerCase():v.confirmation.trim()===expected;
+   if(!match)throw Error('La confirmación no coincide.');
+   const r=await api(kind+'_delete',{id:row.id,confirmation:v.confirmation,confirmed:true});if(generation===version)notice(titles[kind]+': operación completada y registrada en auditoría.','success');return r;
+  },help[kind],true);
+ }
  function editUser(u){form('Editar usuario',[
   {name:'display_name',label:'Nombre',value:u.profile.display_name||u.email},
   {name:'active',label:'Cuenta habilitada en el portal',type:'checkbox',value:u.profile.active},
@@ -195,7 +211,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    const filteredTenants=tenants.filter(t=>(!selected||t.id===selected)&&matchesSearch(query,t.name,t.id,t.alert_email,t.alert_cc||[],(sites.data||[]).filter(s=>s.tenant_id===t.id).map(s=>[s.name,s.id])));count(tp,filteredTenants.length,'clientes');
    for(const t of filteredTenants){
     const card=el('article','','admin-row');const info=el('div');info.append(el('strong',t.name),el('p','Alertas: '+t.alert_email,'small muted'),el('p','Copias: '+(t.alert_cc?.join(', ')||'Ninguna'),'small muted'));
-    card.append(info);if(canManage(t.id))card.append(button('Editar cliente / correos',()=>editTenant(t)));tp.append(card);
+    card.append(info);if(canManage(t.id))card.append(button('Editar cliente / correos',()=>editTenant(t)));if(ctx.global_admin)card.append(button('Eliminar cliente',()=>deleteResource('tenant',t),'subtle danger-action'));tp.append(card);
    }
    if(!filteredTenants.length)tp.append(el('p','No hay clientes que coincidan con los filtros.','muted'));
    const sp=section('Sitios de LinkWich-Monitor','Primero configura el agente del sitio; después quita la pausa para comenzar a recibir señales y alertas.');
@@ -203,7 +219,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    const filteredSites=(sites.data||[]).filter(s=>(!selected||s.tenant_id===selected)&&matchesSiteStatus(s,$('site-status-filter').value)&&matchesSearch(query,s.name,s.id,tenants.find(t=>t.id===s.tenant_id)?.name));count(sp,filteredSites.length,'sitios');
    for(const s of filteredSites){
     const card=el('article','','admin-row');const info=el('div');info.append(el('strong',s.name),el('p',tenants.find(t=>t.id===s.tenant_id)?.name||'Cliente','small muted'),monitoringBadge(s.paused),el('code',s.id,'small'));card.append(info);
-    if(canManage(s.tenant_id)){const actions=el('div','','row-actions');actions.append(button('Editar / activar',()=>editSite(s)),button('Renovar credencial',()=>rotateSite(s)));if(ctx.global_admin&&tenants.some(t=>t.id!==s.tenant_id))actions.append(button('Transferir a otro cliente',()=>transferSite(s)));card.append(actions);}sp.append(card);
+    if(canManage(s.tenant_id)){const actions=el('div','','row-actions');actions.append(button('Editar / activar',()=>editSite(s)),button('Renovar credencial',()=>rotateSite(s)));if(ctx.global_admin&&tenants.some(t=>t.id!==s.tenant_id))actions.append(button('Transferir a otro cliente',()=>transferSite(s)));if(ctx.global_admin)actions.append(button('Eliminar sitio',()=>deleteResource('site',s),'subtle danger-action'));card.append(actions);}sp.append(card);
    }
    if(!filteredSites.length)sp.append(el('p','No hay sitios que coincidan con los filtros.','muted'));
    if(ctx.global_admin){
@@ -224,6 +240,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
      if(!u.global_admin&&u.id!==ctx.user.id){const acts=el('div','','row-actions');acts.append(button('Editar perfil',()=>editUser(u)),button('Asignar cliente',()=>membership(u)),button('Contraseña temporal',()=>resetUser(u)));
       acts.append(button('Reiniciar autenticador',()=>resetMfa(u)));
       acts.append(button(u.login_security?.blocked?'Desbloquear acceso':'Bloquear acceso',()=>setLoginBlock(u,!u.login_security?.blocked)));
+      acts.append(button('Eliminar usuario',()=>deleteResource('user',u),'subtle danger-action'));
       for(const m of u.memberships)acts.append(button('Editar acceso: '+(tenants.find(t=>t.id===m.tenant_id)?.name||'cliente'),()=>membership(u,m)));card.append(acts);}up.append(card);
     }
     if(!users.length)up.append(el('p','No hay usuarios que coincidan con los filtros.','muted'));pager(up,page,hasMore,async next=>{page=next;await load();},response.total);setBusy(up,false);
@@ -232,7 +249,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
     control(auditControls,'Periodo de actividad',[['7','7 días'],['30','30 días'],['60','60 días'],['90','90 días']],String(auditDays),v=>{auditDays=Number(v);auditPage=1;});
     const history=adminTab==='audit'?await api('audit_search',{page:auditPage,query,tenant_id:selected||null,action_prefix:auditAction,days:auditDays}):{rows:[],has_more:false,total:0};if(generation!==version||loadId!==loadSeq)return;
     const auditList=el('div','','audit-list');ap.append(auditList);
-    for(const a of history.rows){const actor=a.actor_email||a.actor_id||'Cuenta eliminada';auditList.append(el('p',new Date(a.created_at).toLocaleString()+' · '+actor+' · '+a.action+' · '+(a.tenant_name||a.target_id||''),'small audit-line'));}
+    for(const a of history.rows){const actor=a.actor_email||a.actor_id||'Cuenta eliminada';auditList.append(el('p',new Date(a.created_at).toLocaleString()+' · '+actor+' · '+({'user.delete':'Usuario eliminado','user.delete.pending':'Eliminación de usuario pendiente de confirmar','user.delete.failed':'No se pudo eliminar el usuario','site.delete':'Sitio eliminado','tenant.delete':'Cliente eliminado'}[a.action]||a.action)+' · '+(a.deleted_name||a.tenant_name||a.target_id||''),'small audit-line'));}
     if(!history.rows.length)auditList.append(el('p','No hay actividad que coincida con los filtros.','muted'));
     pager(ap,auditPage,history.has_more,async next=>{auditPage=next;await load();},history.total);
    }
@@ -248,6 +265,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    {name:'password',label:'Nueva contraseña (12 caracteres como mínimo)',type:'password'},
    {name:'confirmation',label:'Repetir nueva contraseña',type:'password'},
   ],v=>{if(v.password!==v.confirmation)throw Error('Las contraseñas no coinciden.');return api('password_self',v);},'Al terminar volverás a iniciar sesión. Tu segundo factor se conserva.')));
+  if(!ctx.profile.must_change_password){const generation=version,owner=ctx.user.id;mountPersonalHistory(profileRoot,{api,isCurrent:()=>generation===version&&ctx?.user.id===owner,tenants:tenants.filter(t=>ctx.memberships.some(m=>m.tenant_id===t.id&&m.active===true&&m.role==='client_admin'))});}
  }
  function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';query='';page=1;auditPage=1;securityPage=1;userStatus='';userRole='';auditAction='';auditDays=90;view='overview';adminTab='clients';$('portal-search').value='';$('site-status-filter').value='';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
  return {init,clear,checkSession:()=>api('session_check'),touch:()=>api('activity'),end:()=>api('session_end'),currentTenant:()=>selected,currentQuery:()=>query,refreshActive:()=>view==='management'?load():view==='profile'?renderProfile():onTenantChange(),isOverview:()=>view==='overview',tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
