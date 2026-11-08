@@ -189,3 +189,14 @@ html[data-theme=dark] .portal-unified header .brand-logo,html[data-theme=dark] .
 .license-summary>p.small{font-size:10px;line-height:1.7;margin:10px 0;color:var(--muted)}.license-summary>p.license-warning{color:var(--warn)}.license-summary .license-received{display:flex;align-items:flex-start;gap:6px;border-top:1px solid var(--line);padding-top:11px;margin:12px 0 0}.license-received .icon{width:13px;height:13px;flex:none;margin-top:2px;color:var(--muted)}
 @media(max-width:520px){.site-info-line{align-items:flex-start}.license-heading{gap:8px}.license-heading h4{font-size:16px}.license-grid{gap:16px 10px}.license-grid dd{font-size:14px}.license-grid .license-field:last-child{padding:9px 10px}.license-modules .license-module{padding:10px}}
 @media(max-width:340px){.license-grid{grid-template-columns:1fr}.license-grid .license-field:last-child{flex-wrap:wrap}.license-module{flex-wrap:wrap}}
+
+/* Mensajes globales visibles en todas las pantallas, sin desplazar el contenido. */
+#notice.notice-box{position:fixed;z-index:1200;top:18px;top:max(18px,env(safe-area-inset-top));right:20px;width:min(520px,calc(100vw - 40px));max-height:40vh;max-height:40dvh;overflow:auto;overscroll-behavior:contain;margin:0;box-sizing:border-box;box-shadow:0 12px 36px #0003;border-radius:12px;gap:10px;padding:15px 16px;isolation:isolate}
+#notice[hidden]{display:none!important}
+#notice .notice-message{min-width:0;white-space:pre-wrap;overflow-wrap:anywhere;flex:1}
+#notice .notice-dismiss{display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;width:30px;height:30px;min-height:30px;margin:-3px -4px 0 0;padding:0;border:1px solid currentColor;border-radius:8px;background:transparent;color:inherit;cursor:pointer;box-shadow:none;position:sticky;top:0}
+#notice .notice-dismiss svg{width:15px;height:15px;display:block;pointer-events:none}
+#notice .notice-dismiss:hover{background:var(--panel)}
+#notice .notice-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+@media(max-width:600px){#notice.notice-box{top:10px;top:max(10px,env(safe-area-inset-top));right:12px;width:calc(100vw - 24px);max-height:36vh;max-height:36dvh;padding:12px;font-size:12px;line-height:1.55;border-radius:10px}#notice .notice-dismiss{flex-basis:32px;width:32px;height:32px;min-height:32px}}
+@media print{#notice.notice-box{position:static;box-shadow:none;width:100%;max-height:none}#notice .notice-dismiss{display:none}}
