@@ -4,6 +4,7 @@ import {matchesSearch,matchesSiteStatus,monitoringBadge} from './search.js?v=fil
 import {icon,buttonIcon,setBusy} from './visuals.js?v=filters-1';
 // No contiene claves privadas. Todas las operaciones se autorizan en portal-admin.
 export function createManagement({db,baseUrl,publishableKey,notice,logout,onTenantChange}) {
+ let securityPage=1;
  const $=id=>document.getElementById(id);
  const el=(tag,text='',cls='')=>{const n=document.createElement(tag);n.textContent=text;if(cls)n.className=cls;return n;};
  let ctx=null,tenants=[],users=[],page=1,hasMore=false,version=0,selected='',view='overview',credentialTimer,adminTab='clients',query='',loadSeq=0,auditPage=1,userStatus='',userRole='',auditAction='',auditDays=90;
@@ -42,7 +43,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   $('global-site-status').hidden=!siteContext;
   $('filter-scope').textContent=view==='management'&&adminTab==='security'?'La seguridad es una configuración global. Los filtros se conservan para las otras pestañas.':'Cliente y búsqueda se aplican a la pestaña visible. El estado sólo filtra sitios; Usuarios y Actividad tienen filtros adicionales. Pulsa Aplicar filtros o Enter para buscar.';
  }
- function filtersChanged(){page=1;auditPage=1;onTenantChange();if(view==='management')load();}
+ function filtersChanged(){page=1;auditPage=1;securityPage=1;onTenantChange();if(view==='management')load();}
  $('portal-filters').onsubmit=event=>{event.preventDefault();query=$('portal-search').value.trim();filtersChanged();};
  $('site-status-filter').onchange=()=>filtersChanged();
  $('clear-portal-filters').onclick=()=>{query='';selected='';page=1;auditPage=1;userStatus='';userRole='';auditAction='';auditDays=90;$('portal-search').value='';$('tenant-filter').value='';$('site-status-filter').value='';window.dispatchEvent(new CustomEvent('lw-filters-cleared'));filtersChanged();};
@@ -139,6 +140,20 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   {name:'tenant_id',label:'Cliente',type:'select',options:tenantOptions()},
   {name:'role',label:'Perfil',type:'select',options:[['viewer','Consulta'],['client_admin','Administrador del cliente']]},
  ],v=>api('user_create',v),'No se envía un correo de invitación en esta versión. Entrega el acceso por un canal privado. Al entrar deberá configurar MFA y cambiar su contraseña temporal.');}
+ function setLoginBlock(u,blocked){form(blocked?'Bloquear acceso':'Desbloquear acceso',[
+  {name:'confirm',label:'Confirmo '+(blocked?'el bloqueo':'el desbloqueo')+' de esta cuenta',type:'checkbox'},
+ ],async v=>{if(!v.confirm)throw Error('Marca la confirmación para continuar.');const r=await api('login_security_set',{id:u.id,blocked});notice(blocked?'Acceso bloqueado. Sus sitios seguirán siendo monitoreados.':'Acceso desbloqueado y contador reiniciado. El usuario puede iniciar sesión con su contraseña y MFA.','success');return r;},
+ 'Cuenta: '+u.email+'. Se cerrarán sus sesiones del portal. No cambia su contraseña, MFA ni el monitoreo de sus sitios. Para acceder, la cuenta también debe estar habilitada.');}
+ async function renderLoginSecurity(panel,generation,loadId){
+  const title=el('h3','Actividad de acceso');panel.append(title,el('p','Contraseñas incorrectas, accesos completados y bloqueos de los últimos 90 días. La contraseña aceptada aún requiere MFA.','small muted'));
+  const history=await api('login_security_events',{query,page:securityPage});if(generation!==version||loadId!==loadSeq)return;
+  const list=el('div','','audit-list');
+  const labels={'password.failed':'Contraseña incorrecta','password.accepted':'Contraseña aceptada; MFA pendiente','access.completed':'Acceso al portal completado','access.auto_blocked':'Bloqueo automático por 3 fallos','access.manual_blocked':'Acceso bloqueado por administrador','access.unblocked':'Acceso desbloqueado por administrador','access.recovered':'Administrador recuperado desde Supabase','access.rejected_blocked':'Intento rechazado: cuenta bloqueada (registro agrupado por hora)'};
+  for(const row of history.rows){const item=el('p','','audit-line');item.append(el('strong',labels[row.event]||row.event),el('span',' · '+(row.display_name||row.email||'Cuenta eliminada')+' · '+new Date(row.created_at).toLocaleString()+(row.failures?' · Intento '+row.failures+'/3':'')+(row.actor_email?' · Administrador: '+row.actor_email:'')));list.append(item);}
+  if(!history.rows.length)list.append(el('p','No hay eventos de acceso que coincidan con la búsqueda.','muted'));
+  panel.append(list);pager(panel,securityPage,history.has_more,async next=>{securityPage=next;await load();},history.total);
+  panel.append(el('p','La búsqueda se aplica por nombre o correo a todos los clientes. El filtro de ecosistema no limita este registro global.','small muted'));
+ }
  function editUser(u){form('Editar usuario',[
   {name:'display_name',label:'Nombre',value:u.profile.display_name||u.email},
   {name:'active',label:'Cuenta habilitada en el portal',type:'checkbox',value:u.profile.active},
@@ -192,7 +207,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    }
    if(!filteredSites.length)sp.append(el('p','No hay sitios que coincidan con los filtros.','muted'));
    if(ctx.global_admin){
-    const settingsPanel=section('Sesiones y seguridad','Cierre por inactividad: '+(ctx.idle_minutes||15)+' minutos. La sesión se conserva al recargar mientras siga vigente.');settingsPanel.append(button('Configurar inactividad',()=>editIdle()));
+    const settingsPanel=section('Sesiones y seguridad','Cierre por inactividad: '+(ctx.idle_minutes||15)+' minutos. La sesión se conserva al recargar mientras siga vigente.');settingsPanel.append(button('Configurar inactividad',()=>editIdle()));if(adminTab==='security')await renderLoginSecurity(settingsPanel,generation,loadId);
     const up=section('Usuarios y perfiles','Consulta: ve los sitios asignados. Administrador de cliente: también gestiona sus sitios y destinatarios.');setBusy(up,true,'Cargando usuarios');
     const userControls=el('div','','tab-filters');up.append(userControls);
     control(userControls,'Estado de cuenta',[['','Todos'],['active','Habilitada'],['disabled','Desactivada'],['temporary','Contraseña temporal'],['mfa_pending','Recuperación MFA pendiente']],userStatus,v=>{userStatus=v;page=1;});
@@ -200,12 +215,15 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
     const response=adminTab==='users'?await api('users_search',{page,query,tenant_id:selected||null,status:userStatus,role:userRole}):{rows:[],has_more:false,total:0};if(generation!==version||loadId!==loadSeq)return;users=response.rows;hasMore=response.has_more;
     if(tenants.length)up.append(button('Crear usuario',()=>newUser()));
     for(const u of users){
-     const card=el('article','','admin-row');const info=el('div');info.append(el('strong',u.profile.display_name||u.email),el('p',u.email,'small muted'),el('span',u.global_admin?'Administrador general':u.profile.active?'Cuenta habilitada':'Cuenta desactivada','badge '+(u.global_admin?'neutral':u.profile.active?'good':'bad')));
+     const card=el('article','','admin-row');const info=el('div');info.append(el('strong',u.profile.display_name||u.email),el('p',u.email,'small muted'),el('span',u.login_security?.blocked?'Acceso bloqueado':u.global_admin?'Administrador general':u.profile.active?'Cuenta habilitada':'Cuenta desactivada','badge '+(u.login_security?.blocked?'bad':u.global_admin?'neutral':u.profile.active?'good':'bad')));
+     if(u.login_security?.failures)info.append(el('p','Contraseñas incorrectas consecutivas: '+u.login_security.failures+'/3','small muted'));
+     if(u.login_security?.blocked)info.append(el('p',u.login_security.reason==='attempts'?'Bloqueado por tres contraseñas incorrectas.':'Bloqueado por el administrador.','small muted'));
      if(u.profile.mfa_recovery_pending)info.append(noticeElement('Recuperación de autenticador pendiente: reintenta Reiniciar autenticador.','warning'));
      for(const m of u.memberships){const name=tenants.find(t=>t.id===m.tenant_id)?.name||m.tenant_id;info.append(el('p',name+' · '+(m.role==='client_admin'?'Administrador del cliente':'Consulta')+(m.active?'':' · Acceso desactivado'),'small muted'));}
      card.append(info);
      if(!u.global_admin&&u.id!==ctx.user.id){const acts=el('div','','row-actions');acts.append(button('Editar perfil',()=>editUser(u)),button('Asignar cliente',()=>membership(u)),button('Contraseña temporal',()=>resetUser(u)));
       acts.append(button('Reiniciar autenticador',()=>resetMfa(u)));
+      acts.append(button(u.login_security?.blocked?'Desbloquear acceso':'Bloquear acceso',()=>setLoginBlock(u,!u.login_security?.blocked)));
       for(const m of u.memberships)acts.append(button('Editar acceso: '+(tenants.find(t=>t.id===m.tenant_id)?.name||'cliente'),()=>membership(u,m)));card.append(acts);}up.append(card);
     }
     if(!users.length)up.append(el('p','No hay usuarios que coincidan con los filtros.','muted'));pager(up,page,hasMore,async next=>{page=next;await load();},response.total);setBusy(up,false);
@@ -231,6 +249,6 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
    {name:'confirmation',label:'Repetir nueva contraseña',type:'password'},
   ],v=>{if(v.password!==v.confirmation)throw Error('Las contraseñas no coinciden.');return api('password_self',v);},'Al terminar volverás a iniciar sesión. Tu segundo factor se conserva.')));
  }
- function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';query='';page=1;auditPage=1;userStatus='';userRole='';auditAction='';auditDays=90;view='overview';adminTab='clients';$('portal-search').value='';$('site-status-filter').value='';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
+ function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';query='';page=1;auditPage=1;securityPage=1;userStatus='';userRole='';auditAction='';auditDays=90;view='overview';adminTab='clients';$('portal-search').value='';$('site-status-filter').value='';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
  return {init,clear,checkSession:()=>api('session_check'),touch:()=>api('activity'),end:()=>api('session_end'),currentTenant:()=>selected,currentQuery:()=>query,refreshActive:()=>view==='management'?load():view==='profile'?renderProfile():onTenantChange(),isOverview:()=>view==='overview',tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
 }
