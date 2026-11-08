@@ -1,3 +1,4 @@
+import {emailCopies} from './email-copies.js?v=copies-1';
 import {renderNotice,noticeElement} from './notices.js?v=visible-1';
 import {matchesSearch,matchesSiteStatus,monitoringBadge} from './search.js?v=filters-1';
 import {icon,buttonIcon,setBusy} from './visuals.js?v=filters-1';
@@ -64,6 +65,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   if(help)f.append(el('p',help,'small muted'));
   const inputs={};
   for(const spec of fields){
+   if(spec.type==='email-list'){const control=emailCopies(spec.value,inputs.alert_email);inputs[spec.name]=control.input;f.append(control.element);continue;}
    const label=el('label',spec.label);const input=el(spec.type==='select'?'select':spec.type==='textarea'?'textarea':'input');
    input.id='field-'+spec.name;label.htmlFor=input.id;input.name=spec.name;
    if(spec.type==='select'){for(const [value,text] of spec.options)input.add(new Option(text,value));}
@@ -106,11 +108,11 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  function editTenant(t){
   form(t?'Editar cliente y alertas':'Crear cliente',[
    {name:'name',label:'Nombre del cliente / ecosistema',value:t?.name},
-   {name:'alert_email',label:'Correo principal de alertas',type:'email',value:t?.alert_email},
-   {name:'alert_cc',label:'Copias del mismo cliente (una dirección por línea)',type:'textarea',required:false,value:t?.alert_cc?.join('\n')||''},
+   {name:'alert_email',label:'Destinatario principal de alertas',type:'email',value:t?.alert_email},
+   {name:'alert_cc',label:'Copias de alertas',type:'email-list',required:false,value:t?.alert_cc?.join('\n')||''},
    {name:'alert_timezone',label:'Zona horaria',value:t?.alert_timezone||'America/Mazatlan'},
   ],v=>api('tenant_save',{...v,id:t?.id,alert_cc:v.alert_cc.split(/[\n,;]+/).map(s=>s.trim()).filter(Boolean)}),
-  'Las copias son visibles. Usa únicamente contactos de este cliente y de tu soporte. Para enviar a clientes, verifica tu dominio en Resend.');
+  'Los avisos de todos los sitios de este cliente se enviarán al destinatario principal y a las copias que añadas. Máximo: 1 principal y 3 copias.');
  }
  function newSite(){form('Añadir sitio',[
   {name:'tenant_id',label:'Cliente / ecosistema',type:'select',options:tenantOptions().filter(([id])=>canManage(id))},
