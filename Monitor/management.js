@@ -1,4 +1,4 @@
-import {renderNotice,noticeElement} from './notices.js?v=notices-1';
+import {renderNotice,noticeElement} from './notices.js?v=visible-1';
 import {matchesSearch,matchesSiteStatus,monitoringBadge} from './search.js?v=filters-1';
 import {icon,buttonIcon,setBusy} from './visuals.js?v=filters-1';
 // No contiene claves privadas. Todas las operaciones se autorizan en portal-admin.
@@ -18,7 +18,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  }
  const canManage=t=>ctx?.global_admin||ctx?.memberships?.some(m=>m.tenant_id===t&&m.role==='client_admin');
  const button=(text,action,cls='subtle')=>{const b=el('button',text,cls);b.type='button';const symbol=/autenticador/i.test(text)?'shield':/contraseña|credencial/i.test(text)?'key':/usuario|perfil/i.test(text)?'user':/cliente/i.test(text)?'users':/sitio/i.test(text)?'server':/inactividad|seguridad/i.test(text)?'settings':/actividad|disponibilidad/i.test(text)?'activity':null;if(symbol)buttonIcon(b,symbol);b.onclick=async()=>{b.disabled=true;setBusy(b,true);try{await action();}catch(e){status(e.message);}finally{b.disabled=false;setBusy(b,false);}};return b;};
- function status(message='',kind='error'){const target=$('management-notice');if(target)renderNotice(target,message,kind);else notice(message,kind);}
+ function status(message='',kind='error'){notice(message,kind);}
  function setView(next){
   if(ctx?.profile.must_change_password)next='profile';
   view=next;$('portal-filters').hidden=next==='profile';updateFilterScope();for(const name of ['overview','management','profile'])$(name+'-view').hidden=name!==next;
