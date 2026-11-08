@@ -215,3 +215,24 @@ html[data-theme=dark] .portal-unified header .brand-logo,html[data-theme=dark] .
 .email-copies-footer .add-email-copy:disabled{opacity:.55;cursor:not-allowed}
 .email-copies [hidden]{display:none!important}
 @media(max-width:420px){.edit-dialog .email-copies{padding:11px}.email-copy-row{gap:6px}.email-copy-row>input{font-size:16px}.email-copy-row .remove-email-copy{padding:7px;font-size:11px}}
+
+.personal-history{border-top:1px solid var(--line);margin-top:24px;padding-top:20px;min-width:0}
+.personal-history h3{font-size:17px;margin:0 0 14px}
+.personal-history .subtle{margin:0}
+.personal-history-panel{border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin:10px 0;background:var(--panel)}
+.personal-history-panel>summary{cursor:pointer;font-size:13px;font-weight:600;line-height:1.7;overflow-wrap:anywhere}
+.personal-history-panel>summary .icon{display:inline-block;width:17px;height:17px;vertical-align:middle;margin-right:7px;color:var(--blue)}
+.personal-history-panel>p{font-size:11px;line-height:1.7;margin:12px 0}
+.personal-history-controls{display:flex;align-items:end;flex-wrap:wrap;gap:10px;margin:14px 0}
+.personal-history-controls>div{flex:1 1 140px;min-width:0}.personal-history-controls label{font-size:11px;margin:0 0 5px}
+.personal-history-controls>button{flex:0 0 auto;font-size:11px}
+.personal-history-list{max-height:clamp(200px,40dvh,420px);overflow:auto;overscroll-behavior:contain;padding-right:5px;min-width:0}
+.personal-history-event{border-top:1px solid var(--line);padding:12px 0;overflow-wrap:anywhere}
+.personal-history-event:first-child{border-top:0}.personal-history-event strong{display:flex;align-items:flex-start;gap:7px;font-size:12px;line-height:1.6}.personal-history-event strong .icon{width:16px;height:16px;flex:none;color:var(--blue);margin-top:2px}
+.personal-history-event time{display:block;font-size:11px;color:var(--muted);margin:5px 0 0 23px}.personal-history-event p{font-size:11px;margin:5px 0 0 23px}
+.personal-history-panel .form-actions{justify-content:space-between;gap:8px;flex-wrap:wrap}.personal-history-panel .form-actions button{font-size:11px}
+@media(max-width:520px){.personal-history-panel{padding:11px}.personal-history-controls>div{flex-basis:100%}.personal-history-controls>button{width:100%}}
+
+.row-actions .danger-action,.admin-row>.danger-action,.edit-dialog .danger-action{color:var(--bad);border-color:var(--bad);background:var(--panel)}
+.danger-action:hover{background:var(--red-bg)}
+.edit-dialog .delete-confirmation{border:1px solid var(--bad);border-radius:10px;background:var(--red-bg);color:var(--bad);padding:12px;font-size:12px;line-height:1.65}
