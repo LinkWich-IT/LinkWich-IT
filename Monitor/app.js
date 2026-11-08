@@ -1,4 +1,4 @@
-import {portalLogin} from './login.js?v=lockout-1';
+import {portalLogin} from './login.js?v=attempts-1';
 import {renderNotice,noticeElement} from './notices.js?v=visible-1';
 import {matchesSearch,matchesSiteStatus,siteState} from './search.js?v=filters-1';
 import {createManagement} from './management.js?v=lockout-1';
@@ -114,8 +114,10 @@ async function setupMfa(){
 function loginFailure(error,stage){
  const raw=typeof error?.code==='string'?error.code:'';
  const code=/^[a-z0-9_]{1,80}$/.test(raw)?raw:'';
+ if(code==='portal_account_locked')return 'Tu cuenta está bloqueada. Contacta al administrador para que la desbloquee.';
+ if(code==='portal_invalid_password'&&Number.isInteger(error.failed_attempts)&&error.failed_attempts>=1&&error.failed_attempts<=2){const failed=error.failed_attempts,left=3-failed;return 'Contraseña incorrecta. Intento '+failed+' de 3. Te queda'+(left===1?' ':'n ')+left+' intento'+(left===1?'':'s')+'.';}
  const messages={
-  portal_login_failed:'No se pudo iniciar sesión. Revisa tus datos o contacta al administrador si tu cuenta está bloqueada.',
+  portal_login_failed:'No se pudo iniciar sesión. Revisa tu correo y contraseña.',
   portal_login_unavailable:'No se pudo comprobar el acceso. Intenta más tarde o contacta a soporte.',
   invalid_credentials:'Supabase rechazó el correo o la contraseña. Comprueba que sean los del usuario de este proyecto.',
   email_not_confirmed:'El correo de esta cuenta aún no está confirmado en Supabase.',
@@ -132,7 +134,7 @@ function loginFailure(error,stage){
  // Sólo código y estado; jamás registrar contraseñas, sesiones ni el objeto de error completo.
  const status=Number.isInteger(error?.status)?error.status:null;
  console.warn('[LinkWich acceso]',{etapa:stage,codigo:code||'sin_codigo',estado:status});
- return base+(code?' Código: '+code+'.':'');
+ return base+(!code.startsWith('portal_')&&code?' Código: '+code+'.':'');
 }
 $('login-form').onsubmit=async e=>{
  e.preventDefault();notice();const button=e.submitter;button.disabled=true;setBusy(button,true);
