@@ -1,6 +1,7 @@
+import {portalLogin} from './login.js?v=lockout-1';
 import {renderNotice,noticeElement} from './notices.js?v=visible-1';
 import {matchesSearch,matchesSiteStatus,siteState} from './search.js?v=filters-1';
-import {createManagement} from './management.js?v=copies-1';
+import {createManagement} from './management.js?v=lockout-1';
 import {icon,buttonIcon,setBusy,statusStyles,decorateStatic,renderChart,renderChartTable} from './visuals.js?v=filters-1';
 import {createClient} from './vendor/supabase.js';
 import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js?v=login-diagnostico-1';
@@ -114,6 +115,8 @@ function loginFailure(error,stage){
  const raw=typeof error?.code==='string'?error.code:'';
  const code=/^[a-z0-9_]{1,80}$/.test(raw)?raw:'';
  const messages={
+  portal_login_failed:'No se pudo iniciar sesión. Revisa tus datos o contacta al administrador si tu cuenta está bloqueada.',
+  portal_login_unavailable:'No se pudo comprobar el acceso. Intenta más tarde o contacta a soporte.',
   invalid_credentials:'Supabase rechazó el correo o la contraseña. Comprueba que sean los del usuario de este proyecto.',
   email_not_confirmed:'El correo de esta cuenta aún no está confirmado en Supabase.',
   email_provider_disabled:'El acceso por correo está deshabilitado en Supabase.',
@@ -137,8 +140,7 @@ $('login-form').onsubmit=async e=>{
  try{
   if(!db){notice('El navegador no cargó una configuración válida de Supabase. Comprueba config.js y recarga con Ctrl + F5.','error');return;}
   notice('Conectando con Supabase…');
-  const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});
-  $('password').value='';if(error)throw error;
+  try{await portalLogin(db,SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,$('email').value.trim(),$('password').value);}finally{$('password').value='';}
   stage='mfa';notice('Acceso aceptado. Preparando verificación en dos pasos…');
   await setupMfa();notice();
  }catch(error){notice(loginFailure(error,stage),'error');}
