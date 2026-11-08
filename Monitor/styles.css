@@ -200,3 +200,18 @@ html[data-theme=dark] .portal-unified header .brand-logo,html[data-theme=dark] .
 #notice .notice-dismiss:focus-visible{outline:2px solid currentColor;outline-offset:3px}
 @media(max-width:600px){#notice.notice-box{top:10px;top:max(10px,env(safe-area-inset-top));right:12px;width:calc(100vw - 24px);max-height:36vh;max-height:36dvh;padding:12px;font-size:12px;line-height:1.55;border-radius:10px}#notice .notice-dismiss{flex-basis:32px;width:32px;height:32px;min-height:32px}}
 @media print{#notice.notice-box{position:static;box-shadow:none;width:100%;max-height:none}#notice .notice-dismiss{display:none}}
+
+/* Destinatarios de alertas: principal + hasta tres copias. */
+.edit-dialog .email-copies{border:1px solid var(--line);border-radius:12px;margin:20px 0 6px;padding:14px;min-width:0}
+.email-copies legend{font-size:13px;font-weight:650;color:var(--text);padding:0 5px;max-width:100%}
+.email-copies>p{margin:0 0 12px;font-size:11px;line-height:1.6}
+.email-copy-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 8px;margin:12px 0;align-items:center;min-width:0}
+.email-copy-row>label{grid-column:1/-1;font-size:12px;margin:0}
+.email-copy-row>input{min-width:0;width:100%;box-sizing:border-box;margin:0}
+.email-copy-row .remove-email-copy{padding:8px 10px;min-height:40px;font-size:11px;color:var(--bad);border-color:var(--line);align-self:stretch}
+.email-copy-row>.form-error{grid-column:1/-1;margin:0;overflow-wrap:anywhere}
+.email-copies-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:10px}
+.email-copies-footer .add-email-copy{font-size:12px;color:var(--blue)}
+.email-copies-footer .add-email-copy:disabled{opacity:.55;cursor:not-allowed}
+.email-copies [hidden]{display:none!important}
+@media(max-width:420px){.edit-dialog .email-copies{padding:11px}.email-copy-row{gap:6px}.email-copy-row>input{font-size:16px}.email-copy-row .remove-email-copy{padding:7px;font-size:11px}}
