@@ -175,3 +175,83 @@
   #navmenu .lw-support-toggle .lw-support-chevron,
   #navmenu .lw-support-submenu a {transition:none !important;}
 }
+
+/* v13 · Ajuste exclusivamente del encabezado de escritorio.
+   Evita que el menú quede centrado con espacios vacíos enormes y recupera
+   el nombre completo de LinkWich-Monitor® y los iconos cuando hay sitio.
+   No cambia los submenús ni la navegación móvil (<=1199px). */
+@media (min-width:1200px) {
+  #header .header-container {
+    gap:clamp(6px,.65vw,14px) !important;
+  }
+  #navmenu {
+    flex:1 1 auto !important;
+    min-width:0 !important;
+    display:flex !important;
+    justify-content:center !important;
+  }
+  #navmenu > ul {
+    display:flex !important;
+    width:100% !important;
+    justify-content:space-between !important;
+    align-items:center !important;
+    flex-wrap:nowrap !important;
+    gap:0 !important;
+  }
+  #navmenu > ul > li {
+    flex:0 0 auto !important;
+    padding:.42rem .10rem !important;
+  }
+  #header .lw-header-monitor {
+    flex:0 0 auto !important;
+    margin-left:0 !important;
+  }
+}
+@media (min-width:1300px) and (max-width:1549.98px) {
+  #navmenu > ul > li > a {
+    font-size:.79rem !important;
+    padding:.46rem .16rem !important;
+  }
+  #navmenu > ul > li > a i.bi {
+    display:inline-flex !important;
+    font-size:.76rem !important;
+    margin-right:.14rem !important;
+  }
+  #navmenu .lw-support-toggle {
+    font-size:.79rem !important;
+    padding:.48rem .18rem !important;
+    gap:4px !important;
+  }
+  #navmenu .lw-support-toggle .lw-support-headset {
+    display:inline-flex !important;
+    font-size:.76rem !important;
+  }
+  #header .lw-header-monitor {
+    font-size:.79rem !important;
+    padding:.69rem .68rem !important;
+    gap:.15rem !important;
+    white-space:nowrap !important;
+    width:auto !important;
+    min-width:0 !important;
+  }
+  #header .lw-header-monitor .lw-monitor-full {
+    display:inline !important;
+  }
+  #header .lw-header-monitor .lw-monitor-short {
+    display:none !important;
+  }
+}
+@media (min-width:1550px) {
+  #navmenu > ul > li > a {
+    font-size:.88rem !important;
+  }
+  #navmenu > ul > li > a i.bi {
+    display:inline-flex !important;
+  }
+  #header .lw-header-monitor .lw-monitor-full {
+    display:inline !important;
+  }
+  #header .lw-header-monitor .lw-monitor-short {
+    display:none !important;
+  }
+}
