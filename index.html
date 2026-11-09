@@ -14,7 +14,7 @@
 
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="author" content="LinkWich-IT® System & Networking Solution">
-  <meta name="theme-color" content="#0d6efd">
+  <meta name="theme-color" content="#0b102b">
   <meta name="geo.region" content="MX-BCS">
   <meta name="geo.placename" content="San José del Cabo, Baja California Sur">
   <meta name="language" content="Spanish">
@@ -326,10 +326,6 @@
   background-color: #25d366;
 }
 
-.floating-icons .messenger {
-  background-color: #0084ff;
-}
-
 .floating {
   animation: float 4s ease-in-out infinite;
   transform-origin: center;
@@ -548,6 +544,15 @@
   .brand-card img {
     max-height: 44px;
   }
+}
+
+/* Identificación visible de la familia UniFi; se conserva el logo Ubiquiti original. */
+.brand-card.brand-card-unifi { flex-direction: column; gap: 3px; }
+.brand-card.brand-card-unifi img { max-height: 49px; }
+.brand-card.brand-card-unifi .brand-unifi-caption {
+  color: rgba(255,255,255,.8);
+  font: 700 11px/1.1 Arial, sans-serif;
+  letter-spacing: .08em;
 }
 </style>
 
@@ -4439,6 +4444,46 @@ body.modal-open .header-container{
   }
 }
 
+/* Marca central refinada: logo oficial blanco sobre azul oscuro,
+   sin tarjeta clara, satélites nuevos ni cambios a la interactividad. */
+.lw-cockpit .lw-cockpit-brand-icon{
+  width:76px;
+  height:76px;
+  margin-bottom:.72rem;
+  flex:0 0 auto;
+  display:grid;
+  place-items:center;
+  border-radius:22px;
+  background:linear-gradient(148deg,rgba(8,32,68,.95),rgba(15,59,105,.88));
+  border:1px solid rgba(138,213,254,.38);
+  box-shadow:0 12px 26px rgba(1,9,26,.31),inset 0 1px 0 rgba(255,255,255,.09),0 0 22px rgba(97,190,252,.11);
+}
+.lw-cockpit .lw-cockpit-brand-icon img{
+  display:block;
+  width:56px;
+  height:56px;
+  object-fit:contain;
+  filter:drop-shadow(0 1px 7px rgba(137,220,255,.20));
+}
+.lw-cockpit .lw-cockpit-core-body{
+  background:radial-gradient(circle at 50% 27%,rgba(111,193,255,.18),transparent 43%),linear-gradient(150deg,#225b9b 0%,#11366a 50%,#0b2245 100%);
+  border-color:rgba(139,211,250,.58);
+  box-shadow:0 22px 55px rgba(1,10,30,.42),inset 0 1px 0 rgba(255,255,255,.15);
+}
+.lw-cockpit .lw-cockpit-core-body strong{
+  font-weight:850;
+  letter-spacing:-.025em;
+  text-shadow:0 2px 12px rgba(0,12,32,.18);
+}
+@media (max-width:575px){
+  .lw-cockpit .lw-cockpit-core{width:min(84vw,270px);}
+  .lw-cockpit .lw-cockpit-core-body{width:82%;height:82%;padding:.8rem .65rem;}
+  .lw-cockpit .lw-cockpit-brand-icon{width:62px;height:62px;border-radius:19px;margin-bottom:.4rem;}
+  .lw-cockpit .lw-cockpit-brand-icon img{width:45px;height:45px;}
+  .lw-cockpit .lw-cockpit-core-pills{gap:.2rem;margin-top:.5rem;}
+  .lw-cockpit .lw-cockpit-core-pills small{padding:.22rem .32rem;font-size:.6rem;}
+}
+
 @media (prefers-reduced-motion:reduce){
   .lw-cockpit-lines path,
   .lw-cockpit-ring{
@@ -4486,6 +4531,76 @@ body.modal-open .header-container{
   font-size: .70em;
 }
 </style>
+  <link href="assets/css/landing-2026.css" rel="stylesheet">
+  <link href="assets/css/theme-purple-unified.css?v=8" rel="stylesheet">
+  <link href="assets/css/support-navbar-v11.css?v=12" rel="stylesheet">
+
+<style id="lw-support-menu-and-catalog-copy-v10">
+.support-service-menu{
+  margin-top:1rem;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:1rem;
+}
+.support-service-menu summary{
+  list-style:none;
+  display:inline-flex;
+  align-items:center;
+  gap:.55rem;
+  padding:.72rem 1rem;
+  border-radius:14px;
+  cursor:pointer;
+  color:#efeaff;
+  font-weight:700;
+  background:rgba(95,78,206,.16);
+  border:1px solid rgba(160,144,255,.18);
+  transition:all .22s ease;
+}
+.support-service-menu summary::-webkit-details-marker{display:none;}
+.support-service-menu summary:hover{
+  background:rgba(101,86,219,.24);
+  border-color:rgba(174,158,255,.34);
+}
+.support-service-menu[open] summary{
+  margin-bottom:.9rem;
+  background:linear-gradient(112deg,#675de1,#524dd3);
+  border-color:#6a60e3;
+}
+.support-service-menu summary i{color:#cfc6ff;}
+.support-service-links{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:.8rem;
+}
+.support-service-link{
+  width:100%;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  gap:.2rem;
+  padding:.95rem 1rem;
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.08);
+  color:#fff;
+  text-decoration:none;
+  transition:all .22s ease;
+}
+button.support-service-link{appearance:none;-webkit-appearance:none;}
+.support-service-link:hover{
+  transform:translateY(-2px);
+  border-color:rgba(165,146,250,.44);
+  background:rgba(104,88,214,.13);
+  color:#fff;
+}
+.support-service-link i{font-size:1.1rem;color:#cbbfff;margin-bottom:.15rem;}
+.support-service-link span{font-weight:800;}
+.support-service-link small{color:rgba(255,255,255,.74);font-size:.86rem;line-height:1.45;}
+.feature-card .feature-stats .stat-number{max-width:100%;}
+.feature-card .feature-stats .stat-label{max-width:100%;display:block;}
+@media (max-width:575px){
+  .support-service-menu summary,.support-service-link{width:100%;}
+}
+</style>
 </head>
 
 <body class="index-page">
@@ -4507,7 +4622,24 @@ body.modal-open .header-container{
           <li><a href="#portfolio"><i class="bi bi-images me-1"></i> Portafolio</a></li>
           <li><a href="#experiencia"><i class="bi bi-people-fill me-1"></i> Experiencia</a></li>
           <li><a href="#contact"><i class="bi bi-envelope-fill me-1"></i> Contacto</a></li>
-          <li><a href="#" id="openSupportAccess"><i class="bi bi-headset me-1"></i> Soporte</a></li>
+          <li class="lw-support-nav" id="lwSupportNav">
+            <button type="button" class="lw-support-toggle" id="lwSupportMenuToggle"
+              aria-haspopup="true" aria-expanded="false" aria-controls="lwSupportSubmenu" aria-label="Mostrar opciones de soporte">
+              <i class="bi bi-headset lw-support-headset" aria-hidden="true"></i>
+              <span>Soporte</span>
+              <i class="bi bi-chevron-down lw-support-chevron" aria-hidden="true"></i>
+            </button>
+            <div class="lw-support-submenu" id="lwSupportSubmenu" aria-label="Opciones de soporte">
+              <a href="#" id="openSupportAccess">
+                <i class="bi bi-life-preserver lw-support-option-icon" aria-hidden="true"></i>
+                <span class="lw-support-option-copy"><strong>Help Desk</strong><small>Acceso al portal de soporte técnico</small></span>
+              </a>
+              <a href="https://www.linkwich-it.com/Monitor/" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-activity lw-support-option-icon" aria-hidden="true"></i>
+                <span class="lw-support-option-copy"><strong>Continuidad de Negocio · Login</strong><small>Acceder al portal LinkWich-Monitor®</small></span>
+              </a>
+            </div>
+          </li>
           <li class="d-xl-none"><a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html"><i class="bi bi-rocket-fill me-1"></i> Ver LinkWich-Monitor<sup class="lw-registered-mark">®</sup></a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -4524,75 +4656,94 @@ body.modal-open .header-container{
 
   <main class="main">
 
-    <section id="hero" class="hero section">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
-            <div class="hero-content">
-              <div class="lw-hero-kicker"><i class="bi bi-shield-check"></i> Soluciones TI para empresas en Los Cabos</div>
-              <h1>Tu tecnología segura, conectada y bajo control 24/7</h1>
-              <p>En <strong>LinkWich-IT<sup class="lw-registered-mark">®</sup></strong> diseñamos, implementamos y administramos redes empresariales, firewalls, WiFi, videovigilancia, voz y datos y respaldos automáticos. Con <strong>LinkWich-Monitor<sup class="lw-registered-mark">®</sup></strong> supervisamos tu infraestructura las 24 horas para detectar incidentes oportunamente, reducir interrupciones y mantener la continuidad de tu operación.</p>
-              <div class="hero-buttons">
-                <a href="#contact" class="btn btn-primary"><i class="bi bi-calendar-check-fill me-2"></i>Agendar diagnóstico</a>
-                <a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html" class="btn btn-outline"><i class="bi bi-display me-2"></i><span>Ver LinkWich-Monitor<sup class="lw-registered-mark">®</sup></span></a>
-             
-              </div>
-              <!--<div class="trust-bar">
-                <div class="row g-3">
-                  <div class="col-md-4">
-                    <div class="trust-item"><i class="bi bi-geo-alt-fill"></i><span>Atención local en Los Cabos, B.C.S.</span></div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="trust-item"><i class="bi bi-shield-check"></i><span>Implementación, soporte y monitoreo</span></div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="trust-item"><i class="bi bi-whatsapp"></i><span>Contacto directo por correo y WhatsApp</span></div>
-                  </div>
-                </div>
-              </div> -->
-
-                 </br>
-
- <div class="hero-stats d-flex justify-content-around text-center">
-  <div class="stat-item">
-    <span class="number-with-plus">
-      <span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="300" data-purecounter-duration="1"></span>
-      <span class="plus">+</span>
-    </span>
-    <span class="stat-label">Soportes Completados</span>
-  </div>
-  <div class="stat-item">
-    <span class="number-with-plus">
-      <span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="1000" data-purecounter-duration="1"></span>
-      <span class="plus">+</span>
-    </span>
-    <span class="stat-label">Dispositivos Monitoreados</span>
-  </div>
-  <div class="stat-item">
-    <span class="number-with-plus">
-      <span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="10000" data-purecounter-duration="1"></span>
-      <span class="plus">+</span>
-    </span>
-    <span class="stat-label">Alertas Enviadas</span>
-  </div>
-</div>
-
-            </div>
-          </div>
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
-            <div class="hero-visual">
-              <div class="hero-image text-center">
-                <img src="./assets/img/misc/LOGO-SIN-CIRCULO2.png" alt="LinkWich-IT® soluciones de redes y monitoreo" class="img-fluid floating" style="width:400px; height:auto;">
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- Hero 2026 · Rediseño aislado: el resto del sitio permanece intacto. -->
+    <section id="hero" class="hero section lw-landing" aria-labelledby="lw-hero-title">
+      <div class="lw-hero-atmosphere" aria-hidden="true">
+        <span class="lw-glow lw-glow-a"></span>
+        <span class="lw-glow lw-glow-b"></span>
+        <span class="lw-hero-grid"></span>
       </div>
 
-      <div class="hero-bg-elements">
-        <div class="bg-shape shape-1"></div>
-        <div class="bg-shape shape-2"></div>
-        <div class="bg-particles"></div>
+      <div class="container lw-landing-container">
+        <div class="row align-items-center gy-5 lw-hero-row">
+          <div class="col-lg-6 lw-hero-left">
+            <div class="lw-hero-eyebrow"><span class="lw-eyebrow-line"></span><i class="bi bi-shield-check" aria-hidden="true"></i> INGENIERÍA DE REDES · LOS CABOS</div>
+            <h1 id="lw-hero-title">Infraestructura que conecta. <span>Seguridad que protege.</span></h1>
+            <p class="lw-hero-description">En <strong>LinkWich-IT<sup class="lw-registered-mark">®</sup></strong> diseñamos e implementamos redes empresariales, ciberseguridad, Wi-Fi, CCTV y voz y datos. Con <strong>LinkWich-Monitor<sup class="lw-registered-mark">®</sup></strong> llevamos la visibilidad y el monitoreo 24/7 a cada punto de tu operación.</p>
+
+            <div class="hero-buttons lw-hero-actions">
+              <a href="#contact" class="btn btn-primary lw-button-main"><span>Solicitar asesoría</span><i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+              <a href="https://www.linkwich-it.com/LinkWich-Monitor/index.html" class="btn btn-outline lw-button-secondary"><i class="bi bi-display" aria-hidden="true"></i><span>Conocer LinkWich-Monitor<sup class="lw-registered-mark">®</sup></span></a>
+            </div>
+
+            <div class="lw-services-line" aria-label="Áreas de especialidad">
+              <span><i class="bi bi-diagram-3" aria-hidden="true"></i> Networking</span>
+              <span><i class="bi bi-shield-lock" aria-hidden="true"></i> Ciberseguridad</span>
+              <span><i class="bi bi-activity" aria-hidden="true"></i> Monitoreo</span>
+            </div>
+
+            <!-- Cifras originales conservadas; PureCounter las sigue animando. -->
+            <div class="hero-stats lw-hero-proof d-flex" aria-label="Experiencia de LinkWich-IT">
+              <div class="stat-item"><span class="number-with-plus"><span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="300" data-purecounter-duration="1">300</span><span class="plus">+</span></span><span class="stat-label">Soportes completados</span></div>
+              <div class="stat-item"><span class="number-with-plus"><span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="1000" data-purecounter-duration="1">1000</span><span class="plus">+</span></span><span class="stat-label">Dispositivos monitoreados</span></div>
+              <div class="stat-item"><span class="number-with-plus"><span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="10000" data-purecounter-duration="1">10000</span><span class="plus">+</span></span><span class="stat-label">Alertas enviadas</span></div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 lw-hero-right">
+            <div class="lw-network-showcase" id="lw-network-showcase" aria-label="Ilustración de arquitectura de red integrada LinkWich-IT">
+              <div class="lw-showcase-topline">
+                <div class="lw-showcase-heading"><span class="lw-mini-square"><i class="bi bi-diagram-3" aria-hidden="true"></i></span><div><strong>Un ecosistema. Todo conectado.</strong><span>Soluciones integradas de infraestructura</span></div></div>
+                <span class="lw-showcase-tag">ARQUITECTURA TI</span>
+              </div>
+
+              <div class="lw-network-stage">
+                <div class="lw-stage-grid" aria-hidden="true"></div>
+                <div class="lw-network-scene" id="lw-network-scene">
+                  <div class="lw-scene-circle lw-scene-circle-1" aria-hidden="true"></div>
+                  <div class="lw-scene-circle lw-scene-circle-2" aria-hidden="true"></div>
+                  <svg class="lw-network-wires" viewBox="0 0 600 420" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                    <defs>
+                      <linearGradient id="lw-wire-gradient" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#b4a5ff" stop-opacity=".75"/>
+                        <stop offset="100%" stop-color="#8075e8" stop-opacity=".75"/>
+                      </linearGradient>
+                    </defs>
+                    <path class="lw-wire-shadow" d="M300 210 L135 100 M300 210 L465 100 M300 210 L135 320 M300 210 L465 320"/>
+                    <path class="lw-wire-path" d="M300 210 L135 100 M300 210 L465 100 M300 210 L135 320 M300 210 L465 320"/>
+                    <circle class="lw-network-dot dot-a" cx="210" cy="150" r="4"/>
+                    <circle class="lw-network-dot dot-b" cx="392" cy="149" r="4"/>
+                    <circle class="lw-network-dot dot-c" cx="209" cy="269" r="4"/>
+                    <circle class="lw-network-dot dot-d" cx="391" cy="271" r="4"/>
+                  </svg>
+
+                  <div class="lw-network-node lw-node-security"><span class="lw-node-icon"><i class="bi bi-shield-lock" aria-hidden="true"></i></span><span>Seguridad</span></div>
+                  <div class="lw-network-node lw-node-cloud"><span class="lw-node-icon"><i class="bi bi-cloud-check" aria-hidden="true"></i></span><span>Servidores</span></div>
+                  <div class="lw-network-node lw-node-network"><span class="lw-node-icon"><i class="bi bi-router" aria-hidden="true"></i></span><span>Redes / Wi-Fi</span></div>
+                  <div class="lw-network-node lw-node-video"><span class="lw-node-icon"><i class="bi bi-camera-video" aria-hidden="true"></i></span><span>CCTV</span></div>
+
+                  <div class="lw-network-core">
+                    <div class="lw-core-ring" aria-hidden="true"></div>
+                    <img src="assets/img/misc/logo2.png" width="70" height="70" alt="" decoding="async">
+                    <strong>LinkWich-IT<sup>®</sup></strong>
+                    <span>INTEGRACIÓN TI</span>
+                  </div>
+                </div>
+                <div class="lw-stage-index" aria-hidden="true">01 / CONECTIVIDAD SEGURA</div>
+              </div>
+
+              <div class="lw-showcase-bottom">
+                <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Diseño &amp; implementación</span>
+                <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Gestión &amp; monitoreo</span>
+              </div>
+            </div>
+            <div class="lw-showcase-caption"><span class="lw-caption-spark" aria-hidden="true"></span> ARQUITECTURA CONCEPTUAL DE SOLUCIONES · LINKWICH-IT<sup>®</sup></div>
+          </div>
+        </div>
+        <div class="lw-hero-foot">
+          <a class="lw-scroll-discover" href="#about"><span class="lw-scroll-icon"><i class="bi bi-arrow-down" aria-hidden="true"></i></span> Descubre lo que hacemos</a>
+          <span>LOS CABOS · BAJA CALIFORNIA SUR · MÉXICO</span>
+        </div>
       </div>
     </section>
 
@@ -4866,8 +5017,8 @@ body.modal-open .header-container{
               <h4>Confiabilidad y continuidad operativa</h4>
               <p>Implementamos arquitecturas redundantes y procedimientos de continuidad para minimizar interrupciones y mantener tu negocio siempre conectado.</p>
               <div class="feature-stats">
-                <span class="stat-number" data-purecounter-start="0" data-purecounter-end="99.9" data-purecounter-duration="2">99.9</span>
-                <span class="stat-label">% Disponibilidad</span>
+                <span class="stat-number">Operación continua</span>
+                <span class="stat-label">Arquitectura resiliente, monitoreo proactivo y respuesta oportuna</span>
               </div>
             </div>
           </div>
@@ -4880,9 +5031,24 @@ body.modal-open .header-container{
               <h4>Soporte operativo real</h4>
               <p>Atendemos requerimientos de operación, incidencias y mejora continua con soporte remoto y presencial según la necesidad del proyecto.</p>
               <div class="feature-stats">
-                <span class="stat-number" data-purecounter-start="0" data-purecounter-end="120" data-purecounter-duration="2">8x5 o 24x7</span>
+                <span class="stat-number">A medida</span>
                 <span class="stat-label">Soporte presencial y remoto</span>
               </div>
+              <details class="support-service-menu">
+                <summary><i class="bi bi-grid-1x2-fill"></i> Ver opciones de soporte</summary>
+                <div class="support-service-links">
+                  <button type="button" class="support-service-link" data-open-support-modal="true">
+                    <i class="bi bi-life-preserver"></i>
+                    <span>Help Desk</span>
+                    <small>Incidencias, seguimiento y atención técnica</small>
+                  </button>
+                  <a class="support-service-link" href="https://www.linkwich-it.com/Monitor/" target="_blank" rel="noopener">
+                    <i class="bi bi-activity"></i>
+                    <span>Continuidad del negocio</span>
+                    <small>Portal LinkWich-Monitor<sup class="lw-registered-mark">®</sup></small>
+                  </a>
+                </div>
+              </details>
             </div>
           </div>
 
@@ -4908,7 +5074,7 @@ body.modal-open .header-container{
       <div class="container section-title" data-aos="fade-up">
         <h2>Catálogo de Productos y Soluciones</h2>
         <p>
-          Integramos soluciones empresariales de videovigilancia, alarmas, redes, WiFi, cableado estructurado, fibra óptica, energía, telefonía IP, NAS, servidores y telecomunicaciones. Trabajamos con mayoristas de primer nivel y canales preferenciales con marcas líderes como Syscom, Fortinet, Axis, Aruba, Cisco y muchas marcas más para ofrecerte una propuesta a la medida con precio preferencial.
+          Integramos soluciones empresariales de videovigilancia, alarmas, redes, WiFi, cableado estructurado, fibra óptica, energía, telefonía IP, NAS, servidores y telecomunicaciones. Trabajamos con aliados comerciales y canales preferenciales con marcas líderes para ofrecerte una propuesta a la medida, con acompañamiento técnico y condiciones competitivas.
         </p>
       </div>
 
@@ -4916,8 +5082,8 @@ body.modal-open .header-container{
         <div class="syscom-commercial-grid">
           <div class="syscom-commercial-card">
             <i class="bi bi-patch-check-fill"></i>
-            <h4>Mayoristas de primer nivel</h4>
-            <p>Acceso a soluciones profesionales para proyectos empresariales, hotelería, residenciales, oficinas, comercios y sucursales.</p>
+            <h4>Alianzas comerciales estratégicas</h4>
+            <p>Acceso a soluciones profesionales para proyectos empresariales, hotelería, residenciales, oficinas, comercios y sucursales con selección y acompañamiento especializado.</p>
           </div>
           <div class="syscom-commercial-card">
             <i class="bi bi-box-seam-fill"></i>
@@ -4954,7 +5120,7 @@ body.modal-open .header-container{
               <h3>Productos para proyectos empresariales y mucho más</h3>
               <p>Consulta por SKU/modelo y solicita cotización para suministro, instalación o integración personalizada con LinkWich-IT<sup class="lw-registered-mark">®</sup>.</p>
             </div>
-            <span class="syscom-live-badge"><i class="bi bi-award-fill"></i> Mayoristas y canales preferenciales</span>
+            <span class="syscom-live-badge"><i class="bi bi-award-fill"></i> Marcas y alianzas preferenciales</span>
           </div>
 
           <div class="swiper syscom-products-swiper">
@@ -4979,12 +5145,12 @@ body.modal-open .header-container{
 
           <div class="syscom-catalog-open">
             <div>
-              <h4>¿Deseas abrir el catálogo completo o cotizar una solución especial?</h4>
-              <p>Podemos ayudarte a buscar cualquier producto disponible en el catálogo completo de Syscom. Para soluciones de Fortinet, Axis, Aruba, Cisco y otras marcas de canal privado, nosotros somos tu primer contacto para validar compatibilidad, alcance técnico, disponibilidad y precio preferencial.</p>
+              <h4>¿Buscas más opciones o una solución especial para tu proyecto?</h4>
+              <p>Podemos ayudarte a identificar el equipo correcto para tu proyecto. Para soluciones especializadas de seguridad, conectividad, infraestructura y continuidad operativa, te orientamos desde la selección del producto hasta la validación técnica, disponibilidad y propuesta comercial.</p>
             </div>
             <div class="syscom-catalog-open-actions">
-              <a class="btn btn-light" href="https://www.syscom.mx/" target="_blank" rel="noopener">
-                <i class="bi bi-box-arrow-up-right me-1"></i> Abrir catálogo
+              <a class="btn btn-light" href="#contact">
+                <i class="bi bi-journal-text me-1"></i> Solicitar catálogo completo
               </a>
               <a class="btn btn-primary" href="#contact">
                 <i class="bi bi-chat-dots-fill me-1"></i> Solicitar asesoría
@@ -5231,8 +5397,8 @@ body.modal-open .header-container{
 
     <section id="experiencia" class="team section">
       <div class="container section-title" data-aos="fade-up">
-        <h2>Marcas & Experiencia</h2>
-        <p>Tenemos experiencia con marcas reconocidas en networking, seguridad, voz, videovigilancia y operación de infraestructura empresarial.</p>
+        <h2>Socios tecnológicos y experiencia</h2>
+        <p>Experiencia con fabricantes y tecnologías para redes empresariales, ciberseguridad, servidores, almacenamiento, cableado estructurado y videovigilancia.</p>
       </div>
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -5241,16 +5407,16 @@ body.modal-open .header-container{
           <div class="col-lg-6">
             <div class="team-intro" data-aos="fade-right" data-aos-delay="150">
               <div class="intro-content">
-                <h3>Experiencia aplicada a entornos reales</h3>
-                <p>En <strong>LinkWich-IT<sup class="lw-registered-mark">®</sup></strong> trabajamos con soluciones ampliamente utilizadas en empresas, hoteles, entornos corporativos y proyectos que requieren operación estable y soporte confiable.</p>
+                <h3>Experiencia tecnológica aplicada a proyectos reales</h3>
+                <p>En <strong>LinkWich-IT<sup class="lw-registered-mark">®</sup></strong> integramos tecnologías de fabricantes reconocidos para empresas, hoteles y entornos corporativos, con soluciones adaptadas a las necesidades de cada proyecto.</p>
                 <div class="stats-row">
                   <div class="stat-item">
-                    <span class="stat-number">6+</span>
-                    <span class="stat-label">Experiencia con marcas</span>
+                    <span class="stat-number">16</span>
+                    <span class="stat-label">Marcas y tecnologías</span>
                   </div>
                   <div class="stat-item">
-                    <span class="stat-number">8x5 o 24x7</span>
-                    <span class="stat-label">Soporte presencial y remoto</span>
+                    <span class="stat-number">A medida</span>
+                    <span class="stat-label">Soluciones para cada proyecto</span>
                   </div>
                  <!-- <div class="stat-item">
                     <span class="stat-number">5</span>
@@ -5310,6 +5476,23 @@ body.modal-open .header-container{
 
                 <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="Windows" data-brand-desc="Plataformas Windows cliente y Windows Server para estaciones de trabajo e infraestructura empresarial." data-brand-logo="assets/img/misc/windows-blanco.png" aria-label="Windows">
                   <img class="brand-logo-white" src="assets/img/misc/windows-blanco.png" alt="Windows logo" loading="lazy" decoding="async">
+                </button>
+
+                <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="HPE" data-brand-desc="Servidores, almacenamiento y soluciones de cómputo para infraestructura empresarial." data-brand-logo="assets/img/misc/HPE-marca-optimizada.png" aria-label="HPE">
+                  <img class="brand-logo-white" src="assets/img/misc/HPE-marca-optimizada.png" alt="HPE - Hewlett Packard Enterprise" loading="lazy" decoding="async">
+                </button>
+
+                <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="Panduit" data-brand-desc="Cableado estructurado, conectividad y organización de infraestructura física." data-brand-logo="assets/img/misc/panduit-wordmark.svg" aria-label="Panduit">
+                  <img class="brand-logo-white" src="assets/img/misc/panduit-wordmark.svg" alt="Panduit" loading="lazy" decoding="async">
+                </button>
+
+                <button class="brand-card" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="Synology" data-brand-desc="Almacenamiento NAS, respaldo de información y soluciones de datos." data-brand-logo="assets/img/misc/synology-wordmark.svg" aria-label="Synology">
+                  <img class="brand-logo-white" src="assets/img/misc/synology-wordmark.svg" alt="Synology" loading="lazy" decoding="async">
+                </button>
+
+                <button class="brand-card brand-card-unifi" type="button" data-bs-toggle="modal" data-bs-target="#brandModal" data-brand-name="Ubiquiti UniFi" data-brand-desc="Conectividad Wi-Fi, switching y administración de redes UniFi." data-brand-logo="assets/img/misc/ubiquiti.png" aria-label="Ubiquiti UniFi">
+                  <img class="brand-logo-white" src="assets/img/misc/ubiquiti.png" alt="Ubiquiti (fabricante de UniFi)" loading="lazy" decoding="async">
+                  <span class="brand-unifi-caption">UniFi</span>
                 </button>
               </div>
             </div>
@@ -5380,7 +5563,7 @@ body.modal-open .header-container{
                     <span class="lw-cockpit-ring is-outer" aria-hidden="true"></span>
                     <span class="lw-cockpit-ring is-middle" aria-hidden="true"></span>
                     <div class="lw-cockpit-core-body">
-                      <span class="lw-cockpit-core-icon"><i class="bi bi-cpu-fill" aria-hidden="true"></i></span>
+                      <span class="lw-cockpit-core-icon lw-cockpit-brand-icon"><img src="assets/img/misc/logo2.png" alt="Emblema de LinkWich-IT" width="56" height="56" loading="lazy" decoding="async"></span>
                       <strong>LinkWich-Monitor<sup class="lw-registered-mark">®</sup></strong>
                       <span>Monitorea · Analiza · Automatiza</span>
                       <div class="lw-cockpit-core-pills" aria-label="Características centrales">
@@ -5692,12 +5875,8 @@ body.modal-open .header-container{
       <a
         href="https://api.whatsapp.com/send?phone=526241586134&text=Hola%2C+me+gustar%C3%ADa+recibir+m%C3%A1s+informaci%C3%B3n+sobre+sus+servicios+profesionales.+Quedo+atento.+Gracias."
         target="_blank"
-        class="icon whatsapp">
+        class="icon whatsapp" rel="noopener noreferrer" aria-label="Contactar a LinkWich-IT por WhatsApp">
         <i class="bi bi-whatsapp"></i>
-      </a>
-
-      <a href="https://m.me/110225517434181" target="_blank" class="icon messenger">
-        <i class="bi bi-messenger"></i>
       </a>
     </div>
 
@@ -5997,7 +6176,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const supportError = document.getElementById("supportLoginError");
   const openSupportButtons = [
     document.getElementById("openSupportAccess"),
-    document.getElementById("openSupportAccessBottom")
+    document.getElementById("openSupportAccessBottom"),
+    ...document.querySelectorAll('[data-open-support-modal="true"]')
   ].filter(Boolean);
 
   let supportModal = null;
@@ -8925,5 +9105,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+  <script src="assets/js/landing-2026.js" defer></script>
+  <script src="assets/js/support-navbar-v11.js?v=12" defer></script>
 </body>
 </html>
