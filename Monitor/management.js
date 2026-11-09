@@ -278,3 +278,4 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';query='';page=1;auditPage=1;securityPage=1;userStatus='';userRole='';auditAction='';auditDays=90;view='overview';adminTab='clients';$('portal-search').value='';$('site-status-filter').value='';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
  return {init,clear,checkSession:()=>api('session_check'),touch:()=>api('activity'),end:()=>api('session_end'),currentTenant:()=>selected,currentQuery:()=>query,refreshActive:()=>view==='management'?load():view==='profile'?renderProfile():onTenantChange(),isOverview:()=>view==='overview',tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
 }
+
