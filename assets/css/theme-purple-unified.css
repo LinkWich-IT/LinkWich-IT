@@ -1,0 +1,296 @@
+/* LinkWich-IT® — Identidad cromática unificada · v8
+   Esta capa modifica solo la presentación: no cambia HTML estructural,
+   funcionalidades, contenido, catálogo, formularios ni JavaScript.
+   Color principal original: #524dd3. Matices claros mantienen contraste
+   en fondos nocturnos y permiten identificar estados activos. */
+:root {
+  --lw-brand-purple: #524dd3;
+  --lw-brand-purple-hover: #665be6;
+  --lw-brand-violet: #9187ff;
+  --lw-brand-highlight: #b9aeff;
+  --lw-brand-border: rgba(154,139,249,.32);
+  --lw-brand-glow: rgba(96,75,223,.23);
+}
+
+/* Landing: morado primario, texto blanco y lavanda de alto contraste. */
+#hero.lw-landing {
+  --lw-cyan: var(--lw-brand-highlight);
+  --lw-lavender: #c7bcff;
+  --lw-line: rgba(159,147,231,.19);
+  background:
+    radial-gradient(ellipse 65% 85% at 82% 31%,rgba(76,58,162,.24),transparent 76%),
+    radial-gradient(ellipse 50% 50% at 6% 98%,rgba(61,51,155,.16),transparent 82%),
+    linear-gradient(116deg,#090e25 0%,#0b1530 52%,#101735 100%) !important;
+}
+#hero.lw-landing .lw-glow-a {background:rgba(90,67,190,.27);}
+#hero.lw-landing .lw-glow-b {background:rgba(117,82,196,.18);}
+#hero.lw-landing .lw-hero-grid {
+  background-image:
+    linear-gradient(rgba(155,139,255,.11) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(155,139,255,.11) 1px,transparent 1px);
+}
+#hero.lw-landing .lw-hero-eyebrow,
+#hero.lw-landing .lw-hero-eyebrow i,
+#hero.lw-landing .lw-services-line i,
+#hero.lw-landing .lw-hero-proof .plus,
+#hero.lw-landing .lw-hero-foot .lw-scroll-icon {color:var(--lw-brand-highlight);}
+#hero.lw-landing .lw-eyebrow-line {background:var(--lw-brand-violet);}
+#hero.lw-landing h1 span {
+  background:linear-gradient(108deg,#c4baff 0%,#a196ff 52%,#e0d8ff 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+}
+#hero.lw-landing .lw-hero-actions .lw-button-main {
+  color:#fff;
+  border-color:#7469eb;
+  background:linear-gradient(112deg,#675de1,#524dd3);
+  box-shadow:0 13px 30px rgba(67,49,186,.27);
+}
+#hero.lw-landing .lw-hero-actions .lw-button-main:hover {
+  color:#fff;
+  background:linear-gradient(112deg,#786df0,#6055dc);
+  border-color:#9b91ff;
+  box-shadow:0 17px 34px rgba(73,51,200,.33);
+}
+#hero.lw-landing .lw-hero-actions .lw-button-secondary {border-color:rgba(174,162,250,.29);}
+#hero.lw-landing .lw-hero-actions .lw-button-secondary:hover {border-color:rgba(187,174,255,.68);background:rgba(96,78,197,.15);}
+#hero.lw-landing .lw-hero-actions .lw-button-secondary i {color:var(--lw-brand-highlight);}
+#hero.lw-landing .lw-hero-actions .btn:focus-visible,
+#hero.lw-landing a:focus-visible {outline-color:#b9aeff;}
+
+/* Diagrama 3D: se mantienen posiciones, conexiones y animaciones. */
+#hero.lw-landing .lw-network-showcase {
+  border-color:rgba(153,135,255,.34);
+  background:linear-gradient(145deg,rgba(31,37,83,.94),rgba(19,28,65,.97) 49%,rgba(14,26,53,.99));
+  box-shadow:0 35px 70px rgba(0,6,18,.38),0 0 0 1px rgba(125,105,232,.06),inset 0 1px 0 rgba(255,255,255,.07);
+}
+#hero.lw-landing .lw-network-showcase::before {background:linear-gradient(90deg,transparent,rgba(182,164,255,.8),transparent);}
+#hero.lw-landing .lw-mini-square,
+#hero.lw-landing .lw-node-icon {color:#c0b5ff;background:rgba(121,101,223,.13);border-color:rgba(165,144,253,.24);}
+#hero.lw-landing .lw-showcase-tag {color:#c5bbff;border-color:rgba(172,151,251,.33);}
+#hero.lw-landing .lw-network-stage {
+  background:radial-gradient(ellipse at 50% 51%,rgba(94,72,177,.19),transparent 64%),
+             linear-gradient(180deg,rgba(14,26,57,.70),rgba(5,14,34,.71));
+}
+#hero.lw-landing .lw-network-stage::before {background:radial-gradient(circle,rgba(138,118,244,.14),rgba(138,118,244,.05) 42%,transparent 72%);}
+#hero.lw-landing .lw-network-stage::after {background:linear-gradient(90deg,transparent,rgba(164,145,248,.045) 35%,rgba(164,145,248,.13) 50%,rgba(164,145,248,.045) 65%,transparent);}
+#hero.lw-landing .lw-stage-grid {
+  background-image:linear-gradient(rgba(158,141,237,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(158,141,237,.075) 1px,transparent 1px);
+}
+#hero.lw-landing .lw-scene-circle {border-color:rgba(166,144,248,.13);}
+#hero.lw-landing .lw-wire-shadow {stroke:#9387ff;}
+#hero.lw-landing .lw-network-dot {fill:#d6cdff;filter:drop-shadow(0 0 7px #9a88ff);}
+#hero.lw-landing .lw-network-node {
+  border-color:rgba(159,143,245,.36);
+  background:linear-gradient(150deg,rgba(45,48,105,.98),rgba(20,30,65,.98));
+}
+#hero.lw-landing .lw-network-core {
+  border-color:rgba(178,162,255,.64);
+  background:linear-gradient(145deg,#403a8a 0%,#282763 48%,#101e43 100%);
+  box-shadow:0 24px 45px rgba(0,10,29,.54),0 0 48px rgba(118,87,222,.20),inset 0 1px 0 rgba(255,255,255,.13);
+}
+#hero.lw-landing .lw-core-ring {border-color:rgba(175,151,251,.26);}
+#hero.lw-landing .lw-network-core img {filter:drop-shadow(0 0 13px rgba(187,173,255,.30));}
+#hero.lw-landing .lw-network-core > span {color:#c3b7ff;}
+#hero.lw-landing .lw-showcase-bottom i {color:#b8a9ff;}
+#hero.lw-landing .lw-caption-spark {background:#b8a9ff;}
+
+/* Monitor: no se alteran eventos, 5 botones ni el modal de ampliar. */
+.lw-cockpit {
+  --lw-cockpit-blue:#6659dd;
+  --lw-cockpit-cyan:#b9aeff;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(111,78,214,.21),transparent 34%),
+    radial-gradient(circle at 5% 10%,rgba(150,120,241,.13),transparent 28%),
+    linear-gradient(140deg,#0b102b 0%,#171c45 52%,#0b1430 100%);
+  border-color:rgba(167,148,255,.23);
+}
+.lw-cockpit::before {background-image:radial-gradient(circle,rgba(177,155,255,.67) 1.1px,transparent 1.1px);}
+.lw-cockpit-eyebrow {background:rgba(122,97,220,.12);border-color:rgba(174,151,248,.26);color:#e7e2ff;}
+.lw-cockpit-lines path {stroke:rgba(157,139,252,.51);}
+.lw-cockpit-lines circle {fill:#cfbfff;filter:drop-shadow(0 0 5px rgba(170,148,255,.8));}
+.lw-cockpit-capability:hover {border-color:rgba(165,146,250,.54);background:linear-gradient(180deg,rgba(108,90,217,.18),rgba(255,255,255,.06));}
+.lw-cockpit-capability.is-active,
+.lw-cockpit-capability[aria-selected="true"] {
+  border-color:rgba(165,144,255,.85);
+  background:linear-gradient(145deg,rgba(92,72,185,.47),rgba(119,101,230,.13));
+  box-shadow:0 14px 30px rgba(2,9,27,.28),inset 0 1px 0 rgba(255,255,255,.10);
+}
+.lw-cockpit-capability-icon {color:#bdb1ff;background:rgba(128,106,234,.16);border-color:rgba(171,151,255,.26);}
+.lw-cockpit-capability-arrow {color:#b9adff;}
+.lw-cockpit-ring {border-color:rgba(156,137,248,.26);box-shadow:0 0 40px rgba(89,72,201,.12) inset;}
+.lw-cockpit-ring.is-middle {border-color:rgba(180,159,255,.40);}
+.lw-cockpit-core-body,
+.lw-cockpit .lw-cockpit-core-body {
+  background:radial-gradient(circle at 50% 27%,rgba(173,151,255,.18),transparent 43%),linear-gradient(155deg,#5149a5 0%,#312b75 50%,#121e46 100%);
+  border-color:rgba(177,157,255,.65);
+  box-shadow:0 22px 55px rgba(1,10,30,.42),inset 0 1px 0 rgba(255,255,255,.15);
+}
+.lw-cockpit .lw-cockpit-brand-icon {border-color:rgba(181,159,255,.50);background:linear-gradient(145deg,#171d50,#2a296b);box-shadow:0 12px 26px rgba(1,9,26,.31),inset 0 1px 0 rgba(255,255,255,.09),0 0 22px rgba(129,98,245,.17);}
+.lw-cockpit .lw-cockpit-brand-icon img {filter:drop-shadow(0 1px 7px rgba(166,145,255,.28));}
+.lw-cockpit-detail {border-color:rgba(160,146,224,.20);background:rgba(135,118,198,.11);}
+.lw-cockpit-detail-icon {color:#2a236b;background:linear-gradient(145deg,#f9f7ff,#e4deff);}
+.lw-cockpit-detail-tags i {color:#bdb1ff;}
+.lw-cockpit-detail-tags li {border-color:rgba(170,152,255,.12);background:rgba(159,140,230,.10);}
+.lw-cockpit-outcome i {color:#b5a6ff;}
+.lw-cockpit .lw-flow-cta .btn-primary {background:#524dd3;border-color:#6358df;color:#fff;}
+.lw-cockpit .lw-flow-cta .btn-primary:hover {background:#665be6;border-color:#8d81ff;}
+.lw-cockpit .lw-flow-cta .btn-outline-light {border-color:rgba(187,174,254,.63);}
+.lw-cockpit .lw-flow-cta .btn-outline-light:hover {color:#17123e;background:#e6e0ff;}
+
+/* Preservar contraste y botones de marca en formularios y navegación. */
+#header .lw-header-monitor,
+#header .btn-getstarted {background:#524dd3;border-color:#524dd3;color:#fff;}
+#header .lw-header-monitor:hover,
+#header .btn-getstarted:hover {background:#675ce2;border-color:#7569ea;}
+#header .navmenu a.active::after {background:#7a70e8;}
+:root {--accent-color:#524dd3;}
+
+@media (prefers-reduced-motion:reduce) {
+  #hero.lw-landing *,#hero.lw-landing *::before,#hero.lw-landing *::after,
+  .lw-cockpit *, .lw-cockpit *::before,.lw-cockpit *::after {animation-duration:.01ms !important;}
+}
+
+
+/* Botones y CTA globales: unificar todos los azules al morado corporativo. */
+.btn.btn-primary,
+button.btn.btn-primary,
+a.btn.btn-primary,
+.btn-primary {
+  background:linear-gradient(112deg,#675de1,#524dd3) !important;
+  border-color:#6a60e3 !important;
+  color:#fff !important;
+  box-shadow:0 12px 28px rgba(82,77,211,.26) !important;
+}
+
+.btn.btn-primary:hover,
+button.btn.btn-primary:hover,
+a.btn.btn-primary:hover,
+.btn-primary:hover,
+.btn.btn-primary:focus,
+button.btn.btn-primary:focus,
+a.btn.btn-primary:focus,
+.btn-primary:focus {
+  background:linear-gradient(112deg,#786df0,#6055dc) !important;
+  border-color:#9489ff !important;
+  color:#fff !important;
+  box-shadow:0 16px 32px rgba(96,85,220,.34) !important;
+}
+
+.btn.btn-primary:focus-visible,
+button.btn.btn-primary:focus-visible,
+a.btn.btn-primary:focus-visible,
+.btn-primary:focus-visible {
+  outline:3px solid rgba(185,174,255,.72) !important;
+  outline-offset:2px !important;
+}
+
+/* Botones secundarios/outline para mantener la misma familia cromática. */
+.btn.btn-outline-primary,
+a.btn.btn-outline-primary,
+button.btn.btn-outline-primary {
+  color:#cfc6ff !important;
+  border-color:rgba(165,150,255,.52) !important;
+  background:rgba(98,83,209,.06) !important;
+}
+
+.btn.btn-outline-primary:hover,
+a.btn.btn-outline-primary:hover,
+button.btn.btn-outline-primary:hover {
+  color:#fff !important;
+  border-color:#8478f3 !important;
+  background:rgba(98,83,209,.18) !important;
+}
+
+/* Catálogo Syscom y carruseles */
+.syscom-catalog {
+  background:
+    radial-gradient(circle at top left, rgba(82,77,211,.10), transparent 30%),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-color,#fff) 98%, transparent), color-mix(in srgb, var(--surface-color,#fff) 93%, transparent));
+}
+
+.syscom-catalog-panel::before,
+#syscom-catalog .syscom-catalog-panel::before {
+  background:radial-gradient(circle at 90% 10%, rgba(82,77,211,.18), transparent 28%) !important;
+}
+
+.syscom-category-filter i {color:#bfb3ff !important;}
+.syscom-category-filter:hover,
+.syscom-category-filter.active {
+  background:linear-gradient(112deg,#675de1,#524dd3) !important;
+  border-color:#6a60e3 !important;
+  box-shadow:0 14px 28px rgba(82,77,211,.30) !important;
+}
+
+.syscom-category-filter:hover i,
+.syscom-category-filter.active i {color:#fff !important;}
+
+.syscom-product-badge,
+.syscom-product-chip,
+.syscom-commercial-icon,
+.syscom-commercial-card .feature-icon,
+.syscom-commercial-card .feature-badge,
+.lw-contact-highlight {
+  background:linear-gradient(135deg, rgba(82,77,211,.16), rgba(17,23,52,.12)) !important;
+  color:#bcb1ff !important;
+  border-color:rgba(151,137,255,.18) !important;
+}
+
+.syscom-product-link,
+.syscom-product-meta i,
+.syscom-product-body .sku,
+.syscom-commercial-card .feature-link,
+.syscom-commercial-card .feature-link i {
+  color:#b9aeff !important;
+}
+
+.syscom-products-swiper .swiper-button-next,
+.syscom-products-swiper .swiper-button-prev,
+.swiper-button-next,
+.swiper-button-prev {
+  background:linear-gradient(112deg,#675de1,#524dd3) !important;
+  color:#fff !important;
+  border:1px solid #6a60e3 !important;
+  box-shadow:0 10px 24px rgba(82,77,211,.24) !important;
+}
+
+.syscom-products-swiper .swiper-button-next:hover,
+.syscom-products-swiper .swiper-button-prev:hover,
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background:linear-gradient(112deg,#786df0,#6055dc) !important;
+  border-color:#9489ff !important;
+}
+
+.syscom-products-swiper .swiper-pagination-bullet-active,
+.swiper-pagination-bullet-active {
+  background:#9187ff !important;
+}
+
+/* CTA del catálogo y tarjetas finales */
+.syscom-catalog-open {
+  background:rgba(111,94,206,.12) !important;
+  border-color:rgba(163,147,255,.16) !important;
+}
+
+.syscom-catalog-open-actions .btn.btn-light,
+.syscom-catalog-open-actions .btn-light {
+  color:#221c56 !important;
+  background:#efeaff !important;
+  border-color:#efeaff !important;
+}
+
+.syscom-catalog-open-actions .btn.btn-light:hover,
+.syscom-catalog-open-actions .btn-light:hover {
+  background:#fff !important;
+  border-color:#fff !important;
+}
+
+/* Botón flotante subir arriba en la misma identidad. */
+#scroll-top {
+  background:linear-gradient(112deg,#675de1,#524dd3) !important;
+  box-shadow:0 12px 28px rgba(82,77,211,.28) !important;
+}
+#scroll-top:hover {
+  background:linear-gradient(112deg,#786df0,#6055dc) !important;
+}
