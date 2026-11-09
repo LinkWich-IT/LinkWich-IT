@@ -236,3 +236,11 @@ html[data-theme=dark] .portal-unified header .brand-logo,html[data-theme=dark] .
 .row-actions .danger-action,.admin-row>.danger-action,.edit-dialog .danger-action{color:var(--bad);border-color:var(--bad);background:var(--panel)}
 .danger-action:hover{background:var(--red-bg)}
 .edit-dialog .delete-confirmation{border:1px solid var(--bad);border-radius:10px;background:var(--red-bg);color:var(--bad);padding:12px;font-size:12px;line-height:1.65}
+
+/* Tutorial externo: comparte colores y adaptación del espacio de trabajo. */
+#portal-nav .portal-tutorial{display:flex;align-items:center;width:100%;justify-content:flex-start;gap:9px;padding:10px 11px;min-height:42px;font-size:12px;font-weight:600;text-align:left;border:1px solid transparent;border-radius:8px;color:var(--muted);background:transparent;white-space:normal;text-decoration:none}
+#portal-nav .portal-tutorial:hover{background:var(--soft);border-color:var(--line);color:var(--blue)}
+#portal-nav .portal-tutorial .icon{width:17px;height:17px;flex:none}
+@media(max-width:1100px){#portal-nav .portal-tutorial{font-size:11px;padding-inline:9px}}
+@media(max-width:980px){#portal-nav .portal-tutorial{width:auto;flex:1 1 130px;justify-content:center;padding:9px;font-size:12px}}
+@media(max-width:380px){#portal-nav .portal-tutorial{flex-basis:100px;font-size:11px}}
