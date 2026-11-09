@@ -20,7 +20,7 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   if(!response.ok){const error=Error(data.error||'No fue posible completar la operación.');error.status=response.status;if(response.status===401&&action!=='session_end')window.dispatchEvent(new CustomEvent('lw-session-expired'));throw error;}return data;
  }
  const canManage=t=>ctx?.global_admin||ctx?.memberships?.some(m=>m.tenant_id===t&&m.role==='client_admin');
- const button=(text,action,cls='subtle')=>{const b=el('button',text,cls);b.type='button';const symbol=/autenticador/i.test(text)?'shield':/contraseña|credencial/i.test(text)?'key':/usuario|perfil/i.test(text)?'user':/cliente/i.test(text)?'users':/sitio/i.test(text)?'server':/inactividad|seguridad/i.test(text)?'settings':/actividad|disponibilidad/i.test(text)?'activity':null;if(symbol)buttonIcon(b,symbol);b.onclick=async()=>{b.disabled=true;setBusy(b,true);try{await action();}catch(e){status(e.message);}finally{b.disabled=false;setBusy(b,false);}};return b;};
+ const button=(text,action,cls='subtle')=>{const b=el('button',text,cls);b.type='button';const symbol=/autenticador/i.test(text)?'shield':/contraseña|credencial/i.test(text)?'key':/usuario|perfil/i.test(text)?'user':/cliente/i.test(text)?'users':/sitio/i.test(text)?'server':/inactividad|seguridad|administración/i.test(text)?'settings':/actividad|disponibilidad/i.test(text)?'activity':null;if(symbol)buttonIcon(b,symbol);b.onclick=async()=>{b.disabled=true;setBusy(b,true);try{await action();}catch(e){status(e.message);}finally{b.disabled=false;setBusy(b,false);}};return b;};
  function status(message='',kind='error'){notice(message,kind);}
  function setView(next){
   if(ctx?.profile.must_change_password)next='profile';
@@ -40,11 +40,12 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   const tutorial=el('a','','subtle portal-tutorial');
   tutorial.href='https://linkwich-it.github.io/LinkWich-Tutorial/';
   tutorial.target='_blank';tutorial.rel='noopener noreferrer';
-  tutorial.setAttribute('aria-label','Tutorial de uso de LinkWich-Monitor (abre en otra pestaña)');
+  tutorial.setAttribute('aria-label','Base de conocimiento de LinkWich-Monitor (abre en otra pestaña)');
   const book=document.createElementNS('http://www.w3.org/2000/svg','svg');
   book.setAttribute('viewBox','0 0 24 24');book.setAttribute('fill','none');book.setAttribute('stroke','currentColor');book.setAttribute('stroke-width','1.8');book.setAttribute('stroke-linecap','round');book.setAttribute('stroke-linejoin','round');book.setAttribute('aria-hidden','true');book.classList.add('icon');
   const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d','M12 7v14M3 3h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5v17h-5a4 4 0 0 0-4 1 4 4 0 0 0-4-1H3z');book.append(path);
-  tutorial.append(book,el('span','Tutorial de uso'));n.append(tutorial);
+  tutorial.title='Base de conocimiento — LinkWich-Monitor';
+  tutorial.append(book,el('span','Base de conocimiento'));n.append(tutorial);
   setView(view);
  }
  function updateFilterScope(){
@@ -278,4 +279,3 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
  function clear(){version++;clearTimeout(credentialTimer);for(const d of document.querySelectorAll('dialog'))d.close();ctx=null;tenants=[];users=[];selected='';query='';page=1;auditPage=1;securityPage=1;userStatus='';userRole='';auditAction='';auditDays=90;view='overview';adminTab='clients';$('portal-search').value='';$('site-status-filter').value='';root.replaceChildren();profileRoot.replaceChildren();$('portal-nav').replaceChildren();}
  return {init,clear,checkSession:()=>api('session_check'),touch:()=>api('activity'),end:()=>api('session_end'),currentTenant:()=>selected,currentQuery:()=>query,refreshActive:()=>view==='management'?load():view==='profile'?renderProfile():onTenantChange(),isOverview:()=>view==='overview',tenantName:id=>tenants.find(t=>t.id===id)?.name||'',mustChange:()=>!!ctx?.profile.must_change_password};
 }
-
