@@ -37,6 +37,14 @@ export function createManagement({db,baseUrl,publishableKey,notice,logout,onTena
   const n=$('portal-nav');n.replaceChildren();
   const entries=[['overview','Disponibilidad'],...(ctx.global_admin||ctx.memberships.some(m=>m.role==='client_admin')?[['management',ctx.global_admin?'Administración':'Gestionar sitios']]:[]),['profile','Mi perfil']];
   for(const [id,label] of entries){const b=button(label,async()=>{setView(id);if(id==='management')await load();if(id==='profile')renderProfile();if(id==='overview')onTenantChange();});b.dataset.view=id;n.append(b);}
+  const tutorial=el('a','','subtle portal-tutorial');
+  tutorial.href='https://linkwich-it.github.io/LinkWich-Tutorial/';
+  tutorial.target='_blank';tutorial.rel='noopener noreferrer';
+  tutorial.setAttribute('aria-label','Tutorial de uso de LinkWich-Monitor (abre en otra pestaña)');
+  const book=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  book.setAttribute('viewBox','0 0 24 24');book.setAttribute('fill','none');book.setAttribute('stroke','currentColor');book.setAttribute('stroke-width','1.8');book.setAttribute('stroke-linecap','round');book.setAttribute('stroke-linejoin','round');book.setAttribute('aria-hidden','true');book.classList.add('icon');
+  const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d','M12 7v14M3 3h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5v17h-5a4 4 0 0 0-4 1 4 4 0 0 0-4-1H3z');book.append(path);
+  tutorial.append(book,el('span','Tutorial de uso'));n.append(tutorial);
   setView(view);
  }
  function updateFilterScope(){
