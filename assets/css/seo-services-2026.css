@@ -1,0 +1,16 @@
+/* Enlaces comerciales orgánicos, aislados del tema y scripts existentes. */
+.lw-seo-related{padding:48px 0 54px;background:#0b0c23;color:#fff}
+.lw-seo-related h2{font-family:Poppins,Arial,sans-serif;font-size:clamp(1.4rem,2.3vw,2rem);font-weight:700;margin:0 0 .5rem;color:#fff}
+.lw-seo-related p{font-size:.99rem;color:#bbc4df;margin:0 0 1.4rem}
+.lw-seo-related-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.lw-seo-related-grid a{display:flex;justify-content:space-between;gap:6px;align-items:center;min-height:74px;border-radius:14px;padding:16px;color:#f1eeff;text-decoration:none;font-family:Poppins,Arial,sans-serif;font-size:.88rem;font-weight:600;line-height:1.5;background:#191a38;border:1px solid #373456;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.lw-seo-related-grid a span{color:#c7bbff}
+.lw-seo-related-grid a:hover,.lw-seo-related-grid a:focus-visible{background:#25244b;color:#fff;border-color:#8378ed;transform:translateY(-2px)}
+@media(max-width:900px){.lw-seo-related-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.lw-seo-related-grid{grid-template-columns:1fr}.lw-seo-related{padding:36px 0}}
+
+/* Conservar tamaño y peso del logotipo al usar una etiqueta semántica sin H1. */
+.header .logo span.sitename{font-size:24px;margin:0;font-weight:500;color:var(--heading-color);display:inline-block}
+/* Contenedor consistente en páginas de servicio creadas con CSS ligero. */
+.lw-seo-related .container{width:min(1150px,calc(100% - 42px));margin-inline:auto}
+@media(max-width:540px){.lw-seo-related .container{width:calc(100% - 30px)}}
