@@ -1,3 +1,4 @@
+import {siteSnapshotButton} from './site-snapshot.js?v=status-1';
 import {portalLogin} from './login.js?v=attempts-1';
 import {renderNotice,noticeElement} from './notices.js?v=visible-1';
 import {matchesSearch,matchesSiteStatus,siteState} from './search.js?v=filters-1';
@@ -195,7 +196,7 @@ async function refresh(){
    const status=states[ix],[cls,symbol]=statusStyles[status]||statusStyles.pending;
    const card=node('article','','panel installation status-'+status);card.append(node('p',manager.tenantName(i.tenant_id),'small muted'));
    const heading=node('div','','site-heading');heading.append(icon('server'),node('h3',i.name));const badge=node('span',names[status],'badge '+cls);badge.prepend(icon(symbol));
-   card.append(heading,badge);renderSiteDetails(card,i,status,date);renderLicense(card,i,status);$('installations').append(card);
+   card.append(heading,badge);renderSiteDetails(card,i,status,date);renderLicense(card,i,status);card.append(siteSnapshotButton({db,site:i,isCurrent:()=>generation===epoch&&!$('dashboard').hidden}));$('installations').append(card);
   }
   setBusy($('installations'),false);
   const scoped=historySite?rows.filter(i=>i.id===historySite):rows;
