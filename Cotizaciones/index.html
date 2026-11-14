@@ -27,8 +27,36 @@
       font-weight: 800;
     }
     #metodoPagoDetalle {
-      color: #334155;
-      font-weight: 600;
+      display: block;
+      background: #eaf2ff;
+      border: 1px solid #b7d1f4;
+      border-left: 4px solid #1c4c91;
+      border-radius: 8px;
+      padding: 10px 11px;
+      color: #173d77;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    #metodoPagoDetalle::before {
+      content: "✓";
+      display: inline-grid;
+      place-items: center;
+      width: 19px;
+      height: 19px;
+      margin-right: 8px;
+      border-radius: 50%;
+      background: #16a34a;
+      color: white;
+      font-size: 13px;
+      vertical-align: -3px;
+    }
+    #metodoPagoDetalle.payment-single {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+      color: #475569;
+    }
+    #metodoPagoDetalle.payment-single::before {
+      background: #64748b;
     }
     #isrResico {
       background: #f8fafc;
@@ -355,14 +383,14 @@
             <small class="field-help" data-i18n="resicoItemHelp">Si hay varios conceptos, aquí eliges dónde se integrará internamente antes de imprimir.</small>
           </div>
           <div class="field">
-            <label data-i18n="suggestedDepositPct">Anticipo sugerido (%)</label>
+            <label data-i18n="suggestedDepositPct">Anticipo (%)</label>
             <input type="number" id="anticipo" value="60" min="0" max="100" step="0.01" />
             <small class="field-help" data-i18n="depositHelp">Por defecto 60%. Si colocas 100%, se considera pago único.</small>
           </div>
           <div class="field">
             <label data-i18n="paymentMethod">Método de pago</label>
             <input type="text" id="metodoPago" value="PPD" readonly />
-            <small class="field-help" id="metodoPagoDetalle">Anticipo del 60%; saldo pendiente estimado.</small>
+            <small class="field-help" id="metodoPagoDetalle" role="status" aria-live="polite">Anticipo del 60%. Saldo pendiente a liquidar contra entrega.</small>
           </div>
         </div>
 
@@ -518,7 +546,7 @@
 
       if (sessionStorage.getItem(ACCESS_KEY) === "1") {
         var script = document.createElement("script");
-        script.src = "script.js?v=20261106-constructoras-1";
+        script.src = "script.js?v=20261113-liquidacion-contra-entrega-2";
         document.body.appendChild(script);
         return;
       }
