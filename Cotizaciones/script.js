@@ -61,7 +61,7 @@ const I18N = {
     resicoTable: "Tabla RESICO", monthly: "Mensual", annual: "Anual",
     applyResicoToItem: "Cargar RESICO en concepto",
     resicoItemHelp: "Si hay varios conceptos, aquí eliges dónde se integrará internamente antes de imprimir.",
-    suggestedDepositPct: "Anticipo sugerido (%)",
+    suggestedDepositPct: "Anticipo (%)",
     depositHelp: "Por defecto 60%. Si colocas 100%, se considera pago único.",
     paymentMethod: "Método de pago", paymentTerms: "Forma de pago", notes: "Notas",
     notesPlaceholder: "Escribe observaciones, alcances, restricciones o notas importantes.",
@@ -77,7 +77,7 @@ const I18N = {
     singlePayment100: "Pago único 100%", depositOf: "Anticipo del {percent}%",
     paymentSingleDescription: "Pago en una sola exhibición", paymentInstallmentsDescription: "Pago en parcialidades o diferido",
     with100Single: "Con 100%, se considera pago único por {total}.",
-    depositBalanceDetail: "{deposit}; saldo pendiente estimado: {balance}.",
+    depositBalanceDetail: "{deposit}. Saldo pendiente: {balance}. Liquidación del saldo contra entrega.",
     monthlyTable: "tabla mensual", annualTable: "tabla anual", baseBeforeVat: "Base sin IVA",
     rate: "tasa", integratedInto: "se integra en", importantResico: " Importante: el monto excede el límite de RESICO; valida con tu contador.",
     approxItemDiscount: "equivale aprox. al {percent}% del subtotal", approxGlobalDiscount: "aprox. {percent}% global",
@@ -91,7 +91,7 @@ const I18N = {
     clearConfirm: "¿Deseas limpiar la cotización actual?", page: "Página", of: "de",
     quoteTitle: "COTIZACIÓN", expires: "Expira", days: "días", clientInfoTitle: "DATOS DEL CLIENTE",
     client: "Cliente", project: "Proyecto", location: "Ubicación", serviceTypePdf: "Tipo de servicio",
-    suggestedDeposit: "ANTICIPO SUGERIDO", balanceDue: "Saldo pendiente", fullQuotePayment: "Pago total de la cotización",
+    suggestedDeposit: "ANTICIPO", balanceDue: "Saldo pendiente", balancePaymentTiming: "Liquidación del saldo contra entrega", fullQuotePayment: "Pago total de la cotización",
     method: "Método", financialSummary: "RESUMEN FINANCIERO", grossSubtotal: "Subtotal bruto",
     itemDiscountPdf: "Desc. conceptos", generalDiscountShort: "Desc. general", totalDiscountPdf: "Desc. total",
     paymentTermsTitle: "FORMA DE PAGO", termsTitle: "TÉRMINOS Y CONDICIONES", notesTitle: "NOTAS",
@@ -186,7 +186,7 @@ const I18N = {
     resicoTable: "RESICO table", monthly: "Monthly", annual: "Annual",
     applyResicoToItem: "Apply RESICO to item",
     resicoItemHelp: "When there are multiple items, select where RESICO will be included internally before printing.",
-    suggestedDepositPct: "Suggested deposit (%)",
+    suggestedDepositPct: "Deposit (%)",
     depositHelp: "Default is 60%. If set to 100%, it is treated as a single payment.",
     paymentMethod: "Payment method", paymentTerms: "Payment terms", notes: "Notes",
     notesPlaceholder: "Enter observations, scope, restrictions, or important notes.",
@@ -202,7 +202,7 @@ const I18N = {
     singlePayment100: "Single payment 100%", depositOf: "{percent}% deposit",
     paymentSingleDescription: "Payment in a single installment", paymentInstallmentsDescription: "Payment in installments or deferred",
     with100Single: "At 100%, this is treated as a single payment of {total}.",
-    depositBalanceDetail: "{deposit}; estimated outstanding balance: {balance}.",
+    depositBalanceDetail: "{deposit}. Outstanding balance: {balance}. Remaining balance due upon delivery.",
     monthlyTable: "monthly table", annualTable: "annual table", baseBeforeVat: "Base before VAT",
     rate: "rate", integratedInto: "included in", importantResico: " Important: the amount exceeds the RESICO limit; confirm it with your accountant.",
     approxItemDiscount: "approximately {percent}% of the subtotal", approxGlobalDiscount: "approximately {percent}% overall",
@@ -216,7 +216,7 @@ const I18N = {
     clearConfirm: "Do you want to clear the current quotation?", page: "Page", of: "of",
     quoteTitle: "QUOTATION", expires: "Expires", days: "days", clientInfoTitle: "CLIENT INFORMATION",
     client: "Client", project: "Project", location: "Location", serviceTypePdf: "Service type",
-    suggestedDeposit: "SUGGESTED DEPOSIT", balanceDue: "Outstanding balance", fullQuotePayment: "Full quotation payment",
+    suggestedDeposit: "DEPOSIT", balanceDue: "Outstanding balance", balancePaymentTiming: "Remaining balance due upon delivery", fullQuotePayment: "Full quotation payment",
     method: "Method", financialSummary: "FINANCIAL SUMMARY", grossSubtotal: "Gross subtotal",
     itemDiscountPdf: "Item discounts", generalDiscountShort: "General discount", totalDiscountPdf: "Total discount",
     paymentTermsTitle: "PAYMENT TERMS", termsTitle: "TERMS AND CONDITIONS", notesTitle: "NOTES",
@@ -967,6 +967,7 @@ function actualizarResumenPago(anticipo, total, anticipoMonto) {
   if (metodoPagoEl) metodoPagoEl.value = pagoInfo.label;
 
   if (metodoPagoDetalleEl) {
+    metodoPagoDetalleEl.classList.toggle("payment-single", pagoInfo.clave === "PUE");
     metodoPagoDetalleEl.textContent = pagoInfo.clave === "PUE"
       ? t("with100Single", { total: formatMoney(total) })
       : t("depositBalanceDetail", { deposit: anticipoLabel, balance: formatMoney(saldoPendiente) });
@@ -2364,6 +2365,39 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
       const saldoLines = doc.splitTextToSize(saldoTextoPdf, leftBoxW - 8);
       doc.text(saldoLines.slice(0, 2), leftX + 4, currentY + 35);
 
+      // Condición de liquidación destacada en el PDF (solo si existe saldo pendiente).
+      // Es un elemento visual: no modifica importes, cálculos ni la lógica PPD/PUE.
+      if ((data.saldoPendiente || 0) > 0) {
+        const bandX = leftX + 4;
+        const bandY = currentY + 38.5;
+        const bandW = leftBoxW - 8;
+        const bandH = 9.5;
+
+        // Banda azul de alto contraste para identificar de inmediato el vencimiento del saldo.
+        doc.setFillColor(28, 76, 145);
+        doc.roundedRect(bandX, bandY, bandW, bandH, 2, 2, "F");
+
+        // Palomita blanca sobre círculo verde, dibujada de forma vectorial en el PDF.
+        const checkCX = bandX + 6.2;
+        const checkCY = bandY + bandH / 2;
+        doc.setFillColor(35, 171, 97);
+        doc.circle(checkCX, checkCY, 3, "F");
+        doc.setDrawColor(255, 255, 255);
+        doc.setLineWidth(0.65);
+        doc.line(checkCX - 1.5, checkCY, checkCX - 0.35, checkCY + 1.15);
+        doc.line(checkCX - 0.35, checkCY + 1.15, checkCX + 1.75, checkCY - 1.2);
+        doc.setLineWidth(0.2);
+
+        doc.setFont("helvetica", "bold");
+        const bandLabel = t("balancePaymentTiming");
+        doc.setFontSize(8.1);
+        // Ajuste de texto para no rebasar la banda al traducir el PDF al inglés.
+        const bandTextMaxW = bandW - 18;
+        if (doc.getTextWidth(bandLabel) > bandTextMaxW) doc.setFontSize(7.2);
+        doc.setTextColor(255, 255, 255);
+        doc.text(bandLabel, bandX + 12.5, bandY + 6.3);
+      }
+
       doc.setFillColor(...softGray);
       doc.roundedRect(rightX, currentY, rightBoxW, rightH, 3, 3, "F");
       doc.setDrawColor(...borderGray);
@@ -2658,7 +2692,7 @@ function exportarExcel(internalControl = false) {
     originalBaseSubtotal: "ORIGINAL BASE SUBTOTAL", originalBaseBeforeVat: "ORIGINAL BASE BEFORE VAT", integratedResico: "RESICO INCLUDED IN PRICE",
     clientGrossSubtotal: "CLIENT GROSS SUBTOTAL", clientItemDiscount: "CLIENT ITEM DISCOUNT", clientItemDiscountPct: "CLIENT ITEM DISCOUNT (%)",
     clientSubtotal: "CLIENT SUBTOTAL", generalDiscount: "GENERAL DISCOUNT", totalDiscount: "TOTAL DISCOUNT", totalDiscountPct: "TOTAL DISCOUNT (%)",
-    vat: "VAT", total: "TOTAL", estimatedNetResico: "ESTIMATED NET AFTER RESICO", suggestedDeposit: "SUGGESTED DEPOSIT",
+    vat: "VAT", total: "TOTAL", estimatedNetResico: "ESTIMATED NET AFTER RESICO", suggestedDeposit: "DEPOSIT",
     outstandingBalance: "OUTSTANDING BALANCE", notes: "NOTES", terms: "TERMS", language: "LANGUAGE"
   } : {
     company: "EMPRESA", companyEmail: "CORREO EMPRESA", companyPhone: "TELÉFONO EMPRESA", website: "SITIO WEB", city: "CIUDAD",
@@ -2670,7 +2704,7 @@ function exportarExcel(internalControl = false) {
     originalBaseSubtotal: "SUBTOTAL BASE ORIGINAL", originalBaseBeforeVat: "BASE ORIGINAL SIN IVA", integratedResico: "RESICO INTEGRADO AL PRECIO",
     clientGrossSubtotal: "SUBTOTAL BRUTO CLIENTE", clientItemDiscount: "DESCUENTO POR CONCEPTOS CLIENTE", clientItemDiscountPct: "DESCUENTO POR CONCEPTOS CLIENTE (%)",
     clientSubtotal: "SUBTOTAL CLIENTE", generalDiscount: "DESCUENTO GENERAL", totalDiscount: "DESCUENTO TOTAL", totalDiscountPct: "DESCUENTO TOTAL (%)",
-    vat: "IVA", total: "TOTAL", estimatedNetResico: "NETO ESTIMADO RESICO", suggestedDeposit: "ANTICIPO SUGERIDO",
+    vat: "IVA", total: "TOTAL", estimatedNetResico: "NETO ESTIMADO RESICO", suggestedDeposit: "ANTICIPO",
     outstandingBalance: "SALDO PENDIENTE", notes: "NOTAS", terms: "TÉRMINOS", language: "IDIOMA"
   };
 
