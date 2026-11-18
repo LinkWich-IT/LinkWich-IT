@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkWich-IT | Cotizador Profesional</title>
-  <link rel="stylesheet" href="style.css?v=20261118-resico-tasa-editable-2" />
+  <link rel="stylesheet" href="style.css?v=20261118-fx-conversion-v3" />
 
   <style>
     .field-help {
@@ -177,6 +177,17 @@
               <option value="MXN" selected>MXN</option>
               <option value="USD">USD</option>
             </select>
+            <small class="field-help" data-i18n="fxCurrencyHint">Al cambiar la moneda, se convierten los precios de todos los conceptos.</small>
+          </div>
+          <div class="field lwq-fx-field">
+            <label for="tipoCambioMXN" data-i18n="fxRateLabel">Tipo de cambio: 1 USD = MXN</label>
+            <div class="lwq-fx-rate-controls">
+              <input type="number" id="tipoCambioMXN" min="0.000001" max="999.999999" step="any" inputmode="decimal" placeholder="Ej. 17.5000" aria-describedby="tipoCambioEstado" />
+              <button type="button" id="btnConsultarTipoCambio" class="btn btn-info" data-i18n="fxLookup">Consultar hoy</button>
+            </div>
+            <small class="field-help lwq-fx-status" id="tipoCambioEstado" role="status" aria-live="polite">Consulta el tipo de cambio o captúralo manualmente.</small>
+            <small class="field-help" data-i18n="fxDisclaimer">Referencia orientativa, no cotización bancaria ni tipo FIX de Banxico. Cambiar la tasa no modifica precios ya convertidos.</small>
+            <small class="field-help"><a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer" data-i18n="fxSourceLink">Fuente: Frankfurter (bancos centrales)</a></small>
           </div>
         </div>
       </section>
@@ -571,7 +582,7 @@
 
       if (sessionStorage.getItem(ACCESS_KEY) === "1") {
         var script = document.createElement("script");
-        script.src = "script.js?v=20261118-resico-tasa-editable-2";
+        script.src = "script.js?v=20261118-fx-conversion-v3";
         document.body.appendChild(script);
         return;
       }
