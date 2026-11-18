@@ -1271,3 +1271,20 @@ body:not(.lwq-mode-construction) #tablaConceptos { min-width: 1180px; }
 }
 .lwq-resico-rate-validation:empty { display:none; }
 @media print { #resicoModoTasa, #resicoRateValidation { display:none !important; } }
+
+
+/* ============================================================
+   Tipo de cambio USD / MXN. Complemento aislado.
+   ============================================================ */
+.lwq-fx-rate-controls { display:flex; gap:8px; align-items:stretch; min-width:0; }
+.lwq-fx-rate-controls input { flex:1 1 0; min-width:90px; }
+.lwq-fx-rate-controls .btn { width:auto; flex:0 0 auto; margin:0; padding:9px 12px; white-space:nowrap; }
+.lwq-fx-status { min-height:2.2em; line-height:1.4; }
+.lwq-fx-status.lwq-fx-error { color:#fda4af; }
+.lwq-fx-status.lwq-fx-good { color:#86efac; }
+.lwq-fx-field a { color:#93c5fd; text-decoration:underline; text-underline-offset:2px; }
+@media (max-width:440px) {
+  .lwq-fx-rate-controls { flex-wrap:wrap; }
+  .lwq-fx-rate-controls input { min-width:0; flex-basis:100%; }
+  .lwq-fx-rate-controls .btn { width:100%; }
+}
