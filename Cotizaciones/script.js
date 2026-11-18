@@ -45,8 +45,8 @@ const I18N = {
     subtitle: "Genera cotizaciones ejecutivas para tus clientes", language: "Idioma", webVersion: "Versión Web",
     companyData: "Datos de la empresa", company: "Empresa", email: "Correo", phone: "Teléfono",
     website: "Sitio web", city: "Ciudad", currency: "Moneda", fxRateLabel: "Tipo de cambio: 1 USD = MXN", fxLookup: "Consultar hoy",
-    fxCurrencyHint: "Al cambiar la moneda, se convierten los precios de todos los conceptos.",
-    fxDisclaimer: "Referencia orientativa, no cotización bancaria ni tipo FIX de Banxico. Si cotizas en USD, cambiar la tasa actualiza automáticamente los precios ya agregados.",
+    fxCurrencyHint: "Los precios base en MXN están protegidos: al cambiar a USD solo se actualiza el precio mostrado.",
+    fxDisclaimer: "Referencia orientativa, no cotización bancaria ni tipo FIX de Banxico. En USD, modificar la tasa recalcula los precios desde su base MXN protegida, sin acumular redondeos.",
     fxSourceLink: "Fuente: Frankfurter (bancos centrales)",
     fxMissing: "Captura un tipo de cambio válido o consulta el último disponible para convertir MXN y USD.",
     fxManual: "Tipo de cambio manual: 1 USD = {rate} MXN. Los conceptos en USD se actualizan al confirmar el cambio.",
@@ -203,8 +203,8 @@ const I18N = {
     subtitle: "Create professional quotations for your clients", language: "Language", webVersion: "Web Version",
     companyData: "Company information", company: "Company", email: "Email", phone: "Phone",
     website: "Website", city: "City", currency: "Currency", fxRateLabel: "Exchange rate: 1 USD = MXN", fxLookup: "Get latest rate",
-    fxCurrencyHint: "Changing currency converts the unit prices for all items.",
-    fxDisclaimer: "Indicative reference only, not a bank quote or Banxico FIX. When quoting in USD, changing the rate automatically reprices existing items.",
+    fxCurrencyHint: "Original MXN unit prices are protected; switching to USD only changes the displayed value.",
+    fxDisclaimer: "Indicative reference only, not a bank quote or Banxico FIX. Changing the USD rate recalculates item prices from their protected MXN base without accumulating rounding errors.",
     fxSourceLink: "Source: Frankfurter (central banks)",
     fxMissing: "Enter a valid exchange rate or fetch the latest available rate to convert MXN and USD.",
     fxManual: "Manual rate: 1 USD = {rate} MXN. Existing USD items update when the change is confirmed.",
@@ -489,79 +489,114 @@ function renderFXStatus() {
   else if (fxDetails.status === "cache") el.textContent = t("fxCached", {rate: formatFXRate(rate), date: fxDetails.date || "—"});
   else el.textContent = t("fxLatest", {rate: formatFXRate(rate), date: fxDetails.date || "—"});
 }
-/*
-  Revalúa una cotización existente en USD al fijar otra tasa, manteniendo
-  exactamente el valor de referencia en pesos: USD_nuevo = USD_anterior
-  * tasa_anterior / tasa_nueva.
-  MXN no se recalcula porque los pesos ya son la moneda original.
-  Los porcentajes, cantidades y descuentos nunca se tocan.
-*/
-function actualizarCotizacionUSDPorTipoCambio(tasaNueva) {
-  const rate = Number(tasaNueva);
-  if (!Number.isFinite(rate) || rate <= 0 || rate >= 1000) return false;
-  if (quoteCurrency !== "USD") {
-    fxAppliedRateUSD = null;
-    return true;
-  }
-  const prev = fxAppliedRateUSD;
-  if (!Number.isFinite(prev) || prev <= 0) {
-    // Primera captura, o cotización antigua sin una tasa asociada:
-    // no inventar la conversión de valores preexistentes.
-    fxAppliedRateUSD = rate;
-    return true;
-  }
-  if (Math.abs(prev - rate) < 1e-12) {
-    fxAppliedRateUSD = rate;
-    return true;
-  }
-
-  const tasaInput = document.getElementById("tipoCambioMXN");
-  const tasaCapturada = tasaInput?.value;
-  // Verificar el reparto anterior CON la tasa anterior (no con la tasa que
-  // el usuario acaba de escribir). Solo cuadrar de nuevo si era correcto.
-  let rebalanceManual = false;
-  if (tasaInput) tasaInput.value = formatFXRate(prev);
-  try {
-    rebalanceManual = asignacionesManualAntesValidas();
-  } finally {
-    if (tasaInput) tasaInput.value = tasaCapturada;
-  }
-
+/* ============================================================
+   V5 - PRECIOS BASE MXN INMUTABLES ANTE CAMBIOS DE DIVISA.
+   El precio mostrado es una vista derivada de precioBaseMxn.
+   Solo una edición directa del precio cambia el valor base.
+   ============================================================ */
+function fxRateValida(rate) {
+  return Number.isFinite(Number(rate)) && Number(rate) > 0 && Number(rate) < 1000;
+}
+function fxBaseDesdeVisible(valor, moneda = quoteCurrency, tasa = null) {
+  const numero = Number(valor) || 0;
+  if (moneda !== "USD") return numero;
+  const rate = tasa ?? fxAppliedRateUSD ?? getFXRate();
+  if (!fxRateValida(rate)) throw new Error("Es necesario un tipo de cambio para crear el precio base MXN.");
+  return numero * Number(rate);
+}
+function fxPrecioBase(row) {
+  const guardado = row.dataset.precioBaseMxn;
+  if (guardado !== undefined && guardado !== "" && Number.isFinite(Number(guardado))) return Number(guardado);
+  const precio = Number(row.querySelector(".precio")?.value || 0);
+  const base = fxBaseDesdeVisible(precio);
+  row.dataset.precioBaseMxn = String(base);
+  return base;
+}
+function fxRegistrarPrecioEditado(row) {
+  const input = row.querySelector(".precio");
+  if (!input) return;
+  if (quoteCurrency === "USD" && !fxRateValida(fxAppliedRateUSD ?? getFXRate())) return;
+  row.dataset.precioBaseMxn = String(fxBaseDesdeVisible(input.value));
+}
+function fxActualizarBolsaBaseDesdeInput() {
+  const campo = document.getElementById("indirectoBase");
+  if (!campo) return;
+  if (quoteCurrency === "USD" && !fxRateValida(fxAppliedRateUSD ?? getFXRate())) return;
+  campo.dataset.fxBaseMxn = String(fxBaseDesdeVisible(campo.value));
+}
+function fxMontoBaseAsignado(entry) {
+  if (entry.amountBaseMxn !== undefined && entry.amountBaseMxn !== null &&
+      Number.isFinite(Number(entry.amountBaseMxn))) return Number(entry.amountBaseMxn);
+  entry.amountBaseMxn = fxBaseDesdeVisible(entry.amount);
+  return entry.amountBaseMxn;
+}
+function fxGuardarMontoManual(entry) {
+  entry.amountBaseMxn = fxBaseDesdeVisible(entry.amount);
+}
+function fxDistribuirMontosDesdeBase(rebalanceManual) {
   const rows = [...conceptosBody.querySelectorAll("tr")];
-  const repartosAnteriores = rows.map(row => ({
-    rowId: row.dataset.rowId,
-    selected: ensureStandardResico(row.dataset.rowId).selected,
-    amount: ensureStandardResico(row.dataset.rowId).amount
-  }));
-  const factor = prev / rate;
-  rows.forEach(row => {
-    const input = row.querySelector(".precio");
-    if (input) input.value = String(fxRound((Number(input.value) || 0) * factor, 8));
+  if (stdResicoMode() !== "manual") return;
+  const rate = quoteCurrency === "USD" ? getFXRate() : 1;
+  const original = rows.map(row => {
     const entry = ensureStandardResico(row.dataset.rowId);
-    entry.amount = fxRound(entry.amount * factor, 2);
+    const base = fxMontoBaseAsignado(entry);
+    entry.amount = Math.round((quoteCurrency === "USD" ? base / rate : base) * 100) / 100;
+    return {rowId:row.dataset.rowId, selected:entry.selected, base};
+  });
+  if (!rebalanceManual) return; // Nunca ocultar un reparto manual previamente incompleto.
+  const financial = calcularDatosFinancieros({actualizarUI:false});
+  const eligible = original.filter(e => e.selected && e.base > 0 &&
+    financial.conceptosBase.some(x => x.rowId === e.rowId && x.cantidad > 0 && x.descuento < 100));
+  if (!eligible.length) return;
+  const mapped = eligible.map(e => ({ index: financial.conceptosBase.findIndex(x => x.rowId === e.rowId) }));
+  const parts = exactCentsByWeights(financial.standardResico.budgetCents, mapped, eligible.map(e => e.base));
+  original.filter(e => e.selected).forEach(e => {ensureStandardResico(e.rowId).amount = 0;});
+  parts.forEach(p => {ensureStandardResico(financial.conceptosBase[p.index].rowId).amount = p.amount;});
+  // Importante: amountBaseMxn queda intacto para que el viaje redondo recupere
+  // los montos originales de MXN y no acumule redondeos.
+}
+function fxPintarImportesDesdeBase(rate, rebalanceManual = false) {
+  if (quoteCurrency === "USD" && !fxRateValida(rate)) return false;
+  [...conceptosBody.querySelectorAll("tr")].forEach(row => {
+    const input = row.querySelector(".precio");
+    if (!input) return;
+    const base = fxPrecioBase(row);
+    input.value = quoteCurrency === "USD" ? String(fxRound(base / rate, 8)) : String(base);
   });
   const indirecto = document.getElementById("indirectoBase");
-  if (indirecto) indirecto.value = String(fxRound((Number(indirecto.value) || 0) * factor, 8));
-  fxAppliedRateUSD = rate;
-
-  if (rebalanceManual) {
-    const financial = calcularDatosFinancieros({actualizarUI:false});
-    const eligible = repartosAnteriores.filter(e => e.selected && e.amount > 0 &&
-      financial.conceptosBase.some(x => x.rowId === e.rowId && x.cantidad > 0 && x.descuento < 100));
-    if (eligible.length) {
-      const mapped = eligible.map(e => ({index:financial.conceptosBase.findIndex(x => x.rowId === e.rowId)}));
-      const parts = exactCentsByWeights(financial.standardResico.budgetCents, mapped, eligible.map(e => e.amount));
-      repartosAnteriores.filter(e => e.selected).forEach(e => {ensureStandardResico(e.rowId).amount = 0;});
-      parts.forEach(p => {ensureStandardResico(financial.conceptosBase[p.index].rowId).amount = p.amount;});
-    }
+  if (indirecto) {
+    const base = indirecto.dataset.fxBaseMxn === undefined
+      ? fxBaseDesdeVisible(indirecto.value, quoteCurrency, fxAppliedRateUSD ?? rate)
+      : Number(indirecto.dataset.fxBaseMxn);
+    indirecto.dataset.fxBaseMxn = String(base);
+    indirecto.value = quoteCurrency === "USD" ? String(fxRound(base / rate, 8)) : String(base);
   }
+  fxDistribuirMontosDesdeBase(rebalanceManual);
+  return true;
+}
+function actualizarCotizacionUSDPorTipoCambio(tasaNueva) {
+  const rate = Number(tasaNueva);
+  if (!fxRateValida(rate)) return false;
+  if (quoteCurrency !== "USD") { fxAppliedRateUSD = null; return true; }
+  if (fxAppliedRateUSD === rate) return true;
+  const input = document.getElementById("tipoCambioMXN");
+  const newValue = input?.value;
+  // La validez del reparto previo se evalúa con la tasa con la que
+  // se mostraban los importes (no con la tasa nueva que se está capturando).
+  if (input && fxRateValida(fxAppliedRateUSD)) input.value = formatFXRate(fxAppliedRateUSD);
+  let repartidoCorrectamente = false;
+  try { repartidoCorrectamente = asignacionesManualAntesValidas(); }
+  finally { if (input) input.value = newValue; }
+  fxAppliedRateUSD = rate;
+  fxPintarImportesDesdeBase(rate, repartidoCorrectamente);
   return true;
 }
 function setFXReference(rate, details = {}, options = {}) {
-  if (!Number.isFinite(Number(rate)) || Number(rate) <= 0 || Number(rate) >= 1000) return false;
+  if (!fxRateValida(rate)) return false;
+  const input = document.getElementById("tipoCambioMXN");
+  input.value = formatFXRate(rate);
   if (options.reprice !== false) actualizarCotizacionUSDPorTipoCambio(Number(rate));
-  document.getElementById("tipoCambioMXN").value = formatFXRate(rate);
-  if (options.reprice === false) fxAppliedRateUSD = quoteCurrency === "USD" ? Number(rate) : null;
+  else fxAppliedRateUSD = quoteCurrency === "USD" ? Number(rate) : null;
   fxDetails = { ...fxDetails, ...details };
   renderFXStatus();
   return true;
@@ -615,43 +650,16 @@ function convertirCotizacionA(monedaDestino, options = {}) {
     if (!options.silent) alert(t("fxPrevent"));
     return false;
   }
-  // Una vez aplicada una conversión, congelar la tasa utilizada: una
-  // respuesta tardía de la consulta inicial no debe cambiarla silenciosamente.
   ++fxFetchSequence;
   fxDetails.edited = true;
-  // Guardar las proporciones manuales validas. Si un usuario ya tenía un
-  // reparto incompleto, conservar su estado inválido para no inventarlo.
+  // Verificar el reparto manual ANTES de cambiar moneda. Las proporciones
+  // se calculan después desde las referencias MXN, sin perder centavos.
   const rebalanceManual = asignacionesManualAntesValidas();
-  const rows = [...conceptosBody.querySelectorAll("tr")];
-  const previousAmounts = rows.map(row => ({
-    rowId: row.dataset.rowId,
-    selected: ensureStandardResico(row.dataset.rowId).selected,
-    amount: ensureStandardResico(row.dataset.rowId).amount
-  }));
-  rows.forEach(row => {
-    const input = row.querySelector(".precio");
-    if (input) input.value = String(fxRound(fxConvertNumber(input.value, monedaOrigen, monedaDestino, rate), 8));
-    const entry = ensureStandardResico(row.dataset.rowId);
-    entry.amount = fxRound(fxConvertNumber(entry.amount, monedaOrigen, monedaDestino, rate), 2);
-  });
-  const indirecto = document.getElementById("indirectoBase");
-  if (indirecto) indirecto.value = String(fxRound(fxConvertNumber(indirecto.value, monedaOrigen, monedaDestino, rate), 8));
+  // Nunca convertir dos veces el número ya redondeado que ve el usuario.
   quoteCurrency = monedaDestino;
   selector.value = monedaDestino;
+  fxPintarImportesDesdeBase(rate, rebalanceManual);
   fxAppliedRateUSD = monedaDestino === "USD" ? rate : null;
-  if (rebalanceManual) {
-    // Redistribuir exactamente el nuevo presupuesto en centavos, conservando
-    // el peso relativo de los importes que el usuario había elegido.
-    const financial = calcularDatosFinancieros({actualizarUI:false});
-    const eligible = previousAmounts.filter(e => e.selected && e.amount > 0 &&
-      financial.conceptosBase.some(x => x.rowId === e.rowId && x.cantidad > 0 && x.descuento < 100));
-    if (eligible.length) {
-      const mapped = eligible.map(e => ({ index:financial.conceptosBase.findIndex(x => x.rowId === e.rowId) }));
-      const parts = exactCentsByWeights(financial.standardResico.budgetCents, mapped, eligible.map(e=>e.amount));
-      previousAmounts.filter(e => e.selected).forEach(e => { ensureStandardResico(e.rowId).amount = 0; });
-      parts.forEach(p => { ensureStandardResico(financial.conceptosBase[p.index].rowId).amount = p.amount; });
-    }
-  }
   recalcularTodo();
   return true;
 }
@@ -745,7 +753,7 @@ function stdResicoMode() {
 }
 function ensureStandardResico(rowId) {
   const id = String(rowId || "");
-  if (!standardResicoAllocation[id]) standardResicoAllocation[id] = { selected: true, amount: 0 };
+  if (!standardResicoAllocation[id]) standardResicoAllocation[id] = { selected: true, amount: 0, amountBaseMxn: 0 };
   return standardResicoAllocation[id];
 }
 function amountCents(value) { return Math.round(Number(value || 0) * 100); }
@@ -844,7 +852,9 @@ function initStandardResico() {
       // Mantener los mismos importes que estaba mostrando la distribución automática.
       if (lastStandardResicoAuto) {
         Object.entries(lastStandardResicoAuto.perRow).forEach(([rowId, amount]) => {
-          ensureStandardResico(rowId).amount = amount;
+          const entry = ensureStandardResico(rowId);
+          entry.amount = amount;
+          fxGuardarMontoManual(entry);
         });
       }
       standardManualInitialized = true;
@@ -1061,6 +1071,7 @@ function getBuilderFormInfo() {
     modoCotizador: isConstructionMode() ? "constructora" : "normal",
     catalogoReferencia: document.getElementById("catalogoReferencia")?.value || "",
     indirectoBase: getBuilderNumber("indirectoBase"),
+    indirectoBaseMXN: Number(document.getElementById("indirectoBase")?.dataset.fxBaseMxn ?? 0),
     indirectoPorcentaje: getBuilderNumber("indirectoPorcentaje"),
     metodoResicoDistribucion: getBuilderModeFor("resico"),
     metodoIndirectosDistribucion: getBuilderModeFor("indirectos"),
@@ -1071,6 +1082,9 @@ function restoreBuilderForm(data = {}) {
   document.getElementById("modoCotizador").value = data.modoCotizador === "constructora" ? "constructora" : "normal";
   document.getElementById("catalogoReferencia").value = data.catalogoReferencia || "";
   document.getElementById("indirectoBase").value = data.indirectoBase ?? 0;
+  // Al restaurar una cotización antigua, el valor base se establece
+  // después de recuperar la moneda y el tipo de cambio del documento.
+  delete document.getElementById("indirectoBase").dataset.fxBaseMxn;
   document.getElementById("indirectoPorcentaje").value = data.indirectoPorcentaje ?? 0;
   document.getElementById("metodoResicoDistribucion").value = data.metodoResicoDistribucion || "proporcional";
   document.getElementById("metodoIndirectosDistribucion").value = data.metodoIndirectosDistribucion || "proporcional";
@@ -1086,7 +1100,10 @@ function initBuilderMode() {
   mode.addEventListener("change", updateBuilderModeUI);
   ["indirectoBase","indirectoPorcentaje"].forEach(id => {
     const e = document.getElementById(id);
-    e?.addEventListener("input", recalcularTodo);
+    e?.addEventListener("input", () => {
+      if (id === "indirectoBase") fxActualizarBolsaBaseDesdeInput();
+      recalcularTodo();
+    });
   });
   ["metodoResicoDistribucion","metodoIndirectosDistribucion"].forEach(id => {
     const e = document.getElementById(id);
@@ -1941,6 +1958,9 @@ function crearFila(data = {}) {
   if (data.standardResicoEntry && typeof data.standardResicoEntry === "object") {
     stdEntry.selected = !!data.standardResicoEntry.selected;
     stdEntry.amount = Number(data.standardResicoEntry.amount) || 0;
+    stdEntry.amountBaseMxn = data.standardResicoEntry.amountBaseMxn != null
+      ? Number(data.standardResicoEntry.amountBaseMxn)
+      : fxBaseDesdeVisible(stdEntry.amount);
   }
   const descuentoPreciso = Math.max(0, Math.min(100,
     Number(data.descuentoPreciso ?? data.descuento) || 0
@@ -1976,6 +1996,20 @@ function crearFila(data = {}) {
     </td>
   `;
 
+  // El precio base MXN es independiente del valor visual y se conserva
+  // completo incluso si la vista USD muestra solo ocho decimales.
+  const precioInput = tr.querySelector(".precio");
+  const precioMXNGuardado = Number(data.precioMXN);
+  const tienePrecioGuardado = data.precioMXN !== undefined && data.precioMXN !== null &&
+    Number.isFinite(precioMXNGuardado) && precioMXNGuardado >= 0;
+  const precioBaseMxn = tienePrecioGuardado
+    ? precioMXNGuardado
+    : fxBaseDesdeVisible(data.precio ?? 0);
+  tr.dataset.precioBaseMxn = String(precioBaseMxn);
+  precioInput.value = quoteCurrency === "USD"
+    ? String(fxRound(precioBaseMxn / getFXRate(), 8))
+    : String(precioBaseMxn);
+
   tr.querySelector(".concepto").value = String(data.concepto || "");
   tr.querySelector(".concepto-larga").value = String(data.concepto || "");
   tr.querySelector(".partida").value = String(data.partida || "");
@@ -1998,12 +2032,13 @@ function crearFila(data = {}) {
   const stdAmount = tr.querySelector(".lwq-standard-resico-importe");
   stdCheck.addEventListener("change", () => {
     stdEntry.selected = stdCheck.checked;
-    if (!stdEntry.selected) stdEntry.amount = 0;
+    if (!stdEntry.selected) {stdEntry.amount = 0; stdEntry.amountBaseMxn = 0;}
     recalcularTodo();
   });
   stdAmount.addEventListener("input", () => {
     if (stdResicoMode() !== "manual") return;
     stdEntry.amount = stdAmount.value === "" ? 0 : Number(stdAmount.value);
+    fxGuardarMontoManual(stdEntry);
     recalcularTodo();
   });
   stdAmount.addEventListener("blur", () => {
@@ -2012,6 +2047,7 @@ function crearFila(data = {}) {
   const inputs = tr.querySelectorAll("input:not(.lwq-standard-resico-select):not(.lwq-standard-resico-importe)");
   inputs.forEach(input => input.addEventListener("input", () => {
     if (input === descuentoInput) delete descuentoInput.dataset.preciseDiscount;
+    if (input === precioInput) fxRegistrarPrecioEditado(tr);
     if (input.classList.contains("concepto") || input.classList.contains("partida")) renderBuilderAllocationTable();
     recalcularTodo();
   }));
@@ -2136,6 +2172,8 @@ function aplicarPrellenadoCotizadorProfesional(payload) {
     cantidad: Number.isFinite(Number(item.cantidad)) ? Number(item.cantidad) : 1,
     precio: Number.isFinite(Number(item.precio))
       ? fxRound(fxConvertNumber(Number(item.precio), monedaOrigenPrefill, quoteCurrency), 8) : 0,
+    precioMXN: Number.isFinite(Number(item.precio))
+      ? fxBaseDesdeVisible(Number(item.precio), monedaOrigenPrefill, getFXRate()) : 0,
     descuento: Number.isFinite(Number(item.descuento)) ? Number(item.descuento) : 0,
     descuentoPreciso: Number.isFinite(Number(item.descuentoPreciso))
       ? Number(item.descuentoPreciso)
@@ -2237,7 +2275,10 @@ function obtenerDatosFormulario() {
     terminos: document.getElementById("terminos").value,
     monedaDescripcion: getCurrencyLabel(),
 
-    conceptosBase: financieros.conceptosBase,
+    conceptosBase: financieros.conceptosBase.map((item, i) => ({
+      ...item,
+      precioMXN: fxPrecioBase(conceptosBody.querySelectorAll("tr")[i])
+    })),
     conceptos: financieros.conceptos,
     subtotalBrutoBase: financieros.subtotalBrutoBase,
     descuentoConceptosBase: financieros.descuentoConceptosBase,
@@ -2304,6 +2345,7 @@ function limpiarFormulario() {
   standardManualInitialized = false;
   lastStandardResicoAuto = null;
   restoreBuilderForm({ modoCotizador: currentMode });
+  fxActualizarBolsaBaseDesdeInput();
   crearFila({ concepto: t("defaultProfessionalService"), cantidad: 1, precio: 0, descuento: 0 });
 }
 
@@ -2330,7 +2372,11 @@ function cargarBorrador() {
   const data = JSON.parse(raw);
   Object.keys(standardResicoAllocation).forEach(k => delete standardResicoAllocation[k]);
   Object.entries(data.standardResicoAllocation || {}).forEach(([key,value]) => {
-    standardResicoAllocation[key] = { selected: !!value.selected, amount: Number(value.amount) || 0 };
+    standardResicoAllocation[key] = {
+      selected: !!value.selected,
+      amount: Number(value.amount) || 0,
+      amountBaseMxn: value.amountBaseMxn == null ? null : Number(value.amountBaseMxn)
+    };
   });
   document.getElementById("resicoDistribucionEstandar").value = STD_RESICO_MODES.includes(data.resicoDistribucionEstandar) ? data.resicoDistribucionEstandar : "unico";
   standardManualInitialized = document.getElementById("resicoDistribucionEstandar").value === "manual";
@@ -2355,6 +2401,18 @@ function cargarBorrador() {
       edited: true
     }, {reprice:false});
   }
+
+  // El respaldo V5 conserva el valor exacto MXN. Los borradores V4
+  // siguen siendo compatibles: se toma la tasa que quedó guardada entonces.
+  const indirectoCampo = document.getElementById("indirectoBase");
+  indirectoCampo.dataset.fxBaseMxn = String(data.indirectoBaseMXN != null
+    ? Number(data.indirectoBaseMXN)
+    : fxBaseDesdeVisible(data.indirectoBase ?? 0));
+  Object.values(standardResicoAllocation).forEach(entry => {
+    if (entry.amountBaseMxn == null || !Number.isFinite(Number(entry.amountBaseMxn))) {
+      entry.amountBaseMxn = fxBaseDesdeVisible(entry.amount);
+    }
+  });
 
   document.getElementById("folio").value = data.folio || "";
   document.getElementById("fecha").value = data.fecha || "";
