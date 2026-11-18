@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkWich-IT | Cotizador Profesional</title>
-  <link rel="stylesheet" href="style.css?v=20261118-fx-conversion-v3" />
+  <link rel="stylesheet" href="style.css?v=20261118-fx-auto-reprice-v4" />
 
   <style>
     .field-help {
@@ -186,7 +186,7 @@
               <button type="button" id="btnConsultarTipoCambio" class="btn btn-info" data-i18n="fxLookup">Consultar hoy</button>
             </div>
             <small class="field-help lwq-fx-status" id="tipoCambioEstado" role="status" aria-live="polite">Consulta el tipo de cambio o captúralo manualmente.</small>
-            <small class="field-help" data-i18n="fxDisclaimer">Referencia orientativa, no cotización bancaria ni tipo FIX de Banxico. Cambiar la tasa no modifica precios ya convertidos.</small>
+            <small class="field-help" data-i18n="fxDisclaimer">Referencia orientativa, no cotización bancaria ni tipo FIX de Banxico. Si cotizas en USD, cambiar la tasa actualiza automáticamente los precios ya agregados.</small>
             <small class="field-help"><a href="https://frankfurter.dev/" target="_blank" rel="noopener noreferrer" data-i18n="fxSourceLink">Fuente: Frankfurter (bancos centrales)</a></small>
           </div>
         </div>
@@ -582,7 +582,7 @@
 
       if (sessionStorage.getItem(ACCESS_KEY) === "1") {
         var script = document.createElement("script");
-        script.src = "script.js?v=20261118-fx-conversion-v3";
+        script.src = "script.js?v=20261118-fx-auto-reprice-v4";
         document.body.appendChild(script);
         return;
       }
