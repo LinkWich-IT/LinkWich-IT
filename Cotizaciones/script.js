@@ -57,8 +57,26 @@ const I18N = {
     item: "Concepto", quantity: "Cantidad", unitPrice: "Precio Unitario", discountShortPct: "Desc. %",
     amount: "Importe", action: "Acción", commercialTerms: "Condiciones comerciales", vatPct: "IVA (%)",
     generalDiscountPct: "Descuento general (%)", automaticResicoPct: "RESICO automático (%)",
+    resicoRateMethod: "Modo de tasa RESICO", resicoRateAutomatic: "Automático (tabla RESICO)",
+    resicoRateManual: "Manual (editable)", resicoEffectiveRate: "RESICO aplicado (%)",
+    resicoRateMethodHelp: "En automático se actualiza según la base; en manual puedes cambiar el porcentaje. El ajuste es una estimación comercial, no una tasa fiscal oficial.",
+    resicoRateManualInvalid: "La tasa manual debe ser un número entre 0 y 99.99, con máximo dos decimales. Corrige el porcentaje antes de exportar.",
+    resicoRateManualDetail: "Tasa manual; sugerencia automática {rate}%",
     resicoHelp: "Se calcula sobre la base antes de IVA y se integra al precio. No aparece como impuesto en el PDF.",
     resicoTable: "Tabla RESICO", monthly: "Mensual", annual: "Anual",
+    standardResicoColumn: "RESICO asignado ($)", standardResicoMethod: "Distribución de RESICO (estándar)",
+    standardResicoSingle: "Un concepto (original)", standardResicoManual: "Importes manuales ($)",
+    standardResicoMethodHelp: "Marca los conceptos incluidos en la nueva columna. En modo manual puedes modificar el importe total asignado a cada uno.",
+    standardResicoBalance: "Control de RESICO", standardResicoBalanceHelp: "Los importes son totales por concepto, no por unidad. El PDF y los precios finales incluyen el prorrateo sin mostrar esta columna.",
+    standardResicoCorrect: "Asignación completa: {assigned} de {total}, en {count} concepto(s).",
+    standardResicoMissing: "Faltan por asignar {amount}. Asignado {assigned} de {total}.",
+    standardResicoExcess: "Excede el RESICO calculado por {amount}. Asignado {assigned} de {total}.",
+    standardResicoSelect: "Marca por lo menos un concepto válido para repartir el RESICO.",
+    standardResicoInvalid: "No se puede asignar RESICO a un concepto con cantidad cero o descuento del 100%.",
+    standardResicoZeroDiscount: "Con descuento general del 100% no es posible integrar un cargo de RESICO.",
+    standardResicoNonNegative: "Ingresa importes válidos mayores o iguales a cero y con máximo dos decimales.",
+    standardResicoExportBlocked: "Corrige la distribución de RESICO antes de generar el archivo:\n{issues}",
+    standardResicoPdfConfirm: "Se integrará RESICO por {amount} en {count} concepto(s), sin mostrarlo como impuesto separado en el PDF. ¿Continuar?",
     applyResicoToItem: "Cargar RESICO en concepto",
     resicoItemHelp: "Si hay varios conceptos, aquí eliges dónde se integrará internamente antes de imprimir.",
     suggestedDepositPct: "Anticipo (%)",
@@ -182,8 +200,26 @@ const I18N = {
     item: "Item", quantity: "Quantity", unitPrice: "Unit Price", discountShortPct: "Disc. %",
     amount: "Amount", action: "Action", commercialTerms: "Commercial terms", vatPct: "VAT (%)",
     generalDiscountPct: "General discount (%)", automaticResicoPct: "Automatic RESICO (%)",
+    resicoRateMethod: "RESICO rate mode", resicoRateAutomatic: "Automatic (RESICO table)",
+    resicoRateManual: "Manual (editable)", resicoEffectiveRate: "Applied RESICO (%)",
+    resicoRateMethodHelp: "Automatic follows the calculated base; manual lets you override the percentage. This is a quoting estimate, not an official tax rate.",
+    resicoRateManualInvalid: "Manual rate must be a number from 0 to 99.99 with at most two decimal places. Correct it before exporting.",
+    resicoRateManualDetail: "Manual rate; automatic suggestion {rate}%",
     resicoHelp: "Calculated on the amount before VAT and included in the price. It is not shown as a separate tax in the PDF.",
     resicoTable: "RESICO table", monthly: "Monthly", annual: "Annual",
+    standardResicoColumn: "Allocated RESICO ($)", standardResicoMethod: "RESICO allocation (standard)",
+    standardResicoSingle: "Single item (original)", standardResicoManual: "Manual amounts ($)",
+    standardResicoMethodHelp: "Check the items to include in the new column. In manual mode you may edit the total amount allocated per item.",
+    standardResicoBalance: "RESICO allocation check", standardResicoBalanceHelp: "Values are totals per item, not per unit. Final prices and the PDF include allocation without showing this column.",
+    standardResicoCorrect: "Fully allocated: {assigned} out of {total}, across {count} item(s).",
+    standardResicoMissing: "Remaining to allocate: {amount}. Assigned {assigned} out of {total}.",
+    standardResicoExcess: "Allocated amount exceeds the RESICO budget by {amount}. Assigned {assigned} out of {total}.",
+    standardResicoSelect: "Select at least one eligible item to allocate RESICO.",
+    standardResicoInvalid: "RESICO cannot be allocated to an item with zero quantity or a 100% item discount.",
+    standardResicoZeroDiscount: "A 100% general discount prevents a RESICO charge from being integrated.",
+    standardResicoNonNegative: "Enter valid non-negative amounts rounded to two decimal places.",
+    standardResicoExportBlocked: "Fix the RESICO allocation before exporting:\n{issues}",
+    standardResicoPdfConfirm: "RESICO {amount} will be included across {count} item(s) and will not be shown as a separate tax in the PDF. Continue?",
     applyResicoToItem: "Apply RESICO to item",
     resicoItemHelp: "When there are multiple items, select where RESICO will be included internally before printing.",
     suggestedDepositPct: "Deposit (%)",
@@ -377,6 +413,170 @@ function applyLanguage(language, options = {}) {
 
 
 /* ==========================================================
+   PORCENTAJE RESICO: automatico por tabla o manual.
+   El override solo afecta la cotizacion ESTANDAR.
+   Constructoras siempre conserva la tasa automatica original.
+   ========================================================== */
+let resicoTasaManualCapturada = null;
+function getResicoModoTasa() {
+  return document.getElementById("resicoModoTasa")?.value === "manual" ? "manual" : "automatico";
+}
+function getResicoRateInfoAplicada(base, constructoras = false, tasaConstructora = null) {
+  const auto = constructoras ? tasaConstructora : getResicoRateInfo(base);
+  if (constructoras || getResicoModoTasa() !== "manual") {
+    return {...auto, tasaAutomatica: auto.tasa, manual: false, errorManual: ""};
+  }
+  if (resicoTasaManualCapturada === null) {
+    resicoTasaManualCapturada = String(auto.tasa);
+  }
+  const raw = String(resicoTasaManualCapturada).trim();
+  const valido = /^\d+(?:\.\d{1,2})?$/.test(raw) && Number(raw) >= 0 && Number(raw) <= 99.99;
+  if (!valido) {
+    // No inventar ni aplicar una tasa invalida: mantener calculo automatico
+    // provisional y BLOQUEAR exportacion hasta que el usuario corrija.
+    return {...auto, tasaAutomatica: auto.tasa, manual: true, errorManual: t("resicoRateManualInvalid")};
+  }
+  const tasa = Number(raw);
+  return {
+    ...auto, tasa, tasaDecimal: tasa / 100,
+    tasaAutomatica: auto.tasa, manual: true, errorManual: ""
+  };
+}
+
+/* ==========================================================
+   RESICO POR CONCEPTO - SOLO MODO ESTANDAR.
+   Asignaciones guardadas por ID estable de fila; montos son en pesos
+   despues de descuentos, y se integran al precio unitario de salida.
+   ========================================================== */
+const standardResicoAllocation = Object.create(null);
+let lastStandardResicoAuto = null;
+let standardManualInitialized = false;
+const STD_RESICO_MODES = ["unico", "iguales", "proporcional", "manual"];
+function stdResicoMode() {
+  const value = document.getElementById("resicoDistribucionEstandar")?.value;
+  return STD_RESICO_MODES.includes(value) ? value : "unico";
+}
+function ensureStandardResico(rowId) {
+  const id = String(rowId || "");
+  if (!standardResicoAllocation[id]) standardResicoAllocation[id] = { selected: true, amount: 0 };
+  return standardResicoAllocation[id];
+}
+function amountCents(value) { return Math.round(Number(value || 0) * 100); }
+function exactCentsByWeights(targetCents, entries, weights) {
+  if (!entries.length || !targetCents) return [];
+  const sum = weights.reduce((a,b) => a+b, 0);
+  if (sum <= 0) weights = entries.map(() => 1);
+  const wsum = weights.reduce((a,b) => a+b, 0);
+  const portions = entries.map((entry, i) => {
+    const exact = targetCents * weights[i] / wsum;
+    return { index: entry.index, cents: Math.floor(exact), fraction: exact - Math.floor(exact) };
+  });
+  let residual = targetCents - portions.reduce((a,b) => a+b.cents, 0);
+  const order = portions.map((p,i) => i).sort((a,b) => portions[b].fraction - portions[a].fraction || a-b);
+  for (let i=0; i < residual; i++) portions[order[i % order.length]].cents++;
+  return portions.filter(p => p.cents > 0).map(p => ({index:p.index, amount:p.cents/100}));
+}
+function prepareStandardResicoAllocation(conceptos, budget, globalFactor, singleIndex) {
+  const mode = stdResicoMode();
+  const centsBudget = Math.max(0, amountCents(budget));
+  const issues = [];
+  const eligible = item => Number(item.cantidad) > 0 && Number(item.descuento) < 100;
+  const selected = [];
+  if (mode === "unico") {
+    if (conceptos[singleIndex]) selected.push({item: conceptos[singleIndex], index:singleIndex});
+  } else {
+    conceptos.forEach((item,index) => {
+      if (ensureStandardResico(item.rowId).selected) selected.push({item,index});
+    });
+  }
+  let allocations = [];
+  if (centsBudget && globalFactor <= 0) issues.push(t("standardResicoZeroDiscount"));
+  if (centsBudget && selected.some(entry => !eligible(entry.item))) issues.push(t("standardResicoInvalid"));
+  const valid = selected.filter(entry => eligible(entry.item));
+  if (centsBudget && !valid.length) issues.push(t("standardResicoSelect"));
+  if (mode === "manual") {
+    let invalidInput = false;
+    allocations = valid.map(entry => {
+      const raw = Number(ensureStandardResico(entry.item.rowId).amount);
+      if (!Number.isFinite(raw) || raw < 0 || Math.abs(raw * 100 - Math.round(raw * 100)) > 0.000001) invalidInput = true;
+      return { index:entry.index, amount: Math.max(0, amountCents(raw))/100 };
+    }).filter(entry => entry.amount > 0);
+    if (invalidInput) issues.push(t("standardResicoNonNegative"));
+  } else if (mode === "unico") {
+    if (valid.length && centsBudget) allocations = [{index:valid[0].index, amount:centsBudget/100}];
+  } else {
+    const weights = valid.map(entry => mode === "iguales" ? 1 : Math.max(0, entry.item.importe));
+    allocations = exactCentsByWeights(centsBudget, valid, weights);
+  }
+  const allocatedCents = allocations.reduce((acc,entry) => acc + amountCents(entry.amount), 0);
+  if (allocatedCents < centsBudget) {
+    issues.push(t("standardResicoMissing", {amount:formatMoney((centsBudget-allocatedCents)/100), assigned:formatMoney(allocatedCents/100), total:formatMoney(centsBudget/100)}));
+  } else if (allocatedCents > centsBudget) {
+    issues.push(t("standardResicoExcess", {amount:formatMoney((allocatedCents-centsBudget)/100), assigned:formatMoney(allocatedCents/100), total:formatMoney(centsBudget/100)}));
+  }
+  const perRow = Object.create(null);
+  allocations.forEach(entry => { const id = conceptos[entry.index].rowId; perRow[id] = (perRow[id] || 0) + entry.amount; });
+  return { mode, allocations, perRow, issues, selectedCount:allocations.length, allocatedCents, budgetCents:centsBudget };
+}
+function updateStandardResicoUI(financial) {
+  if (isConstructionMode()) return;
+  const res = financial.standardResico;
+  if (res.mode !== "manual") lastStandardResicoAuto = res;
+  const multiple = res.mode !== "unico";
+  document.body.classList.toggle("lwq-standard-resico-multiple", multiple);
+  const rows = [...conceptosBody.querySelectorAll("tr")];
+  rows.forEach((row,index) => {
+    const item = financial.conceptosBase[index];
+    const entry = ensureStandardResico(row.dataset.rowId);
+    const box = row.querySelector(".lwq-standard-resico-select");
+    const input = row.querySelector(".lwq-standard-resico-importe");
+    if (!box || !input) return;
+    const eligible = item.cantidad > 0 && item.descuento < 100;
+    box.checked = multiple ? !!entry.selected : index === financial.resicoConceptoIndex;
+    box.disabled = !multiple || (!eligible && !box.checked);
+    input.readOnly = res.mode !== "manual" || !entry.selected || !eligible;
+    input.disabled = !eligible && !entry.selected;
+    input.max = (res.budgetCents / 100).toFixed(2);
+    const value = res.mode === "manual" ? (entry.selected ? entry.amount : 0) : (res.perRow[item.rowId] || 0);
+    if (document.activeElement !== input) input.value = Number(value || 0).toFixed(2);
+    input.classList.toggle("lwq-standard-resico-error", res.mode === "manual" && !!entry.selected && (Number(value) < 0 || Number(value) > (res.budgetCents/100) + 0.0001));
+  });
+  const status = document.getElementById("resicoEstandarEstado");
+  if (status) {
+    status.textContent = res.issues.length ? res.issues.join(" | ") : t("standardResicoCorrect", {
+      assigned:formatMoney(res.allocatedCents / 100), total:formatMoney(res.budgetCents / 100), count:res.selectedCount
+    });
+    status.classList.toggle("lwq-standard-status--error", !!res.issues.length);
+  }
+}
+function initStandardResico() {
+  const select = document.getElementById("resicoDistribucionEstandar");
+  if (!select) return;
+  select.addEventListener("change", () => {
+    if (stdResicoMode() === "manual" && !standardManualInitialized) {
+      // Mantener los mismos importes que estaba mostrando la distribución automática.
+      if (lastStandardResicoAuto) {
+        Object.entries(lastStandardResicoAuto.perRow).forEach(([rowId, amount]) => {
+          ensureStandardResico(rowId).amount = amount;
+        });
+      }
+      standardManualInitialized = true;
+    }
+    recalcularTodo();
+  });
+  recalcularTodo();
+}
+function validateStandardResicoExport() {
+  if (isConstructionMode()) return true;
+  const data = calcularDatosFinancieros({actualizarUI:false});
+  const issues = data.standardResico?.issues || [];
+  if (!issues.length) return true;
+  alert(t("standardResicoExportBlocked", {issues:issues.join("\n• ")}));
+  document.getElementById("resicoEstandarEstado")?.scrollIntoView({behavior:"smooth",block:"center"});
+  return false;
+}
+
+/* ==========================================================
    COTIZADOR PARA CONSTRUCTORAS - MODULO AISLADO
    Todas las cantidades de reparto son internas y SOLO se suman
    a los precios de venta en memoria, nunca al costo base de fila.
@@ -471,6 +671,7 @@ function prepareBuilderCalculation(conceptosBase, generalDiscountFactor, origina
 function updateBuilderModeUI() {
   const on = isConstructionMode();
   document.body.classList.toggle("lwq-mode-construction", on);
+  if (on) document.body.classList.remove("lwq-standard-resico-multiple");
   const card = document.getElementById("constructorCard");
   if (card) card.hidden = !on;
   document.getElementById("resicoConceptoIndex")?.closest(".field")?.classList.toggle("lwq-construction-hide", on);
@@ -559,7 +760,7 @@ function updateBuilderFinancialUI(financieros) {
   });
 }
 function validateBuilderExport() {
-  if (!isConstructionMode()) return true;
+  if (!isConstructionMode()) return validateStandardResicoExport();
   const d = calcularDatosFinancieros({ actualizarUI: false });
   if (d.builderIssues?.length) {
     alert(t("exportBlocked", { issues: d.builderIssues.join("\\n• ") }));
@@ -1275,7 +1476,7 @@ function calcularDatosFinancieros(options = {}) {
   const builder = builderMode
     ? prepareBuilderCalculation(conceptosBase, factorDescuentoGeneral, subtotalConDescuentoBase)
     : null;
-  const resicoInfo = builderMode ? builder.rateInfo : getResicoRateInfo(subtotalConDescuentoBase);
+  const resicoInfo = getResicoRateInfoAplicada(subtotalConDescuentoBase, builderMode, builder?.rateInfo || null);
 
   /*
     RESICO AUTOMÁTICO INTERNO:
@@ -1290,13 +1491,20 @@ function calcularDatosFinancieros(options = {}) {
       ? subtotalConDescuentoBase * (resicoInfo.tasaDecimal / (1 - resicoInfo.tasaDecimal))
       : 0);
 
+  // Centavos cerrados para el modo estándar: se valida que no sobre ni falte un centavo.
+  const resicoMontoFinal = builderMode ? isrResicoMonto : amountCents(isrResicoMonto) / 100;
   const cargoResicoAntesDescuentoGeneral = factorDescuentoGeneral > 0
-    ? isrResicoMonto / factorDescuentoGeneral
-    : isrResicoMonto;
-
+    ? resicoMontoFinal / factorDescuentoGeneral
+    : resicoMontoFinal;
+  const standardResico = builderMode ? null
+    : prepareStandardResicoAllocation(conceptosBase, resicoMontoFinal, factorDescuentoGeneral, resicoConceptoIndex);
+  if (standardResico && resicoInfo.errorManual) standardResico.issues.unshift(resicoInfo.errorManual);
   const conceptosCliente = builderMode
     ? builder.finalItems
-    : aplicarCargoResicoAConceptos(conceptosBase, cargoResicoAntesDescuentoGeneral, resicoConceptoIndex);
+    : applyBuilderAllocations(conceptosBase, standardResico.allocations.map(entry => ({
+        index:entry.index,
+        amount:factorDescuentoGeneral > 0 ? entry.amount / factorDescuentoGeneral : 0
+      })));
 
   const resumenConceptosCliente = calcularResumenDescuentosPorConcepto(conceptosCliente);
   const subtotalBruto = resumenConceptosCliente.subtotalBruto;
@@ -1313,31 +1521,47 @@ function calcularDatosFinancieros(options = {}) {
 
   const ivaMonto = subtotalConDescuento * (iva / 100);
   const total = subtotalConDescuento + ivaMonto;
-  const netoEstimadoResico = total - isrResicoMonto;
+  const netoEstimadoResico = total - resicoMontoFinal;
   const anticipoMonto = total * (anticipo / 100);
   const pagoInfoDetalle = actualizarResumenPago(anticipo, total, anticipoMonto);
   const saldoPendiente = Math.max(total - anticipoMonto, 0);
 
   if (actualizarUI) {
     if (isrResicoInput) {
-      isrResicoInput.value = formatPercent(resicoInfo.tasa);
+      const habilitarManual = !builderMode && resicoInfo.manual;
+      isrResicoInput.readOnly = !habilitarManual;
+      if (!habilitarManual) {
+        isrResicoInput.value = formatPercent(resicoInfo.tasa);
+      } else if (document.activeElement !== isrResicoInput ||
+                 String(isrResicoInput.value) !== String(resicoTasaManualCapturada ?? resicoInfo.tasa)) {
+        // Al volver del modo Constructoras, restaurar el porcentaje manual
+        // aunque el input haya conservado el foco del navegador.
+        isrResicoInput.value = String(resicoTasaManualCapturada ?? resicoInfo.tasa);
+      }
+      isrResicoInput.classList.toggle("lwq-resico-rate-invalid", !!resicoInfo.errorManual);
+      isrResicoInput.setAttribute("aria-invalid", resicoInfo.errorManual ? "true" : "false");
     }
+    const resicoRateValidationEl = document.getElementById("resicoRateValidation");
+    if (resicoRateValidationEl) resicoRateValidationEl.textContent = resicoInfo.errorManual || "";
 
     const resicoDetalleEl = document.getElementById("resicoDetalle");
     if (resicoDetalleEl) {
       const modoLabel = resicoInfo.mode === "anual" ? t("annualTable") : t("monthlyTable");
       const concepto = conceptosBase[resicoConceptoIndex]?.concepto || t("itemN", { n: resicoConceptoIndex + 1 });
       const extra = resicoInfo.excedeLimite ? t("importantResico") : "";
+      const detalleTasa = resicoInfo.manual
+        ? `${t("rate")} ${formatPercent(resicoInfo.tasa)}% (${t("resicoRateManualDetail", {rate: formatPercent(resicoInfo.tasaAutomatica)})})`
+        : `${t("rate")} ${formatPercent(resicoInfo.tasa)}%`;
       resicoDetalleEl.textContent = builderMode
-        ? `${t("baseBeforeVat")}: ${formatMoney(subtotalConDescuentoBase + builder.totalIndirectos)} | ${modoLabel} | ${t("rate")} ${formatPercent(resicoInfo.tasa)}% | ${builder.resicoAlloc.length} ${t("items")}.${extra}`
-        : `${t("baseBeforeVat")}: ${formatMoney(subtotalConDescuentoBase)} | ${modoLabel} | ${t("rate")} ${formatPercent(resicoInfo.tasa)}% | ${t("integratedInto")} #${resicoConceptoIndex + 1}: ${concepto || t("noDescription")}.${extra}`;
+        ? `${t("baseBeforeVat")}: ${formatMoney(subtotalConDescuentoBase + builder.totalIndirectos)} | ${modoLabel} | ${detalleTasa} | ${builder.resicoAlloc.length} ${t("items")}.${extra}`
+        : `${t("baseBeforeVat")}: ${formatMoney(subtotalConDescuentoBase)} | ${modoLabel} | ${detalleTasa} | ${standardResico.mode === "unico" ? `${t("integratedInto")} #${resicoConceptoIndex + 1}: ${concepto || t("noDescription")}` : `${standardResico.selectedCount} ${t("items")}`}.${extra}`;
     }
 
     const resicoConceptoResumenEl = document.getElementById("resicoConceptoResumen");
     if (resicoConceptoResumenEl) {
       resicoConceptoResumenEl.textContent = builderMode
         ? `${builder.resicoAlloc.length} ${t("items")}`
-        : (conceptosBase.length ? t("itemN", { n: resicoConceptoIndex + 1 }) : t("noItems"));
+        : (standardResico.mode === "unico" ? (conceptosBase.length ? t("itemN", { n: resicoConceptoIndex + 1 }) : t("noItems")) : `${standardResico.selectedCount} ${t("items")}`);
     }
   }
 
@@ -1345,6 +1569,7 @@ function calcularDatosFinancieros(options = {}) {
     conceptosBase,
     conceptos: conceptosCliente,
     builderMode,
+    standardResico,
     builderTotalIndirectos: builderMode ? builder.totalIndirectos : 0,
     builderBreakdown: builderMode ? builder.detailed : {},
     builderIssues: builderMode ? builder.issues : [],
@@ -1353,6 +1578,9 @@ function calcularDatosFinancieros(options = {}) {
     resicoConceptoIndex,
     resicoTabla: resicoInfo.mode,
     resicoTasa: resicoInfo.tasa,
+    resicoModoTasa: builderMode ? "automatico" : getResicoModoTasa(),
+    resicoTasaManual: resicoTasaManualCapturada,
+    resicoTasaAutomatica: resicoInfo.tasaAutomatica,
     resicoEtiqueta: resicoInfo.etiqueta,
     resicoExcedeLimite: resicoInfo.excedeLimite,
 
@@ -1377,7 +1605,7 @@ function calcularDatosFinancieros(options = {}) {
     iva,
     ivaMonto,
     isrResico: resicoInfo.tasa,
-    isrResicoMonto,
+    isrResicoMonto: resicoMontoFinal,
     total,
     netoEstimadoResico,
     anticipo,
@@ -1392,9 +1620,17 @@ function calcularDatosFinancieros(options = {}) {
 
 function crearFila(data = {}) {
   const tr = document.createElement("tr");
-  const rowId = String(data.rowId || `lwq-row-${nextBuilderRowId++}`);
+  let rowId = String(data.rowId || `lwq-row-${nextBuilderRowId++}`);
+  if ([...conceptosBody.querySelectorAll("tr")].some(row => row.dataset.rowId === rowId)) rowId = `lwq-row-${nextBuilderRowId++}`;
+  const restoredId = /^lwq-row-(\d+)$/.exec(rowId);
+  if (restoredId) nextBuilderRowId = Math.max(nextBuilderRowId, Number(restoredId[1]) + 1);
   tr.dataset.rowId = rowId;
   ensureBuilderAllocation(rowId);
+  const stdEntry = ensureStandardResico(rowId);
+  if (data.standardResicoEntry && typeof data.standardResicoEntry === "object") {
+    stdEntry.selected = !!data.standardResicoEntry.selected;
+    stdEntry.amount = Number(data.standardResicoEntry.amount) || 0;
+  }
   const descuentoPreciso = Math.max(0, Math.min(100,
     Number(data.descuentoPreciso ?? data.descuento) || 0
   ));
@@ -1413,6 +1649,12 @@ function crearFila(data = {}) {
     </td>
     <td>
       <input class="concept-input precio" type="number" min="0" step="0.01" value="${data.precio ?? 0}">
+    </td>
+    <td class="lwq-standard-only-cell">
+      <div class="lwq-standard-resico-editor">
+        <input class="lwq-standard-resico-select" type="checkbox" title="${t("standardResicoMethodHelp")}" aria-label="${t("applyResico")}" checked>
+        <input class="concept-input lwq-standard-resico-importe" type="number" min="0" step="0.01" value="0.00" aria-label="${t("standardResicoColumn")}">
+      </div>
     </td>
     <td>
       <input class="concept-input descuento" type="number" min="0" max="100" step="0.01" value="${descuentoVisible}">
@@ -1441,7 +1683,22 @@ function crearFila(data = {}) {
   const descuentoInput = tr.querySelector(".descuento");
   descuentoInput.dataset.preciseDiscount = String(descuentoPreciso);
 
-  const inputs = tr.querySelectorAll("input");
+  const stdCheck = tr.querySelector(".lwq-standard-resico-select");
+  const stdAmount = tr.querySelector(".lwq-standard-resico-importe");
+  stdCheck.addEventListener("change", () => {
+    stdEntry.selected = stdCheck.checked;
+    if (!stdEntry.selected) stdEntry.amount = 0;
+    recalcularTodo();
+  });
+  stdAmount.addEventListener("input", () => {
+    if (stdResicoMode() !== "manual") return;
+    stdEntry.amount = stdAmount.value === "" ? 0 : Number(stdAmount.value);
+    recalcularTodo();
+  });
+  stdAmount.addEventListener("blur", () => {
+    if (stdResicoMode() === "manual") recalcularTodo();
+  });
+  const inputs = tr.querySelectorAll("input:not(.lwq-standard-resico-select):not(.lwq-standard-resico-importe)");
   inputs.forEach(input => input.addEventListener("input", () => {
     if (input === descuentoInput) delete descuentoInput.dataset.preciseDiscount;
     if (input.classList.contains("concepto") || input.classList.contains("partida")) renderBuilderAllocationTable();
@@ -1451,6 +1708,7 @@ function crearFila(data = {}) {
   tr.querySelector(".btn-delete").addEventListener("click", () => {
     tr.remove();
     delete builderAllocation[rowId];
+    delete standardResicoAllocation[rowId];
     renderBuilderAllocationTable();
     recalcularTodo();
   });
@@ -1489,12 +1747,21 @@ function recalcularTodo() {
   if (isrResicoMontoEl) isrResicoMontoEl.textContent = formatMoney(financieros.isrResicoMonto);
   if (netoResicoEl) netoResicoEl.textContent = formatMoney(financieros.netoEstimadoResico);
 
+  // En modo estándar el importe visible coincide con el precio integrado al exportar.
+  if (!isConstructionMode()) {
+    [...conceptosBody.querySelectorAll("tr")].forEach((row, index) => {
+      const cell = row.querySelector(".importe-cell");
+      if (cell) cell.textContent = formatMoney(financieros.conceptos[index]?.importe || 0);
+    });
+  }
+
   resConceptos.textContent = financieros.conceptosBase.length;
   resSubtotal.textContent = formatMoney(financieros.subtotal);
   if (resDescuentoConceptos) resDescuentoConceptos.textContent = formatMoney(financieros.descuentoConceptosMonto);
   resIVA.textContent = formatMoney(financieros.ivaMonto);
   resTotal.textContent = formatMoney(financieros.total);
   updateBuilderFinancialUI(financieros);
+  updateStandardResicoUI(financieros);
 }
 
 const PROFESSIONAL_PREFILL_STORAGE_KEY = "linkwich_professional_quote_prefill_v1";
@@ -1589,6 +1856,8 @@ function obtenerDatosFormulario() {
 
   return {
     ...getBuilderFormInfo(),
+    resicoDistribucionEstandar: stdResicoMode(),
+    standardResicoAllocation: JSON.parse(JSON.stringify(standardResicoAllocation)),
     empresa: document.getElementById("empresa").value,
     correoEmpresa: document.getElementById("correoEmpresa").value,
     telefonoEmpresa: document.getElementById("telefonoEmpresa").value,
@@ -1621,9 +1890,13 @@ function obtenerDatosFormulario() {
     isrResico: financieros.isrResico,
     resicoTabla: financieros.resicoTabla,
     resicoTasa: financieros.resicoTasa,
+    resicoModoTasa: getResicoModoTasa(),
+    resicoTasaManual: resicoTasaManualCapturada,
+    resicoTasaAutomatica: financieros.resicoTasaAutomatica,
     resicoEtiqueta: financieros.resicoEtiqueta,
     resicoExcedeLimite: financieros.resicoExcedeLimite,
     resicoConceptoIndex: financieros.resicoConceptoIndex,
+    standardResicoDesglose: financieros.standardResico?.allocations || [],
     builderTotalIndirectos: financieros.builderTotalIndirectos,
     builderBreakdown: financieros.builderBreakdown,
     builderIssues: financieros.builderIssues,
@@ -1694,6 +1967,8 @@ function limpiarFormulario() {
   document.getElementById("descuentoGeneral").value = 0;
 
   if (document.getElementById("resicoTabla")) document.getElementById("resicoTabla").value = "mensual";
+  if (document.getElementById("resicoModoTasa")) document.getElementById("resicoModoTasa").value = "automatico";
+  resicoTasaManualCapturada = null;
   if (document.getElementById("isrResico")) document.getElementById("isrResico").value = 0;
 
   document.getElementById("anticipo").value = DEFAULT_ANTICIPO;
@@ -1702,6 +1977,10 @@ function limpiarFormulario() {
 
   generarNuevoFolio();
   conceptosBody.innerHTML = "";
+  Object.keys(standardResicoAllocation).forEach(k => delete standardResicoAllocation[k]);
+  document.getElementById("resicoDistribucionEstandar").value = "unico";
+  standardManualInitialized = false;
+  lastStandardResicoAuto = null;
   restoreBuilderForm({ modoCotizador: currentMode });
   crearFila({ concepto: t("defaultProfessionalService"), cantidad: 1, precio: 0, descuento: 0 });
 }
@@ -1727,6 +2006,13 @@ function cargarBorrador() {
   }
 
   const data = JSON.parse(raw);
+  Object.keys(standardResicoAllocation).forEach(k => delete standardResicoAllocation[k]);
+  Object.entries(data.standardResicoAllocation || {}).forEach(([key,value]) => {
+    standardResicoAllocation[key] = { selected: !!value.selected, amount: Number(value.amount) || 0 };
+  });
+  document.getElementById("resicoDistribucionEstandar").value = STD_RESICO_MODES.includes(data.resicoDistribucionEstandar) ? data.resicoDistribucionEstandar : "unico";
+  standardManualInitialized = document.getElementById("resicoDistribucionEstandar").value === "manual";
+  lastStandardResicoAuto = null;
   restoreBuilderForm(data);
   if (data.idioma === "en" || data.idioma === "es") {
     applyLanguage(data.idioma, { translateDefaults: false, recalculate: false });
@@ -1755,6 +2041,8 @@ function cargarBorrador() {
   document.getElementById("descuentoGeneral").value = data.descuentoGeneral ?? 0;
 
   if (document.getElementById("resicoTabla")) document.getElementById("resicoTabla").value = data.resicoTabla || "mensual";
+  if (document.getElementById("resicoModoTasa")) document.getElementById("resicoModoTasa").value = data.resicoModoTasa === "manual" ? "manual" : "automatico";
+  resicoTasaManualCapturada = data.resicoTasaManual == null ? null : String(data.resicoTasaManual);
   if (document.getElementById("isrResico")) document.getElementById("isrResico").value = data.isrResico ?? 0;
 
   document.getElementById("anticipo").value = data.anticipo ?? DEFAULT_ANTICIPO;
@@ -1922,6 +2210,15 @@ function importarDesdeWorkbook(workbook) {
       }
     }
 
+    const modoTasaImportado = String(getValue("RESICO MODO TASA", "RESICO RATE MODE") || "").trim().toLowerCase();
+    if (!isConstructionMode() && ["manual", "automatico", "automatic"].includes(modoTasaImportado)) {
+      document.getElementById("resicoModoTasa").value = modoTasaImportado === "manual" ? "manual" : "automatico";
+      const tasaManualImportada = getValue("RESICO TASA MANUAL (%)", "MANUAL RESICO RATE (%)");
+      if (modoTasaImportado === "manual" && tasaManualImportada !== undefined && tasaManualImportada !== "") {
+        resicoTasaManualCapturada = String(tasaManualImportada);
+      }
+    }
+
     const anticipoImportado = getValue(
       "ANTICIPO (%)", "ANTICIPO PORCENTAJE", "PORCENTAJE ANTICIPO", "ANTICIPO SUGERIDO",
       "DEPOSIT (%)", "DEPOSIT PERCENTAGE", "SUGGESTED DEPOSIT"
@@ -2055,6 +2352,11 @@ function confirmarExportacionPDF() {
     }));
   }
 
+  if (data.resicoDistribucionEstandar !== "unico" && data.isrResicoMonto > 0) {
+    return confirm(t("standardResicoPdfConfirm", {
+      amount:formatMoney(data.isrResicoMonto), count:data.standardResicoDesglose.length
+    }));
+  }
   if (data.conceptosBase.length > 1 && data.isrResicoMonto > 0) {
     const conceptoSeleccionado =
       data.conceptosBase[data.resicoConceptoIndex]?.concepto ||
@@ -2687,7 +2989,7 @@ function exportarExcel(internalControl = false) {
     folio: "QUOTE NUMBER", date: "DATE", visualDate: "FORMATTED DATE", expires: "EXPIRES", validity: "VALIDITY", serviceType: "SERVICE TYPE",
     client: "CLIENT", contact: "CONTACT", clientEmail: "CLIENT EMAIL", clientPhone: "CLIENT PHONE", project: "PROJECT", location: "LOCATION",
     paymentTerms: "PAYMENT TERMS", paymentMethod: "PAYMENT METHOD", depositPct: "DEPOSIT (%)", resicoTable: "RESICO TABLE",
-    resicoRate: "RESICO RATE (%)", resicoItem: "RESICO ITEM", currency: "CURRENCY", currencyDescription: "CURRENCY DESCRIPTION",
+    resicoRate: "RESICO RATE (%)", resicoRateMode: "RESICO RATE MODE", resicoManualRate: "MANUAL RESICO RATE (%)", resicoItem: "RESICO ITEM", currency: "CURRENCY", currencyDescription: "CURRENCY DESCRIPTION",
     grossBaseSubtotal: "GROSS BASE SUBTOTAL", baseItemDiscount: "BASE ITEM DISCOUNT", baseItemDiscountPct: "BASE ITEM DISCOUNT (%)",
     originalBaseSubtotal: "ORIGINAL BASE SUBTOTAL", originalBaseBeforeVat: "ORIGINAL BASE BEFORE VAT", integratedResico: "RESICO INCLUDED IN PRICE",
     clientGrossSubtotal: "CLIENT GROSS SUBTOTAL", clientItemDiscount: "CLIENT ITEM DISCOUNT", clientItemDiscountPct: "CLIENT ITEM DISCOUNT (%)",
@@ -2699,7 +3001,7 @@ function exportarExcel(internalControl = false) {
     folio: "FOLIO", date: "FECHA", visualDate: "FECHA VISUAL", expires: "EXPIRA", validity: "VIGENCIA", serviceType: "TIPO DE SERVICIO",
     client: "CLIENTE", contact: "CONTACTO", clientEmail: "CORREO CLIENTE", clientPhone: "TELÉFONO CLIENTE", project: "PROYECTO", location: "UBICACIÓN",
     paymentTerms: "FORMA DE PAGO", paymentMethod: "MÉTODO DE PAGO", depositPct: "ANTICIPO (%)", resicoTable: "RESICO TABLA",
-    resicoRate: "RESICO TASA (%)", resicoItem: "RESICO CONCEPTO", currency: "MONEDA", currencyDescription: "DESCRIPCIÓN MONEDA",
+    resicoRate: "RESICO TASA (%)", resicoRateMode: "RESICO MODO TASA", resicoManualRate: "RESICO TASA MANUAL (%)", resicoItem: "RESICO CONCEPTO", currency: "MONEDA", currencyDescription: "DESCRIPCIÓN MONEDA",
     grossBaseSubtotal: "SUBTOTAL BRUTO BASE", baseItemDiscount: "DESCUENTO POR CONCEPTOS BASE", baseItemDiscountPct: "DESCUENTO POR CONCEPTOS BASE (%)",
     originalBaseSubtotal: "SUBTOTAL BASE ORIGINAL", originalBaseBeforeVat: "BASE ORIGINAL SIN IVA", integratedResico: "RESICO INTEGRADO AL PRECIO",
     clientGrossSubtotal: "SUBTOTAL BRUTO CLIENTE", clientItemDiscount: "DESCUENTO POR CONCEPTOS CLIENTE", clientItemDiscountPct: "DESCUENTO POR CONCEPTOS CLIENTE (%)",
@@ -2739,7 +3041,11 @@ function exportarExcel(internalControl = false) {
     [labels.depositPct, data.anticipo],
     [labels.resicoTable, resicoTableLabel],
     [labels.resicoRate, data.resicoTasa],
-    [labels.resicoItem, `#${(data.resicoConceptoIndex || 0) + 1}`],
+    [labels.resicoRateMode, data.resicoModoTasa],
+    [labels.resicoManualRate, data.resicoModoTasa === "manual" ? Number(data.resicoTasaManual) : ""],
+    [labels.resicoItem, (data.resicoDistribucionEstandar === "unico"
+      ? `#${(data.resicoConceptoIndex || 0) + 1}`
+      : (data.standardResicoDesglose || []).map(item => `#${item.index + 1}`).join(", "))],
     [labels.currency, data.moneda],
     [labels.currencyDescription, data.monedaDescripcion],
     [],
@@ -2902,6 +3208,20 @@ if (idiomaSelect) {
     el.addEventListener("change", recalcularTodo);
   });
 
+const resicoModoTasaEl = document.getElementById("resicoModoTasa");
+resicoModoTasaEl?.addEventListener("change", () => {
+  if (getResicoModoTasa() === "manual" && resicoTasaManualCapturada === null) {
+    // La primera vez se parte de la tasa automatica visible en pantalla.
+    resicoTasaManualCapturada = String(isrResicoInput?.value ?? "0");
+  }
+  recalcularTodo();
+});
+isrResicoInput?.addEventListener("input", () => {
+  if (isConstructionMode() || getResicoModoTasa() !== "manual") return;
+  resicoTasaManualCapturada = isrResicoInput.value;
+  recalcularTodo();
+});
+
 aplicarDatosEmpresaPorDefecto({ overwrite: false });
 
 const selectorPDFInicial = asegurarSelectorIdiomaPDF();
@@ -2925,6 +3245,7 @@ if (!document.getElementById("folio").value.trim()) {
 
 initializeCommercialNotesAssistant();
 initBuilderMode();
+initStandardResico();
 
 applyLanguage(currentLanguage, { translateDefaults: true, recalculate: false, persist: false });
 
