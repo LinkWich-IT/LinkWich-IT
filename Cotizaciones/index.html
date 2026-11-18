@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkWich-IT | Cotizador Profesional</title>
-  <link rel="stylesheet" href="style.css?v=20261106-constructoras-1" />
+  <link rel="stylesheet" href="style.css?v=20261118-resico-tasa-editable-2" />
 
   <style>
     .field-help {
@@ -338,6 +338,7 @@
                 <th class="lwq-construction-only-cell" data-i18n="unit">Unidad</th>
                 <th style="width: 120px;" data-i18n="quantity">Cantidad</th>
                 <th style="width: 160px;" data-i18n="unitPrice">Precio Unitario</th>
+                <th class="lwq-standard-only-cell" style="width: 205px;" data-i18n="standardResicoColumn">RESICO asignado ($)</th>
                 <th style="width: 120px;" data-i18n="discountShortPct">Desc. %</th>
                 <th style="width: 170px;" data-i18n="amount">Importe</th>
                 <th style="width: 90px;" data-i18n="action">Acción</th>
@@ -362,10 +363,19 @@
             <label data-i18n="generalDiscountPct">Descuento general (%)</label>
             <input type="number" id="descuentoGeneral" value="0" min="0" step="0.01" />
           </div>
+          <div class="field lwq-standard-only-field">
+            <label for="resicoModoTasa" data-i18n="resicoRateMethod">Modo de tasa RESICO</label>
+            <select id="resicoModoTasa">
+              <option value="automatico" data-i18n="resicoRateAutomatic">Automático (tabla RESICO)</option>
+              <option value="manual" data-i18n="resicoRateManual">Manual (editable)</option>
+            </select>
+            <small class="field-help" data-i18n="resicoRateMethodHelp">En automático se actualiza según la base; en manual tú decides el porcentaje que se aplicará.</small>
+          </div>
           <div class="field">
-            <label data-i18n="automaticResicoPct">RESICO automático (%)</label>
-            <input type="number" id="isrResico" value="0" min="0" step="0.01" readonly />
+            <label for="isrResico" data-i18n="resicoEffectiveRate">RESICO aplicado (%)</label>
+            <input type="number" id="isrResico" value="0" min="0" max="99.99" step="0.01" readonly aria-describedby="resicoRateValidation" />
             <small class="field-help" data-i18n="resicoHelp">Se calcula sobre la base antes de IVA y se integra al precio. No aparece como impuesto en el PDF.</small>
+            <small class="field-help lwq-resico-rate-validation" id="resicoRateValidation" role="status" aria-live="polite"></small>
           </div>
           <div class="field">
             <label data-i18n="resicoTable">Tabla RESICO</label>
@@ -375,12 +385,27 @@
             </select>
             <small class="field-help" id="resicoDetalle">Base sin IVA: $0.00 | tabla mensual | tasa 0%.</small>
           </div>
-          <div class="field">
+          <div class="field lwq-standard-only-field">
+            <label for="resicoDistribucionEstandar" data-i18n="standardResicoMethod">Distribución de RESICO (estándar)</label>
+            <select id="resicoDistribucionEstandar">
+              <option value="unico" data-i18n="standardResicoSingle">Un concepto (original)</option>
+              <option value="iguales" data-i18n="allocationEqual">En partes iguales</option>
+              <option value="proporcional" data-i18n="allocationProportional">Proporcional al importe</option>
+              <option value="manual" data-i18n="standardResicoManual">Importes manuales ($)</option>
+            </select>
+            <small class="field-help" data-i18n="standardResicoMethodHelp">Marca los conceptos incluidos en la nueva columna. En modo manual puedes modificar el importe total asignado a cada uno.</small>
+          </div>
+          <div class="field lwq-standard-single-field">
             <label data-i18n="applyResicoToItem">Cargar RESICO en concepto</label>
             <select id="resicoConceptoIndex">
               <option value="0">Concepto #1</option>
             </select>
             <small class="field-help" data-i18n="resicoItemHelp">Si hay varios conceptos, aquí eliges dónde se integrará internamente antes de imprimir.</small>
+          </div>
+          <div class="field lwq-standard-only-field lwq-standard-status-field">
+            <label data-i18n="standardResicoBalance">Control de RESICO</label>
+            <div id="resicoEstandarEstado" class="lwq-standard-status" role="status" aria-live="polite">—</div>
+            <small class="field-help" data-i18n="standardResicoBalanceHelp">Los importes son totales por concepto, no por unidad. El PDF y los precios finales incluyen el prorrateo sin mostrar esta columna.</small>
           </div>
           <div class="field">
             <label data-i18n="suggestedDepositPct">Anticipo (%)</label>
@@ -546,7 +571,7 @@
 
       if (sessionStorage.getItem(ACCESS_KEY) === "1") {
         var script = document.createElement("script");
-        script.src = "script.js?v=20261113-liquidacion-contra-entrega-2";
+        script.src = "script.js?v=20261118-resico-tasa-editable-2";
         document.body.appendChild(script);
         return;
       }
