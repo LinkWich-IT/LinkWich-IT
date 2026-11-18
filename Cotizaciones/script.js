@@ -44,7 +44,22 @@ const I18N = {
     itemDiscountShort: "Desc. conceptos", vat: "IVA", total: "Total", professionalQuoter: "Cotizador Profesional",
     subtitle: "Genera cotizaciones ejecutivas para tus clientes", language: "Idioma", webVersion: "Versión Web",
     companyData: "Datos de la empresa", company: "Empresa", email: "Correo", phone: "Teléfono",
-    website: "Sitio web", city: "Ciudad", currency: "Moneda", quoteData: "Datos de la cotización",
+    website: "Sitio web", city: "Ciudad", currency: "Moneda", fxRateLabel: "Tipo de cambio: 1 USD = MXN", fxLookup: "Consultar hoy",
+    fxCurrencyHint: "Al cambiar la moneda, se convierten los precios de todos los conceptos.",
+    fxDisclaimer: "Referencia orientativa, no cotización bancaria ni tipo FIX de Banxico. Cambiar la tasa no modifica precios ya convertidos.",
+    fxSourceLink: "Fuente: Frankfurter (bancos centrales)",
+    fxMissing: "Captura un tipo de cambio válido o consulta el último disponible para convertir MXN y USD.",
+    fxManual: "Tipo de cambio manual: 1 USD = {rate} MXN. Se utilizará en la próxima conversión.",
+    fxLatest: "Referencia publicada el {date}: 1 USD = {rate} MXN.",
+    fxCached: "Última referencia guardada ({date}): 1 USD = {rate} MXN. Puedes actualizarla.",
+    fxLoading: "Consultando la tasa de referencia disponible…",
+    fxOffline: "No se pudo consultar la tasa en línea. Se conserva el valor existente; puedes editarlo manualmente.",
+    fxInvalid: "El tipo de cambio debe ser mayor a 0 y menor que 1,000 MXN por USD.",
+    fxPrevent: "No se cambió la moneda. Primero establece un tipo de cambio válido (1 USD = MXN).",
+    fxImported: "El Excel contiene importes en {currency}; se convertirán los conceptos existentes antes de importar.",
+    fxPdfText: "Tipo de cambio de referencia utilizado: 1 USD = {rate} MXN.",
+    fxExcelRate: "TIPO CAMBIO (MXN POR USD)", fxExcelDate: "FECHA TIPO CAMBIO", fxExcelSource: "ORIGEN TIPO CAMBIO",
+    quoteData: "Datos de la cotización",
     folio: "Folio", date: "Fecha", validityDays: "Vigencia (días)", serviceType: "Tipo de servicio",
     serviceNetworkMonitoring: "Monitoreo de red", serviceVideoSurveillance: "Videovigilancia",
     serviceNetworking: "Networking", serviceImplementation: "Implementación",
@@ -187,7 +202,22 @@ const I18N = {
     itemDiscountShort: "Item discounts", vat: "VAT", total: "Total", professionalQuoter: "Professional Quoter",
     subtitle: "Create professional quotations for your clients", language: "Language", webVersion: "Web Version",
     companyData: "Company information", company: "Company", email: "Email", phone: "Phone",
-    website: "Website", city: "City", currency: "Currency", quoteData: "Quotation information",
+    website: "Website", city: "City", currency: "Currency", fxRateLabel: "Exchange rate: 1 USD = MXN", fxLookup: "Get latest rate",
+    fxCurrencyHint: "Changing currency converts the unit prices for all items.",
+    fxDisclaimer: "Indicative reference only, not a bank quote or Banxico FIX. Changing the rate does not reprice previously converted items.",
+    fxSourceLink: "Source: Frankfurter (central banks)",
+    fxMissing: "Enter a valid exchange rate or fetch the latest available rate to convert MXN and USD.",
+    fxManual: "Manual rate: 1 USD = {rate} MXN. It will apply to the next conversion.",
+    fxLatest: "Reference published {date}: 1 USD = {rate} MXN.",
+    fxCached: "Last saved reference ({date}): 1 USD = {rate} MXN. You can update it.",
+    fxLoading: "Fetching the latest available reference rate…",
+    fxOffline: "Could not fetch rates online. The current value is retained; you may edit it manually.",
+    fxInvalid: "The rate must be greater than zero and less than 1,000 MXN per USD.",
+    fxPrevent: "Currency was not changed. Enter a valid rate first (1 USD = MXN).",
+    fxImported: "The Excel file uses {currency}; existing items will be converted before import.",
+    fxPdfText: "Reference exchange rate used: 1 USD = {rate} MXN.",
+    fxExcelRate: "EXCHANGE RATE (MXN PER USD)", fxExcelDate: "EXCHANGE RATE DATE", fxExcelSource: "EXCHANGE RATE SOURCE",
+    quoteData: "Quotation information",
     folio: "Quote No.", date: "Date", validityDays: "Validity (days)", serviceType: "Service type",
     serviceNetworkMonitoring: "Network monitoring", serviceVideoSurveillance: "Video surveillance",
     serviceNetworking: "Networking", serviceImplementation: "Implementation",
@@ -404,6 +434,7 @@ function applyLanguage(language, options = {}) {
   if (languageSelect) languageSelect.value = nextLanguage;
 
   refreshDynamicTranslations();
+  if (typeof renderFXStatus === "function") renderFXStatus();
   if (typeof actualizarVistaNotasComerciales === "function") {
     actualizarVistaNotasComerciales();
   }
@@ -411,6 +442,172 @@ function applyLanguage(language, options = {}) {
   if (recalculate && typeof recalcularTodo === "function") recalcularTodo();
 }
 
+
+/* ==========================================================
+   MONEDA REAL MXN / USD - cotización en la moneda visible.
+   1 USD = tipoCambioMXN pesos. Al cambiar la moneda se convierten
+   precios base, indirectos y montos RESICO manuales, NO las tasas.
+   La fuente de referencia no es el FIX fiscal de Banxico.
+   ========================================================== */
+const LWQ_FX_STORAGE_KEY = "linkwich_cotizador_fx_v1";
+const LWQ_FX_URL = "https://api.frankfurter.dev/v2/rate/USD/MXN";
+let quoteCurrency = document.getElementById("moneda")?.value === "USD" ? "USD" : "MXN";
+let fxDetails = { source: "", date: "", status: "missing", edited: false };
+let fxFetchSequence = 0;
+
+function getFXRate() {
+  const raw = String(document.getElementById("tipoCambioMXN")?.value ?? "").trim();
+  if (raw === "") return null;
+  const rate = Number(raw);
+  return Number.isFinite(rate) && rate > 0 && rate < 1000 ? rate : null;
+}
+function formatFXRate(rate) {
+  return Number(rate).toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+}
+function fxConvertNumber(value, from, to, rate = getFXRate()) {
+  if (from === to) return Number(value) || 0;
+  if (!rate || !["MXN", "USD"].includes(from) || !["MXN", "USD"].includes(to)) throw new Error("Invalid FX conversion");
+  return (Number(value) || 0) * (from === "MXN" ? 1 / rate : rate);
+}
+function fxRound(value, digits = 8) {
+  return Number((Number(value) || 0).toFixed(digits));
+}
+function renderFXStatus() {
+  const el = document.getElementById("tipoCambioEstado");
+  if (!el) return;
+  const rate = getFXRate();
+  el.classList.toggle("lwq-fx-good", !!rate && fxDetails.status !== "error");
+  el.classList.toggle("lwq-fx-error", !rate || fxDetails.status === "error");
+  if (fxDetails.status === "loading") el.textContent = t("fxLoading");
+  else if (fxDetails.status === "error") el.textContent = t("fxOffline");
+  else if (!rate) el.textContent = t("fxMissing");
+  else if (fxDetails.status === "manual") el.textContent = t("fxManual", {rate: formatFXRate(rate)});
+  else if (fxDetails.status === "cache") el.textContent = t("fxCached", {rate: formatFXRate(rate), date: fxDetails.date || "—"});
+  else el.textContent = t("fxLatest", {rate: formatFXRate(rate), date: fxDetails.date || "—"});
+}
+function setFXReference(rate, details = {}) {
+  if (!Number.isFinite(Number(rate)) || Number(rate) <= 0 || Number(rate) >= 1000) return false;
+  document.getElementById("tipoCambioMXN").value = formatFXRate(rate);
+  fxDetails = { ...fxDetails, ...details };
+  renderFXStatus();
+  return true;
+}
+async function consultarTipoCambioFX(automatico = false) {
+  const sequence = ++fxFetchSequence;
+  if (!automatico) {
+    fxDetails.status = "loading";
+    renderFXStatus();
+  }
+  try {
+    const response = await fetch(LWQ_FX_URL, {cache:"no-store"});
+    if (!response.ok) throw new Error(`FX HTTP ${response.status}`);
+    const data = await response.json();
+    const rate = Number(data.rate);
+    if (String(data.base).toUpperCase() !== "USD" || String(data.quote).toUpperCase() !== "MXN" ||
+        !Number.isFinite(rate) || rate <= 0 || rate >= 1000 || !/^\d{4}-\d{2}-\d{2}$/.test(String(data.date))) {
+      throw new Error("Invalid FX API payload");
+    }
+    // Si el usuario cambió manualmente la tasa mientras llegaba la respuesta,
+    // no pisar su decisión comercial.
+    if (sequence !== fxFetchSequence || (automatico && fxDetails.edited)) return;
+    setFXReference(rate, {status:"online", source:"Frankfurter", date:String(data.date), edited:false});
+    localStorage.setItem(LWQ_FX_STORAGE_KEY, JSON.stringify({rate, date:String(data.date), source:"Frankfurter"}));
+    recalcularTodo();
+  } catch (error) {
+    if (sequence !== fxFetchSequence) return;
+    if (!automatico || !getFXRate()) fxDetails.status = "error";
+    renderFXStatus();
+    console.warn("Tipo de cambio no disponible; se permite edición manual.", error);
+  }
+}
+function asignacionesManualAntesValidas() {
+  if (isConstructionMode() || stdResicoMode() !== "manual") return false;
+  const financial = calcularDatosFinancieros({actualizarUI:false});
+  return !financial.standardResico.issues.length;
+}
+function convertirCotizacionA(monedaDestino, options = {}) {
+  const monedaOrigen = quoteCurrency;
+  if (!["MXN", "USD"].includes(monedaDestino)) return false;
+  const selector = document.getElementById("moneda");
+  if (monedaDestino === monedaOrigen) {
+    selector.value = monedaOrigen;
+    recalcularTodo();
+    return true;
+  }
+  const rate = getFXRate();
+  if (!rate) {
+    selector.value = monedaOrigen;
+    renderFXStatus();
+    if (!options.silent) alert(t("fxPrevent"));
+    return false;
+  }
+  // Una vez aplicada una conversión, congelar la tasa utilizada: una
+  // respuesta tardía de la consulta inicial no debe cambiarla silenciosamente.
+  ++fxFetchSequence;
+  fxDetails.edited = true;
+  // Guardar las proporciones manuales validas. Si un usuario ya tenía un
+  // reparto incompleto, conservar su estado inválido para no inventarlo.
+  const rebalanceManual = asignacionesManualAntesValidas();
+  const rows = [...conceptosBody.querySelectorAll("tr")];
+  const previousAmounts = rows.map(row => ({
+    rowId: row.dataset.rowId,
+    selected: ensureStandardResico(row.dataset.rowId).selected,
+    amount: ensureStandardResico(row.dataset.rowId).amount
+  }));
+  rows.forEach(row => {
+    const input = row.querySelector(".precio");
+    if (input) input.value = String(fxRound(fxConvertNumber(input.value, monedaOrigen, monedaDestino, rate), 8));
+    const entry = ensureStandardResico(row.dataset.rowId);
+    entry.amount = fxRound(fxConvertNumber(entry.amount, monedaOrigen, monedaDestino, rate), 2);
+  });
+  const indirecto = document.getElementById("indirectoBase");
+  if (indirecto) indirecto.value = String(fxRound(fxConvertNumber(indirecto.value, monedaOrigen, monedaDestino, rate), 8));
+  quoteCurrency = monedaDestino;
+  selector.value = monedaDestino;
+  if (rebalanceManual) {
+    // Redistribuir exactamente el nuevo presupuesto en centavos, conservando
+    // el peso relativo de los importes que el usuario había elegido.
+    const financial = calcularDatosFinancieros({actualizarUI:false});
+    const eligible = previousAmounts.filter(e => e.selected && e.amount > 0 &&
+      financial.conceptosBase.some(x => x.rowId === e.rowId && x.cantidad > 0 && x.descuento < 100));
+    if (eligible.length) {
+      const mapped = eligible.map(e => ({ index:financial.conceptosBase.findIndex(x => x.rowId === e.rowId) }));
+      const parts = exactCentsByWeights(financial.standardResico.budgetCents, mapped, eligible.map(e=>e.amount));
+      previousAmounts.filter(e => e.selected).forEach(e => { ensureStandardResico(e.rowId).amount = 0; });
+      parts.forEach(p => { ensureStandardResico(financial.conceptosBase[p.index].rowId).amount = p.amount; });
+    }
+  }
+  recalcularTodo();
+  return true;
+}
+function fijarMonedaDeDatos(moneda) {
+  quoteCurrency = moneda === "USD" ? "USD" : "MXN";
+  document.getElementById("moneda").value = quoteCurrency;
+}
+function validarTipoCambioExportacion() {
+  if (quoteCurrency !== "USD" || getFXRate()) return true;
+  alert(t("fxMissing"));
+  document.getElementById("tipoCambioMXN")?.scrollIntoView({behavior:"smooth",block:"center"});
+  return false;
+}
+function inicializarFX() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LWQ_FX_STORAGE_KEY) || "null");
+    if (saved && saved.source === "Frankfurter" && saved.rate) {
+      setFXReference(saved.rate, {status:"cache", source:"Frankfurter",date:saved.date,edited:false});
+    }
+  } catch (error) { console.warn("La referencia guardada de divisas no se pudo leer.", error); }
+  document.getElementById("moneda")?.addEventListener("change", e => convertirCotizacionA(e.target.value));
+  document.getElementById("tipoCambioMXN")?.addEventListener("input", () => {
+    ++fxFetchSequence;
+    fxDetails = {status:"manual", source:"Manual", date:"", edited:true};
+    renderFXStatus();
+    recalcularTodo();
+  });
+  document.getElementById("btnConsultarTipoCambio")?.addEventListener("click", () => consultarTipoCambioFX(false));
+  renderFXStatus();
+  consultarTipoCambioFX(true);
+}
 
 /* ==========================================================
    PORCENTAJE RESICO: automatico por tabla o manual.
@@ -1116,6 +1313,26 @@ function getCurrencyLabel() {
   return moneda === "USD" ? t("currencyUSD") : t("currencyMXN");
 }
 
+// Con USD convertido, usar los decimales de precio unitario necesarios
+// para evitar diferencias aparentes al multiplicar cantidad x unitario.
+// Conserva el formato original de 2 decimales para MXN y valores exactos.
+function formatUnitMoney(value, quantity = 1, discountPercent = 0) {
+  if (quoteCurrency !== "USD") return formatMoney(value);
+  const unitPrice = Number(value) || 0;
+  const multiplier = Math.max(0, Number(quantity) || 0) *
+    Math.max(0, 1 - (Number(discountPercent) || 0) / 100);
+  for (const digits of [2, 4, 6, 8]) {
+    const printedUnitPrice = Number(unitPrice.toFixed(digits));
+    if (digits === 8 || Math.abs(printedUnitPrice - unitPrice) * multiplier <= 0.0049) {
+      return new Intl.NumberFormat(getCurrentLocale(), {
+        style: "currency", currency: "USD",
+        minimumFractionDigits: 2, maximumFractionDigits: digits
+      }).format(printedUnitPrice);
+    }
+  }
+  return formatMoney(unitPrice);
+}
+
 function formatPercent(value) {
   const numero = parseFloat(value);
   const safeNumber = isNaN(numero) ? 0 : Math.max(0, Math.min(100, numero));
@@ -1268,7 +1485,11 @@ function getResicoTablaMode() {
 }
 
 function getResicoRateInfo(baseAntesIVA, mode = getResicoTablaMode()) {
-  const base = Number(baseAntesIVA) || 0;
+  // Los tramos fiscales son MXN incluso si la cotización está expresada en USD.
+  const baseCotizacion = Number(baseAntesIVA) || 0;
+  const base = quoteCurrency === "USD"
+    ? (getFXRate() ? baseCotizacion * getFXRate() : 0)
+    : baseCotizacion;
 
   const tablas = {
     mensual: [
@@ -1648,7 +1869,7 @@ function crearFila(data = {}) {
       <input class="concept-input cantidad" type="number" min="0" step="0.01" value="${data.cantidad ?? 1}">
     </td>
     <td>
-      <input class="concept-input precio" type="number" min="0" step="0.01" value="${data.precio ?? 0}">
+      <input class="concept-input precio" type="number" min="0" step="any" value="${data.precio ?? 0}">
     </td>
     <td class="lwq-standard-only-cell">
       <div class="lwq-standard-resico-editor">
@@ -1776,6 +1997,11 @@ function aplicarPrellenadoCotizadorProfesional(payload) {
   const conceptos = Array.isArray(payload.conceptos)
     ? payload.conceptos.filter(item => item && typeof item === "object")
     : [];
+  const monedaOrigenPrefill = payload.moneda === "USD" ? "USD" : "MXN";
+  if (monedaOrigenPrefill !== quoteCurrency && !getFXRate()) {
+    alert(t("fxMissing"));
+    return false;
+  }
 
   if (!conceptos.length) return false;
 
@@ -1818,7 +2044,8 @@ function aplicarPrellenadoCotizadorProfesional(payload) {
   conceptos.forEach(item => crearFila({
     concepto: String(item.concepto || ""),
     cantidad: Number.isFinite(Number(item.cantidad)) ? Number(item.cantidad) : 1,
-    precio: Number.isFinite(Number(item.precio)) ? Number(item.precio) : 0,
+    precio: Number.isFinite(Number(item.precio))
+      ? fxRound(fxConvertNumber(Number(item.precio), monedaOrigenPrefill, quoteCurrency), 8) : 0,
     descuento: Number.isFinite(Number(item.descuento)) ? Number(item.descuento) : 0,
     descuentoPreciso: Number.isFinite(Number(item.descuentoPreciso))
       ? Number(item.descuentoPreciso)
@@ -1863,7 +2090,11 @@ function obtenerDatosFormulario() {
     telefonoEmpresa: document.getElementById("telefonoEmpresa").value,
     sitioEmpresa: document.getElementById("sitioEmpresa").value,
     ciudadEmpresa: document.getElementById("ciudadEmpresa").value,
-    moneda: document.getElementById("moneda").value,
+    moneda: quoteCurrency,
+    tipoCambioMXN: getFXRate(),
+    tipoCambioFuente: fxDetails.source,
+    tipoCambioFecha: fxDetails.date,
+    tipoCambioEstado: fxDetails.status,
 
     folio: document.getElementById("folio").value,
     fecha: document.getElementById("fecha").value,
@@ -1955,6 +2186,7 @@ function limpiarFormulario() {
   });
 
   aplicarDatosEmpresaPorDefecto({ overwrite: true });
+  fijarMonedaDeDatos(DEFAULT_MONEDA);
 
   if (document.getElementById("formaPago")) {
     document.getElementById("formaPago").value = t("defaultPaymentTerms");
@@ -2023,7 +2255,16 @@ function cargarBorrador() {
   document.getElementById("telefonoEmpresa").value = data.telefonoEmpresa || DEFAULT_TELEFONO_EMPRESA;
   document.getElementById("sitioEmpresa").value = data.sitioEmpresa || DEFAULT_SITIO_EMPRESA;
   document.getElementById("ciudadEmpresa").value = data.ciudadEmpresa || DEFAULT_CIUDAD_EMPRESA;
-  document.getElementById("moneda").value = data.moneda || DEFAULT_MONEDA;
+  fijarMonedaDeDatos(data.moneda || DEFAULT_MONEDA);
+  if (data.tipoCambioMXN && Number(data.tipoCambioMXN) > 0 && Number(data.tipoCambioMXN) < 1000) {
+    ++fxFetchSequence; // conservar la tasa guardada frente a consultas pendientes
+    setFXReference(data.tipoCambioMXN, {
+      source: data.tipoCambioFuente || "Borrador",
+      date: data.tipoCambioFecha || "",
+      status: data.tipoCambioFuente === "Manual" ? "manual" : "cache",
+      edited: true
+    });
+  }
 
   document.getElementById("folio").value = data.folio || "";
   document.getElementById("fecha").value = data.fecha || "";
@@ -2167,6 +2408,19 @@ function importarDesdeWorkbook(workbook) {
       return undefined;
     };
 
+    // Tipo de cambio y moneda del propio Excel (para no mezclar importes).
+    const monedaExcel = getValue("MONEDA", "CURRENCY");
+    const tasaExcel = getValue("TIPO CAMBIO (MXN POR USD)", "EXCHANGE RATE (MXN PER USD)");
+    const fechaExcel = getValue("FECHA TIPO CAMBIO", "EXCHANGE RATE DATE");
+    const fuenteExcel = getValue("ORIGEN TIPO CAMBIO", "EXCHANGE RATE SOURCE");
+    if (tasaExcel !== undefined && tasaExcel !== "" && Number(tasaExcel) > 0 && Number(tasaExcel) < 1000) {
+      ++fxFetchSequence; // la tasa declarada en el Excel es la que corresponde al documento
+      setFXReference(tasaExcel, {source: String(fuenteExcel || "Excel"), date: String(fechaExcel || ""), status:"cache", edited:true});
+    }
+    if (["MXN","USD"].includes(monedaExcel) && monedaExcel !== quoteCurrency) {
+      if (!convertirCotizacionA(monedaExcel)) return;
+    }
+
     setFieldIfExists("empresa", getValue("EMPRESA", "COMPANY"));
     setFieldIfExists("correoEmpresa", getValue("CORREO EMPRESA", "COMPANY EMAIL"));
     setFieldIfExists("telefonoEmpresa", getValue("TELÉFONO EMPRESA", "COMPANY PHONE"));
@@ -2191,9 +2445,6 @@ function importarDesdeWorkbook(workbook) {
     setFieldIfExists("notas", getValue("NOTAS", "NOTES"));
     setFieldIfExists("terminos", getValue("TÉRMINOS", "TERMS"));
     setFieldIfExists("formaPago", getValue("FORMA DE PAGO", "PAYMENT TERMS"));
-
-    const moneda = getValue("MONEDA", "CURRENCY");
-    if (moneda === "MXN" || moneda === "USD") setFieldIfExists("moneda", moneda);
 
     const importQuoteMode = getValue("MODALIDAD", "QUOTE MODE");
     if (String(importQuoteMode || "").toLowerCase().includes("construct")) {
@@ -2343,7 +2594,7 @@ function prepararDatosParaIdiomaPDF(data, targetLanguage) {
 }
 
 function confirmarExportacionPDF() {
-  if (!validateBuilderExport()) return false;
+  if (!validarTipoCambioExportacion() || !validateBuilderExport()) return false;
   const data = obtenerDatosFormulario();
   if (isConstructionMode()) {
     return data.isrResicoMonto <= 0 || confirm(t("resicoMixedConfirm", {
@@ -2847,9 +3098,9 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
     const isBuilderPdf = data.modoCotizador === "constructora";
     const tableData = data.conceptos.map(item => isBuilderPdf
       ? [item.partida || item.no, item.concepto || "-", item.cantidad, item.unidad || "PZA",
-        formatMoney(item.precio), `${formatPercent(item.descuento)}%`, formatMoney(item.importe)]
+        formatUnitMoney(item.precio, item.cantidad, item.descuento), `${formatPercent(item.descuento)}%`, formatMoney(item.importe)]
       : [item.no, item.concepto || "-", item.cantidad,
-        formatMoney(item.precio), `${formatPercent(item.descuento)}%`, formatMoney(item.importe)]);
+        formatUnitMoney(item.precio, item.cantidad, item.descuento), `${formatPercent(item.descuento)}%`, formatMoney(item.importe)]);
 
     doc.autoTable({
       startY: y,
@@ -2913,7 +3164,7 @@ async function generarPDFEnIdioma(languageOverride = currentLanguage) {
           ? (targetLanguage === "en"
             ? `Unit prices are stated in ${data.monedaDescripcion} before VAT; VAT is shown in the financial summary.`
             : `Los precios unitarios están expresados en ${data.monedaDescripcion} antes de IVA; el IVA se desglosa en el resumen financiero.`)
-          : t("allPricesClause", { currency: data.monedaDescripcion })} ${data.terminos.trim()}`;
+          : t("allPricesClause", { currency: data.monedaDescripcion })} ${data.terminos.trim()}${data.moneda === "USD" && data.tipoCambioMXN ? " " + t("fxPdfText", {rate:formatFXRate(data.tipoCambioMXN)}) : ""}`;
 
       y = drawWrappedTextBlock({
         title: t("termsTitle"),
@@ -2978,7 +3229,7 @@ async function exportarPDF() {
 }
 
 function exportarExcel(internalControl = false) {
-  if (!validateBuilderExport()) return;
+  if (!validarTipoCambioExportacion() || !validateBuilderExport()) return;
   if (isConstructionMode()) return exportarExcelConstructora(!!internalControl);
   const data = obtenerDatosFormulario();
   const wb = XLSX.utils.book_new();
@@ -3048,6 +3299,9 @@ function exportarExcel(internalControl = false) {
       : (data.standardResicoDesglose || []).map(item => `#${item.index + 1}`).join(", "))],
     [labels.currency, data.moneda],
     [labels.currencyDescription, data.monedaDescripcion],
+    [t("fxExcelRate"), data.tipoCambioMXN || ""],
+    [t("fxExcelDate"), data.tipoCambioFecha || ""],
+    [t("fxExcelSource"), data.tipoCambioFuente || ""],
     [],
     [labels.grossBaseSubtotal, data.subtotalBrutoBase],
     [labels.baseItemDiscount, data.descuentoConceptosBase],
@@ -3109,6 +3363,10 @@ function exportarExcelConstructora(internalControl = false) {
     [en ? "CATALOG REFERENCE" : "CATÁLOGO", d.catalogoReferencia],
     [en ? "QUOTE NUMBER" : "FOLIO", d.folio],
     [en ? "DATE" : "FECHA", d.fecha],
+    [en ? "CURRENCY" : "MONEDA", d.moneda],
+    [t("fxExcelRate"), d.tipoCambioMXN || ""],
+    [t("fxExcelDate"), d.tipoCambioFecha || ""],
+    [t("fxExcelSource"), d.tipoCambioFuente || ""],
     [en ? "CLIENT" : "CLIENTE", d.cliente],
     [en ? "PROJECT" : "PROYECTO", d.proyecto],
     [en ? "LOCATION" : "UBICACIÓN", d.ubicacionProyecto],
@@ -3199,8 +3457,7 @@ if (idiomaSelect) {
   descuentoGeneralInput,
   anticipoInput,
   document.getElementById("resicoTabla"),
-  document.getElementById("resicoConceptoIndex"),
-  document.getElementById("moneda")
+  document.getElementById("resicoConceptoIndex")
 ]
   .filter(Boolean)
   .forEach(el => {
@@ -3223,6 +3480,7 @@ isrResicoInput?.addEventListener("input", () => {
 });
 
 aplicarDatosEmpresaPorDefecto({ overwrite: false });
+inicializarFX();
 
 const selectorPDFInicial = asegurarSelectorIdiomaPDF();
 if (selectorPDFInicial) {
