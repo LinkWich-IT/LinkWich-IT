@@ -46,10 +46,10 @@ const I18N = {
     companyData: "Datos de la empresa", company: "Empresa", email: "Correo", phone: "Teléfono",
     website: "Sitio web", city: "Ciudad", currency: "Moneda", fxRateLabel: "Tipo de cambio: 1 USD = MXN", fxLookup: "Consultar hoy",
     fxCurrencyHint: "Al cambiar la moneda, se convierten los precios de todos los conceptos.",
-    fxDisclaimer: "Referencia orientativa, no cotización bancaria ni tipo FIX de Banxico. Cambiar la tasa no modifica precios ya convertidos.",
+    fxDisclaimer: "Referencia orientativa, no cotización bancaria ni tipo FIX de Banxico. Si cotizas en USD, cambiar la tasa actualiza automáticamente los precios ya agregados.",
     fxSourceLink: "Fuente: Frankfurter (bancos centrales)",
     fxMissing: "Captura un tipo de cambio válido o consulta el último disponible para convertir MXN y USD.",
-    fxManual: "Tipo de cambio manual: 1 USD = {rate} MXN. Se utilizará en la próxima conversión.",
+    fxManual: "Tipo de cambio manual: 1 USD = {rate} MXN. Los conceptos en USD se actualizan al confirmar el cambio.",
     fxLatest: "Referencia publicada el {date}: 1 USD = {rate} MXN.",
     fxCached: "Última referencia guardada ({date}): 1 USD = {rate} MXN. Puedes actualizarla.",
     fxLoading: "Consultando la tasa de referencia disponible…",
@@ -204,10 +204,10 @@ const I18N = {
     companyData: "Company information", company: "Company", email: "Email", phone: "Phone",
     website: "Website", city: "City", currency: "Currency", fxRateLabel: "Exchange rate: 1 USD = MXN", fxLookup: "Get latest rate",
     fxCurrencyHint: "Changing currency converts the unit prices for all items.",
-    fxDisclaimer: "Indicative reference only, not a bank quote or Banxico FIX. Changing the rate does not reprice previously converted items.",
+    fxDisclaimer: "Indicative reference only, not a bank quote or Banxico FIX. When quoting in USD, changing the rate automatically reprices existing items.",
     fxSourceLink: "Source: Frankfurter (central banks)",
     fxMissing: "Enter a valid exchange rate or fetch the latest available rate to convert MXN and USD.",
-    fxManual: "Manual rate: 1 USD = {rate} MXN. It will apply to the next conversion.",
+    fxManual: "Manual rate: 1 USD = {rate} MXN. Existing USD items update when the change is confirmed.",
     fxLatest: "Reference published {date}: 1 USD = {rate} MXN.",
     fxCached: "Last saved reference ({date}): 1 USD = {rate} MXN. You can update it.",
     fxLoading: "Fetching the latest available reference rate…",
@@ -454,6 +454,10 @@ const LWQ_FX_URL = "https://api.frankfurter.dev/v2/rate/USD/MXN";
 let quoteCurrency = document.getElementById("moneda")?.value === "USD" ? "USD" : "MXN";
 let fxDetails = { source: "", date: "", status: "missing", edited: false };
 let fxFetchSequence = 0;
+// Tasa con la que se encuentran valorizados los precios que aparecen en USD.
+// Se separa del input editable para no recalcular precios varias veces mientras
+// el usuario teclea un número incompleto (p.ej. 18.20).
+let fxAppliedRateUSD = null;
 
 function getFXRate() {
   const raw = String(document.getElementById("tipoCambioMXN")?.value ?? "").trim();
@@ -485,9 +489,79 @@ function renderFXStatus() {
   else if (fxDetails.status === "cache") el.textContent = t("fxCached", {rate: formatFXRate(rate), date: fxDetails.date || "—"});
   else el.textContent = t("fxLatest", {rate: formatFXRate(rate), date: fxDetails.date || "—"});
 }
-function setFXReference(rate, details = {}) {
+/*
+  Revalúa una cotización existente en USD al fijar otra tasa, manteniendo
+  exactamente el valor de referencia en pesos: USD_nuevo = USD_anterior
+  * tasa_anterior / tasa_nueva.
+  MXN no se recalcula porque los pesos ya son la moneda original.
+  Los porcentajes, cantidades y descuentos nunca se tocan.
+*/
+function actualizarCotizacionUSDPorTipoCambio(tasaNueva) {
+  const rate = Number(tasaNueva);
+  if (!Number.isFinite(rate) || rate <= 0 || rate >= 1000) return false;
+  if (quoteCurrency !== "USD") {
+    fxAppliedRateUSD = null;
+    return true;
+  }
+  const prev = fxAppliedRateUSD;
+  if (!Number.isFinite(prev) || prev <= 0) {
+    // Primera captura, o cotización antigua sin una tasa asociada:
+    // no inventar la conversión de valores preexistentes.
+    fxAppliedRateUSD = rate;
+    return true;
+  }
+  if (Math.abs(prev - rate) < 1e-12) {
+    fxAppliedRateUSD = rate;
+    return true;
+  }
+
+  const tasaInput = document.getElementById("tipoCambioMXN");
+  const tasaCapturada = tasaInput?.value;
+  // Verificar el reparto anterior CON la tasa anterior (no con la tasa que
+  // el usuario acaba de escribir). Solo cuadrar de nuevo si era correcto.
+  let rebalanceManual = false;
+  if (tasaInput) tasaInput.value = formatFXRate(prev);
+  try {
+    rebalanceManual = asignacionesManualAntesValidas();
+  } finally {
+    if (tasaInput) tasaInput.value = tasaCapturada;
+  }
+
+  const rows = [...conceptosBody.querySelectorAll("tr")];
+  const repartosAnteriores = rows.map(row => ({
+    rowId: row.dataset.rowId,
+    selected: ensureStandardResico(row.dataset.rowId).selected,
+    amount: ensureStandardResico(row.dataset.rowId).amount
+  }));
+  const factor = prev / rate;
+  rows.forEach(row => {
+    const input = row.querySelector(".precio");
+    if (input) input.value = String(fxRound((Number(input.value) || 0) * factor, 8));
+    const entry = ensureStandardResico(row.dataset.rowId);
+    entry.amount = fxRound(entry.amount * factor, 2);
+  });
+  const indirecto = document.getElementById("indirectoBase");
+  if (indirecto) indirecto.value = String(fxRound((Number(indirecto.value) || 0) * factor, 8));
+  fxAppliedRateUSD = rate;
+
+  if (rebalanceManual) {
+    const financial = calcularDatosFinancieros({actualizarUI:false});
+    const eligible = repartosAnteriores.filter(e => e.selected && e.amount > 0 &&
+      financial.conceptosBase.some(x => x.rowId === e.rowId && x.cantidad > 0 && x.descuento < 100));
+    if (eligible.length) {
+      const mapped = eligible.map(e => ({index:financial.conceptosBase.findIndex(x => x.rowId === e.rowId)}));
+      const parts = exactCentsByWeights(financial.standardResico.budgetCents, mapped, eligible.map(e => e.amount));
+      repartosAnteriores.filter(e => e.selected).forEach(e => {ensureStandardResico(e.rowId).amount = 0;});
+      parts.forEach(p => {ensureStandardResico(financial.conceptosBase[p.index].rowId).amount = p.amount;});
+    }
+  }
+  return true;
+}
+function setFXReference(rate, details = {}, options = {}) {
   if (!Number.isFinite(Number(rate)) || Number(rate) <= 0 || Number(rate) >= 1000) return false;
+  if (options.reprice !== false) actualizarCotizacionUSDPorTipoCambio(Number(rate));
   document.getElementById("tipoCambioMXN").value = formatFXRate(rate);
+  if (options.reprice === false) fxAppliedRateUSD = quoteCurrency === "USD" ? Number(rate) : null;
   fxDetails = { ...fxDetails, ...details };
   renderFXStatus();
   return true;
@@ -564,6 +638,7 @@ function convertirCotizacionA(monedaDestino, options = {}) {
   if (indirecto) indirecto.value = String(fxRound(fxConvertNumber(indirecto.value, monedaOrigen, monedaDestino, rate), 8));
   quoteCurrency = monedaDestino;
   selector.value = monedaDestino;
+  fxAppliedRateUSD = monedaDestino === "USD" ? rate : null;
   if (rebalanceManual) {
     // Redistribuir exactamente el nuevo presupuesto en centavos, conservando
     // el peso relativo de los importes que el usuario había elegido.
@@ -583,6 +658,7 @@ function convertirCotizacionA(monedaDestino, options = {}) {
 function fijarMonedaDeDatos(moneda) {
   quoteCurrency = moneda === "USD" ? "USD" : "MXN";
   document.getElementById("moneda").value = quoteCurrency;
+  fxAppliedRateUSD = quoteCurrency === "USD" ? getFXRate() : null;
 }
 function validarTipoCambioExportacion() {
   if (quoteCurrency !== "USD" || getFXRate()) return true;
@@ -598,10 +674,24 @@ function inicializarFX() {
     }
   } catch (error) { console.warn("La referencia guardada de divisas no se pudo leer.", error); }
   document.getElementById("moneda")?.addEventListener("change", e => convertirCotizacionA(e.target.value));
-  document.getElementById("tipoCambioMXN")?.addEventListener("input", () => {
+  const tipoCambioInput = document.getElementById("tipoCambioMXN");
+  tipoCambioInput?.addEventListener("input", () => {
     ++fxFetchSequence;
     fxDetails = {status:"manual", source:"Manual", date:"", edited:true};
     renderFXStatus();
+    // Mientras se está tecleando, conservar intactos los precios USD.
+    // Se actualizan al confirmar (Enter o abandonar el campo).
+    if (quoteCurrency !== "USD") recalcularTodo();
+  });
+  tipoCambioInput?.addEventListener("change", () => {
+    const tasaNueva = getFXRate();
+    if (!tasaNueva && quoteCurrency === "USD" && fxAppliedRateUSD) {
+      tipoCambioInput.value = formatFXRate(fxAppliedRateUSD);
+      renderFXStatus();
+      alert(t("fxInvalid"));
+      return;
+    }
+    if (tasaNueva) actualizarCotizacionUSDPorTipoCambio(tasaNueva);
     recalcularTodo();
   });
   document.getElementById("btnConsultarTipoCambio")?.addEventListener("click", () => consultarTipoCambioFX(false));
@@ -2263,7 +2353,7 @@ function cargarBorrador() {
       date: data.tipoCambioFecha || "",
       status: data.tipoCambioFuente === "Manual" ? "manual" : "cache",
       edited: true
-    });
+    }, {reprice:false});
   }
 
   document.getElementById("folio").value = data.folio || "";
