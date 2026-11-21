@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkWich-IT | Cotizador Profesional</title>
-  <link rel="stylesheet" href="style.css?v=20261121-costos-mayorista-v6" />
+  <link rel="stylesheet" href="style.css?v=20261121-panel-responsive-v7" />
 
   <style>
     .field-help {
@@ -81,8 +81,14 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
+  <div class="app-shell" id="lwqAppShell">
+    <div class="lwq-sidebar-toolbar" hidden>
+      <button id="lwqSidebarToggle" class="lwq-sidebar-toggle" type="button" aria-controls="lwqSidebar" aria-expanded="true" aria-label="Ocultar menú lateral" title="Ocultar menú lateral">
+        <svg class="lwq-sidebar-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/><path class="lwq-sidebar-chevron" d="m16 9-3 3 3 3"/></svg>
+        <span id="lwqSidebarToggleText">Ocultar menú lateral</span>
+      </button>
+    </div>
+    <aside class="sidebar" id="lwqSidebar">
       <div class="brand">
         <img src="assets/logo.png" alt="Logo LinkWich-IT" class="brand-logo" />
         <div>
@@ -335,12 +341,12 @@
 
       <section class="card">
         <div class="card-header between">
-          <h3 data-i18n="items">Conceptos</h3>
+          <h3 id="lwqConceptsHeading" data-i18n="items">Conceptos</h3>
           <button id="btnAgregarFilaTop" class="btn btn-primary" data-i18n="addItem">Agregar concepto</button>
         </div>
 
         <p class="field-help lwq-standard-only-field lwq-supplier-help" data-i18n="supplierPricingHelp">Uso interno: captura el costo unitario sin IVA, el IVA del mayorista (0–100%) y la ganancia sobre el costo con IVA. La venta base se calcula antes de descuentos, RESICO e IVA al cliente. El PDF y Excel común no incluyen estas columnas.</p>
-        <div class="table-wrap">
+        <div class="table-wrap lwq-concepts-scroll" tabindex="0" role="region" aria-labelledby="lwqConceptsHeading">
           <table id="tablaConceptos">
             <thead>
               <tr>
@@ -584,6 +590,52 @@
       var VALID_PASS = "LinkWich-IT";
 
       if (sessionStorage.getItem(ACCESS_KEY) === "1") {
+        // V7: interfaz solamente. No modifica precios, borradores ni exportaciones.
+        (function initSidebarLayout() {
+          var shell = document.getElementById("lwqAppShell");
+          var sidebar = document.getElementById("lwqSidebar");
+          var toggle = document.getElementById("lwqSidebarToggle");
+          var label = document.getElementById("lwqSidebarToggleText");
+          var toolbar = toggle && toggle.parentElement;
+          if (!shell || !sidebar || !toggle || !label || !toolbar) return;
+          var compact = window.matchMedia("(max-width: 1200px)");
+          var storageKey = "lwq_sidebar_layout_v7";
+          var prefs = { desktop: true, compact: false };
+          try {
+            var saved = JSON.parse(localStorage.getItem(storageKey) || "null");
+            if (saved && typeof saved.desktop === "boolean") prefs.desktop = saved.desktop;
+            if (saved && typeof saved.compact === "boolean") prefs.compact = saved.compact;
+          } catch (_) { /* El control funciona aunque el almacenamiento esté deshabilitado. */ }
+          function currentMode() { return compact.matches ? "compact" : "desktop"; }
+          function updateLabel() {
+            var english = document.documentElement.lang === "en";
+            var open = prefs[currentMode()];
+            var text = english ? (open ? "Hide sidebar" : "Show sidebar") : (open ? "Ocultar menú lateral" : "Mostrar menú lateral");
+            label.textContent = text;
+            toggle.setAttribute("aria-label", text);
+            toggle.title = text;
+          }
+          function render() {
+            var open = prefs[currentMode()];
+            if (!open && sidebar.contains(document.activeElement)) toggle.focus({preventScroll:true});
+            sidebar.hidden = !open;
+            shell.classList.toggle("lwq-sidebar-collapsed", !open);
+            toggle.setAttribute("aria-expanded", String(open));
+            updateLabel();
+          }
+          toggle.addEventListener("click", function () {
+            var mode = currentMode();
+            prefs[mode] = !prefs[mode];
+            render();
+            try { localStorage.setItem(storageKey, JSON.stringify(prefs)); } catch (_) {}
+          });
+          if (compact.addEventListener) compact.addEventListener("change", render);
+          else if (compact.addListener) compact.addListener(render);
+          new MutationObserver(updateLabel).observe(document.documentElement, {attributes:true, attributeFilter:["lang"]});
+          shell.classList.add("lwq-sidebar-enabled");
+          toolbar.hidden = false;
+          render();
+        })();
         var script = document.createElement("script");
         script.src = "script.js?v=20261121-costos-mayorista-v6";
         document.body.appendChild(script);
