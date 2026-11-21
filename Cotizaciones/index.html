@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LinkWich-IT | Cotizador Profesional</title>
-  <link rel="stylesheet" href="style.css?v=20261118-fx-base-protegida-v5" />
+  <link rel="stylesheet" href="style.css?v=20261121-costos-mayorista-v6" />
 
   <style>
     .field-help {
@@ -339,6 +339,7 @@
           <button id="btnAgregarFilaTop" class="btn btn-primary" data-i18n="addItem">Agregar concepto</button>
         </div>
 
+        <p class="field-help lwq-standard-only-field lwq-supplier-help" data-i18n="supplierPricingHelp">Uso interno: captura el costo unitario sin IVA, el IVA del mayorista (0–100%) y la ganancia sobre el costo con IVA. La venta base se calcula antes de descuentos, RESICO e IVA al cliente. El PDF y Excel común no incluyen estas columnas.</p>
         <div class="table-wrap">
           <table id="tablaConceptos">
             <thead>
@@ -348,7 +349,9 @@
                 <th data-i18n="item">Concepto</th>
                 <th class="lwq-construction-only-cell" data-i18n="unit">Unidad</th>
                 <th style="width: 120px;" data-i18n="quantity">Cantidad</th>
-                <th style="width: 160px;" data-i18n="unitPrice">Precio Unitario</th>
+                <th style="width: 160px;"><span class="lwq-standard-price-label" data-i18n="supplierCost">Costo unitario sin IVA</span><span class="lwq-builder-price-label" data-i18n="unitPrice">Precio Unitario</span></th>
+                <th class="lwq-standard-only-cell lwq-supplier-cell" data-i18n="supplierVat">IVA mayorista (%)</th>
+                <th class="lwq-standard-only-cell lwq-supplier-cell" data-i18n="profitMarkup">Ganancia (%)</th>
                 <th class="lwq-standard-only-cell" style="width: 205px;" data-i18n="standardResicoColumn">RESICO asignado ($)</th>
                 <th style="width: 120px;" data-i18n="discountShortPct">Desc. %</th>
                 <th style="width: 170px;" data-i18n="amount">Importe</th>
@@ -582,7 +585,7 @@
 
       if (sessionStorage.getItem(ACCESS_KEY) === "1") {
         var script = document.createElement("script");
-        script.src = "script.js?v=20261118-fx-base-protegida-v5";
+        script.src = "script.js?v=20261121-costos-mayorista-v6";
         document.body.appendChild(script);
         return;
       }
