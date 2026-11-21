@@ -1289,3 +1289,17 @@ body:not(.lwq-mode-construction) #tablaConceptos { min-width: 1180px; }
   .lwq-fx-rate-controls .btn { width:100%; }
 }
 
+
+/* V6. Costos y ganancia internos, exclusivos de la cotización estándar. */
+body:not(.lwq-mode-construction) #tablaConceptos { min-width: 1470px; }
+#tablaConceptos .lwq-supplier-cell { min-width: 130px; width: 145px; }
+#tablaConceptos .lwq-supplier-cell input { min-width: 95px; text-align: right; }
+#tablaConceptos .lwq-supplier-cell input[aria-invalid="true"] { border-color: #f87171; }
+body:not(.lwq-mode-construction) #tablaConceptos .precio { min-width: 135px; }
+#tablaConceptos .lwq-sale-preview { display: block; font-size: .75rem; color: #86efac; margin-top: 5px; line-height: 1.3; white-space: normal; }
+#tablaConceptos .lwq-sale-preview.lwq-supplier-error { color: #fca5a5; }
+.lwq-supplier-help { margin: 0 0 12px; color: var(--muted); }
+.lwq-builder-price-label { display: none; }
+body.lwq-mode-construction .lwq-builder-price-label { display: inline; }
+body.lwq-mode-construction .lwq-standard-price-label { display: none; }
+@media print { .lwq-sale-preview, .lwq-supplier-help { display: none !important; } }
