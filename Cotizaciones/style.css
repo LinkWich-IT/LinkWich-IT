@@ -1303,3 +1303,69 @@ body:not(.lwq-mode-construction) #tablaConceptos .precio { min-width: 135px; }
 body.lwq-mode-construction .lwq-builder-price-label { display: inline; }
 body.lwq-mode-construction .lwq-standard-price-label { display: none; }
 @media print { .lwq-sale-preview, .lwq-supplier-help { display: none !important; } }
+
+
+/* ===== V7: menú lateral plegable y espacio de trabajo adaptable ===== */
+.lwq-sidebar-toolbar[hidden], #lwqSidebar[hidden] { display: none !important; }
+.lwq-sidebar-enabled { --lwq-sidebar-width: 320px; }
+.lwq-sidebar-enabled .main-content { max-width: none; min-width: 0; }
+.lwq-sidebar-enabled.lwq-sidebar-collapsed { grid-template-columns: minmax(0, 1fr); }
+.lwq-sidebar-toggle {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: 1px solid rgba(95, 159, 255, .42); border-radius: 10px;
+  background: var(--panel-2); color: #dce9ff;
+  padding: 9px 12px; min-height: 44px; cursor: pointer;
+  font-weight: 700; font-size: .85rem; line-height: 1.25;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .22);
+}
+.lwq-sidebar-toggle:hover { background: #1b3156; border-color: #60a5fa; }
+.lwq-sidebar-toggle:focus-visible, .lwq-concepts-scroll:focus-visible {
+  outline: 2px solid #8fc2ff; outline-offset: 2px;
+}
+.lwq-sidebar-icon { flex: 0 0 22px; }
+.lwq-sidebar-collapsed .lwq-sidebar-chevron { transform: rotate(180deg); transform-origin: 14.5px 12px; }
+.lwq-concepts-scroll { max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; }
+.lwq-sidebar-enabled .topbar > div { min-width: 0; }
+.lwq-sidebar-enabled .topbar h2 { overflow-wrap: anywhere; }
+
+@media screen and (min-width: 1201px) {
+  .lwq-sidebar-enabled { grid-template-columns: var(--lwq-sidebar-width) minmax(0, 1fr); grid-template-areas: "sidebar main"; }
+  .lwq-sidebar-enabled.lwq-sidebar-collapsed { grid-template-areas: "main"; }
+  .lwq-sidebar-enabled .sidebar {
+    grid-area: sidebar; position: sticky; top: 0; align-self: start;
+    height: 100vh; height: 100dvh; overflow-y: auto; overflow-x: hidden;
+    scrollbar-width: thin;
+  }
+  .lwq-sidebar-enabled .main-content { grid-area: main; }
+  .lwq-sidebar-enabled .lwq-sidebar-toolbar {
+    position: fixed; z-index: 20; top: 22px;
+    left: calc(var(--lwq-sidebar-width) - 17px);
+  }
+  .lwq-sidebar-enabled.lwq-sidebar-collapsed .lwq-sidebar-toolbar { left: 6px; }
+  .lwq-sidebar-toggle { width: 34px; min-height: 48px; padding: 7px 4px; }
+  .lwq-sidebar-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .lwq-sidebar-enabled .topbar { padding-left: 20px; flex-wrap: wrap; }
+  .lwq-sidebar-enabled.lwq-sidebar-collapsed .topbar { padding-left: 25px; }
+}
+@media screen and (max-width: 1200px) {
+  .lwq-sidebar-enabled { grid-template-columns: minmax(0, 1fr); grid-template-areas: "toolbar" "sidebar" "main"; grid-template-rows: auto auto 1fr; }
+  .lwq-sidebar-enabled.lwq-sidebar-collapsed { grid-template-areas: "toolbar" "main"; grid-template-rows: auto 1fr; }
+  .lwq-sidebar-enabled .lwq-sidebar-toolbar {
+    grid-area: toolbar; position: sticky; top: 0; z-index: 20;
+    padding: 8px 18px; background: #0b1220; border-bottom: 1px solid var(--border);
+  }
+  .lwq-sidebar-enabled .sidebar { grid-area: sidebar; }
+  .lwq-sidebar-enabled .main-content { grid-area: main; }
+  .lwq-sidebar-toggle { max-width: 100%; }
+  .lwq-sidebar-enabled .lwq-sidebar-toolbar .lwq-sidebar-toggle { justify-content: flex-start; }
+}
+@media screen and (max-width: 640px) {
+  .lwq-sidebar-enabled .lwq-sidebar-toolbar { padding: 7px 14px; }
+  .lwq-sidebar-enabled .topbar-actions { min-width: 0; }
+  .lwq-sidebar-enabled .language-switcher { min-width: 0; flex-wrap: wrap; white-space: normal; }
+  .lwq-sidebar-enabled .language-switcher select { max-width: 100%; }
+}
+@media print {
+  .lwq-sidebar-toolbar { display: none !important; }
+  .lwq-sidebar-enabled .sidebar { position: static; height: auto; overflow: visible; }
+}
