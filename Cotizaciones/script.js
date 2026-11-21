@@ -11,6 +11,9 @@ const DEFAULT_METODO_PAGO_UNICO = "PUE";
 
 const I18N = {
   es: {
+    supplierCost: "Costo unitario sin IVA", supplierVat: "IVA mayorista (%)", profitMarkup: "Ganancia (%)",
+    salesUnitPreview: "Venta base: {amount}", supplierPricingHelp: "Uso interno: captura el costo unitario sin IVA, el IVA del mayorista (0–100%) y la ganancia sobre el costo con IVA. La venta base se calcula antes de descuentos, RESICO e IVA al cliente. El PDF y Excel común no incluyen estas columnas.",
+    supplierPricingInvalid: "Revisa IVA mayorista y ganancia en los conceptos #{rows}. El IVA debe estar entre 0 y 100% y la ganancia debe ser un porcentaje no negativo y finito.",
     quoteMode: "Modalidad de cotización", quoteNormal: "Cotización estándar", quoteConstruction: "Cotización para constructoras / catálogo de obra",
     quoteModeHelp: "El modo estándar conserva sus funciones actuales.", constructionSettings: "Catálogo de obra y prorrateos internos",
     constructionIntro: "Conserva partidas, unidades y cantidades del catálogo original. Los cargos internos se integran al precio unitario; el cliente no ve RESICO ni misceláneos separados.",
@@ -170,6 +173,9 @@ const I18N = {
     limitAnnual2500: "Hasta $2,500,000 anual", limitAnnual3500: "Hasta $3,500,000 anual"
   },
   en: {
+    supplierCost: "Unit cost excl. VAT", supplierVat: "Supplier VAT (%)", profitMarkup: "Markup (%)",
+    salesUnitPreview: "Base selling price: {amount}", supplierPricingHelp: "Internal use: enter the unit cost excluding VAT, supplier VAT (0–100%), and markup on cost including VAT. The base selling price is calculated before discounts, RESICO and customer VAT. These columns are excluded from the PDF and regular Excel export.",
+    supplierPricingInvalid: "Check supplier VAT and markup in items #{rows}. VAT must be between 0 and 100%; markup must be a finite, non-negative percentage.",
     quoteMode: "Quotation mode", quoteNormal: "Standard quotation", quoteConstruction: "Construction companies / bill of quantities",
     quoteModeHelp: "Standard mode retains all existing features.", constructionSettings: "Construction catalog and internal allocations",
     constructionIntro: "Keep the original catalog's line numbers, units and quantities. Internal charges are included in unit prices and not broken out for the client.",
@@ -865,6 +871,7 @@ function initStandardResico() {
 }
 function validateStandardResicoExport() {
   if (isConstructionMode()) return true;
+  if (!validarPreciosMayorista()) return false;
   const data = calcularDatosFinancieros({actualizarUI:false});
   const issues = data.standardResico?.issues || [];
   if (!issues.length) return true;
@@ -1635,12 +1642,35 @@ function getResicoRateInfo(baseAntesIVA, mode = getResicoTablaMode()) {
   };
 }
 
+// V6: solo se transforma el precio de venta en memoria, nunca el costo MXN protegido.
+function leerPrecioMayorista(row, costo) {
+  const ivaInput = row.querySelector(".iva-mayorista");
+  const gananciaInput = row.querySelector(".ganancia-pct");
+  const ivaMayorista = Number(ivaInput?.value || 0);
+  const gananciaPct = Number(gananciaInput?.value || 0);
+  const ivaValido = !ivaInput?.validity.badInput && Number.isFinite(ivaMayorista) && ivaMayorista >= 0 && ivaMayorista <= 100;
+  const gananciaValida = !gananciaInput?.validity.badInput && Number.isFinite(gananciaPct) && gananciaPct >= 0;
+  const calculado = costo * (1 + (ivaValido ? ivaMayorista : 0) / 100) * (1 + (gananciaValida ? gananciaPct : 0) / 100);
+  const valido = ivaValido && gananciaValida && Number.isFinite(calculado);
+  return { ivaMayorista, gananciaPct, valido, precio: isConstructionMode() || !valido ? costo : calculado };
+}
+function validarPreciosMayorista() {
+  if (isConstructionMode()) return true;
+  const invalidas = [...conceptosBody.querySelectorAll("tr")].map((row, i) =>
+    leerPrecioMayorista(row, Number(row.querySelector(".precio").value) || 0).valido ? null : i + 1
+  ).filter(n => n !== null);
+  if (!invalidas.length) return true;
+  alert(t("supplierPricingInvalid", {rows: invalidas.join(", #")}));
+  return false;
+}
 function leerConceptosDesdeTabla() {
   const rows = [...conceptosBody.querySelectorAll("tr")];
 
   return rows.map((row, i) => {
     const cantidad = parseFloat(row.querySelector(".cantidad").value) || 0;
-    const precio = parseFloat(row.querySelector(".precio").value) || 0;
+    const costoUnitario = parseFloat(row.querySelector(".precio").value) || 0;
+    const mayorista = leerPrecioMayorista(row, costoUnitario);
+    const precio = mayorista.precio;
     const descuentoInput = row.querySelector(".descuento");
     const descuentoPreciso = parseFloat(descuentoInput?.dataset.preciseDiscount);
     const descuentoCapturado = Number.isFinite(descuentoPreciso)
@@ -1660,6 +1690,9 @@ function leerConceptosDesdeTabla() {
       concepto: row.querySelector(".concepto").value.trim(),
       cantidad,
       precio,
+      costoUnitario,
+      ivaMayorista: mayorista.ivaMayorista,
+      gananciaPct: mayorista.gananciaPct,
       descuento,
       importeBruto,
       descuentoMonto,
@@ -1979,7 +2012,14 @@ function crearFila(data = {}) {
       <input class="concept-input cantidad" type="number" min="0" step="0.01" value="${data.cantidad ?? 1}">
     </td>
     <td>
-      <input class="concept-input precio" type="number" min="0" step="any" value="${data.precio ?? 0}">
+      <input class="concept-input precio" type="number" min="0" step="any" value="0">
+      <small class="lwq-sale-preview lwq-standard-only-field"></small>
+    </td>
+    <td class="lwq-standard-only-cell lwq-supplier-cell">
+      <input class="concept-input iva-mayorista" type="number" min="0" max="100" step="any" value="0" aria-label="${t("supplierVat")}">
+    </td>
+    <td class="lwq-standard-only-cell lwq-supplier-cell">
+      <input class="concept-input ganancia-pct" type="number" min="0" step="any" value="0" aria-label="${t("profitMarkup")}">
     </td>
     <td class="lwq-standard-only-cell">
       <div class="lwq-standard-resico-editor">
@@ -2004,12 +2044,14 @@ function crearFila(data = {}) {
     Number.isFinite(precioMXNGuardado) && precioMXNGuardado >= 0;
   const precioBaseMxn = tienePrecioGuardado
     ? precioMXNGuardado
-    : fxBaseDesdeVisible(data.precio ?? 0);
+    : fxBaseDesdeVisible(data.costoUnitario ?? data.precio ?? 0);
   tr.dataset.precioBaseMxn = String(precioBaseMxn);
   precioInput.value = quoteCurrency === "USD"
     ? String(fxRound(precioBaseMxn / getFXRate(), 8))
     : String(precioBaseMxn);
 
+  tr.querySelector(".iva-mayorista").value = String(data.ivaMayorista ?? 0);
+  tr.querySelector(".ganancia-pct").value = String(data.gananciaPct ?? 0);
   tr.querySelector(".concepto").value = String(data.concepto || "");
   tr.querySelector(".concepto-larga").value = String(data.concepto || "");
   tr.querySelector(".partida").value = String(data.partida || "");
@@ -2099,6 +2141,19 @@ function recalcularTodo() {
     [...conceptosBody.querySelectorAll("tr")].forEach((row, index) => {
       const cell = row.querySelector(".importe-cell");
       if (cell) cell.textContent = formatMoney(financieros.conceptos[index]?.importe || 0);
+      const item = financieros.conceptosBase[index];
+      const info = leerPrecioMayorista(row, item?.costoUnitario || 0);
+      const preview = row.querySelector(".lwq-sale-preview");
+      const iva = row.querySelector(".iva-mayorista");
+      const ganancia = row.querySelector(".ganancia-pct");
+      if (preview) {
+        preview.textContent = info.valido ? t("salesUnitPreview", {amount: formatUnitMoney(item?.precio || 0, item?.cantidad, item?.descuento)}) : t("supplierPricingInvalid", {rows: index + 1});
+        preview.classList.toggle("lwq-supplier-error", !info.valido);
+      }
+      for (const [field, key] of [[iva, "supplierVat"], [ganancia, "profitMarkup"]]) {
+        field?.setAttribute("aria-label", t(key));
+        field?.setAttribute("aria-invalid", String(!field.validity.valid));
+      }
     });
   }
 
@@ -2355,7 +2410,8 @@ function guardarBorrador() {
   const borrador = {
     ...data,
     idioma: currentLanguage,
-    conceptos: data.conceptosBase
+    conceptosBase: data.conceptosBase.map(item => ({...item, precio: item.costoUnitario ?? item.precio})),
+    conceptos: data.conceptosBase.map(item => ({...item, precio: item.costoUnitario ?? item.precio}))
   };
 
   localStorage.setItem(getBuilderDraftKey(), JSON.stringify(borrador));
