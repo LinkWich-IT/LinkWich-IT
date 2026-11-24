@@ -209,6 +209,24 @@ const incidents = {
     recovery: "CPU de SRV-01 normalizada al 32 %",
     link: "server"
   },
+  ram: {
+    source: "SRV-01", severity: "Alto",
+    message: "RAM de SRV-01 al 92 % · Umbral configurado: 85 %",
+    recovery: "RAM de SRV-01 normalizada al 46 %",
+    link: "server", showMetrics: true
+  },
+  port90: {
+    source: "Monitor TCP · SRV-01", severity: "Crítico",
+    message: "Servicio no disponible · SRV-01 no responde en TCP 90",
+    recovery: "Servicio restablecido · SRV-01 responde en TCP 90",
+    link: "server", showMetrics: true
+  },
+  google: {
+    source: "Monitor HTTPS · google.com", severity: "Advertencia",
+    message: "Latencia alta en google.com · 380 ms · Umbral: 200 ms",
+    recovery: "Respuesta HTTPS de google.com normalizada a 42 ms",
+    link: "wan", showMetrics: true
+  },
   duplicate: {
     source: "Switch de acceso", severity: "Advertencia",
     message: "IP duplicada 192.0.2.42 · VLAN 10 (Datos)",
@@ -284,6 +302,9 @@ function renderMap() {
   const outage = activeIncidents.has("outage");
   const duplicate = activeIncidents.has("duplicate");
   const cpu = activeIncidents.has("cpu");
+  const ram = activeIncidents.has("ram");
+  const port90 = activeIncidents.has("port90");
+  const google = activeIncidents.has("google");
 
   for (const button of linkButtons) {
     const key = button.dataset.link;
@@ -291,7 +312,8 @@ function renderMap() {
     button.classList.toggle("link-down", outage && accessLinks.has(key));
   }
   document.getElementById("node-access").classList.toggle("node-down", outage);
-  document.getElementById("node-server").classList.toggle("node-warning", cpu);
+  document.getElementById("node-server").classList.toggle("node-warning", cpu || ram || port90);
+  document.getElementById("node-wan").classList.toggle("node-warning", google);
   for (const device of ["pc1", "pc2"]) {
     const node = document.getElementById("node-" + device);
     node.classList.toggle("node-warning", duplicate);
@@ -299,7 +321,9 @@ function renderMap() {
     node.querySelector("small").textContent = outage ? "Sin conexión" : duplicate ? "Conflicto de IP" : "Datos";
   }
   demoText("state-access", outage ? "Sin conexión con el core" : "Operativo · Datos / Voz");
-  demoText("state-server", "Servidor · CPU " + (cpu ? "90 %" : "32 %"));
+  const serverSummary = `Servidor · CPU ${cpu ? "90 %" : "32 %"} · RAM ${ram ? "92 %" : "46 %"}`;
+  demoText("state-server", port90 ? serverSummary + " · TCP 90 caído" : serverSummary);
+  demoText("state-wan", google ? "Salida WAN · Latencia HTTPS alta" : "Operativo · Salida WAN");
   renderLinkDetails("link", selectedLink);
   if (tooltipAnchor) {
     renderLinkDetails("tooltip", tooltipAnchor.dataset.link);
@@ -307,12 +331,33 @@ function renderMap() {
   }
 }
 
+function renderMetrics() {
+  const readings = {
+    cpu: { normal: "32 %", active: "90 %", status: "Uso alto" },
+    ram: { normal: "46 %", active: "92 %", status: "Uso alto" },
+    port90: { normal: "Disponible", active: "Sin respuesta", status: "Caído" },
+    google: { normal: "42 ms", active: "380 ms", status: "Latencia alta" }
+  };
+  for (const [key, reading] of Object.entries(readings)) {
+    const active = activeIncidents.has(key);
+    const value = active ? reading.active : reading.normal;
+    demoText("metric-" + key + "-value", value);
+    demoText("metric-" + key + "-state", active ? reading.status : "Normal");
+    document.getElementById("service-" + key).classList.toggle("service-warning", active);
+    const meter = document.getElementById("metric-" + key + "-meter");
+    if (meter) meter.value = Number.parseInt(value, 10);
+    const summary = document.getElementById("demo-" + key);
+    if (summary) {
+      summary.textContent = value;
+      summary.classList.toggle("gold", active);
+    }
+  }
+}
+
 function renderDemo() {
-  const cpu = activeIncidents.has("cpu");
   const duplicate = activeIncidents.has("duplicate");
-  demoText("demo-cpu", cpu ? "90 %" : "32 %");
+  renderMetrics();
   demoText("demo-count", activeIncidents.size);
-  document.getElementById("demo-cpu").classList.toggle("gold", cpu);
   document.getElementById("demo-count").classList.toggle("gold", activeIncidents.size > 0);
   for (const button of incidentButtons) {
     button.setAttribute("aria-pressed", String(activeIncidents.has(button.dataset.incident)));
@@ -445,6 +490,9 @@ for (const button of incidentButtons) {
     selectedLink = scenario.link;
     events.unshift([time, scenario.source, starting ? scenario.severity : "Info", message]);
     renderDemo();
+    if (starting && scenario.showMetrics && !mapPanel.hidden) {
+      showStage(tabs.findIndex(tab => tab.id === "tab-metricas"));
+    }
     demoText("demo-announcement", message);
   });
 }
