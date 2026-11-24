@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#0c0814">
   <meta name="description" content="Descubre LinkWich-Monitor®, la plataforma de monitoreo de infraestructura de LinkWich-IT®." />
   <title>LinkWich-Monitor® — Monitoreo de infraestructura</title>
-  <link rel="stylesheet" href="styles.css?v=dashboard-portada">
-  <script src="app.js?v=dashboard-portada" defer></script>
+  <link rel="stylesheet" href="styles.css?v=metricas-paquetes">
+  <script src="app.js?v=metricas-paquetes" defer></script>
 </head>
 <body>
   <a class="skip" href="#inicio">Saltar al contenido</a>
@@ -160,9 +160,11 @@
               <li><span class="brand-art"><img src="assets/brands/allied.webp" alt="" width="240" height="24"></span>Allied Telesis</li>
               <li><span class="brand-art"><img src="assets/brands/ruijie.webp" alt="" width="240" height="72"></span>Ruijie</li>
               <li><span class="brand-art"><img src="assets/brands/fortinet.webp" alt="" width="240" height="27"></span>Fortinet</li>
+              <li><span class="brand-art"><img src="assets/brands/ruckus.webp" alt="" width="240" height="79"></span>RUCKUS</li>
             </ul>
             <p>Entre otras marcas de routing y switching.</p>
             <div class="gpon"><span class="gpon-label">GPON</span><p><strong>Huawei GPON.</strong> Monitorea OLT Huawei compatibles y consulta el estado de sus ONT.</p></div>
+            <div class="gpon axis-note"><span class="brand-art"><img src="assets/brands/axis.webp" alt="" width="228" height="82"></span><p><strong>Axis Communications.</strong> Disponibilidad de dispositivos IP de videovigilancia según el modelo.</p></div>
           </article>
           <div class="compat-secondary">
             <article class="compat-card reveal">
@@ -232,15 +234,20 @@
               <button class="button button-small incident-button" type="button" data-incident="outage" aria-pressed="false">Caída de enlace</button>
               <button class="button button-small incident-button" type="button" data-incident="cpu" aria-pressed="false">CPU al 90 %</button>
               <button class="button button-small incident-button" type="button" data-incident="duplicate" aria-pressed="false">IP duplicada · VLAN 10</button>
+              <button class="button button-small incident-button" type="button" data-incident="ram" aria-pressed="false">RAM al 92 %</button>
+              <button class="button button-small incident-button" type="button" data-incident="port90" aria-pressed="false">Puerto 90 caído</button>
+              <button class="button button-small incident-button" type="button" data-incident="google" aria-pressed="false">Latencia en google.com</button>
               <button class="button button-text demo-reset" id="reset-demo" type="button">Reiniciar demo</button>
             </div>
             <div class="demo-metrics">
               <div><span>Equipos</span><strong>8</strong></div>
               <div><span>CPU del servidor</span><strong id="demo-cpu">32 %</strong></div>
+              <div><span>RAM del servidor</span><strong id="demo-ram">46 %</strong></div>
               <div><span>Alertas activas</span><strong id="demo-count">0</strong></div>
             </div>
             <div class="tabs" role="tablist" aria-label="Vistas de diagnóstico">
               <button id="tab-mapa" role="tab" aria-selected="true" aria-controls="panel-mapa" type="button">Hypermap</button>
+              <button id="tab-metricas" role="tab" aria-selected="false" aria-controls="panel-metricas" type="button" tabindex="-1">Métricas y servicios</button>
               <button id="tab-alerta" role="tab" aria-selected="false" aria-controls="panel-alerta" type="button" tabindex="-1">Alertas</button>
               <button id="tab-syslog" role="tab" aria-selected="false" aria-controls="panel-syslog" type="button" tabindex="-1">Syslog e historial</button>
               <button id="tab-captura" role="tab" aria-selected="false" aria-controls="panel-captura" type="button" tabindex="-1">Captura de red</button>
@@ -266,13 +273,13 @@
                       <button type="button" class="map-edge" data-link="servers" aria-pressed="false"><strong>Te1/1/2 ↔ Te1/0/48</strong><small>10 Gbps · VLAN 30</small></button>
                       <div class="demo-node"><i aria-hidden="true">▦</i><div><strong>Switch de servidores</strong><small>Operativo · VLAN 30</small></div></div>
                       <div class="map-leaves">
-                        <div><button type="button" class="map-edge" data-link="server" aria-pressed="false"><strong>Te1/0/1</strong><small>10 Gbps · VLAN 30</small></button><div class="demo-node" id="node-server"><i aria-hidden="true">▤</i><div><strong>SRV-01</strong><small id="state-server">Servidor · CPU 32 %</small></div></div></div>
+                        <div><button type="button" class="map-edge" data-link="server" aria-pressed="false"><strong>Te1/0/1</strong><small>10 Gbps · VLAN 30</small></button><div class="demo-node" id="node-server"><i aria-hidden="true">▤</i><div><strong>SRV-01</strong><small id="state-server">Servidor · CPU 32 % · RAM 46 %</small></div></div></div>
                         <div><button type="button" class="map-edge" data-link="nas" aria-pressed="false"><strong>Te1/0/2</strong><small>10 Gbps · VLAN 30</small></button><div class="demo-node"><i aria-hidden="true">▤</i><div><strong>NAS-01</strong><small>Almacenamiento</small></div></div></div>
                       </div>
                     </div>
                     <div class="map-branch">
                       <button type="button" class="map-edge" data-link="wan" aria-pressed="false"><strong>Gi1/0/24 ↔ Gi0/1</strong><small>1 Gbps · VLAN 99</small></button>
-                      <div class="demo-node"><i aria-hidden="true">⇄</i><div><strong>Router perimetral</strong><small>Operativo · Salida WAN</small></div></div>
+                      <div class="demo-node" id="node-wan"><i aria-hidden="true">⇄</i><div><strong>Router perimetral</strong><small id="state-wan">Operativo · Salida WAN</small></div></div>
                     </div>
                   </div>
                   <div class="map-tooltip" id="map-tooltip" role="tooltip" hidden>
@@ -300,6 +307,34 @@
                 </div>
                 <div class="map-dialog-body" id="map-dialog-body"></div>
               </dialog>
+            </section>
+            <section class="demo-panel" id="panel-metricas" role="tabpanel" aria-labelledby="tab-metricas" tabindex="0" hidden>
+              <div class="demo-panel-title"><div><h3>Métricas y servicios</h3><p>Compara los valores simulados con los umbrales configurados.</p></div></div>
+              <div class="service-grid">
+                <article class="service-card" id="service-cpu">
+                  <div class="service-card-head"><h4>CPU · SRV-01</h4><span id="metric-cpu-state">Normal</span></div>
+                  <strong id="metric-cpu-value">32 %</strong>
+                  <meter id="metric-cpu-meter" aria-label="Uso de CPU" min="0" max="100" low="85" high="95" optimum="0" value="32"></meter>
+                  <small>Umbral de alerta: 85 %</small>
+                </article>
+                <article class="service-card" id="service-ram">
+                  <div class="service-card-head"><h4>RAM · SRV-01</h4><span id="metric-ram-state">Normal</span></div>
+                  <strong id="metric-ram-value">46 %</strong>
+                  <meter id="metric-ram-meter" aria-label="Uso de RAM" min="0" max="100" low="85" high="95" optimum="0" value="46"></meter>
+                  <small>Umbral de alerta: 85 %</small>
+                </article>
+                <article class="service-card" id="service-port90">
+                  <div class="service-card-head"><h4>Servicio TCP · SRV-01</h4><span id="metric-port90-state">Normal</span></div>
+                  <strong id="metric-port90-value">Disponible</strong>
+                  <small>Comprobación de conexión en el puerto 90</small>
+                </article>
+                <article class="service-card" id="service-google">
+                  <div class="service-card-head"><h4>HTTPS · google.com</h4><span id="metric-google-state">Normal</span></div>
+                  <strong id="metric-google-value">42 ms</strong>
+                  <meter id="metric-google-meter" aria-label="Tiempo de respuesta HTTPS en milisegundos" min="0" max="500" low="200" high="400" optimum="0" value="42"></meter>
+                  <small>Umbral de alerta: 200 ms</small>
+                </article>
+              </div>
             </section>
             <section class="demo-panel" id="panel-alerta" role="tabpanel" aria-labelledby="tab-alerta" tabindex="0" hidden>
               <div class="demo-panel-title"><div><h3>Avisos del sitio</h3><p id="alert-summary">Activa un escenario para ver sus avisos de ejemplo.</p></div></div>
@@ -367,11 +402,31 @@
       </div>
     </section>
 
+    <section class="section packages chapter" id="paquetes" aria-labelledby="packages-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">PAQUETES DE MONITOREO</p><h2 id="packages-title">Monitoreo a la medida de tu red.</h2></div>
+          <p class="section-lede">Elige la capacidad según los nodos que necesitas monitorear.</p>
+        </div>
+        <ul class="package-grid reveal" aria-label="Capacidades disponibles">
+          <li><h3>Paquete inicial</h3><p><strong>30</strong> nodos</p></li>
+          <li><h3>Paquete 50</h3><p><strong>50</strong> nodos</p></li>
+          <li><h3>Paquete 100</h3><p><strong>100</strong> nodos</p></li>
+          <li><h3>Paquete 150</h3><p><strong>150</strong> nodos</p></li>
+          <li class="package-custom"><h3>Personalizable</h3><p>Capacidad a medida</p></li>
+        </ul>
+        <div class="package-contact reveal">
+          <p>Consulta tu paquete directamente con <strong>LinkWich-IT<sup>®</sup></strong> o con el <strong>reseller de tu preferencia</strong>.</p>
+          <a class="button button-primary" href="#contacto">Contactar <span class="diagonal-arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
     <section class="closing chapter" id="contacto" aria-labelledby="contact-title">
       <div class="wrap closing-inner reveal">
         <img class="closing-logo" src="assets/linkwich-it.webp" alt="Logotipo oficial de LinkWich-IT®" width="156" height="156" loading="lazy">
-        <h2 id="contact-title">Veamos cómo se aplica a tu red.</h2>
-        <p class="section-lede">Revisemos qué equipos, enlaces y servicios necesitas monitorear en tus sitios.</p>
+        <h2 id="contact-title">Trabajemos juntos para centralizar tu red.</h2>
+        <p class="section-lede">Reúne tus equipos, servicios y sedes en un solo lugar para anticipar fallas y operar de forma más proactiva.</p>
         <div class="closing-codes">
           <figure class="closing-code">
             <img src="assets/qr-contacto.webp" alt="Código QR para guardar el contacto de LinkWich-IT" width="152" height="152">
@@ -398,7 +453,7 @@
 
   <div id="present-controls" class="present-controls" role="group" aria-label="Navegación de la presentación" hidden>
     <button id="previous" type="button" aria-label="Sección anterior">←</button>
-    <span id="page-number" aria-live="polite">1 / 9</span>
+    <span id="page-number" aria-live="polite">1 / 10</span>
     <button id="next" type="button" aria-label="Sección siguiente">→</button>
     <button id="exit" type="button" aria-label="Salir del modo presentación">✕</button>
   </div>
