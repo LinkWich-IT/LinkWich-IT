@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c0814">
+  <meta name="description" content="Descubre LinkWich-Monitor®, la plataforma de monitoreo de infraestructura de LinkWich-IT®." />
+  <title>LinkWich-Monitor® — Monitoreo de infraestructura</title>
+  <link rel="stylesheet" href="styles.css?v=dashboard-portada">
+  <script src="app.js?v=dashboard-portada" defer></script>
+</head>
+<body>
+  <a class="skip" href="#inicio">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#inicio" aria-label="LinkWich-Monitor®, inicio">
+        <span class="brand-symbol"><img src="assets/linkwich-it.webp" alt="" width="44" height="44"></span>
+        <span>LinkWich<span class="brand-divider">-</span>Monitor<sup>®</sup></span>
+      </a>
+      <nav aria-label="Secciones">
+        <a href="#plataforma">Plataforma</a><a href="#capacidades">Capacidades</a><a class="nav-extra" href="#compatibilidad">Compatibilidad</a><a class="nav-extra" href="#continuidad">Continuidad</a><a href="#demo">Demo</a>
+      </nav>
+      <button class="button button-small" id="present" type="button" aria-label="Modo presentación" aria-pressed="false"><i class="fullscreen-icon" aria-hidden="true"></i><span>Modo presentación</span></button>
+    </div>
+    <div id="progress" class="progress"></div>
+  </header>
+
+  <main>
+    <section class="hero chapter" id="inicio" aria-labelledby="main-title">
+      <div class="hero-photo" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="signal"></span> MONITOREO DE INFRAESTRUCTURA</p>
+          <h1 id="main-title">Tu red,<br><em>bajo control.</em></h1>
+          <p class="lede"><strong>LinkWich-Monitor<sup>®</sup></strong> centraliza el monitoreo de tus redes, servidores y servicios. Detecta fallas, ubica los equipos afectados y consulta lo que ocurrió desde una sola plataforma.</p>
+          <div class="actions">
+            <a class="button button-primary" href="#demo">Ver demo interactiva <span class="diagonal-arrow" aria-hidden="true">→</span></a>
+            <a class="button button-text" href="#plataforma">Conocer la plataforma <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+
+        <figure class="hero-visual" aria-label="Dashboard ilustrativo de LinkWich-Monitor">
+          <div class="dashboard">
+            <div class="dash-header">
+              <span><i aria-hidden="true">◈</i> LinkWich-Monitor<sup>®</sup></span>
+              <span class="pill"><b class="dot"></b> Vista ilustrativa</span>
+            </div>
+            <div class="dash-body">
+              <div class="dash-overview">
+                <h2>Centro de monitoreo</h2>
+                <span>Últimas 24 h</span>
+              </div>
+              <div class="dash-kpis">
+                <div><span><i aria-hidden="true">▤</i> Dispositivos</span><strong>130</strong></div>
+                <div><span><i class="mint" aria-hidden="true">●</i> En línea</span><strong class="mint">128</strong></div>
+                <div><span><i class="gold" aria-hidden="true">◆</i> Por revisar</span><strong class="gold">02</strong></div>
+              </div>
+
+              <div class="dash-overview-grid">
+                <section class="dash-panel dash-map-panel" aria-labelledby="dash-map-title">
+                  <div class="dash-panel-header"><h3 id="dash-map-title">Mapa de sitios</h3><span>5 ubicaciones</span></div>
+                  <div class="dash-map" aria-label="Ubicaciones de ejemplo en México" role="group">
+                    <button type="button" class="site-marker" style="--site-x:33.25%;--site-y:58.47%" data-site="Los Cabos" data-devices="42 de 42 equipos en línea" aria-label="Los Cabos" aria-pressed="true"></button>
+                    <button type="button" class="site-marker" style="--site-x:44.82%;--site-y:65.68%" data-site="Guadalajara" data-devices="27 de 28 equipos en línea" aria-label="Guadalajara, un equipo por revisar" aria-pressed="false" data-warning></button>
+                    <button type="button" class="site-marker" style="--site-x:50.35%;--site-y:50.97%" data-site="Monterrey" data-devices="24 de 24 equipos en línea" aria-label="Monterrey" aria-pressed="false"></button>
+                    <button type="button" class="site-marker" style="--site-x:52.49%;--site-y:69.32%" data-site="Ciudad de México" data-devices="23 de 24 equipos en línea" aria-label="Ciudad de México, un equipo por revisar" aria-pressed="false" data-warning></button>
+                    <button type="button" class="site-marker" style="--site-x:74.82%;--site-y:64.24%" data-site="Cancún" data-devices="12 de 12 equipos en línea" aria-label="Cancún" aria-pressed="false"></button>
+                  </div>
+                  <p class="dash-site" aria-live="polite"><strong id="dash-site-name">Los Cabos</strong><span id="dash-site-devices">42 de 42 equipos en línea</span></p>
+                </section>
+                <section class="dash-panel dash-availability" aria-labelledby="dash-availability-title">
+                  <div class="dash-panel-header"><h3 id="dash-availability-title">Disponibilidad</h3></div>
+                  <div class="dash-ring"><div><strong>99.72<span>%</span></strong><small>Últimas 24 h</small></div></div>
+                  <p><b class="dot"></b> Meta SLA <strong>99.50 %</strong></p>
+                </section>
+              </div>
+
+              <div class="dash-overview-grid dash-bottom-grid">
+                <section class="dash-panel dash-alert" aria-labelledby="dash-alert-title">
+                  <div class="dash-panel-header"><h3 id="dash-alert-title">Alertas recientes</h3><span class="severity">2 abiertas</span></div>
+                  <ul class="dash-alert-list">
+                    <li><b aria-hidden="true"></b><span><strong>Uso elevado en un enlace</strong><small>Core principal · Uplink 10G</small></span></li>
+                    <li><b aria-hidden="true"></b><span><strong>Equipo sin respuesta</strong><small>Switch de acceso · VLAN Datos</small></span></li>
+                  </ul>
+                </section>
+                <section class="dash-panel dash-traffic" aria-labelledby="dash-traffic-title">
+                  <div class="dash-panel-header"><h3 id="dash-traffic-title">Tráfico de entrada</h3></div>
+                  <strong class="dash-traffic-value">6.35 <small>Gbps</small></strong>
+                  <canvas id="traffic" role="img" aria-label="Tráfico de entrada ilustrativo entre 0 y 10 Gbps"></canvas>
+                </section>
+              </div>
+            </div>
+          </div>
+          <figcaption>LinkWich-Monitor<sup>®</sup> <span></span> Panel de ejemplo</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <div class="feature-rail"><div class="wrap rail-inner">
+      <span><i aria-hidden="true">◫</i> Redes y conectividad</span>
+      <span><i aria-hidden="true">▤</i> Servidores y UPS</span>
+      <span><i aria-hidden="true">⌁</i> Servicios y eventos</span>
+      <span><i aria-hidden="true">⇄</i> Monitoreo multisitio</span>
+    </div></div>
+
+    <section class="section chapter" id="plataforma" aria-labelledby="platform-title">
+      <div class="wrap platform-grid">
+        <div class="platform-photo reveal">
+          <img src="assets/datacenter.webp" alt="Pasillo de un centro de datos con gabinetes de comunicaciones" width="960" height="620" loading="lazy">
+          <div class="photo-caption"><b class="dot"></b> Visibilidad de tu infraestructura</div>
+        </div>
+        <div class="platform-copy reveal">
+          <p class="eyebrow">LA PLATAFORMA</p>
+          <h2 id="platform-title">Entiende qué pasa en tu infraestructura.</h2>
+          <p class="section-lede">El equipo de TI puede ver qué está disponible, dónde se concentra un problema y cómo ha cambiado la operación con el tiempo.</p>
+          <dl class="principles">
+            <div><dt>Detecta</dt><dd>Supervisa la disponibilidad y recibe alertas cuando se cumplen las condiciones que configuras.</dd></div>
+            <div><dt>Ubica</dt><dd>Consulta el equipo, la interfaz o el servicio afectado y revisa sus enlaces en Hypermap.</dd></div>
+            <div><dt>Documenta</dt><dd>Consulta cortes, disponibilidad y ancho de banda para respaldar el seguimiento y los reportes de TI.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="section capabilities chapter" id="capacidades" aria-labelledby="cap-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">CAPACIDADES</p><h2 id="cap-title">De la red al servicio.</h2></div>
+          <p class="section-lede">Reúne las señales que tu equipo consulta para diagnosticar una falla y darle seguimiento.</p>
+        </div>
+        <div class="cap-grid">
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">⌁</div><h3>Redes y desempeño</h3><p>Monitorea disponibilidad por ping y métricas por SNMP, incluido el tráfico de interfaces en equipos compatibles.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">◇</div><h3>Topología Hypermap</h3><p>Explora los enlaces entre equipos a partir de vecinos LLDP y ubica cómo se conectan tus dispositivos.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">▤</div><h3>Servidores y energía</h3><p>Revisa CPU, memoria, disco, servicios y métricas de UPS según los datos que expone cada equipo.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">◉</div><h3>Alertas y eventos</h3><p>Configura alertas para interfaces, servicios y almacenamiento. Consulta el historial de cortes.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">▥</div><h3>Disponibilidad y reportes</h3><p>Consulta el histórico de disponibilidad y ancho de banda, y genera reportes para revisiones operativas.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">◎</div><h3>Continuidad de sitios</h3><p>Combina el monitoreo local con un portal externo que comprueba si cada instalación sigue reportando.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true"><span class="cap-glyph glyph-log"></span></div><h3>Syslog centralizado</h3><p>Reúne los eventos Syslog de tus equipos y consulta sus registros desde un solo lugar.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true"><span class="cap-glyph glyph-backup"></span></div><h3>Respaldos automatizados</h3><p>Programa copias de la configuración de switches y routers compatibles.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true"><span class="cap-glyph glyph-terminal">&gt;_</span></div><h3>Acceso remoto vía web</h3><p>Abre sesiones VNC, SSH o Telnet desde LinkWich-Monitor<sup>®</sup> y gestiona tus equipos en un solo sitio.</p></article>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section compatibility chapter" id="compatibilidad" aria-labelledby="compat-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">COMPATIBILIDAD</p><h2 id="compat-title">Distintas marcas.<br>Una sola vista.</h2></div>
+          <p class="section-lede">Supervisa redes, servidores y UPS desde LinkWich-Monitor<sup>®</sup>. Validamos las métricas disponibles según el modelo y sus especificaciones técnicas.</p>
+        </div>
+        <div class="compat-grid">
+          <article class="compat-card compat-network reveal">
+            <p class="eyebrow">ROUTING Y SWITCHING</p>
+            <h3>Redes empresariales</h3>
+            <ul class="brands" aria-label="Ejemplos de marcas de red compatibles">
+              <li><span class="brand-art"><img src="assets/brands/cisco.webp" alt="" width="155" height="82"></span>Cisco</li>
+              <li><span class="brand-art"><img src="assets/brands/huawei.webp" alt="" width="240" height="52"></span>Huawei</li>
+              <li><span class="brand-art"><img src="assets/brands/aruba.webp" alt="" width="240" height="55"></span>HPE Aruba Networking</li>
+              <li><span class="brand-art"><img src="assets/brands/allied.webp" alt="" width="240" height="24"></span>Allied Telesis</li>
+              <li><span class="brand-art"><img src="assets/brands/ruijie.webp" alt="" width="240" height="72"></span>Ruijie</li>
+              <li><span class="brand-art"><img src="assets/brands/fortinet.webp" alt="" width="240" height="27"></span>Fortinet</li>
+            </ul>
+            <p>Entre otras marcas de routing y switching.</p>
+            <div class="gpon"><span class="gpon-label">GPON</span><p><strong>Huawei GPON.</strong> Monitorea OLT Huawei compatibles y consulta el estado de sus ONT.</p></div>
+          </article>
+          <div class="compat-secondary">
+            <article class="compat-card reveal">
+              <p class="eyebrow">SERVIDORES</p>
+              <h3>Agente para Windows y Linux</h3>
+              <p>Monitorea recursos y servicios en los servidores donde instalas el agente.</p>
+              <ul class="brands platform-brands" aria-label="Sistemas operativos del agente">
+                <li><span class="brand-art"><img src="assets/brands/windows.webp" alt="" width="120" height="120"></span>Windows</li>
+                <li><span class="brand-art brand-art-mono"><img src="assets/brands/linux.webp" alt="" width="99" height="120"></span>Linux</li>
+              </ul>
+            </article>
+            <article class="compat-card reveal">
+              <p class="eyebrow">ENERGÍA</p>
+              <h3>UPS CyberPower y APC</h3>
+              <p>Consulta las métricas que expone cada modelo de UPS compatible.</p>
+              <ul class="brands ups-brands" aria-label="Fabricantes de UPS compatibles">
+                <li><span class="brand-art"><img src="assets/brands/cyberpower.webp" alt="" width="240" height="46"></span>CyberPower</li>
+                <li><span class="brand-art"><img src="assets/brands/apc.webp" alt="" width="172" height="82"></span>APC</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+        <p class="compat-note reveal"><b class="dot" aria-hidden="true"></b><span><strong>Ampliamos la compatibilidad.</strong> Seguimos incorporando marcas y podemos evaluar un fabricante o modelo específico para integrarlo si sus especificaciones técnicas lo permiten.</span></p>
+      </div>
+    </section>
+
+    <section class="section continuity chapter" id="continuidad" aria-labelledby="continuity-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">ALERTAS Y CONTINUIDAD</p><h2 id="continuity-title">Entérate de una falla incluso fuera del sitio.</h2></div>
+          <p class="section-lede">LinkWich-Monitor<sup>®</sup> opera en tu infraestructura y se complementa con un portal de continuidad en la nube.</p>
+        </div>
+        <div class="continuity-grid">
+          <article class="compat-card alert-card reveal">
+            <p class="eyebrow">01 / MONITOREO LOCAL · ON-PREMISES</p>
+            <h3>Alertas configurables en tiempo real</h3>
+            <p>Define qué eventos deben generar una alerta y por qué canal avisar a tu equipo cuando el monitor los detecte.</p>
+            <ul class="channels" aria-label="Canales de alerta">
+              <li><span aria-hidden="true">✉</span> Correo</li>
+              <li><img class="channel-icon" src="assets/brands/whatsapp.webp" alt="" width="120" height="120"> WhatsApp</li>
+              <li><span aria-hidden="true">▤</span> Portal</li>
+            </ul>
+          </article>
+          <article class="compat-card cloud-card reveal">
+            <p class="eyebrow">02 / PORTAL DE CONTINUIDAD · NUBE</p>
+            <h3>Estado de sitios y licencias</h3>
+            <p>El portal verifica si tu instalación sigue reportando. Si deja de hacerlo, puede avisarte por correo. Desde el portal puedes consultar el estado de tus sitios y la vigencia de la licencia.</p>
+            <ul class="cloud-list" aria-label="Información disponible en el portal">
+              <li><b class="dot" aria-hidden="true"></b> Estado del sitio</li>
+              <li><b class="dot" aria-hidden="true"></b> Vigencia de la licencia</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section demo chapter" id="demo" aria-labelledby="demo-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">DEMO INTERACTIVA</p><h2 id="demo-title">Así se investiga una falla.</h2></div>
+          <p class="section-lede">Selecciona un enlace para ver sus métricas. Activa un incidente y vuelve a pulsarlo para simular su recuperación.</p>
+        </div>
+        <div class="demo-console reveal">
+          <div class="demo-head"><span><b class="dot"></b> Sitio de demostración</span><span class="pill">Datos simulados</span></div>
+          <div class="demo-workspace">
+            <div class="demo-toolbar" role="group" aria-label="Escenarios de demostración">
+              <button class="button button-small incident-button" type="button" data-incident="outage" aria-pressed="false">Caída de enlace</button>
+              <button class="button button-small incident-button" type="button" data-incident="cpu" aria-pressed="false">CPU al 90 %</button>
+              <button class="button button-small incident-button" type="button" data-incident="duplicate" aria-pressed="false">IP duplicada · VLAN 10</button>
+              <button class="button button-text demo-reset" id="reset-demo" type="button">Reiniciar demo</button>
+            </div>
+            <div class="demo-metrics">
+              <div><span>Equipos</span><strong>8</strong></div>
+              <div><span>CPU del servidor</span><strong id="demo-cpu">32 %</strong></div>
+              <div><span>Alertas activas</span><strong id="demo-count">0</strong></div>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Vistas de diagnóstico">
+              <button id="tab-mapa" role="tab" aria-selected="true" aria-controls="panel-mapa" type="button">Hypermap</button>
+              <button id="tab-alerta" role="tab" aria-selected="false" aria-controls="panel-alerta" type="button" tabindex="-1">Alertas</button>
+              <button id="tab-syslog" role="tab" aria-selected="false" aria-controls="panel-syslog" type="button" tabindex="-1">Syslog e historial</button>
+              <button id="tab-captura" role="tab" aria-selected="false" aria-controls="panel-captura" type="button" tabindex="-1">Captura de red</button>
+            </div>
+            <section class="demo-panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" tabindex="0">
+              <div class="map-toolbar">
+                <span class="map-legend"><i aria-hidden="true"></i> Flujo de tráfico simulado</span>
+                <button type="button" id="expand-map" class="button button-small" aria-haspopup="dialog"><i class="fullscreen-icon" aria-hidden="true"></i> Expandir mapa</button>
+              </div>
+              <div id="map-content">
+                <div class="map-frame" aria-label="Topología del sitio de demostración">
+                  <div class="demo-node demo-core"><i aria-hidden="true">▤</i><div><strong>Core principal</strong><small>Switch L3</small></div></div>
+                  <div class="map-branches">
+                    <div class="map-branch">
+                      <button type="button" class="map-edge" data-link="access" aria-pressed="true"><strong>Te1/1/1 ↔ Te1/0/48</strong><small>10 Gbps · VLAN 10 y 20</small></button>
+                      <div class="demo-node" id="node-access"><i aria-hidden="true">▦</i><div><strong>Switch de acceso</strong><small id="state-access">Operativo · Datos / Voz</small></div></div>
+                      <div class="map-leaves">
+                        <div><button type="button" class="map-edge" data-link="pc1" aria-pressed="false"><strong>Gi1/0/12</strong><small>1 Gbps · VLAN 10</small></button><div class="demo-node" id="node-pc1"><i aria-hidden="true">▣</i><div><strong>PC-01</strong><small>Datos</small></div></div></div>
+                        <div><button type="button" class="map-edge" data-link="pc2" aria-pressed="false"><strong>Gi1/0/18</strong><small>1 Gbps · VLAN 10</small></button><div class="demo-node" id="node-pc2"><i aria-hidden="true">▣</i><div><strong>PC-02</strong><small>Datos</small></div></div></div>
+                      </div>
+                    </div>
+                    <div class="map-branch">
+                      <button type="button" class="map-edge" data-link="servers" aria-pressed="false"><strong>Te1/1/2 ↔ Te1/0/48</strong><small>10 Gbps · VLAN 30</small></button>
+                      <div class="demo-node"><i aria-hidden="true">▦</i><div><strong>Switch de servidores</strong><small>Operativo · VLAN 30</small></div></div>
+                      <div class="map-leaves">
+                        <div><button type="button" class="map-edge" data-link="server" aria-pressed="false"><strong>Te1/0/1</strong><small>10 Gbps · VLAN 30</small></button><div class="demo-node" id="node-server"><i aria-hidden="true">▤</i><div><strong>SRV-01</strong><small id="state-server">Servidor · CPU 32 %</small></div></div></div>
+                        <div><button type="button" class="map-edge" data-link="nas" aria-pressed="false"><strong>Te1/0/2</strong><small>10 Gbps · VLAN 30</small></button><div class="demo-node"><i aria-hidden="true">▤</i><div><strong>NAS-01</strong><small>Almacenamiento</small></div></div></div>
+                      </div>
+                    </div>
+                    <div class="map-branch">
+                      <button type="button" class="map-edge" data-link="wan" aria-pressed="false"><strong>Gi1/0/24 ↔ Gi0/1</strong><small>1 Gbps · VLAN 99</small></button>
+                      <div class="demo-node"><i aria-hidden="true">⇄</i><div><strong>Router perimetral</strong><small>Operativo · Salida WAN</small></div></div>
+                    </div>
+                  </div>
+                  <div class="map-tooltip" id="map-tooltip" role="tooltip" hidden>
+                    <strong id="tooltip-name"></strong>
+                    <p id="tooltip-interfaces"></p>
+                    <dl>
+                      <div><dt>MAC origen</dt><dd id="tooltip-mac-a"></dd></div>
+                      <div><dt>MAC destino</dt><dd id="tooltip-mac-b"></dd></div>
+                      <div><dt>Capacidad</dt><dd id="tooltip-speed"></dd></div>
+                      <div><dt>Estado</dt><dd id="tooltip-status"></dd></div>
+                      <div><dt>Entrada</dt><dd id="tooltip-rx"></dd></div>
+                      <div><dt>Salida</dt><dd id="tooltip-tx"></dd></div>
+                    </dl>
+                  </div>
+                </div>
+                <div class="link-inspector">
+                  <div><p class="eyebrow">ENLACE SELECCIONADO</p><h3 id="link-name">Core principal ↔ Switch de acceso</h3><p id="link-interfaces">Te1/1/1 ↔ Te1/0/48 · VLAN 10 (Datos), 20 (Voz)</p></div>
+                  <dl><div><dt>Capacidad</dt><dd id="link-speed">10 Gbps</dd></div><div><dt>Entrada</dt><dd id="link-rx">3.2 Gbps</dd></div><div><dt>Salida</dt><dd id="link-tx">1.4 Gbps</dd></div><div><dt>Estado</dt><dd id="link-status">Operativo</dd></div><div><dt>MAC origen</dt><dd id="link-mac-a"></dd></div><div><dt>MAC destino</dt><dd id="link-mac-b"></dd></div></dl>
+                </div>
+              </div>
+              <dialog class="map-dialog" id="map-dialog" aria-labelledby="map-dialog-title">
+                <div class="map-dialog-toolbar">
+                  <div><h3 id="map-dialog-title">Hypermap del sitio</h3><span>Topología y tráfico simulados</span></div>
+                  <button type="button" class="button button-small" id="close-map" autofocus>Cerrar mapa <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="map-dialog-body" id="map-dialog-body"></div>
+              </dialog>
+            </section>
+            <section class="demo-panel" id="panel-alerta" role="tabpanel" aria-labelledby="tab-alerta" tabindex="0" hidden>
+              <div class="demo-panel-title"><div><h3>Avisos del sitio</h3><p id="alert-summary">Activa un escenario para ver sus avisos de ejemplo.</p></div></div>
+              <div class="notification-grid" aria-label="Canales simulados">
+                <div><strong>✉ Correo</strong><small>Simulación</small></div>
+                <div><strong><img class="channel-icon" src="assets/brands/whatsapp.webp" alt="" width="18" height="18"> WhatsApp</strong><small>Simulación</small></div>
+                <div><strong>▤ Interfaz web</strong><small>Simulación</small></div>
+              </div>
+              <div class="demo-table" tabindex="0" role="region" aria-label="Registro de avisos"><table><thead><tr><th scope="col">Hora</th><th scope="col">Aviso</th><th scope="col">Entrega</th></tr></thead><tbody id="alert-log"></tbody></table></div>
+            </section>
+            <section class="demo-panel" id="panel-syslog" role="tabpanel" aria-labelledby="tab-syslog" tabindex="0" hidden>
+              <div class="demo-panel-title"><div><h3>Syslog e historial</h3><p>Consulta los eventos simulados del sitio, incluido el restablecimiento.</p></div><button class="button button-small" type="button" id="emit-syslog">Emitir Syslog de prueba</button></div>
+              <div class="demo-table" tabindex="0" role="region" aria-label="Historial de eventos"><table><thead><tr><th scope="col">Hora</th><th scope="col">Origen</th><th scope="col">Severidad</th><th scope="col">Evento</th></tr></thead><tbody id="event-log"></tbody></table></div>
+            </section>
+            <section class="demo-panel" id="panel-captura" role="tabpanel" aria-labelledby="tab-captura" tabindex="0" hidden>
+              <div class="demo-panel-title"><div><h3>Sniffer simulado · VLAN 10</h3><p id="capture-notice">La muestra ARP ilustra cómo se ve el tráfico cuando cada IP corresponde a una sola MAC.</p></div></div>
+              <div class="demo-table" tabindex="0" role="region" aria-label="Muestra sintética de tráfico ARP"><table><thead><tr><th scope="col">Hora</th><th scope="col">Protocolo</th><th scope="col">IP anunciada</th><th scope="col">MAC de origen</th><th scope="col">Interfaz</th></tr></thead><tbody id="capture-log"></tbody></table></div>
+            </section>
+            <p class="sr-only" id="demo-announcement" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sectors chapter" id="sectores" aria-labelledby="sectors-title">
+      <div class="wrap sector-layout">
+        <div class="platform-photo sector-photo reveal">
+          <img src="assets/resort.webp" alt="Complejo hotelero junto a la costa al anochecer" width="768" height="512" loading="lazy">
+        </div>
+        <div>
+          <div class="reveal">
+            <p class="eyebrow">SECTORES</p>
+            <h2 id="sectors-title">Donde la red sostiene la operación.</h2>
+            <p class="section-lede sector-lede">Para organizaciones que necesitan mantener conectados a sus equipos, usuarios y servicios esenciales.</p>
+          </div>
+          <ul class="sector-list reveal">
+            <li><span aria-hidden="true">▥</span> Hoteles y resorts</li>
+            <li><span aria-hidden="true">✈︎</span> Aeropuertos</li>
+            <li><span aria-hidden="true">✚</span> Hospitales</li>
+            <li><span aria-hidden="true">▭</span> Escuelas</li>
+            <li><span aria-hidden="true">⚙︎</span> Fábricas</li>
+            <li><span aria-hidden="true">▦</span> Corporativos</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section rollout chapter" id="implementacion" aria-labelledby="rollout-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">CÓMO TE AYUDAMOS</p><h2 id="rollout-title">De la revisión inicial al soporte diario.</h2></div>
+          <p class="section-lede">Empezamos con los equipos y servicios que más importan para tu operación.</p>
+        </div>
+        <div class="rollout-grid">
+          <ol class="rollout-steps reveal">
+            <li><div><h3>Revisión de tu red</h3><p>Identificamos equipos, enlaces y servicios críticos, y acordamos qué necesitas monitorear.</p></div></li>
+            <li><div><h3>Prueba de concepto (PoC)</h3><p>Probamos el monitoreo y las alertas con una muestra de tu infraestructura.</p></div></li>
+            <li><div><h3>Implementación</h3><p>Instalamos la plataforma y configuramos los dispositivos, las métricas y los canales acordados.</p></div></li>
+            <li><div><h3>Soporte</h3><p>Acompañamos a tu equipo en la operación y en los ajustes que requiera a medida que cambia tu red.</p></div></li>
+          </ol>
+          <div class="platform-photo rollout-photo reveal">
+            <img src="assets/engineers.webp" alt="Dos ingenieros revisan una tableta junto a un gabinete de red" width="768" height="512" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing chapter" id="contacto" aria-labelledby="contact-title">
+      <div class="wrap closing-inner reveal">
+        <img class="closing-logo" src="assets/linkwich-it.webp" alt="Logotipo oficial de LinkWich-IT®" width="156" height="156" loading="lazy">
+        <h2 id="contact-title">Veamos cómo se aplica a tu red.</h2>
+        <p class="section-lede">Revisemos qué equipos, enlaces y servicios necesitas monitorear en tus sitios.</p>
+        <div class="closing-codes">
+          <figure class="closing-code">
+            <img src="assets/qr-contacto.webp" alt="Código QR para guardar el contacto de LinkWich-IT" width="152" height="152">
+            <figcaption>
+              <strong>Guardar contacto</strong>
+              <span>LinkWich-IT<sup>®</sup> · <a href="tel:+526241586134">624 158 6134</a></span>
+              <a href="https://www.linkwich-it.com/" target="_blank" rel="noopener noreferrer">www.linkwich-it.com</a>
+            </figcaption>
+          </figure>
+          <figure class="closing-code">
+            <img src="assets/qr-presentacion.webp" alt="Código QR para abrir la presentación de LinkWich-Monitor" width="152" height="152">
+            <figcaption>
+              <strong>Abrir presentación</strong>
+              <a href="https://www.linkwich-it.com/LinkWich-Monitor-Presentacion" target="_blank" rel="noopener noreferrer">www.linkwich-it.com/<wbr>LinkWich-Monitor-Presentacion</a>
+            </figcaption>
+          </figure>
+        </div>
+        <a class="button button-primary" href="https://www.linkwich-it.com/" target="_blank" rel="noopener noreferrer">Visitar LinkWich-IT<sup>®</sup> <span class="diagonal-arrow" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap footer-inner"><span>LinkWich-Monitor<sup>®</sup> · Una solución de LinkWich-IT<sup>®</sup></span><a href="#inicio">Volver al inicio ↑</a></div></footer>
+
+  <div id="present-controls" class="present-controls" role="group" aria-label="Navegación de la presentación" hidden>
+    <button id="previous" type="button" aria-label="Sección anterior">←</button>
+    <span id="page-number" aria-live="polite">1 / 9</span>
+    <button id="next" type="button" aria-label="Sección siguiente">→</button>
+    <button id="exit" type="button" aria-label="Salir del modo presentación">✕</button>
+  </div>
+</body>
+</html>
