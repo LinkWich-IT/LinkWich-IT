@@ -1,511 +1,471 @@
-"use strict";
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c0814">
+  <meta name="description" content="LinkWich-Monitor®: monitoreo y gestión centralizada de infraestructura tecnológica para una operación de TI más proactiva." />
+  <title>LinkWich-Monitor® — Monitoreo de infraestructura</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/pwa/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/pwa/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/pwa/favicon-48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/pwa/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="LinkWich-Monitor">
+  <script src="pwa.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=metricas-paquetes">
+  <script src="app.js?v=metricas-paquetes" defer></script>
+</head>
+<body>
+  <a class="skip" href="#inicio">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#inicio" aria-label="LinkWich-Monitor®, inicio">
+        <span class="brand-symbol"><img src="assets/linkwich-it.webp" alt="" width="44" height="44"></span>
+        <span>LinkWich<span class="brand-divider">-</span>Monitor<sup>®</sup></span>
+      </a>
+      <nav aria-label="Secciones">
+        <a href="#plataforma">Plataforma</a><a href="#capacidades">Capacidades</a><a class="nav-extra" href="#compatibilidad">Compatibilidad</a><a class="nav-extra" href="#continuidad">Continuidad</a><a href="#demo">Demo</a>
+      </nav>
+      <button class="button button-small" id="present" type="button" aria-label="Modo presentación" aria-pressed="false"><i class="fullscreen-icon" aria-hidden="true"></i><span>Modo presentación</span></button>
+    </div>
+    <div id="progress" class="progress"></div>
+  </header>
 
-const chapters = [...document.querySelectorAll(".chapter")];
-const navLinks = [...document.querySelectorAll("nav a")];
-const present = document.querySelector("#present");
-const controls = document.querySelector("#present-controls");
-const previous = document.querySelector("#previous");
-const next = document.querySelector("#next");
-const exit = document.querySelector("#exit");
-const pageNumber = document.querySelector("#page-number");
-const progress = document.querySelector("#progress");
-const header = document.querySelector(".site-header");
-const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-let currentChapter = 0;
-let presentationActive = false;
-let scrollScheduled = false;
+  <main>
+    <section class="hero chapter" id="inicio" aria-labelledby="main-title">
+      <div class="hero-photo" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="signal"></span> MONITOREO DE INFRAESTRUCTURA</p>
+          <h1 id="main-title">Tu red,<br><em>bajo control.</em></h1>
+          <p class="lede"><strong>LinkWich-Monitor<sup>®</sup></strong> centraliza el monitoreo y la gestión de tu infraestructura tecnológica. Anticípate a posibles fallas, optimiza los tiempos de diagnóstico y fortalece la continuidad operativa desde una sola plataforma.</p>
+          <div class="actions">
+            <a class="button button-primary" href="#demo">Ver demo interactiva <span class="diagonal-arrow" aria-hidden="true">→</span></a>
+            <a class="button button-text" href="#plataforma">Conocer la plataforma <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
 
-function updateNavigation() {
-  const page = document.documentElement;
-  const available = page.scrollHeight - innerHeight;
-  const atBottom = available > 0 && scrollY >= available - 2;
-  const marker = header.offsetHeight + Math.min(150, innerHeight * .2);
-  currentChapter = atBottom ? chapters.length - 1 : chapters.reduce(
-    (active, section, index) => section.getBoundingClientRect().top <= marker ? index : active, 0
-  );
+        <figure class="hero-visual" aria-label="Dashboard ilustrativo de LinkWich-Monitor">
+          <div class="dashboard">
+            <div class="dash-header">
+              <span><i aria-hidden="true">◈</i> LinkWich-Monitor<sup>®</sup></span>
+              <span class="pill"><b class="dot"></b> Vista ilustrativa</span>
+            </div>
+            <div class="dash-body">
+              <div class="dash-overview">
+                <h2>Centro de monitoreo</h2>
+                <span>Últimas 24 h</span>
+              </div>
+              <div class="dash-kpis">
+                <div><span><i aria-hidden="true">▤</i> Dispositivos</span><strong>130</strong></div>
+                <div><span><i class="mint" aria-hidden="true">●</i> En línea</span><strong class="mint">128</strong></div>
+                <div><span><i class="gold" aria-hidden="true">◆</i> Por revisar</span><strong class="gold">02</strong></div>
+              </div>
 
-  previous.disabled = currentChapter === 0;
-  next.disabled = currentChapter === chapters.length - 1;
-  const count = (currentChapter + 1) + " / " + chapters.length;
-  if (pageNumber.textContent !== count) pageNumber.textContent = count;
-  progress.style.transform = "scaleX(" + (available > 0 ? scrollY / available : 0) + ")";
-  for (const link of navLinks) {
-    if (link.hash === "#" + chapters[currentChapter].id) link.setAttribute("aria-current", "location");
-    else link.removeAttribute("aria-current");
-  }
-  scrollScheduled = false;
-}
+              <div class="dash-overview-grid">
+                <section class="dash-panel dash-map-panel" aria-labelledby="dash-map-title">
+                  <div class="dash-panel-header"><h3 id="dash-map-title">Mapa de sitios</h3><span>5 ubicaciones</span></div>
+                  <div class="dash-map" aria-label="Ubicaciones de ejemplo en México" role="group">
+                    <button type="button" class="site-marker" style="--site-x:33.25%;--site-y:58.47%" data-site="Los Cabos" data-devices="42 de 42 equipos en línea" aria-label="Los Cabos" aria-pressed="true"></button>
+                    <button type="button" class="site-marker" style="--site-x:44.82%;--site-y:65.68%" data-site="Guadalajara" data-devices="27 de 28 equipos en línea" aria-label="Guadalajara, un equipo por revisar" aria-pressed="false" data-warning></button>
+                    <button type="button" class="site-marker" style="--site-x:50.35%;--site-y:50.97%" data-site="Monterrey" data-devices="24 de 24 equipos en línea" aria-label="Monterrey" aria-pressed="false"></button>
+                    <button type="button" class="site-marker" style="--site-x:52.49%;--site-y:69.32%" data-site="Ciudad de México" data-devices="23 de 24 equipos en línea" aria-label="Ciudad de México, un equipo por revisar" aria-pressed="false" data-warning></button>
+                    <button type="button" class="site-marker" style="--site-x:74.82%;--site-y:64.24%" data-site="Cancún" data-devices="12 de 12 equipos en línea" aria-label="Cancún" aria-pressed="false"></button>
+                  </div>
+                  <p class="dash-site" aria-live="polite"><strong id="dash-site-name">Los Cabos</strong><span id="dash-site-devices">42 de 42 equipos en línea</span></p>
+                </section>
+                <section class="dash-panel dash-availability" aria-labelledby="dash-availability-title">
+                  <div class="dash-panel-header"><h3 id="dash-availability-title">Disponibilidad</h3></div>
+                  <div class="dash-ring"><div><strong>99.72<span>%</span></strong><small>Últimas 24 h</small></div></div>
+                  <p><b class="dot"></b> Meta SLA <strong>99.50 %</strong></p>
+                </section>
+              </div>
 
-function scheduleNavigation() {
-  if (scrollScheduled) return;
-  scrollScheduled = true;
-  requestAnimationFrame(updateNavigation);
-}
+              <div class="dash-overview-grid dash-bottom-grid">
+                <section class="dash-panel dash-alert" aria-labelledby="dash-alert-title">
+                  <div class="dash-panel-header"><h3 id="dash-alert-title">Alertas recientes</h3><span class="severity">2 abiertas</span></div>
+                  <ul class="dash-alert-list">
+                    <li><b aria-hidden="true"></b><span><strong>Uso elevado en un enlace</strong><small>Core principal · Uplink 10G</small></span></li>
+                    <li><b aria-hidden="true"></b><span><strong>Equipo sin respuesta</strong><small>Switch de acceso · VLAN Datos</small></span></li>
+                  </ul>
+                </section>
+                <section class="dash-panel dash-traffic" aria-labelledby="dash-traffic-title">
+                  <div class="dash-panel-header"><h3 id="dash-traffic-title">Tráfico de entrada</h3></div>
+                  <strong class="dash-traffic-value">6.35 <small>Gbps</small></strong>
+                  <canvas id="traffic" role="img" aria-label="Tráfico de entrada ilustrativo entre 0 y 10 Gbps"></canvas>
+                </section>
+              </div>
+            </div>
+          </div>
+          <figcaption>LinkWich-Monitor<sup>®</sup> <span></span> Panel de ejemplo</figcaption>
+        </figure>
+      </div>
+    </section>
 
-function goToChapter(index, immediate = false) {
-  chapters[index]?.scrollIntoView({ behavior: immediate || reducedMotion.matches ? "instant" : "smooth" });
-  scheduleNavigation();
-}
+    <div class="feature-rail"><div class="wrap rail-inner">
+      <span><i aria-hidden="true">◫</i> Redes y conectividad</span>
+      <span><i aria-hidden="true">▤</i> Servidores y UPS</span>
+      <span><i aria-hidden="true">⌁</i> Servicios y eventos</span>
+      <span><i aria-hidden="true">⇄</i> Monitoreo multisitio</span>
+    </div></div>
 
-function setPresentation(active) {
-  presentationActive = active;
-  document.body.classList.toggle("presenting", active);
-  controls.hidden = !active;
-  present.setAttribute("aria-pressed", String(active));
-  goToChapter(currentChapter, true);
-  (active ? controls.querySelector("button:not(:disabled)") : present)?.focus({ preventScroll: true });
-}
+    <section class="section chapter" id="plataforma" aria-labelledby="platform-title">
+      <div class="wrap platform-grid">
+        <div class="platform-photo reveal">
+          <img src="assets/datacenter.webp" alt="Pasillo de un centro de datos con gabinetes de comunicaciones" width="960" height="620" loading="lazy">
+          <div class="photo-caption"><b class="dot"></b> Visibilidad de tu infraestructura</div>
+        </div>
+        <div class="platform-copy reveal">
+          <p class="eyebrow">LA PLATAFORMA</p>
+          <h2 id="platform-title">De una operación reactiva a una operación proactiva.</h2>
+          <p class="section-lede">Proporcionamos a los equipos de TI una visión centralizada de su infraestructura, facilitando la detección de incidentes, el diagnóstico y la toma de decisiones operativas y administrativas.</p>
+          <dl class="principles">
+            <div><dt>Detecta</dt><dd>Identifica anomalías y posibles fallas mediante métricas y alertas configurables.</dd></div>
+            <div><dt>Diagnostica</dt><dd>Localiza los equipos, interfaces y servicios afectados y analiza sus conexiones en Hypermap.</dd></div>
+            <div><dt>Documenta</dt><dd>Consulta históricos de cortes, disponibilidad y ancho de banda para respaldar la toma de decisiones.</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
 
-present.addEventListener("click", async () => {
-  if (presentationActive) {
-    exit.click();
-    return;
-  }
-  setPresentation(true);
-  try {
-    await document.documentElement.requestFullscreen?.();
-  } catch {
-    // On browsers that restrict fullscreen, the chapter controls remain available.
-  }
-});
-exit.addEventListener("click", () => {
-  setPresentation(false);
-  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-});
-document.addEventListener("fullscreenchange", () => {
-  if (!document.fullscreenElement && presentationActive) setPresentation(false);
-});
-previous.addEventListener("click", () => goToChapter(currentChapter - 1));
-next.addEventListener("click", () => goToChapter(currentChapter + 1));
-document.addEventListener("keydown", (event) => {
-  if (!presentationActive || event.defaultPrevented || document.querySelector("dialog[open]")) return;
-  if (event.key === "Escape") {
-    exit.click();
-    return;
-  }
-  if (event.altKey || event.ctrlKey || event.metaKey || event.target.closest("[role=tablist]")) return;
-  const moves = { ArrowLeft: -1, ArrowRight: 1, PageUp: -1, PageDown: 1 };
-  if (Object.hasOwn(moves, event.key)) {
-    event.preventDefault();
-    goToChapter(currentChapter + moves[event.key]);
-  }
-});
-window.addEventListener("scroll", scheduleNavigation, { passive: true });
-window.addEventListener("resize", scheduleNavigation);
-updateNavigation();
+    <section class="section capabilities chapter" id="capacidades" aria-labelledby="cap-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">CAPACIDADES</p><h2 id="cap-title">Múltiples herramientas. Una sola plataforma.</h2></div>
+          <p class="section-lede">Centraliza las actividades de monitoreo, diagnóstico y administración de tu infraestructura, facilitando la operación diaria de los equipos de TI.</p>
+        </div>
+        <div class="cap-grid">
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">⌁</div><h3>Redes y desempeño</h3><p>Supervisa disponibilidad y desempeño mediante ping y SNMP, analiza tráfico de interfaces e identifica posibles IP duplicadas.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">◇</div><h3>Topología Hypermap</h3><p>Visualiza conexiones entre equipos mediante LLDP y detecta posibles loops de red según la información disponible.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">▤</div><h3>Servidores y energía</h3><p>Supervisa CPU, memoria, almacenamiento, servicios y métricas de UPS según la compatibilidad de cada equipo.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">◉</div><h3>Alertas y eventos</h3><p>Define alertas para interfaces, servicios y almacenamiento, y da seguimiento a incidentes e históricos de cortes.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">▥</div><h3>Disponibilidad y reportes</h3><p>Consulta históricos de disponibilidad y ancho de banda, y genera reportes para la gestión operativa y administrativa.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true">◎</div><h3>Continuidad de sitios</h3><p>Complementa el monitoreo local con un portal externo para conocer el estado de comunicación de cada instalación.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true"><span class="cap-glyph glyph-log"></span></div><h3>Syslog centralizado</h3><p>Centraliza eventos Syslog para facilitar el análisis de registros y el diagnóstico de incidentes.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true"><span class="cap-glyph glyph-backup"></span></div><h3>Respaldos automatizados</h3><p>Programa respaldos de configuración de switches y routers compatibles para facilitar su recuperación.</p></article>
+          <article class="cap-card reveal"><div class="cap-icon" aria-hidden="true"><span class="cap-glyph glyph-terminal">&gt;_</span></div><h3>Acceso remoto vía web</h3><p>Interactúa con equipos compatibles mediante VNC, SSH o Telnet desde LinkWich-Monitor<sup>®</sup>.</p></article>
+        </div>
+      </div>
+    </section>
 
-if ("IntersectionObserver" in window && !reducedMotion.matches) {
-  const reveals = new IntersectionObserver((entries, observer) => {
-    for (const { target, isIntersecting } of entries) {
-      if (!isIntersecting) continue;
-      target.classList.replace("waiting", "shown");
-      observer.unobserve(target);
-    }
-  }, { threshold: .1 });
-  for (const target of document.querySelectorAll(".reveal")) {
-    target.classList.add("waiting");
-    reveals.observe(target);
-  }
-}
 
-const graph = document.querySelector("#traffic");
-const ctx = graph.getContext("2d");
-const values = [1.5,2.1,1.9,2.8,2.55,3.5,3,4.55,3.75,5.3,4.6,4.9,4.35,5.5,5.05,6.2,5.65,6.65,6.4,9.1,7.7,8.15,6.85,7.5,6.7,7.15,6.1,6.6,5.9,6.35];
-function drawTraffic() {
-  if (!ctx) return;
-  const width = graph.clientWidth;
-  const height = graph.clientHeight;
-  if (!width || !height) return;
-  const ratio = Math.min(window.devicePixelRatio || 1, 2);
-  graph.width = Math.round(width * ratio);
-  graph.height = Math.round(height * ratio);
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  ctx.strokeStyle = "#b28be62e";
-  ctx.lineWidth = 1;
-  for (let i = 0; i <= 4; i++) {
-    const y = 3 + (height - 6) * i / 4;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(width, y);
-    ctx.stroke();
-  }
+    <section class="section compatibility chapter" id="compatibilidad" aria-labelledby="compat-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">COMPATIBILIDAD</p><h2 id="compat-title">Distintas marcas.<br>Una sola plataforma.</h2></div>
+          <p class="section-lede">Diseñada para entornos tecnológicos multimarca, LinkWich-Monitor<sup>®</sup> permite centralizar el monitoreo sin depender de un solo fabricante.</p>
+        </div>
+        <div class="compat-grid">
+          <article class="compat-card compat-network reveal">
+            <p class="eyebrow">ROUTING Y SWITCHING</p>
+            <h3>Redes empresariales</h3>
+            <ul class="brands" aria-label="Ejemplos de marcas de red compatibles">
+              <li><span class="brand-art"><img src="assets/brands/cisco.webp" alt="" width="155" height="82"></span>Cisco</li>
+              <li><span class="brand-art"><img src="assets/brands/huawei.webp" alt="" width="240" height="52"></span>Huawei</li>
+              <li><span class="brand-art"><img src="assets/brands/aruba.webp" alt="" width="240" height="55"></span>HPE Aruba Networking</li>
+              <li><span class="brand-art"><img src="assets/brands/allied.webp" alt="" width="240" height="24"></span>Allied Telesis</li>
+              <li><span class="brand-art"><img src="assets/brands/ruijie.webp" alt="" width="240" height="72"></span>Ruijie</li>
+              <li><span class="brand-art"><img src="assets/brands/fortinet.webp" alt="" width="240" height="27"></span>Fortinet</li>
+              <li><span class="brand-art"><img src="assets/brands/ruckus.webp" alt="" width="240" height="79"></span>RUCKUS</li>
+            </ul>
+            <p>Entre otras marcas de routing y switching.</p>
+            <div class="gpon"><span class="gpon-label">GPON</span><p><strong>Huawei GPON.</strong> Monitorea OLT Huawei compatibles y consulta el estado de sus ONT. Evaluamos la viabilidad técnica de cada modelo.</p></div>
+            <div class="gpon axis-note"><span class="brand-art"><img src="assets/brands/axis.webp" alt="" width="228" height="82"></span><p><strong>Axis Communications.</strong> Disponibilidad de dispositivos IP de videovigilancia según el modelo.</p></div>
+          </article>
+          <div class="compat-secondary">
+            <article class="compat-card reveal">
+              <p class="eyebrow">SERVIDORES</p>
+              <h3>Agente para Windows y Linux</h3>
+              <p>Monitorea recursos y servicios en los servidores donde instalas el agente.</p>
+              <ul class="brands platform-brands" aria-label="Sistemas operativos del agente">
+                <li><span class="brand-art"><img src="assets/brands/windows.webp" alt="" width="120" height="120"></span>Windows</li>
+                <li><span class="brand-art brand-art-mono"><img src="assets/brands/linux.webp" alt="" width="99" height="120"></span>Linux</li>
+              </ul>
+            </article>
+            <article class="compat-card reveal">
+              <p class="eyebrow">ENERGÍA</p>
+              <h3>UPS CyberPower y APC</h3>
+              <p>Consulta las métricas que expone cada modelo de UPS compatible.</p>
+              <ul class="brands ups-brands" aria-label="Fabricantes de UPS compatibles">
+                <li><span class="brand-art"><img src="assets/brands/cyberpower.webp" alt="" width="240" height="46"></span>CyberPower</li>
+                <li><span class="brand-art"><img src="assets/brands/apc.webp" alt="" width="172" height="82"></span>APC</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+        <p class="compat-note reveal"><b class="dot" aria-hidden="true"></b><span><strong>Roadmap en evolución.</strong> Incorporamos nuevas funcionalidades y evaluamos la integración de equipos y tecnologías conforme a las necesidades de nuestros clientes y su viabilidad técnica.</span></p>
+      </div>
+    </section>
 
-  ctx.beginPath();
-  values.forEach((value, index) => {
-    const x = width * index / (values.length - 1);
-    const y = height - 3 - value * (height - 6) / 10;
-    if (index === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
-  });
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = "#c09aff";
-  ctx.lineJoin = "round";
-  ctx.stroke();
-  ctx.lineTo(width, height);
-  ctx.lineTo(0, height);
-  ctx.closePath();
-  const fill = ctx.createLinearGradient(0, 0, 0, height);
-  fill.addColorStop(0, "#ac72fd70");
-  fill.addColorStop(1, "#ac72fd05");
-  ctx.fillStyle = fill;
-  ctx.fill();
-}
-if ("ResizeObserver" in window) new ResizeObserver(drawTraffic).observe(graph);
-else window.addEventListener("resize", drawTraffic);
-drawTraffic();
+    <section class="section continuity chapter" id="continuidad" aria-labelledby="continuity-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">ALERTAS Y CONTINUIDAD</p><h2 id="continuity-title">Mantente informado, estés donde estés.</h2></div>
+          <p class="section-lede">LinkWich-Monitor<sup>®</sup> combina el monitoreo local con un servicio de continuidad en la nube, proporcionando visibilidad sobre el estado de comunicación de tus instalaciones.</p>
+        </div>
+        <div class="continuity-grid">
+          <article class="compat-card alert-card reveal">
+            <p class="eyebrow">01 / MONITOREO LOCAL · ON-PREMISES</p>
+            <h3>Alertas configurables y oportunas</h3>
+            <p>Configura las condiciones y canales de alerta para notificar a tu equipo cuando la plataforma detecte un incidente.</p>
+            <ul class="channels" aria-label="Canales de alerta">
+              <li><span aria-hidden="true">✉</span> Correo</li>
+              <li><img class="channel-icon" src="assets/brands/whatsapp.webp" alt="" width="120" height="120"> WhatsApp</li>
+              <li><span aria-hidden="true">▤</span> Portal</li>
+            </ul>
+          </article>
+          <article class="compat-card cloud-card reveal">
+            <p class="eyebrow">02 / PORTAL DE CONTINUIDAD · NUBE</p>
+            <h3>Estado de sitios y licencias</h3>
+            <p>Consulta el estado de comunicación de tus sitios y la vigencia de sus licencias. Si una instalación deja de reportar, el portal puede notificarte por correo.</p>
+            <ul class="cloud-list" aria-label="Información disponible en el portal">
+              <li><b class="dot" aria-hidden="true"></b> Estado del sitio</li>
+              <li><b class="dot" aria-hidden="true"></b> Vigencia de la licencia</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
 
-const siteMarkers = [...document.querySelectorAll(".site-marker")];
-const siteName = document.getElementById("dash-site-name");
-const siteDevices = document.getElementById("dash-site-devices");
+    <section class="section demo chapter" id="demo" aria-labelledby="demo-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">DEMO INTERACTIVA</p><h2 id="demo-title">De la detección al diagnóstico.</h2></div>
+          <p class="section-lede">Descubre cómo LinkWich-Monitor® facilita la identificación de incidentes, el análisis de métricas y el seguimiento de eventos. Selecciona un enlace para consultar sus métricas. Activa un incidente simulado y vuelve a pulsarlo para simular su recuperación.</p>
+        </div>
+        <div class="demo-console reveal">
+          <div class="demo-head"><span><b class="dot"></b> Sitio de demostración</span><span class="pill">Datos simulados</span></div>
+          <div class="demo-workspace">
+            <div class="demo-toolbar" role="group" aria-label="Escenarios de demostración">
+              <button class="button button-small incident-button" type="button" data-incident="outage" aria-pressed="false">Caída de enlace</button>
+              <button class="button button-small incident-button" type="button" data-incident="cpu" aria-pressed="false">CPU al 90 %</button>
+              <button class="button button-small incident-button" type="button" data-incident="duplicate" aria-pressed="false">IP duplicada · VLAN 10</button>
+              <button class="button button-small incident-button" type="button" data-incident="ram" aria-pressed="false">RAM al 92 %</button>
+              <button class="button button-small incident-button" type="button" data-incident="port90" aria-pressed="false">Puerto 90 caído</button>
+              <button class="button button-small incident-button" type="button" data-incident="google" aria-pressed="false">Latencia en google.com</button>
+              <button class="button button-text demo-reset" id="reset-demo" type="button">Reiniciar demo</button>
+            </div>
+            <div class="demo-metrics">
+              <div><span>Equipos</span><strong>8</strong></div>
+              <div><span>CPU del servidor</span><strong id="demo-cpu">32 %</strong></div>
+              <div><span>RAM del servidor</span><strong id="demo-ram">46 %</strong></div>
+              <div><span>Alertas activas</span><strong id="demo-count">0</strong></div>
+            </div>
+            <div class="tabs" role="tablist" aria-label="Vistas de diagnóstico">
+              <button id="tab-mapa" role="tab" aria-selected="true" aria-controls="panel-mapa" type="button">Hypermap</button>
+              <button id="tab-metricas" role="tab" aria-selected="false" aria-controls="panel-metricas" type="button" tabindex="-1">Métricas y servicios</button>
+              <button id="tab-alerta" role="tab" aria-selected="false" aria-controls="panel-alerta" type="button" tabindex="-1">Alertas</button>
+              <button id="tab-syslog" role="tab" aria-selected="false" aria-controls="panel-syslog" type="button" tabindex="-1">Syslog e historial</button>
+              <button id="tab-captura" role="tab" aria-selected="false" aria-controls="panel-captura" type="button" tabindex="-1">Captura de red</button>
+            </div>
+            <section class="demo-panel" id="panel-mapa" role="tabpanel" aria-labelledby="tab-mapa" tabindex="0">
+              <div class="map-toolbar">
+                <span class="map-legend"><i aria-hidden="true"></i> Flujo de tráfico simulado</span>
+                <button type="button" id="expand-map" class="button button-small" aria-haspopup="dialog"><i class="fullscreen-icon" aria-hidden="true"></i> Expandir mapa</button>
+              </div>
+              <div id="map-content">
+                <div class="map-frame" aria-label="Topología del sitio de demostración">
+                  <div class="demo-node demo-core"><i aria-hidden="true">▤</i><div><strong>Core principal</strong><small>Switch L3</small></div></div>
+                  <div class="map-branches">
+                    <div class="map-branch">
+                      <button type="button" class="map-edge" data-link="access" aria-pressed="true"><strong>Te1/1/1 ↔ Te1/0/48</strong><small>10 Gbps · VLAN 10 y 20</small></button>
+                      <div class="demo-node" id="node-access"><i aria-hidden="true">▦</i><div><strong>Switch de acceso</strong><small id="state-access">Operativo · Datos / Voz</small></div></div>
+                      <div class="map-leaves">
+                        <div><button type="button" class="map-edge" data-link="pc1" aria-pressed="false"><strong>Gi1/0/12</strong><small>1 Gbps · VLAN 10</small></button><div class="demo-node" id="node-pc1"><i aria-hidden="true">▣</i><div><strong>PC-01</strong><small>Datos</small></div></div></div>
+                        <div><button type="button" class="map-edge" data-link="pc2" aria-pressed="false"><strong>Gi1/0/18</strong><small>1 Gbps · VLAN 10</small></button><div class="demo-node" id="node-pc2"><i aria-hidden="true">▣</i><div><strong>PC-02</strong><small>Datos</small></div></div></div>
+                      </div>
+                    </div>
+                    <div class="map-branch">
+                      <button type="button" class="map-edge" data-link="servers" aria-pressed="false"><strong>Te1/1/2 ↔ Te1/0/48</strong><small>10 Gbps · VLAN 30</small></button>
+                      <div class="demo-node"><i aria-hidden="true">▦</i><div><strong>Switch de servidores</strong><small>Operativo · VLAN 30</small></div></div>
+                      <div class="map-leaves">
+                        <div><button type="button" class="map-edge" data-link="server" aria-pressed="false"><strong>Te1/0/1</strong><small>10 Gbps · VLAN 30</small></button><div class="demo-node" id="node-server"><i aria-hidden="true">▤</i><div><strong>SRV-01</strong><small id="state-server">Servidor · CPU 32 % · RAM 46 %</small></div></div></div>
+                        <div><button type="button" class="map-edge" data-link="nas" aria-pressed="false"><strong>Te1/0/2</strong><small>10 Gbps · VLAN 30</small></button><div class="demo-node"><i aria-hidden="true">▤</i><div><strong>NAS-01</strong><small>Almacenamiento</small></div></div></div>
+                      </div>
+                    </div>
+                    <div class="map-branch">
+                      <button type="button" class="map-edge" data-link="wan" aria-pressed="false"><strong>Gi1/0/24 ↔ Gi0/1</strong><small>1 Gbps · VLAN 99</small></button>
+                      <div class="demo-node" id="node-wan"><i aria-hidden="true">⇄</i><div><strong>Router perimetral</strong><small id="state-wan">Operativo · Salida WAN</small></div></div>
+                    </div>
+                  </div>
+                  <div class="map-tooltip" id="map-tooltip" role="tooltip" hidden>
+                    <strong id="tooltip-name"></strong>
+                    <p id="tooltip-interfaces"></p>
+                    <dl>
+                      <div><dt>MAC origen</dt><dd id="tooltip-mac-a"></dd></div>
+                      <div><dt>MAC destino</dt><dd id="tooltip-mac-b"></dd></div>
+                      <div><dt>Capacidad</dt><dd id="tooltip-speed"></dd></div>
+                      <div><dt>Estado</dt><dd id="tooltip-status"></dd></div>
+                      <div><dt>Entrada</dt><dd id="tooltip-rx"></dd></div>
+                      <div><dt>Salida</dt><dd id="tooltip-tx"></dd></div>
+                    </dl>
+                  </div>
+                </div>
+                <div class="link-inspector">
+                  <div><p class="eyebrow">ENLACE SELECCIONADO</p><h3 id="link-name">Core principal ↔ Switch de acceso</h3><p id="link-interfaces">Te1/1/1 ↔ Te1/0/48 · VLAN 10 (Datos), 20 (Voz)</p></div>
+                  <dl><div><dt>Capacidad</dt><dd id="link-speed">10 Gbps</dd></div><div><dt>Entrada</dt><dd id="link-rx">3.2 Gbps</dd></div><div><dt>Salida</dt><dd id="link-tx">1.4 Gbps</dd></div><div><dt>Estado</dt><dd id="link-status">Operativo</dd></div><div><dt>MAC origen</dt><dd id="link-mac-a"></dd></div><div><dt>MAC destino</dt><dd id="link-mac-b"></dd></div></dl>
+                </div>
+              </div>
+              <dialog class="map-dialog" id="map-dialog" aria-labelledby="map-dialog-title">
+                <div class="map-dialog-toolbar">
+                  <div><h3 id="map-dialog-title">Hypermap del sitio</h3><span>Topología y tráfico simulados</span></div>
+                  <button type="button" class="button button-small" id="close-map" autofocus>Cerrar mapa <span aria-hidden="true">×</span></button>
+                </div>
+                <div class="map-dialog-body" id="map-dialog-body"></div>
+              </dialog>
+            </section>
+            <section class="demo-panel" id="panel-metricas" role="tabpanel" aria-labelledby="tab-metricas" tabindex="0" hidden>
+              <div class="demo-panel-title"><div><h3>Métricas y servicios</h3><p>Compara los valores simulados con los umbrales configurados.</p></div></div>
+              <div class="service-grid">
+                <article class="service-card" id="service-cpu">
+                  <div class="service-card-head"><h4>CPU · SRV-01</h4><span id="metric-cpu-state">Normal</span></div>
+                  <strong id="metric-cpu-value">32 %</strong>
+                  <meter id="metric-cpu-meter" aria-label="Uso de CPU" min="0" max="100" low="85" high="95" optimum="0" value="32"></meter>
+                  <small>Umbral de alerta: 85 %</small>
+                </article>
+                <article class="service-card" id="service-ram">
+                  <div class="service-card-head"><h4>RAM · SRV-01</h4><span id="metric-ram-state">Normal</span></div>
+                  <strong id="metric-ram-value">46 %</strong>
+                  <meter id="metric-ram-meter" aria-label="Uso de RAM" min="0" max="100" low="85" high="95" optimum="0" value="46"></meter>
+                  <small>Umbral de alerta: 85 %</small>
+                </article>
+                <article class="service-card" id="service-port90">
+                  <div class="service-card-head"><h4>Servicio TCP · SRV-01</h4><span id="metric-port90-state">Normal</span></div>
+                  <strong id="metric-port90-value">Disponible</strong>
+                  <small>Comprobación de conexión en el puerto 90</small>
+                </article>
+                <article class="service-card" id="service-google">
+                  <div class="service-card-head"><h4>HTTPS · google.com</h4><span id="metric-google-state">Normal</span></div>
+                  <strong id="metric-google-value">42 ms</strong>
+                  <meter id="metric-google-meter" aria-label="Tiempo de respuesta HTTPS en milisegundos" min="0" max="500" low="200" high="400" optimum="0" value="42"></meter>
+                  <small>Umbral de alerta: 200 ms</small>
+                </article>
+              </div>
+            </section>
+            <section class="demo-panel" id="panel-alerta" role="tabpanel" aria-labelledby="tab-alerta" tabindex="0" hidden>
+              <div class="demo-panel-title"><div><h3>Avisos del sitio</h3><p id="alert-summary">Activa un escenario para ver sus avisos de ejemplo.</p></div></div>
+              <div class="notification-grid" aria-label="Canales simulados">
+                <div><strong>✉ Correo</strong><small>Simulación</small></div>
+                <div><strong><img class="channel-icon" src="assets/brands/whatsapp.webp" alt="" width="18" height="18"> WhatsApp</strong><small>Simulación</small></div>
+                <div><strong>▤ Interfaz web</strong><small>Simulación</small></div>
+              </div>
+              <div class="demo-table" tabindex="0" role="region" aria-label="Registro de avisos"><table><thead><tr><th scope="col">Hora</th><th scope="col">Aviso</th><th scope="col">Entrega</th></tr></thead><tbody id="alert-log"></tbody></table></div>
+            </section>
+            <section class="demo-panel" id="panel-syslog" role="tabpanel" aria-labelledby="tab-syslog" tabindex="0" hidden>
+              <div class="demo-panel-title"><div><h3>Syslog e historial</h3><p>Consulta los eventos simulados del sitio, incluido el restablecimiento.</p></div><button class="button button-small" type="button" id="emit-syslog">Emitir Syslog de prueba</button></div>
+              <div class="demo-table" tabindex="0" role="region" aria-label="Historial de eventos"><table><thead><tr><th scope="col">Hora</th><th scope="col">Origen</th><th scope="col">Severidad</th><th scope="col">Evento</th></tr></thead><tbody id="event-log"></tbody></table></div>
+            </section>
+            <section class="demo-panel" id="panel-captura" role="tabpanel" aria-labelledby="tab-captura" tabindex="0" hidden>
+              <div class="demo-panel-title"><div><h3>Sniffer simulado · VLAN 10</h3><p id="capture-notice">La muestra ARP ilustra cómo se ve el tráfico cuando cada IP corresponde a una sola MAC.</p></div></div>
+              <div class="demo-table" tabindex="0" role="region" aria-label="Muestra sintética de tráfico ARP"><table><thead><tr><th scope="col">Hora</th><th scope="col">Protocolo</th><th scope="col">IP anunciada</th><th scope="col">MAC de origen</th><th scope="col">Interfaz</th></tr></thead><tbody id="capture-log"></tbody></table></div>
+            </section>
+            <p class="sr-only" id="demo-announcement" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-for (const marker of siteMarkers) {
-  marker.addEventListener("click", () => {
-    for (const option of siteMarkers) option.setAttribute("aria-pressed", String(option === marker));
-    siteName.textContent = marker.dataset.site;
-    siteDevices.textContent = marker.dataset.devices;
-  });
-}
+    <section class="section sectors chapter" id="sectores" aria-labelledby="sectors-title">
+      <div class="wrap sector-layout">
+        <div class="platform-photo sector-photo reveal">
+          <img src="assets/resort.webp" alt="Complejo hotelero junto a la costa al anochecer" width="768" height="512" loading="lazy">
+        </div>
+        <div>
+          <div class="reveal">
+            <p class="eyebrow">SECTORES</p>
+            <h2 id="sectors-title">Donde la continuidad operativa es una prioridad.</h2>
+            <p class="section-lede sector-lede">Diseñado para organizaciones donde la disponibilidad tecnológica impacta directamente en la productividad, la experiencia del usuario y la rentabilidad del negocio.</p>
+          </div>
+          <ul class="sector-list reveal">
+            <li><span aria-hidden="true">▥</span> Hoteles y resorts</li>
+            <li><span aria-hidden="true">✈︎</span> Aeropuertos</li>
+            <li><span aria-hidden="true">✚</span> Hospitales</li>
+            <li><span aria-hidden="true">▭</span> Escuelas</li>
+            <li><span aria-hidden="true">⚙︎</span> Fábricas</li>
+            <li><span aria-hidden="true">▦</span> Corporativos</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-const demo = document.querySelector("#demo");
-const tabs = [...demo.querySelectorAll("[role=tab]")];
-const incidentButtons = [...demo.querySelectorAll("[data-incident]")];
-const linkButtons = [...demo.querySelectorAll("[data-link]")];
-const activeIncidents = new Set();
-const events = [];
-const alerts = [];
-let selectedLink = "access";
-let demoMinute = 40;
+    <section class="section rollout chapter" id="implementacion" aria-labelledby="rollout-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">NUESTRA PROPUESTA DE TRABAJO</p><h2 id="rollout-title">Más que una plataforma, un acompañamiento tecnológico.</h2></div>
+          <p class="section-lede">Trabajamos de la mano con tu equipo para identificar las necesidades de tu infraestructura e implementar una solución adaptada a tu operación.</p>
+        </div>
+        <div class="rollout-grid">
+          <ol class="rollout-steps reveal">
+            <li><div><h3>Identificación de infraestructura crítica</h3><p>Identificamos los equipos, enlaces y servicios prioritarios y definimos el alcance del monitoreo.</p></div></li>
+            <li><div><h3>Prueba de concepto (PoC)</h3><p>Validamos el monitoreo y las alertas con una muestra de tu propia infraestructura.</p></div></li>
+            <li><div><h3>Implementación</h3><p>Desplegamos la plataforma y configuramos el monitoreo, las métricas y los canales de alerta acordados.</p></div></li>
+            <li><div><h3>Soporte y acompañamiento</h3><p>Acompañamos a tu equipo durante la operación y los ajustes requeridos conforme evoluciona tu infraestructura.</p></div></li>
+          </ol>
+          <div class="platform-photo rollout-photo reveal">
+            <img src="assets/engineers.webp" alt="Dos ingenieros revisan una tableta junto a un gabinete de red" width="768" height="512" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
 
-const links = {
-  access: ["Core principal ↔ Switch de acceso", "Te1/1/1 ↔ Te1/0/48", "10 (Datos), 20 (Voz)", "10 Gbps", "3.2 Gbps", "1.4 Gbps"],
-  servers: ["Core principal ↔ Switch de servidores", "Te1/1/2 ↔ Te1/0/48", "30 (Servidores)", "10 Gbps", "2.6 Gbps", "1.1 Gbps"],
-  wan: ["Core principal ↔ Router perimetral", "Gi1/0/24 ↔ Gi0/1", "99 (Tránsito)", "1 Gbps", "415 Mbps", "108 Mbps"],
-  pc1: ["Switch de acceso ↔ PC-01", "Gi1/0/12 ↔ eth0", "10 (Datos)", "1 Gbps", "38 Mbps", "7 Mbps"],
-  pc2: ["Switch de acceso ↔ PC-02", "Gi1/0/18 ↔ eth0", "10 (Datos)", "1 Gbps", "24 Mbps", "4 Mbps"],
-  server: ["Switch de servidores ↔ SRV-01", "Te1/0/1 ↔ eth0", "30 (Servidores)", "10 Gbps", "1.1 Gbps", "780 Mbps"],
-  nas: ["Switch de servidores ↔ NAS-01", "Te1/0/2 ↔ eth0", "30 (Servidores)", "10 Gbps", "940 Mbps", "310 Mbps"]
-};
-const linkMacs = {
-  access: ["02:00:00:01:01:01", "02:00:00:10:00:48"],
-  servers: ["02:00:00:01:01:02", "02:00:00:30:00:48"],
-  wan: ["02:00:00:01:00:24", "02:00:00:99:00:01"],
-  pc1: ["02:00:00:20:00:12", "02:00:00:10:00:12"],
-  pc2: ["02:00:00:20:00:18", "02:00:00:10:00:18"],
-  server: ["02:00:00:30:00:01", "02:00:00:30:10:01"],
-  nas: ["02:00:00:30:00:02", "02:00:00:30:10:02"]
-};
-const accessLinks = new Set(["access", "pc1", "pc2"]);
+    <section class="section packages chapter" id="paquetes" aria-labelledby="packages-title">
+      <div class="wrap">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow">PAQUETES DE MONITOREO</p><h2 id="packages-title">Una solución que crece contigo.</h2></div>
+          <p class="section-lede">Contamos con paquetes establecidos y personalizados, adaptándonos a las dimensiones, necesidades y crecimiento de tu infraestructura.</p>
+        </div>
+        <ul class="package-grid reveal" aria-label="Capacidades disponibles">
+          <li><h3>Paquete inicial</h3><p><strong>30</strong> nodos</p></li>
+          <li><h3>Paquete 50</h3><p><strong>50</strong> nodos</p></li>
+          <li><h3>Paquete 100</h3><p><strong>100</strong> nodos</p></li>
+          <li><h3>Paquete 150</h3><p><strong>150</strong> nodos</p></li>
+          <li class="package-custom"><h3>Personalizable</h3><p>Capacidad a medida</p></li>
+        </ul>
+        <div class="package-contact reveal">
+          <p>Consulta tu paquete directamente con <strong>LinkWich-IT<sup>®</sup></strong> o con el <strong>reseller de tu preferencia</strong>.</p>
+          <a class="button button-primary" href="#contacto">Contactar <span class="diagonal-arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
 
-const incidents = {
-  outage: {
-    source: "Core principal", severity: "Crítico",
-    message: "Enlace de acceso caído · Te1/1/1 sin señal",
-    recovery: "Enlace de acceso restablecido · Te1/1/1 operativo",
-    link: "access"
-  },
-  cpu: {
-    source: "SRV-01", severity: "Alto",
-    message: "CPU de SRV-01 al 90 % · Umbral configurado: 85 %",
-    recovery: "CPU de SRV-01 normalizada al 32 %",
-    link: "server"
-  },
-  ram: {
-    source: "SRV-01", severity: "Alto",
-    message: "RAM de SRV-01 al 92 % · Umbral configurado: 85 %",
-    recovery: "RAM de SRV-01 normalizada al 46 %",
-    link: "server", showMetrics: true
-  },
-  port90: {
-    source: "Monitor TCP · SRV-01", severity: "Crítico",
-    message: "Servicio no disponible · SRV-01 no responde en TCP 90",
-    recovery: "Servicio restablecido · SRV-01 responde en TCP 90",
-    link: "server", showMetrics: true
-  },
-  google: {
-    source: "Monitor HTTPS · google.com", severity: "Advertencia",
-    message: "Latencia alta en google.com · 380 ms · Umbral: 200 ms",
-    recovery: "Respuesta HTTPS de google.com normalizada a 42 ms",
-    link: "wan", showMetrics: true
-  },
-  duplicate: {
-    source: "Switch de acceso", severity: "Advertencia",
-    message: "IP duplicada 192.0.2.42 · VLAN 10 (Datos)",
-    recovery: "Conflicto de IP resuelto · VLAN 10 (Datos)",
-    link: "pc2"
-  }
-};
+    <section class="closing chapter" id="contacto" aria-labelledby="contact-title">
+      <div class="wrap closing-inner reveal">
+        <img class="closing-logo" src="assets/linkwich-it.webp" alt="Logotipo oficial de LinkWich-IT®" width="156" height="156" loading="lazy">
+        <h2 id="contact-title">Trabajemos juntos por una operación más proactiva.</h2>
+        <p class="section-lede">Impulsemos la disponibilidad, eficiencia y continuidad de tu infraestructura tecnológica con una solución que evoluciona junto a tu negocio.</p>
+        <div class="closing-codes">
+          <figure class="closing-code">
+            <img src="assets/qr-contacto.webp" alt="Código QR para guardar el contacto de LinkWich-IT" width="152" height="152">
+            <figcaption>
+              <strong>Guardar contacto</strong>
+              <span>LinkWich-IT<sup>®</sup> · <a href="tel:+526241586134">624 158 6134</a></span>
+              <a href="https://www.linkwich-it.com/" target="_blank" rel="noopener noreferrer">www.linkwich-it.com</a>
+            </figcaption>
+          </figure>
+          <figure class="closing-code">
+            <img src="assets/qr-presentacion.webp" alt="Código QR para abrir la presentación de LinkWich-Monitor" width="152" height="152">
+            <figcaption>
+              <strong>Abrir presentación</strong>
+              <a href="https://www.linkwich-it.com/LinkWich-Monitor-Presentacion" target="_blank" rel="noopener noreferrer">www.linkwich-it.com/<wbr>LinkWich-Monitor-Presentacion</a>
+            </figcaption>
+          </figure>
+        </div>
+        <a class="button button-primary" href="https://www.linkwich-it.com/" target="_blank" rel="noopener noreferrer">Visitar LinkWich-IT<sup>®</sup> <span class="diagonal-arrow" aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
 
-function showStage(index) {
-  hideTooltip();
-  tabs.forEach((tab, position) => {
-    const selected = index === position;
-    tab.setAttribute("aria-selected", String(selected));
-    tab.tabIndex = selected ? 0 : -1;
-    document.getElementById(tab.getAttribute("aria-controls")).hidden = !selected;
-  });
-}
+  <footer><div class="wrap footer-inner"><span>LinkWich-Monitor<sup>®</sup> · Una solución de LinkWich-IT<sup>®</sup></span><a href="#inicio">Volver al inicio ↑</a></div></footer>
 
-for (const [index, tab] of tabs.entries()) {
-  tab.addEventListener("click", () => showStage(index));
-  tab.addEventListener("keydown", (event) => {
-    const indices = {
-      ArrowLeft: (index + tabs.length - 1) % tabs.length,
-      ArrowRight: (index + 1) % tabs.length,
-      Home: 0,
-      End: tabs.length - 1
-    };
-    if (!Object.hasOwn(indices, event.key)) return;
-    event.preventDefault();
-    showStage(indices[event.key]);
-    tabs[indices[event.key]].focus();
-  });
-}
-
-function demoText(id, value) {
-  document.getElementById(id).textContent = value;
-}
-
-function demoTime() {
-  return String(10 + Math.floor(demoMinute / 60)).padStart(2, "0") + ":" +
-    String(demoMinute++ % 60).padStart(2, "0");
-}
-
-function showRows(id, rows) {
-  const body = document.getElementById(id);
-  body.replaceChildren();
-  for (const values of rows) {
-    const row = body.insertRow();
-    for (const value of values) row.insertCell().textContent = value;
-  }
-}
-
-function linkData(key) {
-  const [name, interfaces, vlans, speed, rx, tx] = links[key];
-  const [macA, macB] = linkMacs[key];
-  const down = activeIncidents.has("outage") && accessLinks.has(key);
-  const conflict = activeIncidents.has("duplicate") && ["pc1", "pc2"].includes(key);
-  return {
-    name, interfaces: interfaces + " · VLAN " + vlans, speed,
-    rx: down ? "0 Mbps" : rx, tx: down ? "0 Mbps" : tx,
-    status: down ? "Sin conexión" : conflict ? "Conflicto de IP" : "Operativo",
-    "mac-a": macA, "mac-b": macB
-  };
-}
-
-function renderLinkDetails(prefix, key) {
-  for (const [field, value] of Object.entries(linkData(key))) {
-    demoText(prefix + "-" + field, value);
-  }
-}
-
-function renderMap() {
-  const outage = activeIncidents.has("outage");
-  const duplicate = activeIncidents.has("duplicate");
-  const cpu = activeIncidents.has("cpu");
-  const ram = activeIncidents.has("ram");
-  const port90 = activeIncidents.has("port90");
-  const google = activeIncidents.has("google");
-
-  for (const button of linkButtons) {
-    const key = button.dataset.link;
-    button.setAttribute("aria-pressed", String(key === selectedLink));
-    button.classList.toggle("link-down", outage && accessLinks.has(key));
-  }
-  document.getElementById("node-access").classList.toggle("node-down", outage);
-  document.getElementById("node-server").classList.toggle("node-warning", cpu || ram || port90);
-  document.getElementById("node-wan").classList.toggle("node-warning", google);
-  for (const device of ["pc1", "pc2"]) {
-    const node = document.getElementById("node-" + device);
-    node.classList.toggle("node-warning", duplicate);
-    node.classList.toggle("node-down", outage);
-    node.querySelector("small").textContent = outage ? "Sin conexión" : duplicate ? "Conflicto de IP" : "Datos";
-  }
-  demoText("state-access", outage ? "Sin conexión con el core" : "Operativo · Datos / Voz");
-  const serverSummary = `Servidor · CPU ${cpu ? "90 %" : "32 %"} · RAM ${ram ? "92 %" : "46 %"}`;
-  demoText("state-server", port90 ? serverSummary + " · TCP 90 caído" : serverSummary);
-  demoText("state-wan", google ? "Salida WAN · Latencia HTTPS alta" : "Operativo · Salida WAN");
-  renderLinkDetails("link", selectedLink);
-  if (tooltipAnchor) {
-    renderLinkDetails("tooltip", tooltipAnchor.dataset.link);
-    positionTooltip();
-  }
-}
-
-function renderMetrics() {
-  const readings = {
-    cpu: { normal: "32 %", active: "90 %", status: "Uso alto" },
-    ram: { normal: "46 %", active: "92 %", status: "Uso alto" },
-    port90: { normal: "Disponible", active: "Sin respuesta", status: "Caído" },
-    google: { normal: "42 ms", active: "380 ms", status: "Latencia alta" }
-  };
-  for (const [key, reading] of Object.entries(readings)) {
-    const active = activeIncidents.has(key);
-    const value = active ? reading.active : reading.normal;
-    demoText("metric-" + key + "-value", value);
-    demoText("metric-" + key + "-state", active ? reading.status : "Normal");
-    document.getElementById("service-" + key).classList.toggle("service-warning", active);
-    const meter = document.getElementById("metric-" + key + "-meter");
-    if (meter) meter.value = Number.parseInt(value, 10);
-    const summary = document.getElementById("demo-" + key);
-    if (summary) {
-      summary.textContent = value;
-      summary.classList.toggle("gold", active);
-    }
-  }
-}
-
-function renderDemo() {
-  const duplicate = activeIncidents.has("duplicate");
-  renderMetrics();
-  demoText("demo-count", activeIncidents.size);
-  document.getElementById("demo-count").classList.toggle("gold", activeIncidents.size > 0);
-  for (const button of incidentButtons) {
-    button.setAttribute("aria-pressed", String(activeIncidents.has(button.dataset.incident)));
-  }
-  renderMap();
-  demoText("alert-summary", alerts.length ? "Último aviso de ejemplo: " + alerts[0][1] : "Activa un escenario para ver sus avisos de ejemplo.");
-  showRows("alert-log", alerts.length ? alerts : [["—", "Sin avisos registrados", "—"]]);
-  showRows("event-log", events);
-  demoText("capture-notice", duplicate
-    ? "Conflicto detectado: dos equipos anuncian 192.0.2.42 con MAC distintas en VLAN 10. Revisa los puertos Gi1/0/12 y Gi1/0/18."
-    : "La muestra ARP ilustra cómo se ve el tráfico cuando cada IP corresponde a una sola MAC.");
-  showRows("capture-log", [
-    ["10:40:12", "ARP", "192.0.2.42", "02:00:00:10:00:12", "Gi1/0/12"],
-    ["10:40:13", "ARP", duplicate ? "192.0.2.42" : "192.0.2.43", "02:00:00:10:00:18", "Gi1/0/18"]
-  ]);
-}
-
-function resetDemo() {
-  activeIncidents.clear();
-  events.length = 0;
-  alerts.length = 0;
-  selectedLink = "access";
-  demoMinute = 40;
-  events.push([demoTime(), "Monitor", "Info", "Sitio operativo al inicio de la simulación"]);
-  showStage(0);
-  hideTooltip();
-  renderDemo();
-}
-
-const mapPanel = document.getElementById("panel-mapa");
-const mapContent = document.getElementById("map-content");
-const mapFrame = mapContent.querySelector(".map-frame");
-const tooltip = document.getElementById("map-tooltip");
-const mapDialog = document.getElementById("map-dialog");
-const dialogBody = document.getElementById("map-dialog-body");
-const expandMap = document.getElementById("expand-map");
-let tooltipAnchor = null;
-
-function positionTooltip() {
-  if (!tooltipAnchor || tooltip.hidden) return;
-  const frame = mapFrame.getBoundingClientRect();
-  const anchor = tooltipAnchor.getBoundingClientRect();
-  const { width, height } = tooltip.getBoundingClientRect();
-  const center = anchor.left + anchor.width / 2 - frame.left;
-  const left = Math.max(7, Math.min(center - width / 2, frame.width - width - 7));
-  const viewportBottom = mapDialog.open ? mapDialog.getBoundingClientRect().bottom : window.innerHeight;
-  const showsAbove = anchor.bottom + height + 4 > viewportBottom && anchor.top - height >= 0;
-  tooltip.style.left = left + "px";
-  tooltip.style.top = (showsAbove ? anchor.top - height : anchor.bottom) - frame.top + "px";
-}
-
-function hideTooltip() {
-  tooltipAnchor?.removeAttribute("aria-describedby");
-  tooltipAnchor = null;
-  tooltip.hidden = true;
-}
-
-function showTooltip(button) {
-  if (tooltipAnchor !== button) hideTooltip();
-  tooltipAnchor = button;
-  renderLinkDetails("tooltip", button.dataset.link);
-  tooltip.hidden = false;
-  button.setAttribute("aria-describedby", tooltip.id);
-  positionTooltip();
-}
-
-for (const button of linkButtons) {
-  button.addEventListener("pointerenter", ({ pointerType }) => {
-    if (pointerType !== "touch") showTooltip(button);
-  });
-  button.addEventListener("pointerleave", ({ relatedTarget }) => {
-    if (tooltipAnchor === button && !tooltip.contains(relatedTarget) && !button.matches(":focus-visible")) {
-      hideTooltip();
-    }
-  });
-  button.addEventListener("focus", () => showTooltip(button));
-  button.addEventListener("blur", () => {
-    if (tooltipAnchor === button) hideTooltip();
-  });
-  button.addEventListener("click", () => {
-    selectedLink = button.dataset.link;
-    showTooltip(button);
-    renderMap();
-  });
-}
-
-tooltip.addEventListener("pointerleave", ({ relatedTarget }) => {
-  if (tooltipAnchor && !tooltipAnchor.contains(relatedTarget) && !tooltipAnchor.matches(":focus-visible")) {
-    hideTooltip();
-  }
-});
-document.addEventListener("pointerdown", ({ target }) => {
-  if (tooltipAnchor && !tooltip.contains(target) && !tooltipAnchor.contains(target)) hideTooltip();
-});
-mapContent.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && tooltipAnchor) {
-    event.preventDefault();
-    hideTooltip();
-  }
-});
-window.addEventListener("resize", positionTooltip);
-window.addEventListener("scroll", positionTooltip, { passive: true });
-mapDialog.addEventListener("scroll", positionTooltip, { passive: true });
-
-expandMap.addEventListener("click", () => {
-  hideTooltip();
-  dialogBody.append(mapContent);
-  mapDialog.showModal();
-});
-document.getElementById("close-map").addEventListener("click", () => mapDialog.close());
-mapDialog.addEventListener("close", () => {
-  hideTooltip();
-  mapPanel.insertBefore(mapContent, mapDialog);
-  expandMap.focus({ preventScroll: true });
-});
-
-for (const button of incidentButtons) {
-  button.addEventListener("click", () => {
-    const key = button.dataset.incident;
-    const scenario = incidents[key];
-    const starting = !activeIncidents.has(key);
-    const message = starting ? scenario.message : scenario.recovery;
-    const time = demoTime();
-    if (starting) {
-      activeIncidents.add(key);
-      alerts.unshift([time, message, "Correo · WhatsApp · Interfaz web (simulado)"]);
-    } else {
-      activeIncidents.delete(key);
-    }
-    selectedLink = scenario.link;
-    events.unshift([time, scenario.source, starting ? scenario.severity : "Info", message]);
-    renderDemo();
-    if (starting && scenario.showMetrics && !mapPanel.hidden) {
-      showStage(tabs.findIndex(tab => tab.id === "tab-metricas"));
-    }
-    demoText("demo-announcement", message);
-  });
-}
-
-document.getElementById("emit-syslog").addEventListener("click", () => {
-  const message = "Syslog de prueba · Gi1/0/12 cambió a estado operativo";
-  events.unshift([demoTime(), "Switch de acceso", "Info", message]);
-  showRows("event-log", events);
-  demoText("demo-announcement", message);
-});
-
-document.getElementById("reset-demo").addEventListener("click", () => {
-  resetDemo();
-  demoText("demo-announcement", "Demostración reiniciada.");
-});
-resetDemo();
+  <div id="present-controls" class="present-controls" role="group" aria-label="Navegación de la presentación" hidden>
+    <button id="previous" type="button" aria-label="Sección anterior">←</button>
+    <span id="page-number" aria-live="polite">1 / 10</span>
+    <button id="next" type="button" aria-label="Sección siguiente">→</button>
+    <button id="exit" type="button" aria-label="Salir del modo presentación">✕</button>
+  </div>
+</body>
+</html>
