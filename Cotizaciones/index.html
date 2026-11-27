@@ -115,7 +115,8 @@
           <small data-i18n="pdfBothHelp">Para descargar ambos, selecciona Español + English y después pulsa Generar PDF.</small>
         </div>
         <button id="btnPDF" class="btn btn-success" data-i18n="generatePdf">Generar PDF</button>
-        <button id="btnExcel" class="btn btn-info" data-i18n="exportExcel">Exportar Excel</button>
+        <button id="btnExcel" class="btn btn-info" data-i18n="exportExcel">Exportar Excel editable (interno)</button>
+        <button id="btnExcelCliente" class="btn btn-secondary" type="button" data-i18n="exportLegacyExcel">Exportar Excel (formato anterior)</button>
         <button id="btnGuardar" class="btn btn-warning" data-i18n="saveDraft">Guardar borrador</button>
         <button id="btnCargar" class="btn btn-dark" data-i18n="loadDraft">Cargar borrador</button>
         <button id="btnImportarExcel" class="btn btn-secondary" data-i18n="importExcel">Importar Excel</button>
@@ -336,7 +337,7 @@
         </div>
         <div id="distribucionAviso" class="lwq-allocation-warning" role="status" aria-live="polite"></div>
         <button id="btnExcelInterno" class="btn btn-info lwq-internal-export" type="button" data-i18n="exportInternal">Exportar Excel de control interno</button>
-        <small class="field-help" data-i18n="privateExportNote">El Excel común y el PDF son para el cliente; el Excel de control interno sí muestra los prorrateos y RESICO.</small>
+        <small class="field-help" data-i18n="privateExportNote">El Excel editable es de uso interno; el PDF y el Excel de formato anterior de obra no muestran el detalle de prorrateos.</small>
       </section>
 
       <section class="card">
@@ -345,7 +346,7 @@
           <button id="btnAgregarFilaTop" class="btn btn-primary" data-i18n="addItem">Agregar concepto</button>
         </div>
 
-        <p class="field-help lwq-standard-only-field lwq-supplier-help" data-i18n="supplierPricingHelp">Uso interno: captura el costo unitario sin IVA, el IVA del mayorista (0–100%) y la ganancia sobre el costo con IVA. La venta base se calcula antes de descuentos, RESICO e IVA al cliente. El PDF y Excel común no incluyen estas columnas.</p>
+        <p class="field-help lwq-standard-only-field lwq-supplier-help" data-i18n="supplierPricingHelp">Uso interno: captura el costo unitario sin IVA, el IVA del mayorista (0–100%) y la ganancia sobre el costo con IVA. La venta base se calcula antes de descuentos, RESICO e IVA al cliente. El Excel editable conserva estas columnas y permite restaurarlas. El PDF y el Excel de formato anterior no incluyen los costos del mayorista.</p>
         <div class="table-wrap lwq-concepts-scroll" tabindex="0" role="region" aria-labelledby="lwqConceptsHeading">
           <table id="tablaConceptos">
             <thead>
@@ -637,7 +638,7 @@
           render();
         })();
         var script = document.createElement("script");
-        script.src = "script.js?v=20261121-costos-mayorista-v6";
+        script.src = "script.js?v=20261127-excel-editable-v1";
         document.body.appendChild(script);
         return;
       }
