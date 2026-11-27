@@ -12,7 +12,7 @@ const DEFAULT_METODO_PAGO_UNICO = "PUE";
 const I18N = {
   es: {
     supplierCost: "Costo unitario sin IVA", supplierVat: "IVA mayorista (%)", profitMarkup: "Ganancia (%)",
-    salesUnitPreview: "Venta base: {amount}", supplierPricingHelp: "Uso interno: captura el costo unitario sin IVA, el IVA del mayorista (0–100%) y la ganancia sobre el costo con IVA. La venta base se calcula antes de descuentos, RESICO e IVA al cliente. El PDF y Excel común no incluyen estas columnas.",
+    salesUnitPreview: "Venta base: {amount}", supplierPricingHelp: "Uso interno: captura el costo unitario sin IVA, el IVA del mayorista (0–100%) y la ganancia sobre el costo con IVA. La venta base se calcula antes de descuentos, RESICO e IVA al cliente. El Excel editable conserva estas columnas y permite restaurarlas. El PDF y el Excel de formato anterior no incluyen los costos del mayorista.",
     supplierPricingInvalid: "Revisa IVA mayorista y ganancia en los conceptos #{rows}. El IVA debe estar entre 0 y 100% y la ganancia debe ser un porcentaje no negativo y finito.",
     quoteMode: "Modalidad de cotización", quoteNormal: "Cotización estándar", quoteConstruction: "Cotización para constructoras / catálogo de obra",
     quoteModeHelp: "El modo estándar conserva sus funciones actuales.", constructionSettings: "Catálogo de obra y prorrateos internos",
@@ -28,7 +28,7 @@ const I18N = {
     selectAllResico: "Marcar todas para RESICO", selectAllIndirects: "Marcar todas para indirectos",
     clearAllocations: "Limpiar asignaciones", applyResico: "RESICO", resicoShare: "% RESICO",
     applyIndirect: "Indirectos", indirectShare: "% Indirectos", amountIntegrated: "Incremento estimado",
-    exportInternal: "Exportar Excel de control interno", privateExportNote: "El Excel común y el PDF son para el cliente; el Excel de control interno sí muestra los prorrateos y RESICO.",
+    exportInternal: "Exportar Excel de control interno", privateExportNote: "El Excel editable es de uso interno; el PDF y el Excel de formato anterior de obra no muestran el detalle de prorrateos.",
     allocationZeroDiscount: "No se pueden integrar cargos con 100% de descuento general. Ajusta el descuento antes de exportar.",
     allocationReady: "Correcto", allocationUnselected: "Selecciona al menos una partida para {cargo}.",
     allocationIncorrect: "Los porcentajes de {cargo} deben sumar 100%. Actualmente suman {sum}%.",
@@ -42,7 +42,7 @@ const I18N = {
     pdfEnglish: "Solo English", pdfBoth: "Español + English (2 PDF)",
     pdfChooseFormat: "Selecciona una opción",
     pdfBothHelp: "Para descargar ambos, selecciona Español + English y después pulsa Generar PDF.",
-    exportExcel: "Exportar Excel", saveDraft: "Guardar borrador", loadDraft: "Cargar borrador",
+    exportExcel: "Exportar Excel editable (interno)", exportLegacyExcel: "Exportar Excel (formato anterior)", saveDraft: "Guardar borrador", loadDraft: "Cargar borrador",
     importExcel: "Importar Excel", summary: "Resumen", items: "Conceptos", netSubtotal: "Subtotal neto",
     itemDiscountShort: "Desc. conceptos", vat: "IVA", total: "Total", professionalQuoter: "Cotizador Profesional",
     subtitle: "Genera cotizaciones ejecutivas para tus clientes", language: "Idioma", webVersion: "Versión Web",
@@ -174,7 +174,7 @@ const I18N = {
   },
   en: {
     supplierCost: "Unit cost excl. VAT", supplierVat: "Supplier VAT (%)", profitMarkup: "Markup (%)",
-    salesUnitPreview: "Base selling price: {amount}", supplierPricingHelp: "Internal use: enter the unit cost excluding VAT, supplier VAT (0–100%), and markup on cost including VAT. The base selling price is calculated before discounts, RESICO and customer VAT. These columns are excluded from the PDF and regular Excel export.",
+    salesUnitPreview: "Base selling price: {amount}", supplierPricingHelp: "Internal use: enter the unit cost excluding VAT, supplier VAT (0–100%), and markup on cost including VAT. The base selling price is calculated before discounts, RESICO and customer VAT. Editable Excel preserves these columns for restoration. PDF and legacy Excel exclude supplier costs.",
     supplierPricingInvalid: "Check supplier VAT and markup in items #{rows}. VAT must be between 0 and 100%; markup must be a finite, non-negative percentage.",
     quoteMode: "Quotation mode", quoteNormal: "Standard quotation", quoteConstruction: "Construction companies / bill of quantities",
     quoteModeHelp: "Standard mode retains all existing features.", constructionSettings: "Construction catalog and internal allocations",
@@ -189,7 +189,7 @@ const I18N = {
     selectAllResico: "Select all for RESICO", selectAllIndirects: "Select all for overhead", clearAllocations: "Clear selections",
     applyResico: "RESICO", resicoShare: "% RESICO", applyIndirect: "Overhead", indirectShare: "% overhead",
     amountIntegrated: "Estimated addition", exportInternal: "Export internal-control Excel",
-    privateExportNote: "Regular Excel and PDF are client-facing; internal-control Excel includes allocations and RESICO.",
+    privateExportNote: "Editable Excel is for internal use; PDF and legacy construction Excel omit allocation details.",
     allocationZeroDiscount: "Charges cannot be included with a 100% general discount. Adjust the discount before exporting.",
     allocationReady: "Ready", allocationUnselected: "Choose at least one item for {cargo}.",
     allocationIncorrect: "{cargo} percentages must add up to 100%. Current total: {sum}%.",
@@ -203,7 +203,7 @@ const I18N = {
     pdfEnglish: "English only", pdfBoth: "Spanish + English (2 PDFs)",
     pdfChooseFormat: "Choose an option",
     pdfBothHelp: "To download both versions, select Spanish + English and then click Generate PDF.",
-    exportExcel: "Export Excel", saveDraft: "Save draft", loadDraft: "Load draft",
+    exportExcel: "Export editable Excel (internal)", exportLegacyExcel: "Export Excel (legacy format)", saveDraft: "Save draft", loadDraft: "Load draft",
     importExcel: "Import Excel", summary: "Summary", items: "Items", netSubtotal: "Net subtotal",
     itemDiscountShort: "Item discounts", vat: "VAT", total: "Total", professionalQuoter: "Professional Quoter",
     subtitle: "Create professional quotations for your clients", language: "Language", webVersion: "Web Version",
@@ -2425,7 +2425,12 @@ function cargarBorrador() {
     return;
   }
 
-  const data = JSON.parse(raw);
+  restaurarDatosCotizacion(JSON.parse(raw));
+  alert(t("draftLoaded"));
+}
+
+function restaurarDatosCotizacion(data, exact = false) {
+  if (exact) conceptosBody.innerHTML = "";
   Object.keys(standardResicoAllocation).forEach(k => delete standardResicoAllocation[k]);
   Object.entries(data.standardResicoAllocation || {}).forEach(([key,value]) => {
     standardResicoAllocation[key] = {
@@ -2442,18 +2447,25 @@ function cargarBorrador() {
     applyLanguage(data.idioma, { translateDefaults: false, recalculate: false });
   }
 
-  document.getElementById("empresa").value = data.empresa || DEFAULT_EMPRESA;
-  document.getElementById("correoEmpresa").value = data.correoEmpresa || DEFAULT_CORREO_EMPRESA;
-  document.getElementById("telefonoEmpresa").value = data.telefonoEmpresa || DEFAULT_TELEFONO_EMPRESA;
-  document.getElementById("sitioEmpresa").value = data.sitioEmpresa || DEFAULT_SITIO_EMPRESA;
-  document.getElementById("ciudadEmpresa").value = data.ciudadEmpresa || DEFAULT_CIUDAD_EMPRESA;
+  document.getElementById("empresa").value = exact ? (data.empresa ?? DEFAULT_EMPRESA) : (data.empresa || DEFAULT_EMPRESA);
+  document.getElementById("correoEmpresa").value = exact ? (data.correoEmpresa ?? DEFAULT_CORREO_EMPRESA) : (data.correoEmpresa || DEFAULT_CORREO_EMPRESA);
+  document.getElementById("telefonoEmpresa").value = exact ? (data.telefonoEmpresa ?? DEFAULT_TELEFONO_EMPRESA) : (data.telefonoEmpresa || DEFAULT_TELEFONO_EMPRESA);
+  document.getElementById("sitioEmpresa").value = exact ? (data.sitioEmpresa ?? DEFAULT_SITIO_EMPRESA) : (data.sitioEmpresa || DEFAULT_SITIO_EMPRESA);
+  document.getElementById("ciudadEmpresa").value = exact ? (data.ciudadEmpresa ?? DEFAULT_CIUDAD_EMPRESA) : (data.ciudadEmpresa || DEFAULT_CIUDAD_EMPRESA);
   fijarMonedaDeDatos(data.moneda || DEFAULT_MONEDA);
+  if (exact && !fxRateValida(data.tipoCambioMXN)) {
+    ++fxFetchSequence;
+    document.getElementById("tipoCambioMXN").value = "";
+    fxAppliedRateUSD = null;
+    fxDetails = {source: "", date: "", status: "idle", edited: false};
+    renderFXStatus();
+  }
   if (data.tipoCambioMXN && Number(data.tipoCambioMXN) > 0 && Number(data.tipoCambioMXN) < 1000) {
     ++fxFetchSequence; // conservar la tasa guardada frente a consultas pendientes
     setFXReference(data.tipoCambioMXN, {
       source: data.tipoCambioFuente || "Borrador",
       date: data.tipoCambioFecha || "",
-      status: data.tipoCambioFuente === "Manual" ? "manual" : "cache",
+      status: exact ? (data.tipoCambioEstado || "cache") : (data.tipoCambioFuente === "Manual" ? "manual" : "cache"),
       edited: true
     }, {reprice:false});
   }
@@ -2492,18 +2504,23 @@ function cargarBorrador() {
 
   document.getElementById("anticipo").value = data.anticipo ?? DEFAULT_ANTICIPO;
   if (document.getElementById("formaPago")) {
-    document.getElementById("formaPago").value = data.formaPago || t("defaultPaymentTerms");
+    document.getElementById("formaPago").value = exact ? (data.formaPago ?? t("defaultPaymentTerms")) : (data.formaPago || t("defaultPaymentTerms"));
   }
 
   document.getElementById("notas").value = data.notas || "";
   setCommercialNotesBuilderState(data.notasComercialesConfig || {});
-  document.getElementById("terminos").value = data.terminos || t("defaultTerms");
+  if (exact && data.notasComercialesConfig?.preview === "" && commercialNotesElements.preview) commercialNotesElements.preview.value = "";
+  if (exact && ["current", "es", "en", "both"].includes(data.idiomaPDF)) {
+    const selector = document.getElementById("idiomaPDF");
+    if (selector) selector.value = data.idiomaPDF;
+  }
+  document.getElementById("terminos").value = exact ? (data.terminos ?? t("defaultTerms")) : (data.terminos || t("defaultTerms"));
 
   conceptosBody.innerHTML = "";
   const conceptosBorrador = data.conceptosBase || data.conceptos || [];
   conceptosBorrador.forEach(item => crearFila(item));
 
-  if (!conceptosBorrador.length) crearFila();
+  if (!conceptosBorrador.length && !exact) crearFila();
 
   // Restituir las asignaciones después de reconstruir las filas del borrador.
   renderBuilderAllocationTable();
@@ -2513,7 +2530,6 @@ function cargarBorrador() {
   }
 
   recalcularTodo();
-  alert(t("draftLoaded"));
 }
 
 function loadImageAsDataURL(src) {
@@ -2573,6 +2589,131 @@ function setFieldIfExists(id, value, options = {}) {
   - No borra conceptos actuales.
   - Agrega conceptos del Excel debajo de los existentes.
 */
+// Excel editable V1. Las hojas comerciales conservan sus columnas originales;
+// solo los archivos marcados como internos contienen datos privados y restaurables.
+const LWQ_EXCEL_BACKUP_SHEET = "LWQ Datos editables";
+const LWQ_EXCEL_BACKUP_VERSION = "LWQ_QUOTE_V1";
+const LWQ_EXCEL_FIELDS = [
+  "modoCotizador", "catalogoReferencia", "indirectoBase", "indirectoBaseMXN", "indirectoPorcentaje",
+  "metodoResicoDistribucion", "metodoIndirectosDistribucion", "resicoDistribucionEstandar", "resicoConceptoIndex",
+  "empresa", "correoEmpresa", "telefonoEmpresa", "sitioEmpresa", "ciudadEmpresa", "moneda", "tipoCambioMXN",
+  "tipoCambioFuente", "tipoCambioFecha", "tipoCambioEstado", "folio", "fecha", "vigencia", "idioma", "tipoServicio",
+  "cliente", "contacto", "correoCliente", "telefonoCliente", "proyecto", "ubicacionProyecto", "iva", "descuentoGeneral",
+  "anticipo", "isrResico", "resicoTabla", "resicoModoTasa", "resicoTasaManual", "formaPago", "notas", "notasComercialesConfig", "terminos", "idiomaPDF"
+];
+// Columnas internas estables en ambos idiomas para garantizar compatibilidad.
+function agregarColumnasExcelEditable(items, data) {
+  const isBuilder = data.modoCotizador === "constructora";
+  return items.map((item, i) => {
+    const base = data.conceptosBase[i];
+    const std = data.standardResicoAllocation[base.rowId] || {};
+    const builder = data.builderAllocation[base.rowId] || {};
+    const asignado = isBuilder ? (data.builderBreakdown[base.rowId]?.resico || 0)
+      : (data.standardResicoDesglose.find(x => x.index === i)?.amount || 0);
+    const selected = isBuilder ? !!builder.resico : data.resicoDistribucionEstandar === "unico"
+      ? i === data.resicoConceptoIndex : !!std.selected;
+    return {...item,
+      Partida: base.partida, Unidad: base.unidad,
+      Costo_Unitario_Sin_IVA: base.costoUnitario,
+      IVA_Mayorista_Porcentaje: base.ivaMayorista,
+      Ganancia_Porcentaje: base.gananciaPct,
+      Venta_Base: base.precio,
+      Costo_Base_MXN: base.precioMXN,
+      RESICO_Seleccionado: selected ? "SI" : "NO",
+      RESICO_Asignado: asignado,
+      RESICO_Seleccion_Previa: std.selected ? "SI" : "NO",
+      RESICO_Manual: std.amount ?? 0,
+      RESICO_Manual_Base_MXN: std.amountBaseMxn ?? "",
+      Constructor_RESICO: builder.resico ? "SI" : "NO",
+      Constructor_RESICO_Porcentaje: builder.resicoPct ?? 0,
+      Constructor_Indirectos: builder.indirectos ? "SI" : "NO",
+      Constructor_Indirectos_Porcentaje: builder.indirectosPct ?? 0,
+      Indirectos_Asignados: data.builderBreakdown?.[base.rowId]?.indirectos || 0,
+      ID_Fila: base.rowId
+    };
+  });
+}
+function agregarDatosExcelEditable(wb, data) {
+  const rows = [[LWQ_EXCEL_BACKUP_VERSION, "INTERNO / INTERNAL — NO COMPARTIR / DO NOT SHARE"], ["Campo / Field", "Parte / Part", "Valor JSON / JSON value"]];
+  for (const key of LWQ_EXCEL_FIELDS) {
+    const raw = JSON.stringify((key === "idiomaPDF" ? document.getElementById("idiomaPDF")?.value : data[key]) ?? null);
+    for (let i=0; i<raw.length; i+=30000) rows.push([key, i/30000, raw.slice(i,i+30000)]);
+  }
+  const sheet = XLSX.utils.aoa_to_sheet(rows);
+  sheet["!cols"] = [{wch:38},{wch:15},{wch:85}];
+  XLSX.utils.book_append_sheet(wb, sheet, LWQ_EXCEL_BACKUP_SHEET);
+}
+function leerExcelEditable(workbook, metadata, itemsSheet) {
+  const rows = XLSX.utils.sheet_to_json(metadata, {header:1, defval:""});
+  if (rows[0]?.[0] !== LWQ_EXCEL_BACKUP_VERSION || !itemsSheet) throw new Error("Formato de respaldo LWQ inválido.");
+  const parts = Object.create(null);
+  for (const [key, index, value] of rows.slice(2)) {
+    if (!LWQ_EXCEL_FIELDS.includes(key)) continue;
+    if (!Number.isInteger(Number(index)) || Number(index)<0 || Number(index)>10000) throw new Error("Parte de respaldo inválida.");
+    (parts[key] ||= [])[Number(index)] = String(value);
+  }
+  const data = {};
+  for (const key of LWQ_EXCEL_FIELDS) {
+    if (!parts[key] || parts[key].filter(x => x !== undefined).length !== parts[key].length) throw new Error(`Falta campo ${key}.`);
+    data[key] = JSON.parse(parts[key].join(""));
+  }
+  if (!["normal","constructora"].includes(data.modoCotizador) || !["MXN","USD"].includes(data.moneda) ||
+      (data.moneda === "USD" && !fxRateValida(data.tipoCambioMXN))) throw new Error("Moneda o modalidad inválida.");
+  const numeric = (v, name, fallback, max=Infinity) => {
+    const n = v === "" || v == null ? fallback : Number(v);
+    if (!Number.isFinite(n) || n<0 || n>max) throw new Error(`Valor inválido: ${name}`);
+    return n;
+  };
+  const flag = v => [true,1,"1","SI","SÍ","YES","TRUE"].includes(typeof v === "string" ? v.trim().toUpperCase() : v);
+  const near = (a,b) => Math.abs(a-b) <= Math.max(1e-12,Math.abs(b)*1e-14);
+  const rate = data.moneda === "USD" ? Number(data.tipoCambioMXN) : 1;
+  const items = XLSX.utils.sheet_to_json(itemsSheet,{defval:""});
+  data.standardResicoAllocation = Object.create(null);
+  data.builderAllocation = Object.create(null);
+  data.conceptosBase = [];
+  let selectedIndex = -1;
+  for (const item of items) {
+    if (!Object.prototype.hasOwnProperty.call(item,"Costo_Unitario_Sin_IVA")) throw new Error("Falta la columna de costo original.");
+    const concepto = String(item.Concepto ?? item.Item ?? "").trim();
+    const costo = numeric(item.Costo_Unitario_Sin_IVA,"Costo unitario",0);
+    if (!concepto && !costo && !item.ID_Fila) continue;
+    const i = data.conceptosBase.length;
+    const rowId = `lwq-row-${i+1}`;
+    const savedBase = numeric(item.Costo_Base_MXN,"Costo MXN",costo*rate);
+    const expected = data.moneda === "USD" ? fxRound(savedBase/rate,8) : savedBase;
+    // Si se editó el costo visible en Excel, se actualiza la base MXN;
+    // si no, conservar la base original sin acumular redondeos.
+    const precioMXN = near(costo,expected) ? savedBase : costo*rate;
+    const selected = flag(item.RESICO_Seleccionado);
+    if (selected && selectedIndex < 0) selectedIndex=i;
+    const previous = flag(item.RESICO_Seleccion_Previa);
+    const manual = numeric(item.RESICO_Manual,"RESICO manual",0);
+    const assigned = numeric(item.RESICO_Asignado,"RESICO asignado",0);
+    const activeManual = data.modoCotizador === "normal" && data.resicoDistribucionEstandar === "manual";
+    const amount = activeManual && selected ? assigned : manual;
+    const savedManualBase = numeric(item.RESICO_Manual_Base_MXN,"RESICO base MXN",manual*rate);
+    data.standardResicoAllocation[rowId] = {
+      selected: data.modoCotizador === "constructora" || data.resicoDistribucionEstandar === "unico" ? previous : selected,
+      amount, amountBaseMxn: near(amount,manual) ? savedManualBase : amount*rate
+    };
+    data.builderAllocation[rowId] = {
+      resico: data.modoCotizador === "constructora" ? selected : flag(item.Constructor_RESICO),
+      indirectos: flag(item.Constructor_Indirectos),
+      resicoPct: numeric(item.Constructor_RESICO_Porcentaje,"% RESICO",0,100),
+      indirectosPct: numeric(item.Constructor_Indirectos_Porcentaje,"% indirectos",0,100)
+    };
+    data.conceptosBase.push({rowId, concepto, cantidad:numeric(item.Cantidad ?? item.Quantity,"Cantidad",1),
+      costoUnitario:costo, precio:costo, precioMXN,
+      ivaMayorista:numeric(item.IVA_Mayorista_Porcentaje,"IVA mayorista",0,100),
+      gananciaPct:numeric(item.Ganancia_Porcentaje,"Ganancia",0),
+      descuento:numeric(item.Descuento_Porcentaje ?? item.Discount_Percentage ?? item["Discount (%)"],"Descuento",0,100),
+      partida:String(item.Partida ?? item["Item code"] ?? ""), unidad:String(item.Unidad ?? item.Unit ?? "PZA")
+    });
+  }
+  if (data.modoCotizador === "normal" && data.resicoDistribucionEstandar === "unico" && selectedIndex>=0) data.resicoConceptoIndex=selectedIndex;
+  return data;
+}
+
 function importarDesdeWorkbook(workbook) {
   const findSheet = names => {
     const target = workbook.SheetNames.find(sheetName =>
@@ -2589,6 +2730,19 @@ function importarDesdeWorkbook(workbook) {
 
   const resumenSheet = findSheet(["Resumen", "Summary"]);
   const conceptosSheet = findSheet(["Conceptos", "Items"]);
+
+  const metadata = findSheet([LWQ_EXCEL_BACKUP_SHEET]);
+  if (metadata) {
+    // Validar el archivo completo antes de cambiar la cotización abierta.
+    const data = leerExcelEditable(workbook, metadata, conceptosSheet);
+    const msg = currentLanguage === "en"
+      ? "This editable Excel restores the entire quote (including internal costs). Replace the current quote? Cancel leaves it unchanged."
+      : "Este Excel editable restaura la cotización completa, incluidos los costos internos. ¿Reemplazar la cotización actual? Cancelar conserva todo lo que tienes abierto.";
+    if (!confirm(msg)) return;
+    restaurarDatosCotizacion(data, true);
+    alert(currentLanguage === "en" ? "Editable quote restored successfully." : "Cotización editable restaurada correctamente.");
+    return;
+  }
 
   if (!resumenSheet && !conceptosSheet) {
     alert(t("importMissingSheets"));
@@ -2731,7 +2885,11 @@ function importarDesdeWorkbook(workbook) {
 
       const partida = getItemValue("PARTIDA", "ITEM CODE", "LINE", "LINEA ORIGINAL") || "";
       const unidad = getItemValue("UNIDAD", "UNIT") || "PZA";
-      crearFila({ concepto: conceptoLimpio, cantidad, precio, descuento, partida, unidad });
+      const costo = getItemValue("COSTO_UNITARIO_SIN_IVA", "COSTO UNITARIO SIN IVA", "UNIT COST EXCL. VAT", "UNIT_COST_EXCL_VAT");
+      const ivaMayorista = getItemValue("IVA_MAYORISTA_PORCENTAJE", "IVA MAYORISTA (%)", "SUPPLIER VAT (%)", "SUPPLIER_VAT_PERCENTAGE");
+      const gananciaPct = getItemValue("GANANCIA_PORCENTAJE", "GANANCIA (%)", "MARKUP (%)", "MARKUP_PERCENTAGE");
+      crearFila({ concepto: conceptoLimpio, cantidad, precio: costo === undefined || costo === "" ? precio : costo,
+        ivaMayorista: ivaMayorista ?? 0, gananciaPct: gananciaPct ?? 0, descuento, partida, unidad });
     });
 
     if (!conceptosBody.querySelectorAll("tr").length) crearFila();
@@ -3547,12 +3705,13 @@ function exportarExcel(internalControl = false) {
   });
 
   const wsResumen = XLSX.utils.aoa_to_sheet(hojaResumen);
-  const wsConceptos = XLSX.utils.json_to_sheet(hojaConceptos);
+  const wsConceptos = XLSX.utils.json_to_sheet(internalControl ? agregarColumnasExcelEditable(hojaConceptos, data) : hojaConceptos);
 
   XLSX.utils.book_append_sheet(wb, wsResumen, t("summarySheet"));
   XLSX.utils.book_append_sheet(wb, wsConceptos, t("itemsSheet"));
 
-  const nombreArchivo = `${t("quoteFilePrefix")}_${(data.folio || t("noFolio")).replace(/\s+/g, "_")}.xlsx`;
+  if (internalControl) agregarDatosExcelEditable(wb, data);
+  const nombreArchivo = `${t("quoteFilePrefix")}_${(data.folio || t("noFolio")).replace(/\s+/g, "_")}${internalControl ? "_INTERNO" : ""}.xlsx`;
   XLSX.writeFile(wb, nombreArchivo);
 }
 
@@ -3593,7 +3752,7 @@ function exportarExcelConstructora(internalControl = false) {
     "Precio_Unitario": item.precio, "Descuento_Porcentaje": item.descuento, "Importe": item.importe
   });
   XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(resumen), en ? "Summary" : "Resumen");
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(items), en ? "Items" : "Conceptos");
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(internalControl ? agregarColumnasExcelEditable(items, d) : items), en ? "Items" : "Conceptos");
   if (internalControl) {
     const table = d.conceptosBase.map((item, i) => {
       const share = d.builderBreakdown[item.rowId] || { resico: 0, indirectos: 0 };
@@ -3624,6 +3783,7 @@ function exportarExcelConstructora(internalControl = false) {
       ["ADVERTENCIA", "RESICO es un cálculo estimado del cotizador, no una determinación fiscal. Confirmar con contador."]
     ]), "Parametros Internos");
   }
+  if (internalControl) agregarDatosExcelEditable(wb, d);
   const filename = `${t("constructionFileName")}_${String(d.folio || "sin_folio").replace(/[^A-Za-z0-9_-]/g,"_")}${internalControl ? "_INTERNO" : "_CLIENTE"}.xlsx`;
   XLSX.writeFile(wb, filename);
 }
@@ -3631,7 +3791,8 @@ function exportarExcelConstructora(internalControl = false) {
 btnAgregarFila.addEventListener("click", () => crearFila());
 btnAgregarFilaTop.addEventListener("click", () => crearFila());
 btnPDF.addEventListener("click", exportarPDF);
-btnExcel.addEventListener("click", () => exportarExcel(false));
+btnExcel.addEventListener("click", () => exportarExcel(true));
+document.getElementById("btnExcelCliente")?.addEventListener("click", () => exportarExcel(false));
 
 btnNuevo.addEventListener("click", () => {
   if (confirm(t("clearConfirm"))) {
